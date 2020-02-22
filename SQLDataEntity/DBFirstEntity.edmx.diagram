@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="2fbaffeb7aa1433d883d02a4aba86cdf" Name="Diagram1">
+        <EntityTypeShape EntityType="EmployeeDBModel.tblDepartment" Width="1.5" PointX="1.125" PointY="1.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="EmployeeDBModel.tblEmployee" Width="1.5" PointX="3.625" PointY="1" IsExpanded="true" />
+        <AssociationConnector Association="EmployeeDBModel.FK_dbo_tblEmployees_dbo_tblDepartments_DepartmentId" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="EmployeeDBModel.C__MigrationHistory" Width="1.5" PointX="5.875" PointY="1.75" />
+        <EntityTypeShape EntityType="EmployeeDBModel.AspNetRole" Width="1.5" PointX="8.375" PointY="0.5" />
+        <EntityTypeShape EntityType="EmployeeDBModel.AspNetUserClaim" Width="1.5" PointX="11" PointY="2.375" />
+        <EntityTypeShape EntityType="EmployeeDBModel.AspNetUserLogin" Width="1.5" PointX="10.75" PointY="4.75" />
+        <EntityTypeShape EntityType="EmployeeDBModel.AspNetUser" Width="1.5" PointX="8.375" PointY="2.75" />
+        <AssociationConnector Association="EmployeeDBModel.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" />
+        <AssociationConnector Association="EmployeeDBModel.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" />
+        <AssociationConnector Association="EmployeeDBModel.AspNetUserRoles" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
