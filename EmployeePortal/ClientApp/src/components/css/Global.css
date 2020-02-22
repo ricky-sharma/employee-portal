@@ -1,0 +1,58 @@
+* {
+    box-sizing: border-box;
+  }
+
+  a:hover, a:active, a:focus {
+    /* styling for any way a link is about to be used */
+    outline: 0;
+  }
+
+  input, select{
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+  }
+
+  input[type="button"] {
+    height: 30px;
+  font-weight: bold;
+  font-size: 12px;
+  text-shadow: none;
+  min-width: 95px;
+  border-radius: 50px;
+  line-height: 12px;
+  margin-top: 5px;
+  } 
+
+  .float-rt{
+    float: right;
+  }
+
+  .float-lt{
+    float: left;
+  }
+
+  @media (max-width: 240px) {
+    /* really tiny screens */
+    .select-width {
+      width: 179px !important;   
+    }
+ }
+ @media (min-width: 241px) and (max-width: 319px) {
+    /* a little bit bigger screens */
+    .select-width {
+      width: 179px !important; 
+    }
+ }
+ @media (min-width: 320px) and (max-width: 767px) {
+    /* Basically up to, but not including an iPad */
+    .select-width {
+      width: 179px !important; 
+    }    
+ }
+ @media (min-width: 768px) {
+    /* iPad and bigger */
+    .select-width {
+      width: 200px !important;   
+    }
+ }

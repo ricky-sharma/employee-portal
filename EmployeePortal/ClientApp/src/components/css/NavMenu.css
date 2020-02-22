@@ -1,0 +1,47 @@
+﻿a.navbar-brand {
+  white-space: normal;
+  /*text-align: center;*/
+  word-break: break-all;
+}
+
+html {
+  font-size: 14px;
+}
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+.box-shadow {
+  box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
+}
+
+.button-signout { 
+  height: 30px;
+  font-weight: bold;
+  font-size: 12px;
+  text-shadow: none;
+  min-width: 60px;
+  border-radius: 50px;
+  line-height: 12px;
+  margin-top: 5px;
+}
+
+
+.margin-rt10{
+  margin-right: 10px;
+}
+
+.margin-rt5{
+  margin-right: 5px;
+}
+
+.wrdbreak{
+  word-break: keep-all !important
+}
+
+.theme1{
+  /*background-color: rgb(89, 171, 248);*/
+  background-image: linear-gradient(to left, rgb(89, 171, 248), rgb(84, 129, 160));
+}
