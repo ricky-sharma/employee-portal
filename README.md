@@ -6,8 +6,8 @@ Dotnet core and WebApi is used as backend technologies along with entity framewo
 This is the main website project in the solution. The project is configured to be hosted in IIS. There is a folder "ClientApp" which contains React JS files. The project is build using dotnet core and React JS. The project uses Bootstrap for front end design.
 
 #### EmployeeService Project
-This project is the backend WebAPI in C# and dotnet core. This API uses Entity framework to coumminate with SQL server database.
-The WebAPI uses Microsoft Owin Security OAuth to Authorize users to access the Restfull APIs. 
+This project is the backend WebAPI in C# and dotnet core. This API uses Entity framework to communicate with SQL server database.
+The WebAPI uses Microsoft Owin Security OAuth to Authorize users to access the Restful APIs. 
 
 #### SQLDataEntity Project
 This project is the Entity framework project which fetches data from SQL Server.
