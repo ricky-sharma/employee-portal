@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
 import { Route, Switch } from 'react-router';
 import { Layout } from './components/Layout';
-import { Home } from './components/Home';
-import { Employees } from './components/Employees';
-import { Departments } from './components/Departments';
-import { AddDepartment } from './components/AddDepartment';
-import { AddEmployee } from './components/AddEmployee';
-import { UserProfile } from './components/UserProfile';
-import {NotFoundPage} from './components/NotFoundPage';
-import {ChangePassword} from './components/ChangePassword';
+import { Home } from './components/Pages/Home';
+import { Employees } from './components/Pages/Employees';
+import { Departments } from './components/Pages/Departments';
+import { AddDepartment } from './components/Pages/AddDepartment';
+import { AddEmployee } from './components/Pages/AddEmployee';
+import { UserProfile } from './components/Pages/UserProfile';
+import {NotFoundPage} from './components/Pages/NotFoundPage';
+import {ChangePassword} from './components/Pages/ChangePassword';
 import './components/css/Global.css';
 
 export default class App extends Component {

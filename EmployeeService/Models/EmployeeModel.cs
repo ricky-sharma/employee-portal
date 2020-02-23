@@ -17,10 +17,12 @@ namespace EmployeeService.Models
         public string Gender { get; set; }
         
         public int Salary { get; set; }
-       
-        public string Department { get; set; }
+
+        public int DepartmentId { get; set; }
+
+        public string DepartmentName { get; set; }        
         
-        public string Location { get; set; }
+        public string DepartmentLocation { get; set; }
         
         public string JobTitle { get; set; }
     }

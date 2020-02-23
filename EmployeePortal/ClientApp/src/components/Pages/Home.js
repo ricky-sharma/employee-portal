@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import './css/Home.css';
+import '../css/Home.css';
 
 export class Home extends Component {
     static displayName = Home.name;
@@ -43,7 +43,7 @@ export class Home extends Component {
             });
         }).catch(error => console.error(error));
 
-    } 
+    }
 
     render() {
         const isLoggedIn = localStorage.getItem("myToken");
@@ -58,11 +58,11 @@ export class Home extends Component {
                             <div className="card-body">
                                 <h5 className="card-title text-center">Sign In</h5>
                                 <div className="form-label-group">
-                                    <input type="email" className="form-control" placeholder="Username" value={this.state.Username} onChange={(e) => { this.setState({ Username: e.target.value }) }}/>                                    
+                                    <input type="email" className="form-control" placeholder="Username" value={this.state.Username} onChange={(e) => { this.setState({ Username: e.target.value }) }} />
                                 </div>
 
                                 <div className="form-label-group">
-                                    <input type="password" id="inputPassword" className="form-control" value={this.state.Password} onChange={(e) => { this.setState({ Password: e.target.value }) }} placeholder="Password"/>                                    
+                                    <input type="password" id="inputPassword" className="form-control" value={this.state.Password} onChange={(e) => { this.setState({ Password: e.target.value }) }} placeholder="Password" />
                                 </div>
 
                                 <div className="custom-control custom-checkbox mb-3">

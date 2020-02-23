@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Redirect } from 'react-router-dom'
-import './css/Table.css'
+import '../css/Table.css'
 
 export class Employees extends Component {
     constructor(props) {
@@ -25,32 +25,28 @@ export class Employees extends Component {
 
         }).then(res => {
             if (res.ok) {
-                console.log("res:" + res)
                 return res.json();
             } else {
                 throw Error(res.statusText);
             }
         }).then(json => {
-            this.setState({ employeeData: json, keys: Object.keys(json[0]) }, () => {
-                console.log("employeeData:" + this.state.employeeData)
-            })
-
+            this.setState({ employeeData: json, keys: Object.keys(json[0]) })
         }).catch(error => console.error(error));
     }
     renderTableData = () => {
         return this.state.employeeData.map((employee, index) => {
-            const { ID, FirstName, LastName, Gender, Salary, Department, Location, JobTitle } = employee //destructuring
+            const { ID, FirstName, LastName, Gender, Salary, DepartmentName, DepartmentLocation, JobTitle } = employee //destructuring
             return (
                 <tr key={index}>
                     <td>{ID}</td>
                     <td>{FirstName + " " + LastName}</td>
                     <td>{Gender}</td>
                     <td>{Salary}</td>
-                    <td>{Department}</td>
-                    <td>{Location}</td>
+                    <td>{DepartmentName}</td>
+                    <td>{DepartmentLocation}</td>
                     <td>{JobTitle}</td>
-                    <td>                        
-                        <a class="edit" title="Edit" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a>                       
+                    <td>
+                        <a className="edit" title="Edit" data-toggle="tooltip"><i className="material-icons">&#xE254;</i></a>
                     </td>
                 </tr>
             )
@@ -59,19 +55,22 @@ export class Employees extends Component {
 
     renderTableHeader = () => {
         let header = this.state.keys
+        if (header[header.length - 1] === '') {
+            header.pop()
+        }
         header.push(...[''])
-        console.log("header:" + header)
-        return header.map((key, index) => {console.log(key)
-            if(key==='')
-            {
+        return header.map((key, index) => {
+            if (key === '')
                 return <th key={index}></th>
-            }
-            if (key.toUpperCase() !== "FIRSTNAME" && key.toUpperCase() !== "LASTNAME") {
-                
+            if (key.toUpperCase() === "DEPARTMENTNAME")
+                return <th key={index}>DEPARTMENT</th>
+            if (key.toUpperCase() === "DEPARTMENTLOCATION")
+                return <th key={index}>LOCATION</th>
+            if (key.toUpperCase() !== "FIRSTNAME" && key.toUpperCase() !== "LASTNAME" && key.toUpperCase() !== "DEPARTMENTID")
                 return <th key={index}>{key.toUpperCase()}</th>
-            }
-            else if (key.toUpperCase() === "FIRSTNAME")
+            if (key.toUpperCase() === "FIRSTNAME")
                 return <th key={index}>NAME</th>
+            return null
         })
     }
 
@@ -86,15 +85,15 @@ export class Employees extends Component {
 
         return (<div className="container">
             <div className="table-wrapper">
-                <div class="table-title">
-                    <div class="row">
-                        <div class="col-sm-8"><h2>Employee <b>Details</b></h2></div>
-                        <div class="col-sm-4">
-                            <button type="button" onClick={this.handleAddEmployee} class="btn btn-success add-new"><i class="fa fa-plus"></i> Add New</button>
+                <div className="table-title">
+                    <div className="row">
+                        <div className="col-sm-8"><h2>Employee <b>Details</b></h2></div>
+                        <div className="col-sm-4">
+                            <button type="button" onClick={this.handleAddEmployee} className="btn btn-success add-new"><i className="fa fa-plus"></i> Add New</button>
                         </div>
                     </div>
                 </div>
-                <table class="table table-striped table-hover table-bordered border-0">
+                <table className="table table-striped table-hover table-bordered border-0">
                     <thead>
                         <tr className="bg-secondary">
                             {this.renderTableHeader()}

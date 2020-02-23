@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
+﻿using System.Data;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
@@ -54,12 +52,12 @@ namespace EmployeeService.Controllers
             tblEmployee tblEmployee = new tblEmployee()
             {
                 ID = employee.ID,
-                DepartmentId = db.tblDepartments.FirstOrDefault(i => i.Name == employee.Department).ID,
+                DepartmentId = employee.DepartmentId,
                 FirstName = employee.FirstName,
                 LastName = employee.LastName,
                 Gender = employee.Gender,
+                Salary = employee.Salary,
                 JobTitle = employee.JobTitle,
-                Salary = employee.Salary
             };
 
             db.Entry(tblEmployee).State = EntityState.Modified;
@@ -101,12 +99,12 @@ namespace EmployeeService.Controllers
                 tblEmployee tblEmployee = new tblEmployee()
                 {
                     ID = employee.ID,
-                    DepartmentId = db.tblDepartments.FirstOrDefault(i => i.Name == employee.Department).ID,
+                    DepartmentId = employee.DepartmentId,
                     FirstName = employee.FirstName,
                     LastName = employee.LastName,
                     Gender = employee.Gender,
-                    JobTitle = employee.JobTitle,
-                    Salary = employee.Salary
+                    Salary = employee.Salary,
+                    JobTitle = employee.JobTitle
                 };
 
                 db.tblEmployees.Add(tblEmployee);
@@ -150,14 +148,14 @@ namespace EmployeeService.Controllers
         {
             return db.tblEmployees.Select(i => new EmployeeModel()
             {
-                Department = db.tblDepartments.FirstOrDefault(d => d.ID == i.DepartmentId).Name,
-                Location = db.tblDepartments.FirstOrDefault(d => d.ID == i.DepartmentId).Location,
+                DepartmentName = db.tblDepartments.FirstOrDefault(d => d.ID == i.DepartmentId).Name,
+                DepartmentLocation = db.tblDepartments.FirstOrDefault(d => d.ID == i.DepartmentId).Location,
                 ID = i.ID,
                 FirstName = i.FirstName,
                 LastName = i.LastName,
                 Gender = i.Gender,
-                JobTitle = i.JobTitle,
-                Salary = i.Salary
+                Salary = i.Salary,
+                JobTitle = i.JobTitle
             });
         }
     }

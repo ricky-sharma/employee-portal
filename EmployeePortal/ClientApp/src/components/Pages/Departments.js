@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Redirect } from 'react-router-dom'
-import './css/Table.css'
+import '../css/Table.css'
 
 export class Departments extends Component {
     constructor(props) {
@@ -46,9 +46,9 @@ export class Departments extends Component {
                     <td>{ID}</td>
                     <td>{Name}</td>
                     <td>{Location}</td>
-                    <td>                        
-                    <a class="edit" title="Edit" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a>                       
-                </td>
+                    <td>
+                        <a className="edit" title="Edit" data-toggle="tooltip"><i className="material-icons">&#xE254;</i></a>
+                    </td>
                 </tr>
             )
         })
@@ -56,18 +56,19 @@ export class Departments extends Component {
 
     renderTableHeader() {
         let header = this.state.keys
+        if (header[header.length - 1] === '') {
+            header.pop()
+        }
         header.push(...[''])
-        console.log("header:" + header)
         return header.map((key, index) => {
-            if(key==='')
-            {
+            if (key === '') {
                 return <th key={index}></th>
             }
             return <th key={index}>{key.toUpperCase()}</th>
         })
     }
 
-    handleAddDepartment =() =>{
+    handleAddDepartment = () => {
         this.props.history.push('/AddDepartment')
     }
 
@@ -76,28 +77,29 @@ export class Departments extends Component {
         if (!isLoggedIn)
             return <Redirect to='/' />
 
-        return ( <div class="container">
-        <div class="table-wrapper">
-            <div class="table-title">
-                <div class="row">
-                    <div class="col-sm-8"><h2>Department <b>Details</b></h2></div>
-                    <div class="col-sm-4">
-                        <button type="button" onClick={this.handleAddDepartment} class="btn btn-success add-new"><i class="fa fa-plus"></i> Add New</button>
+        return (
+            <div className="container">
+                <div className="table-wrapper">
+                    <div className="table-title">
+                        <div className="row">
+                            <div className="col-sm-8"><h2>Department <b>Details</b></h2></div>
+                            <div className="col-sm-4">
+                                <button type="button" onClick={this.handleAddDepartment} className="btn btn-success add-new"><i className="fa fa-plus"></i> Add New</button>
+                            </div>
+                        </div>
                     </div>
+                    <table className="table table-striped table-hover table-bordered">
+                        <thead>
+                            <tr className="bg-secondary">
+                                {this.renderTableHeader()}
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {this.renderTableData()}
+                        </tbody>
+                    </table>
                 </div>
-            </div>
-            <table class="table table-striped table-hover table-bordered">
-                <thead>
-                    <tr className="bg-secondary">
-                        {this.renderTableHeader()}   
-                    </tr>
-                </thead>
-                <tbody>
-                       {this.renderTableData()}              
-                </tbody>
-            </table>
-        </div>
-    </div> )
+            </div>)
     }
 }
 
