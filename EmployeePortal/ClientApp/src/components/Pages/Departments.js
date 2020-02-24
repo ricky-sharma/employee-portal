@@ -1,6 +1,7 @@
-import React, { Component } from 'react'
-import { Redirect } from 'react-router-dom'
-import '../css/Table.css'
+import React, { Component } from 'react';
+import { Redirect } from 'react-router-dom';
+import '../css/Table.css';
+import WebApi from '../Helpers/WebApi';
 
 export class Departments extends Component {
     constructor(props) {
@@ -14,28 +15,13 @@ export class Departments extends Component {
     }
 
     componentDidMount = () => {
-        fetch('http://employee.service.com/api/Departments', {
-            method: "GET",
-            headers: {
-                Accept: "application/json",
-                "Content-Type": "application/json",
-                "Access-Control-Allow-Origin": "*",
-                "Authorization": 'Bearer ' + this.state.token
-            },
-
-        }).then(res => {
-            if (res.ok) {
-                console.log("res:" + res)
-                return res.json();
-            } else {
-                throw Error(res.statusText);
-            }
-        }).then(json => {
-            this.setState({ departmentData: json, keys: Object.keys(json[0]) }, () => {
-                console.log("departmentData:" + this.state.departmentData)
-            })
-
-        }).catch(error => console.error(error));
+        let url = `/api/Departments`
+        WebApi(url, '', 'GET')
+            .then(response => {
+                this.setState({ departmentData: response, keys: Object.keys(response[0]) }, () => {
+                    console.log("departmentData:" + this.state.departmentData)
+                })
+            });
     }
 
     renderTableData() {

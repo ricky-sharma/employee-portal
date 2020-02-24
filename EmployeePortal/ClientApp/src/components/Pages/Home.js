@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import '../css/Home.css';
+import WebApi from '../Helpers/WebApi';
 
 export class Home extends Component {
     static displayName = Home.name;
-
     constructor(params) {
         super(params)
         this.state = {
@@ -13,36 +13,24 @@ export class Home extends Component {
             loggedInUser: ''
         };
     }
-
+    
     handleClick = () => {
-        fetch('http://employee.service.com/token', {
-            method: "POST",
-            headers: {
-                Accept: "application/json",
-                "Content-Type": "application/json",
-                "Access-Control-Allow-Origin": "*"
-            },
-            body: 'username=' + this.state.Username + '&password=' + this.state.Password + '&grant_type=password'
+        let url = `/token`;
+        let data = 'username=' + this.state.Username +
+            '&password=' + this.state.Password + '&grant_type=password'
 
-        }).then(res => {
-            if (res.ok) {
-                return res.json();
-            } else {
-                throw Error(res.statusText);
-            }
-        }).then(json => {
-            console.log("json:" + json.Username)
-            this.setState({
-                token: json.access_token,
-                loggedInUser: json.userName
-            }, () => {
-                localStorage.setItem('myToken', this.state.token)
-                localStorage.setItem('myUserName', this.state.loggedInUser)
-                this.props.history.push('/Employees')
-                console.log(this.state.token)
+        WebApi(url, data, 'POST', false)
+            .then(response => {
+                console.log("UserName:" + response.userName)
+                this.setState({
+                    token: response.access_token,
+                    loggedInUser: response.userName
+                }, () => {
+                    localStorage.setItem('myToken', this.state.token)
+                    localStorage.setItem('myUserName', this.state.loggedInUser)
+                    this.props.history.push('/Employees')
+                });
             });
-        }).catch(error => console.error(error));
-
     }
 
     render() {
@@ -50,7 +38,6 @@ export class Home extends Component {
         if (isLoggedIn)
             return (<div className="row justify-content-md-center">Welcome to the Employee portal.</div>)
         return (
-
             <div className="container">
                 <div className="row">
                     <div className="col-sm-9 col-md-7 col-lg-5 mx-auto">
@@ -60,11 +47,9 @@ export class Home extends Component {
                                 <div className="form-label-group">
                                     <input type="email" className="form-control" placeholder="Username" value={this.state.Username} onChange={(e) => { this.setState({ Username: e.target.value }) }} />
                                 </div>
-
                                 <div className="form-label-group">
                                     <input type="password" id="inputPassword" className="form-control" value={this.state.Password} onChange={(e) => { this.setState({ Password: e.target.value }) }} placeholder="Password" />
                                 </div>
-
                                 <div className="custom-control custom-checkbox mb-3">
                                     <input type="checkbox" className="custom-control-input" id="customCheck1" />
                                     <label className="custom-control-label" htmlFor="customCheck1">Remember password</label>
@@ -75,7 +60,6 @@ export class Home extends Component {
                     </div>
                 </div>
             </div>
-
         );
     }
 }

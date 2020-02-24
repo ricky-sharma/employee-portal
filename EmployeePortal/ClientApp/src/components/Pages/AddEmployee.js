@@ -1,6 +1,7 @@
-import React, { Component } from 'react'
-import { Redirect } from 'react-router-dom'
+import React, { Component } from 'react';
+import { Redirect } from 'react-router-dom';
 import AlertMessage from '../AlertMessage';
+import WebApi from '../Helpers/WebApi';
 
 export class AddEmployee extends Component {
     constructor(props) {
@@ -20,29 +21,14 @@ export class AddEmployee extends Component {
     }
 
     componentDidMount = () => {
-        fetch('http://employee.service.com/api/Departments', {
-            method: "GET",
-            headers: {
-                Accept: "application/json",
-                "Content-Type": "application/json",
-                "Access-Control-Allow-Origin": "*",
-                "Authorization": 'Bearer ' + this.state.token
-            },
-        }).then(res => {
-            if (res.ok) {
-                console.log("res:" + res)
-                return res.json();
-            } else {
-                throw Error(res.statusText);
-            }
-        }).then(json => {
-            const departments = json.map((dep, index) => <option key={index + 1} value={dep.ID}>{dep.Name}
-                ({dep.Location}) </option>)
-            this.setState({ departmentOptions: departments }, () => {
-                console.log("departmentData:" + this.state.departments)
-            })
-
-        }).catch(error => console.error(error));
+        let url = `/api/Departments`
+        WebApi(url, '', 'GET')
+            .then(response => {
+                const departments = response.map((dep, index) => <option key={index + 1} value={dep.ID}>{dep.Name}
+                    ({dep.Location}) </option>)
+                this.setState({ departmentOptions: departments }, () => {
+                });
+            });
     }
 
     handleSubmit = () => {
@@ -50,34 +36,23 @@ export class AddEmployee extends Component {
             || this.state.gender === 'select' || this.state.salary === '' || this.state.jobTitle === '') {
             return this.setState({ showAlert: true, alertType: "danger" })
         }
-        fetch('http://employee.service.com/api/Employees', {
-            method: "POST",
-            headers: {
-                Accept: "application/json",
-                "Content-Type": "application/json",
-                "Access-Control-Allow-Origin": "*",
-                "Authorization": 'Bearer ' + this.state.token
-            },
-            body: JSON.stringify({
-                "ID": 0,
-                "DepartmentId": this.state.departmentId,
-                "FirstName": this.state.fName,
-                "LastName": this.state.lName,
-                "Gender": this.state.gender,
-                "Salary": this.state.salary,
-                "JobTitle": this.state.jobTitle
-            })
-
-        }).then(res => {
-            if (res.ok) {
+        let url = `/api/Employees`
+        let data = JSON.stringify({
+            "ID": 0,
+            "DepartmentId": this.state.departmentId,
+            "FirstName": this.state.fName,
+            "LastName": this.state.lName,
+            "Gender": this.state.gender,
+            "Salary": this.state.salary,
+            "JobTitle": this.state.jobTitle
+        })
+        WebApi(url, data, 'POST')
+            .then(response => {
                 this.setState({
                     showAlert: true, alertType: 'success', departmentId: 'select',
                     fName: '', lName: '', gender: '', salary: '', jobTitle: ''
                 })
-            } else {
-                throw Error(res.statusText);
-            }
-        }).catch(error => console.error(error));
+            });
     }
 
     handleBack = () => {

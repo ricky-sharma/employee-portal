@@ -1,6 +1,7 @@
-import React, { Component } from 'react'
-import { Redirect } from 'react-router-dom'
+import React, { Component } from 'react';
+import { Redirect } from 'react-router-dom';
 import AlertMessage from '../AlertMessage';
+import WebApi from '../Helpers/WebApi';
 
 export class AddDepartment extends Component {
     constructor(props) {
@@ -18,28 +19,16 @@ export class AddDepartment extends Component {
         if (this.state.Name === '' || this.state.Location === '') {
             return this.setState({ showAlert: true, alertType: "danger" })
         }
-
-        fetch('http://employee.service.com/api/Departments', {
-            method: "POST",
-            headers: {
-                Accept: "application/json",
-                "Content-Type": "application/json",
-                "Access-Control-Allow-Origin": "*",
-                "Authorization": 'Bearer ' + this.state.token
-            },
-            body: JSON.stringify({
-                "ID": 0,
-                "Name": this.state.Name,
-                "Location": this.state.Location
-            })
-
-        }).then(res => {
-            if (res.ok) {
+        let url = `/api/Departments`
+        let data = JSON.stringify({
+            "ID": 0,
+            "Name": this.state.Name,
+            "Location": this.state.Location
+        })
+        WebApi(url, data, 'POST')
+            .then(response => {
                 this.setState({ showAlert: true, alertType: 'success', Name: '', Location: '' })
-            } else {
-                throw Error(res.statusText);
-            }
-        }).catch(error => console.error(error));
+            });
     }
 
     handleBack = () => {

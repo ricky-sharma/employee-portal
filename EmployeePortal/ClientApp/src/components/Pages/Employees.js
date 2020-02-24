@@ -1,6 +1,7 @@
-import React, { Component } from 'react'
-import { Redirect } from 'react-router-dom'
-import '../css/Table.css'
+import React, { Component } from 'react';
+import { Redirect } from 'react-router-dom';
+import '../css/Table.css';
+import WebApi from '../Helpers/WebApi';
 
 export class Employees extends Component {
     constructor(props) {
@@ -14,25 +15,13 @@ export class Employees extends Component {
     }
 
     componentDidMount = () => {
-        fetch('http://employee.service.com/api/Employees', {
-            method: "GET",
-            headers: {
-                Accept: "application/json",
-                "Content-Type": "application/json",
-                "Access-Control-Allow-Origin": "*",
-                "Authorization": 'Bearer ' + this.state.token
-            },
-
-        }).then(res => {
-            if (res.ok) {
-                return res.json();
-            } else {
-                throw Error(res.statusText);
-            }
-        }).then(json => {
-            this.setState({ employeeData: json, keys: Object.keys(json[0]) })
-        }).catch(error => console.error(error));
+        let url = `/api/Employees`
+        WebApi(url, '', 'GET')
+            .then(response => {
+                this.setState({ employeeData: response, keys: Object.keys(response[0]) })
+            });
     }
+
     renderTableData = () => {
         return this.state.employeeData.map((employee, index) => {
             const { ID, FirstName, LastName, Gender, Salary, DepartmentName, DepartmentLocation, JobTitle } = employee //destructuring

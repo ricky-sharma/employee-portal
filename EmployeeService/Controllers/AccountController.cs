@@ -131,7 +131,7 @@ namespace EmployeeService.Controllers
                 return GetErrorResult(result);
             }
 
-            return Ok();
+            return Ok(new {Message ="SUCCESS" });
         }
 
         // POST api/Account/SetPassword

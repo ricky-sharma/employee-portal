@@ -17,27 +17,29 @@ export class UserProfile extends Component {
 
         return (
             <div>
-                <div className="row">
-                    <h5>User Profile</h5>
-                </div>
-                <div className="col-4">
-                    <div className="row">
-                        <div>
-                            <label style={{ marginRight: "38px" }} className="mt-1 mb-1">Username</label>
-                        </div>
-                        <div>
+                <div className="container border">
+                    <h4 className="mt-2 mb-5">
+                        <b>User Profile</b>
+                    </h4>
+                    <form>
+                        <div className="row  p-2">
+                            <div className="col-4">
+                                <label>Username</label>
+                            </div>
                             <label className="mt-1">{this.state.Email}</label>
                         </div>
-                    </div>
-                    <div className="row">
-                        <div>
-                            <label style={{ marginRight: "70px" }} className="mt-1 mb-1">Email</label>
-                        </div>
-                        <div>
+                        <div className="row  p-2">
+                            <div className="col-4">
+                                <label>Email</label>
+                            </div>
                             <label className="mt-1">{this.state.Email}</label>
                         </div>
-                    </div>
-                    <div className="row"><Link to='/ChangePassword' activeClassName="active">Change Password</Link></div>
+                        <div className="row  p-2">
+                            <div className="col-4">    
+                            </div>  
+                            <Link to='/ChangePassword' className="mt-1">Change Password</Link>                          
+                        </div>                    
+                    </form>
                 </div>
             </div>
         )
