@@ -1,5 +1,5 @@
 ### Employee-portal
-Employee Portal is build using React and bootstrap as front end technologies.
+Employee Portal is build using React Native and bootstrap as front end technologies.
 Dotnet core and WebApi is used as backend technologies along with entity framework. SQL server is used for database.
 
 #### EmployeePortal Project
