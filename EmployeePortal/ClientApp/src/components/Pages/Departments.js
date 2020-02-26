@@ -17,14 +17,13 @@ export class Departments extends Component {
     componentDidMount = () => {
         let url = `/api/Departments`
         WebApi(url, '', 'GET')
-            .then(response => {
-                this.setState({ departmentData: response, keys: Object.keys(response[0]) }, () => {
-                    console.log("departmentData:" + this.state.departmentData)
-                })
+            .then(response => {             
+                this.setState({ departmentData: response, keys: Object.keys(response[0]) })
             });
     }
 
     renderTableData() {
+        if(typeof(this.state.departmentData) === 'object' && this.state.departmentData && this.state.departmentData.length){
         return this.state.departmentData.map((department, index) => {
             const { ID, Name, Location } = department //destructuring
             return (
@@ -37,7 +36,7 @@ export class Departments extends Component {
                     </td>
                 </tr>
             )
-        })
+        })}
     }
 
     renderTableHeader() {

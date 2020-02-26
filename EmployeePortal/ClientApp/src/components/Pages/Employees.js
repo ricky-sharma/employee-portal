@@ -10,7 +10,14 @@ export class Employees extends Component {
         this.state = {
             token: localStorage.getItem('myToken') || '',
             employeeData: [],
-            keys: []
+            keys: [],
+            noOfPages: 0,
+            firstRow: 0,
+            totalRows: 0,
+            currentPageRows: 10,
+            pageRows: 10,
+            lastPageRows: 10,
+            activePage: 1
         }
     }
 
@@ -18,28 +25,49 @@ export class Employees extends Component {
         let url = `/api/Employees`
         WebApi(url, '', 'GET')
             .then(response => {
-                this.setState({ employeeData: response, keys: Object.keys(response[0]) })
+                let totalRows = response.length
+                let noOfPages = parseInt(totalRows / this.state.pageRows)
+                let lastPageRows = parseInt(totalRows) % this.state.pageRows
+                if (lastPageRows > 0)
+                    noOfPages++;
+                this.setState({
+                    employeeData: response, keys: Object.keys(response[0]), noOfPages: noOfPages,
+                    totalRows: totalRows, lastPageRows: lastPageRows
+                })
             });
     }
 
-    renderTableData = () => {
-        return this.state.employeeData.map((employee, index) => {
-            const { ID, FirstName, LastName, Gender, Salary, DepartmentName, DepartmentLocation, JobTitle } = employee //destructuring
-            return (
-                <tr key={index}>
-                    <td>{ID}</td>
-                    <td>{FirstName + " " + LastName}</td>
-                    <td>{Gender}</td>
-                    <td>{Salary}</td>
-                    <td>{DepartmentName}</td>
-                    <td>{DepartmentLocation}</td>
-                    <td>{JobTitle}</td>
-                    <td>
-                        <a className="edit" title="Edit" data-toggle="tooltip"><i className="material-icons">&#xE254;</i></a>
-                    </td>
-                </tr>
-            )
-        })
+    handleChangePage = (e, k) => {
+        e.preventDefault();
+        let pageRows = this.state.pageRows
+
+        if (k === this.state.noOfPages)
+            this.setState({ firstRow: pageRows * (k - 1), currentPageRows: this.state.lastPageRows, activePage: k })
+        else
+            this.setState({ firstRow: pageRows * (k - 1), currentPageRows: pageRows, activePage: k })
+    }
+
+    renderTableData = (first, count) => {
+        if (typeof (this.state.employeeData) === 'object' && this.state.employeeData && this.state.employeeData.length) {
+            return this.state.employeeData.slice(first, first + count).map((employee, index) => {
+                const { ID, FirstName, LastName, Gender, Salary, DepartmentName, DepartmentLocation, JobTitle } = employee //destructuring
+                return (
+                    <tr key={index}>
+                        <td>{ID}</td>
+                        <td>{FirstName + " " + LastName}</td>
+                        <td>{Gender}</td>
+                        <td>{Salary}</td>
+                        <td>{DepartmentName}</td>
+                        <td>{DepartmentLocation}</td>
+                        <td>{JobTitle}</td>
+                        <td>
+                            <a className="edit" title="Edit" data-toggle="tooltip"><i className="material-icons">&#xE254;</i></a>
+                        </td>
+                    </tr>
+                )
+            })
+        }
+        else return null
     }
 
     renderTableHeader = () => {
@@ -61,6 +89,17 @@ export class Employees extends Component {
                 return <th key={index}>NAME</th>
             return null
         })
+    }
+
+    renderPagination = () => {
+        let pagination = []
+
+        for (let j = 1; j <= this.state.noOfPages; j++) {
+            pagination.push(<li key={j} className={"page-item " + (this.state.activePage === j ? "active" : "")}>
+                <a onClick={(e) => this.handleChangePage(e, j)} href='/' className="page-link">{j}</a>
+            </li>)
+        }
+        return pagination
     }
 
     handleAddEmployee = () => {
@@ -89,18 +128,14 @@ export class Employees extends Component {
                         </tr>
                     </thead>
                     <tbody>
-                        {this.renderTableData()}
+                        {this.renderTableData(this.state.firstRow, this.state.currentPageRows)}
                     </tbody>
                 </table>
-                <div className="d-none clearfix">
-                    <div className="hint-text">Showing <b>5</b> out of <b>25</b> entries</div>
+                <div className="clearfix">
+                    <div className="hint-text">Showing <b>{this.state.currentPageRows}</b> out of <b>{this.state.totalRows}</b> entries</div>
                     <ul className="pagination">
                         <li className="page-item disabled"><a href="#"><i className="fa fa-angle-double-left"></i></a></li>
-                        <li className="page-item"><a href="#" className="page-link">1</a></li>
-                        <li className="page-item"><a href="#" className="page-link">2</a></li>
-                        <li className="page-item active"><a href="#" className="page-link">3</a></li>
-                        <li className="page-item"><a href="#" className="page-link">4</a></li>
-                        <li className="page-item"><a href="#" className="page-link">5</a></li>
+                        {this.renderPagination()}
                         <li className="page-item"><a href="#" className="page-link"><i className="fa fa-angle-double-right"></i></a></li>
                     </ul>
                 </div>
