@@ -1,3 +1,5 @@
+import { trackPromise } from 'react-promise-tracker';
+
 function WebApi(apiUrl, data, method = 'POST', auth = true) {
     let authHeader = 'Bearer ' + localStorage.getItem('myToken')
 
@@ -14,16 +16,16 @@ function WebApi(apiUrl, data, method = 'POST', auth = true) {
         withCredentials: true,
         headers: headers
     }
-    if (method === 'POST')
+    if (method === 'POST' || method === 'PUT')
         requestInfo.body = data
 
-    return fetch('http://employee.service.com' + apiUrl, requestInfo).then(res => {
-        if (res.ok) {            
+    return trackPromise(fetch('http://employee.service.com' + apiUrl, requestInfo).then(res => {
+        if (res.ok) {
             return res.json();
         } else {
             var error = res.text();
-            let errorStatus = res.statusText            
-            if(errorStatus.toUpperCase() === 'UNAUTHORIZED'){                
+            let errorStatus = res.statusText
+            if (errorStatus.toUpperCase() === 'UNAUTHORIZED') {
                 alert('Session has expired.')
                 localStorage.removeItem('myToken')
             }
@@ -31,9 +33,9 @@ function WebApi(apiUrl, data, method = 'POST', auth = true) {
         }
     }).then(result => {
         return result;
-    }, error => { 
+    }, error => {
         return error;
-    })
+    }))
 }
 
 export default WebApi

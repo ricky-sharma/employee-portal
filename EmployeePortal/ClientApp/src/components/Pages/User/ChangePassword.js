@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
 import { Redirect } from 'react-router-dom'
-import WebApi from '../Helpers/WebApi';
-import ParseError from '../Helpers/ParseError';
-import AlertMessage from '../AlertMessage';
+import WebApi from '../../Helpers/WebApi';
+import ParseError from '../../Helpers/ParseError';
+import AlertMessage from '../../AlertMessage';
 
 export class ChangePassword extends Component {
     constructor(props) {
@@ -30,7 +30,7 @@ export class ChangePassword extends Component {
         })
         WebApi(url, data, 'POST')
             .then((response) => {
-                if (response.Message === "SUCCESS") {
+                if (response.Message && response.Message.toUpperCase() === "SUCCESS") {
                     return this.setState({ showAlert: true, alertType: 'success', })
                 }
                 else {

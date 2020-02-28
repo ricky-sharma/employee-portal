@@ -1,70 +1,122 @@
 * {
     box-sizing: border-box;
-  }
+}
 
-  a:hover, a:active, a:focus {
+a:hover, a:active, a:focus {
     /* styling for any way a link is about to be used */
     outline: 0;
-  }
+}
 
-  input, select{
+input, select {
     -moz-border-radius: 10px;
     -webkit-border-radius: 10px;
     border-radius: 10px;
-  }
+    -ms-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
 
-  input[type=button], input[type=submit], input[type=reset]{
-    height: 30px;
-  font-weight: bold;
-  font-size: 12px;
-  text-shadow: none;
-  min-width: 102px;
-  border-radius: 50px;
-  line-height: 12px;
-  margin-top: 5px;
-  } 
+input {
+    padding-left: 10px;
+    padding-right: 14px;
+}
 
-  .float-rt{
+select {
+    padding-left: 10px;
+    padding-right: 14px;
+}
+
+input[type=button], input[type=submit], input[type=reset] {    
+    font-weight: bold;
+    font-size: 12px;
+    text-shadow: none;    
+    border-radius: 50px;
+    line-height: 12px;
+    margin-top: 5px;
+}
+
+select::-ms-expand {
+    display: none;
+}
+
+select {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    text-indent: 1px;
+    text-overflow: '';
+}
+
+.disabled-inputs {
+    pointer-events: none;
+    color: rgb(0, 0, 0);
+    border-style: none;
+}
+
+.float-rt {
     float: right;
-  }
+}
 
-  .float-lt{
+.float-lt {
     float: left;
-  }
+}
 
-  .txt-center{
+.txt-center {
     text-align: center;
-  }
+}
 
-  .opacity-100{
-    opacity:100%;
-  }
+.opacity-100 {
+    opacity: 100%;
+}
 
-  .margin-top-75{
+.margin-top-75 {
     margin-top: 75px;
-  }
+}
 
-  @media (max-width: 240px) {
+@media (max-width: 240px) {
     /* really tiny screens */
-    .select-width {
-      width: 179px !important;   
+
+    input[type=text], select {
+        width: 100px
     }
- }
- @media (min-width: 241px) and (max-width: 319px) {
+    input[type=button], input[type=submit], input[type=reset] {
+      min-width: 51px;
+      height: 30px;
+    }
+}
+
+@media (min-width: 241px) and (max-width: 319px) {
     /* a little bit bigger screens */
-    .select-width {
-      width: 179px !important; 
+
+    input[type=text], select {
+        width: 100px
     }
- }
- @media (min-width: 320px) and (max-width: 767px) {
+    input[type=button], input[type=submit], input[type=reset] {
+      min-width: 51px;
+      height: 30px;
+    }
+}
+
+@media (min-width: 320px) and (max-width: 767px) {
     /* Basically up to, but not including an iPad */
-    .select-width {
-      width: 179px !important; 
-    }    
- }
- @media (min-width: 768px) {
-    /* iPad and bigger */
-    .select-width {
-      width: 200px !important;   
+
+    input[type=text], select {
+        width: 150px
     }
- }
+    input[type=button], input[type=submit], input[type=reset] {
+      min-width: 70px;
+      height: 30px;
+    }
+}
+
+@media (min-width: 768px) {
+    /* iPad and bigger */
+
+    input[type=text], select {
+        width: 250px
+    }
+    input[type=button], input[type=submit], input[type=reset] {
+      min-width: 102px;
+      height: 30px;
+    }
+}

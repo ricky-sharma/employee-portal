@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
-import AlertMessage from '../AlertMessage';
-import WebApi from '../Helpers/WebApi';
+import AlertMessage from '../../AlertMessage';
+import WebApi from '../../Helpers/WebApi';
 
 export class AddEmployee extends Component {
     constructor(props) {
@@ -82,33 +82,33 @@ export class AddEmployee extends Component {
                     </h4>
                     <form>
                         <div className="row  p-2">
-                            <div className="col-4">
+                            <div className="col-5">
                                 <label>First name</label>
                             </div>
                             <input type="text" value={fName} onChange={(e) => { this.setState({ fName: e.target.value }) }}></input>
                         </div>
                         <div className="row  p-2">
-                            <div className="col-4">
+                            <div className="col-5">
                                 <label>Last name</label>
                             </div>
                             <input type="text" value={lName} onChange={(e) => { this.setState({ lName: e.target.value }) }}></input>
                         </div>
                         <div className="row  p-2">
-                            <div className="col-4">
+                            <div className="col-5">
                                 <label>Gender</label>
                             </div>
-                            <select value={gender} onChange={(e) => { this.setState({ gender: e.target.value }) }} className="select-width">
+                            <select value={gender} onChange={(e) => { this.setState({ gender: e.target.value }) }}>
                                 <option key="0" value="select">Select</option>{GenderOptions}
                             </select>
                         </div>
                         <div className="row  p-2">
-                            <div className="col-4">
+                            <div className="col-5">
                                 <label>Salary</label>
                             </div>
                             <input value={salary} onChange={(e) => { this.setState({ salary: e.target.value }) }} type="text"></input>
                         </div>
                         <div className="row  p-2">
-                            <div className="col-4">
+                            <div className="col-5">
                                 <label>Department</label>
                             </div>
                             <select value={departmentId} onChange={(e) => { this.setState({ departmentId: e.target.value }) }}>
@@ -116,13 +116,13 @@ export class AddEmployee extends Component {
                             </select>
                         </div>
                         <div className="row  p-2">
-                            <div className="col-4">
+                            <div className="col-5">
                                 <label>Job Title</label>
                             </div>
                             <input value={jobTitle} onChange={(e) => { this.setState({ jobTitle: e.target.value }) }} type="text"></input>
                         </div>
                         <div className="row p-2">
-                            <div className="col-4"></div>
+                            <div className="col-5"></div>
                             <input className="btn btn-success mr-1" value="Submit" onClick={this.handleSubmit} type="button"></input>
                             <input className="mr-lg-1 btn bg-dark text-white btn-md" onClick={this.handleBack} type="button" value="Back" />
                         </div>

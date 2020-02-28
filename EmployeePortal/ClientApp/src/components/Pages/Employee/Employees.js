@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import { Redirect } from 'react-router-dom';
-import '../css/Table.css';
-import WebApi from '../Helpers/WebApi';
+import { Redirect, Link } from 'react-router-dom';
+import '../../css/Table.css';
+import WebApi from '../../Helpers/WebApi';
 
 export class Employees extends Component {
     constructor(props) {
@@ -26,8 +26,8 @@ export class Employees extends Component {
         WebApi(url, '', 'GET')
             .then(response => {
                 let totalRows = response.length
-                let noOfPages = parseInt(totalRows / this.state.pageRows)
-                let lastPageRows = parseInt(totalRows) % this.state.pageRows
+                let noOfPages = parseInt(totalRows / this.state.pageRows, 10)
+                let lastPageRows = parseInt(totalRows % this.state.pageRows, 10)
                 if (lastPageRows > 0)
                     noOfPages++;
                 this.setState({
@@ -35,16 +35,6 @@ export class Employees extends Component {
                     totalRows: totalRows, lastPageRows: lastPageRows
                 })
             });
-    }
-
-    handleChangePage = (e, k) => {
-        e.preventDefault();
-        let pageRows = this.state.pageRows
-
-        if (k === this.state.noOfPages)
-            this.setState({ firstRow: pageRows * (k - 1), currentPageRows: this.state.lastPageRows, activePage: k })
-        else
-            this.setState({ firstRow: pageRows * (k - 1), currentPageRows: pageRows, activePage: k })
     }
 
     renderTableData = (first, count) => {
@@ -61,7 +51,12 @@ export class Employees extends Component {
                         <td>{DepartmentLocation}</td>
                         <td>{JobTitle}</td>
                         <td>
-                            <a className="edit" title="Edit" data-toggle="tooltip"><i className="material-icons">&#xE254;</i></a>
+                            <Link className="edit" title="Edit" to={{
+                                pathname: '/EditEmployee',
+                                data: { ID }
+                            }} data-toggle="tooltip">
+                                <i className="material-icons">&#xE254;</i>
+                            </Link>
                         </td>
                     </tr>
                 )
@@ -91,6 +86,16 @@ export class Employees extends Component {
         })
     }
 
+    handleChangePage = (e, k) => {
+        e.preventDefault();
+        let pageRows = this.state.pageRows
+
+        if (k === this.state.noOfPages)
+            this.setState({ firstRow: pageRows * (k - 1), currentPageRows: this.state.lastPageRows, activePage: k })
+        else
+            this.setState({ firstRow: pageRows * (k - 1), currentPageRows: pageRows, activePage: k })
+    }
+
     renderPagination = () => {
         let pagination = []
 
@@ -100,6 +105,26 @@ export class Employees extends Component {
             </li>)
         }
         return pagination
+    }
+
+    handleForwardPage = (e) => {
+        e.preventDefault();
+        e.persist();
+        if (this.state.activePage !== this.state.noOfPages) {
+            this.setState((prevState) => ({ activePage: prevState.activePage + 1 }), () => {
+                this.handleChangePage(e, this.state.activePage)
+            })
+        }
+    }
+
+    handleBackwardPage = (e) => {
+        e.preventDefault();
+        e.persist();
+        if (this.state.activePage !== 1) {
+            this.setState((prevState) => ({ activePage: prevState.activePage - 1 }), () => {
+                this.handleChangePage(e, this.state.activePage)
+            })
+        }
     }
 
     handleAddEmployee = () => {
@@ -134,9 +159,17 @@ export class Employees extends Component {
                 <div className="clearfix">
                     <div className="hint-text">Showing <b>{this.state.currentPageRows}</b> out of <b>{this.state.totalRows}</b> entries</div>
                     <ul className="pagination">
-                        <li className="page-item disabled"><a href="#"><i className="fa fa-angle-double-left"></i></a></li>
+                        <li className={"page-item " + (this.state.activePage === 1 ? "disabled" : "")}>
+                            <a onClick={(e) => this.handleBackwardPage(e)} href="/" className="page-link">
+                                <i className="fa fa-angle-double-left"></i>
+                            </a>
+                        </li>
                         {this.renderPagination()}
-                        <li className="page-item"><a href="#" className="page-link"><i className="fa fa-angle-double-right"></i></a></li>
+                        <li className={"page-item " + (this.state.activePage === this.state.noOfPages ? "disabled" : "")}>
+                            <a onClick={(e) => this.handleForwardPage(e)} href="/" className="page-link">
+                                <i className="fa fa-angle-double-right"></i>
+                            </a>
+                        </li>
                     </ul>
                 </div>
             </div>
