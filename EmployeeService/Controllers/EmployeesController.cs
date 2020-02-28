@@ -65,6 +65,7 @@ namespace EmployeeService.Controllers
             try
             {
                 db.SaveChanges();
+                return Ok(new { Message = "SUCCESS" });
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -76,9 +77,7 @@ namespace EmployeeService.Controllers
                 {
                     throw;
                 }
-            }
-
-            return StatusCode(HttpStatusCode.NoContent);
+            } 
         }
 
         // POST: api/Employees
@@ -150,6 +149,7 @@ namespace EmployeeService.Controllers
             {
                 DepartmentName = db.tblDepartments.FirstOrDefault(d => d.ID == i.DepartmentId).Name,
                 DepartmentLocation = db.tblDepartments.FirstOrDefault(d => d.ID == i.DepartmentId).Location,
+                DepartmentId = i.DepartmentId,
                 ID = i.ID,
                 FirstName = i.FirstName,
                 LastName = i.LastName,

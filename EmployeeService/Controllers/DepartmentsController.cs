@@ -25,37 +25,45 @@ namespace EmployeeService.Controllers
         }
 
         // GET: api/Departments/5
-        [ResponseType(typeof(tblDepartment))]
+        [ResponseType(typeof(DepartmentModel))]
         public IHttpActionResult GettblDepartment(int id)
         {
-            tblDepartment tblDepartment = db.tblDepartments.Find(id);
-            if (tblDepartment == null)
+            DepartmentModel department = GetDepartments().FirstOrDefault(i => i.ID == id);            
+            if (department == null)
             {
                 return NotFound();
             }
 
-            return Ok(tblDepartment);
+            return Ok(department);
         }
 
         // PUT: api/Departments/5
         [ResponseType(typeof(void))]
-        public IHttpActionResult PuttblDepartment(int id, tblDepartment tblDepartment)
+        public IHttpActionResult PuttblDepartment(int id, DepartmentModel department)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if (id != tblDepartment.ID)
+            if (id != department.ID)
             {
                 return BadRequest();
             }
+
+            tblDepartment tblDepartment = new tblDepartment()
+            {
+                ID = department.ID,
+                Name = department.Name,
+                Location = department.Location
+            };
 
             db.Entry(tblDepartment).State = EntityState.Modified;
 
             try
             {
                 db.SaveChanges();
+                return Ok(new { Message = "SUCCESS" });
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -68,8 +76,6 @@ namespace EmployeeService.Controllers
                     throw;
                 }
             }
-
-            return StatusCode(HttpStatusCode.NoContent);
         }
 
         // POST: api/Departments
@@ -95,8 +101,8 @@ namespace EmployeeService.Controllers
 
                 db.tblDepartments.Add(tblDepartment);
                 int save = db.SaveChanges();
-            }    
-           
+            }
+
             return CreatedAtRoute("DefaultApi", new { id = depId }, department);
         }
 
