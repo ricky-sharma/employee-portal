@@ -17,6 +17,11 @@ input, select {
     box-sizing: border-box;
 }
 
+.label-padding{
+    padding-left: 10px;
+    padding-right: 14px;
+}
+
 input {
     padding-left: 10px;
     padding-right: 14px;

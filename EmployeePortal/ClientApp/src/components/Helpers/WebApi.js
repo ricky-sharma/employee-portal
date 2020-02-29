@@ -19,10 +19,10 @@ function WebApi(apiUrl, data, method = 'POST', auth = true) {
     if (method === 'POST' || method === 'PUT')
         requestInfo.body = data
 
-    return trackPromise(fetch('http://employee.service.com' + apiUrl, requestInfo).then(res => {
+    return trackPromise(fetch('http://employee.service.com' + apiUrl, requestInfo).then(res => {        
         if (res.ok) {
             return res.json();
-        } else {
+        } else {            
             var error = res.text();
             let errorStatus = res.statusText
             if (errorStatus.toUpperCase() === 'UNAUTHORIZED') {
@@ -34,6 +34,10 @@ function WebApi(apiUrl, data, method = 'POST', auth = true) {
     }).then(result => {
         return result;
     }, error => {
+        if (error.toString() === 'TypeError: Failed to fetch') {
+            alert('Session has expired.')
+            localStorage.removeItem('myToken')
+        }        
         return error;
     }))
 }
