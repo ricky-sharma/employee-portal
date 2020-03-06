@@ -32,5 +32,6 @@ namespace SQLDataEntity
         public virtual DbSet<AspNetUserClaim> AspNetUserClaims { get; set; }
         public virtual DbSet<AspNetUserLogin> AspNetUserLogins { get; set; }
         public virtual DbSet<AspNetUser> AspNetUsers { get; set; }
+        public virtual DbSet<AspNetUserInfo> AspNetUserInfoes { get; set; }
     }
 }

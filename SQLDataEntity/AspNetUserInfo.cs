@@ -12,19 +12,15 @@ namespace SQLDataEntity
     using System;
     using System.Collections.Generic;
     
-    public partial class tblEmployee
+    public partial class AspNetUserInfo
     {
-        public int ID { get; set; }
+        public string Id { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Gender { get; set; }
-        public int Salary { get; set; }
-        public int DepartmentId { get; set; }
-        public string JobTitle { get; set; }
-        public System.DateTime JoiningDate { get; set; }
-        public bool InService { get; set; }
-        public Nullable<System.DateTime> LeavingDate { get; set; }
+        public Nullable<System.DateTime> DOB { get; set; }
+        public string UsersId { get; set; }
     
-        public virtual tblDepartment tblDepartment { get; set; }
+        public virtual AspNetUser AspNetUser { get; set; }
     }
 }

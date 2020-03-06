@@ -5,17 +5,20 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="2fbaffeb7aa1433d883d02a4aba86cdf" Name="Diagram1">
-        <EntityTypeShape EntityType="EmployeeDBModel.tblDepartment" Width="1.5" PointX="1.125" PointY="1.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="EmployeeDBModel.tblEmployee" Width="1.5" PointX="3.625" PointY="1" IsExpanded="true" />
+        <EntityTypeShape EntityType="EmployeeDBModel.tblDepartment" Width="1.5" PointX="2.25" PointY="1.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="EmployeeDBModel.tblEmployee" Width="1.5" PointX="5" PointY="1.25" IsExpanded="true" />
         <AssociationConnector Association="EmployeeDBModel.FK_dbo_tblEmployees_dbo_tblDepartments_DepartmentId" ManuallyRouted="false" />
-        <EntityTypeShape EntityType="EmployeeDBModel.C__MigrationHistory" Width="1.5" PointX="5.875" PointY="1.75" />
+        <EntityTypeShape EntityType="EmployeeDBModel.C__MigrationHistory" Width="1.5" PointX="16.25" PointY="0.875" />
         <EntityTypeShape EntityType="EmployeeDBModel.AspNetRole" Width="1.5" PointX="8.375" PointY="0.5" />
-        <EntityTypeShape EntityType="EmployeeDBModel.AspNetUserClaim" Width="1.5" PointX="11" PointY="2.375" />
-        <EntityTypeShape EntityType="EmployeeDBModel.AspNetUserLogin" Width="1.5" PointX="10.75" PointY="4.75" />
+        <EntityTypeShape EntityType="EmployeeDBModel.AspNetUserClaim" Width="1.5" PointX="10.875" PointY="0.5" />
+        <EntityTypeShape EntityType="EmployeeDBModel.AspNetUserLogin" Width="1.5" PointX="12.75" PointY="3.375" />
         <EntityTypeShape EntityType="EmployeeDBModel.AspNetUser" Width="1.5" PointX="8.375" PointY="2.75" />
-        <AssociationConnector Association="EmployeeDBModel.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" />
+        <AssociationConnector Association="EmployeeDBModel.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" ManuallyRouted="false" >
+        </AssociationConnector>
         <AssociationConnector Association="EmployeeDBModel.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" />
         <AssociationConnector Association="EmployeeDBModel.AspNetUserRoles" />
+        <EntityTypeShape EntityType="EmployeeDBModel.AspNetUserInfo" Width="1.5" PointX="10.75" PointY="4.625" />
+        <AssociationConnector Association="EmployeeDBModel.FK_AspNetUserInfo_AspNetUsers" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
