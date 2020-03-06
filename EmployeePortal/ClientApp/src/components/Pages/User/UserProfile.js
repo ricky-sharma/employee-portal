@@ -1,13 +1,55 @@
 import React, { Component } from 'react'
 import { Redirect, Link } from 'react-router-dom'
+import WebApi from '../../Helpers/WebApi';
+import { Container } from 'reactstrap';
 
 export class UserProfile extends Component {
     constructor(props) {
         super(props)
 
         this.state = {
-            Email: localStorage.getItem("myUserName")
+            UserId: '',
+            UserName: localStorage.getItem("myUserName"),
+            Email: '',
+            FirstName: '',
+            LastName: '',
+            Gender: '',
+            DOB: '',
+            Phone: '',            
         }
+    }
+
+    componentDidMount = () => {
+        let url = `/api/Account/UserInfo`
+        WebApi(url, '', 'GET')
+            .then(response => {
+                console.log(response)
+                if (response.UserId) {
+                    this.setState({
+                        UserId: response.UserId,
+                        Email: response.Email,
+                        Phone: response.Phone
+                    }, () => {
+                        url = `/api/AspNetUserInfoes/` + this.state.UserId
+                        WebApi(url, '', 'GET')
+                            .then(response => {
+                                console.log(response)
+                                if (response.length && response.length > 0) {
+                                    this.setState({
+                                        FirstName: response.FirstName,
+                                        LastName: response.LastName,
+                                        Gender: response.Gender,
+                                        DOB: response.DOB
+                                    })
+                                }
+                            })
+                    })
+                }
+            });
+    }
+
+    handleEditUser = () =>{
+        this.props.history.push('/EditUserProfile')
     }
 
     render() {
@@ -17,17 +59,30 @@ export class UserProfile extends Component {
 
         return (
             <div>
-                <div className="container border">
-                    <h4 className="mt-2 mb-5">
-                        <b>User Profile</b>
-                    </h4>
+                <Container className="border">
+                    <div className="row  p-2">
+                        <h4 className="mt-2 mb-5 col-11">
+                            <b>User Profile</b>
+                        </h4>
+                        <div className="col-1">
+                        <button type="button" onClick={this.handleEditUser} className="btn btn-success add-new mt-1 float-rt">Edit</button>                            
+                        </div>
+                    </div>
                     <form>
-                        <div className="row  p-2">
+                    <div className="row  p-2">
                             <div className="col-4">
                                 <label>Username</label>
                             </div>
-                            <label className="mt-1">{this.state.Email}</label>
+                            <label className="mt-1">{this.state.UserName}</label>
                         </div>
+                        <div className="row  p-2">
+                            <div className="col-4">
+                                <label>Name</label>
+                            </div>
+                            <label className="mt-1">
+                                {this.state.FirstName} {this.state.LastName}
+                            </label>
+                        </div>                        
                         <div className="row  p-2">
                             <div className="col-4">
                                 <label>Email</label>
@@ -35,12 +90,30 @@ export class UserProfile extends Component {
                             <label className="mt-1">{this.state.Email}</label>
                         </div>
                         <div className="row  p-2">
-                            <div className="col-4">    
-                            </div>  
-                            <Link to='/ChangePassword' className="mt-1">Change Password</Link>                          
-                        </div>                    
+                            <div className="col-4">
+                                <label>Phone</label>
+                            </div>
+                            <label className="mt-1">{this.state.Phone}</label>
+                        </div>
+                        <div className="row  p-2">
+                            <div className="col-4">
+                                <label>Gender</label>
+                            </div>
+                            <label className="mt-1">{this.state.Gender}</label>
+                        </div>
+                        <div className="row  p-2">
+                            <div className="col-4">
+                                <label>Date of Birth</label>
+                            </div>
+                            <label className="mt-1">{this.state.DOB}</label>
+                        </div>
+                        <div className="row  p-2">
+                            <div className="col-4">
+                            </div>
+                            <Link to='/ChangePassword' className="mt-1">Change Password</Link>
+                        </div>
                     </form>
-                </div>
+                </Container>
             </div>
         )
     }

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Redirect, Link } from 'react-router-dom';
 import '../../css/Table.css';
 import WebApi from '../../Helpers/WebApi';
+import { format } from "date-fns";
 
 export class Employees extends Component {
     constructor(props) {
@@ -40,15 +41,16 @@ export class Employees extends Component {
     renderTableData = (first, count) => {
         if (typeof (this.state.employeeData) === 'object' && this.state.employeeData && this.state.employeeData.length) {
             return this.state.employeeData.slice(first, first + count).map((employee, index) => {
-                const { ID, FirstName, LastName, Gender, Salary, DepartmentName, DepartmentLocation, JobTitle } = employee //destructuring
+                const { ID, FirstName, LastName, Gender, DepartmentName, DepartmentLocation, JobTitle, JoiningDate, InService } = employee //destructuring
                 return (
                     <tr key={index}>
                         <td>{ID}</td>
                         <td>{FirstName + " " + LastName}</td>
-                        <td>{Gender}</td>
-                        <td>{Salary}</td>
+                        <td>{Gender}</td>                        
                         <td>{DepartmentName}</td>
-                        <td>{DepartmentLocation}</td>
+                        <td>{DepartmentLocation}</td>                        
+                        <td>{JoiningDate !==null? format(new Date(JoiningDate),"dd MMM yyyy"): ''}</td>
+                        <td>{InService === true ? "Yes": "No"}</td>
                         <td>{JobTitle}</td>
                         <td>
                             <Link className="edit" title="Edit" to={{
@@ -67,6 +69,7 @@ export class Employees extends Component {
 
     renderTableHeader = () => {
         let header = this.state.keys
+        console.log(header)
         if (header[header.length - 1] === '') {
             header.pop()
         }
@@ -78,7 +81,7 @@ export class Employees extends Component {
                 return <th key={index}>DEPARTMENT</th>
             if (key.toUpperCase() === "DEPARTMENTLOCATION")
                 return <th key={index}>LOCATION</th>
-            if (key.toUpperCase() !== "FIRSTNAME" && key.toUpperCase() !== "LASTNAME" && key.toUpperCase() !== "DEPARTMENTID")
+            if (key.toUpperCase() !== "FIRSTNAME" && key.toUpperCase() !== "LASTNAME" && key.toUpperCase() !== "DEPARTMENTID" && key.toUpperCase() !== "SALARY"  && key.toUpperCase() !== "LEAVINGDATE")
                 return <th key={index}>{key.toUpperCase()}</th>
             if (key.toUpperCase() === "FIRSTNAME")
                 return <th key={index}>NAME</th>

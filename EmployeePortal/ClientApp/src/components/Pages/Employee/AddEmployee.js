@@ -16,7 +16,7 @@ export class AddEmployee extends Component {
             gender: '',
             salary: '',
             departmentId: '',
-            jobTitle: ''
+            jobTitle: '',
         }
     }
 
@@ -44,10 +44,11 @@ export class AddEmployee extends Component {
             "LastName": this.state.lName,
             "Gender": this.state.gender,
             "Salary": this.state.salary,
-            "JobTitle": this.state.jobTitle
+            "JobTitle": this.state.jobTitle,                        
         })
         WebApi(url, data, 'POST')
             .then(response => {
+                console.log(response)
                 this.setState({
                     showAlert: true, alertType: 'success', departmentId: 'select',
                     fName: '', lName: '', gender: '', salary: '', jobTitle: ''

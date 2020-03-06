@@ -17,6 +17,7 @@ export class EditEmployee extends Component {
             salary: '',
             departmentId: '',
             jobTitle: '',
+            joiningDate: '',
             id: 0,
             message: '',
             readOnly: false
@@ -28,19 +29,24 @@ export class EditEmployee extends Component {
         let url = `/api/Departments`
         WebApi(url, '', 'GET')
             .then(response => {
-                const departments = response.map((dep, index) => <option key={index + 1} value={dep.ID}>{dep.Name} ({dep.Location}) </option>)
-                this.setState({ departmentOptions: departments }, () => {
-                });
+                if (response) {
+                    const departments = response.map((dep, index) => <option key={index + 1} value={dep.ID}>{dep.Name} ({dep.Location}) </option>)
+                    this.setState({ departmentOptions: departments }, () => {
+                    });
+                }
             });
 
         if (this.id !== 0) {
             url = `/api/Employees/` + this.id
             WebApi(url, '', 'GET')
                 .then(response => {
-                    this.setState({
-                        fName: response.FirstName, lName: response.LastName, gender: response.Gender, salary: response.Salary,
-                        departmentId: response.DepartmentId, jobTitle: response.JobTitle
-                    })
+                    console.log(response)
+                    if (response) {
+                        this.setState({
+                            fName: response.FirstName, lName: response.LastName, gender: response.Gender, salary: response.Salary,
+                            departmentId: response.DepartmentId, jobTitle: response.JobTitle, joiningDate: response.JoiningDate
+                        })
+                    }
                 });
         }
     }
@@ -61,7 +67,8 @@ export class EditEmployee extends Component {
                 "LastName": this.state.lName,
                 "Gender": this.state.gender,
                 "Salary": this.state.salary,
-                "JobTitle": this.state.jobTitle
+                "JobTitle": this.state.jobTitle,
+                "JoiningDate": this.state.joiningDate
             })
             WebApi(url, data, 'PUT')
                 .then(response => {
@@ -69,8 +76,10 @@ export class EditEmployee extends Component {
                         this.setState({
                             showAlert: true, alertType: 'success', readOnly: true
                         })
-                    else
+                    else {
+                        console.log(response)
                         return this.setState({ showAlert: true, alertType: "danger", message: "Some error occured, please try again." })
+                    }
                 });
         }
     }
@@ -104,7 +113,7 @@ export class EditEmployee extends Component {
             <div>
                 <div className="container border">
                     <h4 className="mt-2 mb-5">
-                        <b>Edit Employee</b>
+                        <b>Edit - Employee</b>
                     </h4>
                     <form>
                         <div className="row  p-2">

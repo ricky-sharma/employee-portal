@@ -11,6 +11,7 @@ import { EditEmployee } from './components/Pages/Employee/EditEmployee';
 import { UserProfile } from './components/Pages/User/UserProfile';
 import { NotFoundPage } from './components/Pages/NotFoundPage';
 import { ChangePassword } from './components/Pages/User/ChangePassword';
+import { EditUserProfile } from './components/Pages/User/EditUserProfile';
 import './components/css/Global.css';
 
 export default class App extends Component {
@@ -29,6 +30,7 @@ export default class App extends Component {
           <Route exact={true} path='/EditEmployee' component={EditEmployee} />
           <Route exact={true} path='/UserProfile' component={UserProfile} />
           <Route exact={true} path='/ChangePassword' component={ChangePassword} />
+          <Route exact={true} path='/EditUserProfile' component={EditUserProfile} />
           <Route path='/*' component={NotFoundPage} />
         </Switch>
       </Layout>
