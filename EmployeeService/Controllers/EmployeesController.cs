@@ -1,6 +1,8 @@
-﻿using System.Data;
+﻿using System;
+using System.Data;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
+using System.Data.SqlTypes;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -58,6 +60,9 @@ namespace EmployeeService.Controllers
                 Gender = employee.Gender,
                 Salary = employee.Salary,
                 JobTitle = employee.JobTitle,
+                JoiningDate= employee.JoiningDate == DateTime.MinValue ? (DateTime)SqlDateTime.Null : (DateTime)employee.JoiningDate,
+                InService= employee.InService,
+                LeavingDate= employee.LeavingDate == null ? (DateTime)SqlDateTime.Null : employee.LeavingDate
             };
 
             db.Entry(tblEmployee).State = EntityState.Modified;
@@ -103,7 +108,10 @@ namespace EmployeeService.Controllers
                     LastName = employee.LastName,
                     Gender = employee.Gender,
                     Salary = employee.Salary,
-                    JobTitle = employee.JobTitle
+                    JobTitle = employee.JobTitle,
+                    JoiningDate = employee.JoiningDate == DateTime.MinValue ? DateTime.Now : employee.JoiningDate == null? DateTime.Now : (DateTime)employee.JoiningDate,
+                    InService = true,
+                    //LeavingDate = employee.LeavingDate == null ? (DateTime)SqlDateTime.Null : employee.LeavingDate
                 };
 
                 db.tblEmployees.Add(tblEmployee);
@@ -155,7 +163,11 @@ namespace EmployeeService.Controllers
                 LastName = i.LastName,
                 Gender = i.Gender,
                 Salary = i.Salary,
-                JobTitle = i.JobTitle
+                JobTitle = i.JobTitle,
+                InService = i.InService,
+                JoiningDate = i.JoiningDate,
+                LeavingDate = i.LeavingDate
+
             });
         }
     }

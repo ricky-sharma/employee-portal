@@ -23,7 +23,13 @@ namespace EmployeeService.Models
         public string DepartmentName { get; set; }        
         
         public string DepartmentLocation { get; set; }
-        
+
+        public Nullable<System.DateTime> JoiningDate { get; set; }
+
+        public Nullable<System.DateTime> LeavingDate { get; set; }
+
+        public bool InService { get; set; }
+
         public string JobTitle { get; set; }
     }
 }
