@@ -13,6 +13,7 @@ using SQLDataEntity;
 
 namespace EmployeeService.Controllers
 {
+    [Authorize]
     public class AspNetUserInfoesController : ApiController
     {
         private EmployeeDBEntities db = new EmployeeDBEntities();
@@ -38,19 +39,40 @@ namespace EmployeeService.Controllers
 
         // PUT: api/AspNetUserInfoes/5
         [ResponseType(typeof(void))]
-        public IHttpActionResult PutAspNetUserInfo(string id, AspNetUserInfo aspNetUserInfo)
+        public IHttpActionResult PutAspNetUserInfo(string id, UserInfoModel userInfoModel)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if (id != aspNetUserInfo.Id)
+            if (id != userInfoModel.UsersId)
             {
                 return BadRequest();
             }
 
+            AspNetUserInfo aspNetUserInfo = new AspNetUserInfo()
+            {
+                Id = userInfoModel.Id,                
+                FirstName = userInfoModel.FirstName,
+                LastName = userInfoModel.LastName,
+                Gender = userInfoModel.Gender,
+                DOB = userInfoModel.DOB,
+                UsersId = userInfoModel.UsersId
+            };
+
+            AspNetUser aspNetUser = new AspNetUser()
+            {
+                Email = userInfoModel.userInfoViewModel.Email,
+                EmailConfirmed = userInfoModel.userInfoViewModel.Email == userInfoModel.userInfoViewModel.ConfirmEmail ? true : false,
+                PhoneNumber = userInfoModel.userInfoViewModel.Phone,
+                PhoneNumberConfirmed = userInfoModel.userInfoViewModel.Phone == userInfoModel.userInfoViewModel.ConfirmPhone ? true : false,
+                Id = userInfoModel.userInfoViewModel.UserId,
+                UserName = userInfoModel.userInfoViewModel.UserName
+            };
+                       
             db.Entry(aspNetUserInfo).State = EntityState.Modified;
+            db.Entry(aspNetUser).State = EntityState.Modified;
 
             try
             {
@@ -67,8 +89,12 @@ namespace EmployeeService.Controllers
                     throw;
                 }
             }
+            catch(Exception ex)
+            {
+                throw ex;
+            }
 
-            return StatusCode(HttpStatusCode.NoContent);
+            return Ok(new { Message = "SUCCESS" });
         }
 
         // POST: api/AspNetUserInfoes

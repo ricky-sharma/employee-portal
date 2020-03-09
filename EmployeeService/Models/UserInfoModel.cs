@@ -13,5 +13,7 @@ namespace EmployeeService.Models
         public string Gender { get; set; }
         public Nullable<System.DateTime> DOB { get; set; }
         public string UsersId { get; set; }
+
+        public UserInfoViewModel userInfoViewModel { get; set; }
     }
 }
