@@ -22,8 +22,7 @@ export class UserProfile extends Component {
     componentDidMount = () => {
         let url = `/api/Account/UserInfo`
         WebApi(url, '', 'GET')
-            .then(response => {
-                console.log(response)
+            .then(response => {                
                 if (response.UserId) {
                     this.setState({
                         UserId: response.UserId,
@@ -32,14 +31,13 @@ export class UserProfile extends Component {
                     }, () => {
                         url = `/api/AspNetUserInfoes/` + this.state.UserId
                         WebApi(url, '', 'GET')
-                            .then(response => {
-                                console.log(response)
-                                if (response.length && response.length > 0) {
+                            .then(resp => {                                
+                                if (resp.length && resp.length > 0) {                                    
                                     this.setState({
-                                        FirstName: response.FirstName,
-                                        LastName: response.LastName,
-                                        Gender: response.Gender,
-                                        DOB: response.DOB
+                                        FirstName: resp[0].FirstName,
+                                        LastName: resp[0].LastName,
+                                        Gender: resp[0].Gender,
+                                        DOB: resp[0].DOB
                                     })
                                 }
                             })
@@ -56,7 +54,7 @@ export class UserProfile extends Component {
         const isLoggedIn = localStorage.getItem("myToken");
         if (!isLoggedIn)
             return <Redirect to='/' />
-
+                    
         return (
             <div>
                 <Container className="border">

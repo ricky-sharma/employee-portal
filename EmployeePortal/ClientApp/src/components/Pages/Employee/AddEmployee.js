@@ -79,7 +79,7 @@ export class AddEmployee extends Component {
             <div>
                 <div className="container border">
                     <h4 className="mt-2 mb-5">
-                        <b>Add Employee</b>
+                        <b>Add - Employee</b>
                     </h4>
                     <form>
                         <div className="row  p-2">
@@ -124,7 +124,7 @@ export class AddEmployee extends Component {
                         </div>
                         <div className="row p-2">
                             <div className="col-5"></div>
-                            <input className="btn btn-success mr-1" value="Submit" onClick={this.handleSubmit} type="button"></input>
+                            <input className="btn btn-success mr-1" value="Save" onClick={this.handleSubmit} type="button"></input>
                             <input className="mr-lg-1 btn bg-dark text-white btn-md" onClick={this.handleBack} type="button" value="Back" />
                         </div>
                     </form>

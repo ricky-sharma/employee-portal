@@ -2,6 +2,9 @@ import React, { Component } from 'react'
 import { Redirect } from 'react-router-dom'
 import WebApi from '../../Helpers/WebApi';
 import { Container } from 'reactstrap';
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import AlertMessage from '../../AlertMessage';
 
 export class EditUserProfile extends Component {
     constructor(props) {
@@ -9,6 +12,7 @@ export class EditUserProfile extends Component {
 
         this.state = {
             UserId: '',
+            Id: '',
             UserName: localStorage.getItem("myUserName"),
             Email: '',
             ConfirmEmail: '',
@@ -19,7 +23,10 @@ export class EditUserProfile extends Component {
             Phone: '',
             ConfirmPhone: '',
             ShowConfirmEmail: false,
-            ShowConfirmPhone: false
+            ShowConfirmPhone: false,
+            showAlert: false,
+            alertType: '',
+            message: '',
         }
 
         this.prevEmail = ''
@@ -30,7 +37,6 @@ export class EditUserProfile extends Component {
         let url = `/api/Account/UserInfo`
         WebApi(url, '', 'GET')
             .then(response => {
-                console.log(response)
                 if (response.UserId) {
                     this.setState({
                         UserId: response.UserId ? response.UserId : "",
@@ -42,13 +48,13 @@ export class EditUserProfile extends Component {
                             .then(response => {
                                 this.prevEmail = this.state.Email
                                 this.prevPhone = this.state.Phone
-                                console.log(response)
                                 if (response.length && response.length > 0) {
                                     this.setState({
-                                        FirstName: response.FirstName,
-                                        LastName: response.LastName,
-                                        Gender: response.Gender,
-                                        DOB: response.DOB
+                                        Id: response[0].Id,
+                                        FirstName: response[0].FirstName,
+                                        LastName: response[0].LastName,
+                                        Gender: response[0].Gender,
+                                        DOB: response[0].DOB !== null ? new Date(response[0].DOB) : ''
                                     })
 
                                 }
@@ -80,6 +86,63 @@ export class EditUserProfile extends Component {
         })
     }
 
+    handleChangeDOB = date => {
+        this.setState({
+            DOB: date
+        });
+    };
+
+    handleSubmit = () => {
+        if (this.state.FirstName === '' || this.state.LastName === '' || this.state.Gender === 'select'
+            || this.state.DOB === '' || this.state.Phone === '' || this.state.Email === '') {
+            return this.setState({ showAlert: true, alertType: "danger" })
+        }
+
+        let userInforViewModel =
+        {
+            "UserId": this.state.UserId,
+            "UserName": this.state.UserName,
+            "Email": this.state.Email,
+            "Phone": this.state.Phone
+
+        }
+        if (!this.state.ShowConfirmEmail) {
+            userInforViewModel["ConfirmEmail"] = this.state.Email
+        }
+        else
+            userInforViewModel["ConfirmEmail"] = this.state.ConfirmEmail
+
+        if (!this.state.ShowConfirmPhone) {
+            userInforViewModel["ConfirmPhone"] = this.state.Phone
+        }
+        else
+            userInforViewModel["ConfirmPhone"] = this.state.ConfirmPhone
+
+        let url = `/api/AspNetUserInfoes/` + this.state.UserId
+        let data = JSON.stringify({
+            "Id": this.state.Id,
+            "FirstName": this.state.FirstName,
+            "LastName": this.state.LastName,
+            "Gender": this.state.Gender,
+            "DOB": this.state.DOB,
+            "UsersId": this.state.UserId,
+            "userInfoViewModel": userInforViewModel
+        })
+        WebApi(url, data, 'PUT')
+            .then(response => {
+                console.log(response)
+                if (response.Message && response.Message === 'SUCCESS')
+                    //  this.setState({
+                    //   showAlert: true, alertType: 'success', message: response
+                    //  });
+                    this.props.history.push('/UserProfile')
+                else
+                    this.setState({
+                        showAlert: true, alertType: 'danger', message: response
+                    });
+            });
+    }
+
     handleBack = () => {
         return this.props.history.goBack()
     }
@@ -92,7 +155,19 @@ export class EditUserProfile extends Component {
         const GenderOptions = [<option key="1" value="Male">Male</option>,
         <option key="2" value="Female">Female</option>];
 
-        const { Email, FirstName, LastName, Gender, DOB, Phone, ConfirmPhone, ConfirmEmail } = this.state
+        const { Email, FirstName, LastName, Gender, DOB, Phone, ConfirmPhone, ConfirmEmail, showAlert, alertType, message } = this.state
+
+        const SuccessMessage = "User Profile has been edited successfully."
+        const ErrorMessage = "Please fill in all required fields."
+        let Message
+        if (alertType === "success")
+            Message = SuccessMessage
+        else if (alertType === "danger") {
+            if (message !== '')
+                Message = message
+            else
+                Message = ErrorMessage
+        }
 
         return (
             <div>
@@ -157,7 +232,7 @@ export class EditUserProfile extends Component {
                             <div className="col-4">
                                 <label>Date of Birth</label>
                             </div>
-                            <input value={DOB} onChange={(e) => { this.setState({ DOB: e.target.value }) }} type="text"></input>
+                            <DatePicker placeholderText="dd/MM/yyyy" dateFormat="dd/MM/yyyy" selected={DOB} onChange={this.handleChangeDOB} />
                         </div>
                         <div className="row  p-2">
                             <div className="col-4">
@@ -167,6 +242,7 @@ export class EditUserProfile extends Component {
                         </div>
                     </form>
                 </Container>
+                <AlertMessage message={Message} visible={showAlert} type={alertType}></AlertMessage>
             </div>
         )
     }

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
 import AlertMessage from '../../AlertMessage';
 import WebApi from '../../Helpers/WebApi';
+import { Container } from 'reactstrap';
 
 export class EditDepartment extends Component {
     constructor(props) {
@@ -79,9 +80,9 @@ export class EditDepartment extends Component {
 
         return (
             <div>
-                <div className="container border">
+                <Container className="border">
                     <h4 className="mt-2 mb-5">
-                        <b>Edit Department</b>
+                        <b>Edit - Department</b>
                     </h4>
                     <form>
                         <div className="row  p-2">
@@ -102,7 +103,7 @@ export class EditDepartment extends Component {
                             <input className="mr-lg-1 btn bg-dark text-white btn-md" onClick={this.handleBack} type="button" value="Back" />
                         </div>
                     </form>
-                </div>
+                </Container>
                 <AlertMessage message={Message} visible={showAlert} type={alertType}></AlertMessage>
             </div>
         )

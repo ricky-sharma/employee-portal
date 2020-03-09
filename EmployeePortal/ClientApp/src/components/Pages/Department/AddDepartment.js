@@ -53,7 +53,7 @@ export class AddDepartment extends Component {
             <div>
                 <div className="container border">
                     <h4 className="mt-2 mb-5">
-                        <b>Add Department</b>
+                        <b>Add - Department</b>
                     </h4>
                     <form>
                         <div className="row  p-2">
@@ -70,7 +70,7 @@ export class AddDepartment extends Component {
                         </div>
                         <div className="row p-2">
                             <div className="col-4"></div>
-                            <input className="btn btn-success mr-1" onClick={this.handleSubmit} type="button" value="Submit" />
+                            <input className="btn btn-success mr-1" onClick={this.handleSubmit} type="button" value="Save" />
                             <input className="mr-lg-1 btn bg-dark text-white btn-md" onClick={this.handleBack} type="button" value="Back" />
                         </div>
                     </form>
