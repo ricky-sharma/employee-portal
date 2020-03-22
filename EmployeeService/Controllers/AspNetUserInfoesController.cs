@@ -68,7 +68,9 @@ namespace EmployeeService.Controllers
                 PhoneNumber = userInfoModel.userInfoViewModel.Phone,
                 PhoneNumberConfirmed = userInfoModel.userInfoViewModel.Phone == userInfoModel.userInfoViewModel.ConfirmPhone ? true : false,
                 Id = userInfoModel.userInfoViewModel.UserId,
-                UserName = userInfoModel.userInfoViewModel.UserName
+                UserName = userInfoModel.userInfoViewModel.UserName,
+                PasswordHash = ((AspNetUser)db.AspNetUsers.AsNoTracking().Where(i => i.Id == userInfoModel.userInfoViewModel.UserId).FirstOrDefault()).PasswordHash,
+                SecurityStamp = ((AspNetUser)db.AspNetUsers.AsNoTracking().Where(i => i.Id == userInfoModel.userInfoViewModel.UserId).FirstOrDefault()).SecurityStamp
             };
                        
             db.Entry(aspNetUserInfo).State = EntityState.Modified;
