@@ -26,9 +26,9 @@ namespace EmployeeService.Controllers
        
         // GET: api/AspNetUserInfoes/5
         [ResponseType(typeof(UserInfoModel))]
-        public IHttpActionResult GetAspNetUserInfo(string UserId)
+        public IHttpActionResult GetAspNetUserInfo(string id)
         {
-            UserInfoModel userInfo = GetUserInfoes().FirstOrDefault(i => i.UsersId == UserId);           
+            UserInfoModel userInfo = GetUserInfoes().FirstOrDefault(i => i.UsersId == id);           
             if (userInfo == null)
             {
                 return NotFound();
