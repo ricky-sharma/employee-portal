@@ -5,6 +5,7 @@ import { Container } from 'reactstrap';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import AlertMessage from '../../AlertMessage';
+import moment from 'moment';
 
 export class EditUserProfile extends Component {
     constructor(props) {
@@ -48,13 +49,13 @@ export class EditUserProfile extends Component {
                             .then(response => {
                                 this.prevEmail = this.state.Email
                                 this.prevPhone = this.state.Phone
-                                if (response.length && response.length > 0) {
+                                if (response) {
                                     this.setState({
-                                        Id: response[0].Id,
-                                        FirstName: response[0].FirstName,
-                                        LastName: response[0].LastName,
-                                        Gender: response[0].Gender,
-                                        DOB: response[0].DOB !== null ? new Date(response[0].DOB) : ''
+                                        Id: response.Id,
+                                        FirstName: response.FirstName,
+                                        LastName: response.LastName,
+                                        Gender: response.Gender,
+                                        DOB: response.DOB !== null ? new Date(response.DOB) : ''
                                     })
 
                                 }
@@ -89,6 +90,8 @@ export class EditUserProfile extends Component {
     handleChangeDOB = date => {
         this.setState({
             DOB: date
+        }, () => {
+            console.log(this.state.DOB)
         });
     };
 
@@ -124,7 +127,7 @@ export class EditUserProfile extends Component {
             "FirstName": this.state.FirstName,
             "LastName": this.state.LastName,
             "Gender": this.state.Gender,
-            "DOB": this.state.DOB,
+            "DOB": this.state.DOB != null ? moment(this.state.DOB).format('DD-MMM-YYYY') : '',
             "UsersId": this.state.UserId,
             "userInfoViewModel": userInforViewModel
         })
@@ -132,9 +135,6 @@ export class EditUserProfile extends Component {
             .then(response => {
                 console.log(response)
                 if (response.Message && response.Message === 'SUCCESS')
-                    //  this.setState({
-                    //   showAlert: true, alertType: 'success', message: response
-                    //  });
                     this.props.history.push('/UserProfile')
                 else
                     this.setState({

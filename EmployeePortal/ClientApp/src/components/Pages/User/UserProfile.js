@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { Redirect, Link } from 'react-router-dom'
 import WebApi from '../../Helpers/WebApi';
 import { Container } from 'reactstrap';
+import moment from 'moment';
 
 export class UserProfile extends Component {
     constructor(props) {
@@ -15,14 +16,14 @@ export class UserProfile extends Component {
             LastName: '',
             Gender: '',
             DOB: '',
-            Phone: '',            
+            Phone: '',
         }
     }
 
     componentDidMount = () => {
         let url = `/api/Account/UserInfo`
         WebApi(url, '', 'GET')
-            .then(response => {                
+            .then(response => {
                 if (response.UserId) {
                     this.setState({
                         UserId: response.UserId,
@@ -31,13 +32,14 @@ export class UserProfile extends Component {
                     }, () => {
                         url = `/api/AspNetUserInfoes/` + this.state.UserId
                         WebApi(url, '', 'GET')
-                            .then(resp => {                                
-                                if (resp.length && resp.length > 0) {                                    
+                            .then(resp => {
+                                console.log(resp)
+                                if (resp) {
                                     this.setState({
-                                        FirstName: resp[0].FirstName,
-                                        LastName: resp[0].LastName,
-                                        Gender: resp[0].Gender,
-                                        DOB: resp[0].DOB
+                                        FirstName: resp.FirstName,
+                                        LastName: resp.LastName,
+                                        Gender: resp.Gender,
+                                        DOB: resp.DOB != null ? moment(resp.DOB).format('DD-MMM-YYYY') : ''
                                     })
                                 }
                             })
@@ -46,7 +48,7 @@ export class UserProfile extends Component {
             });
     }
 
-    handleEditUser = () =>{
+    handleEditUser = () => {
         this.props.history.push('/EditUserProfile')
     }
 
@@ -54,7 +56,7 @@ export class UserProfile extends Component {
         const isLoggedIn = localStorage.getItem("myToken");
         if (!isLoggedIn)
             return <Redirect to='/' />
-                    
+
         return (
             <div>
                 <Container className="border">
@@ -63,11 +65,11 @@ export class UserProfile extends Component {
                             <b>User Profile</b>
                         </h4>
                         <div className="col-1">
-                        <button type="button" onClick={this.handleEditUser} className="btn btn-success add-new mt-1 float-rt">Edit</button>                            
+                            <button type="button" onClick={this.handleEditUser} className="btn btn-success add-new mt-1 float-rt">Edit</button>
                         </div>
                     </div>
                     <form>
-                    <div className="row  p-2">
+                        <div className="row  p-2">
                             <div className="col-4">
                                 <label>Username</label>
                             </div>
@@ -80,7 +82,7 @@ export class UserProfile extends Component {
                             <label className="mt-1">
                                 {this.state.FirstName} {this.state.LastName}
                             </label>
-                        </div>                        
+                        </div>
                         <div className="row  p-2">
                             <div className="col-4">
                                 <label>Email</label>
