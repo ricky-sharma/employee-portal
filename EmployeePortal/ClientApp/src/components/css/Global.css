@@ -17,7 +17,7 @@ input, select {
     box-sizing: border-box;
 }
 
-.label-padding{
+.label-padding {
     padding-left: 10px;
     padding-right: 14px;
 }
@@ -32,10 +32,10 @@ select {
     padding-right: 14px;
 }
 
-input[type=button], input[type=submit], input[type=reset] {    
+input[type=button], input[type=submit], input[type=reset] {
     font-weight: bold;
     font-size: 12px;
-    text-shadow: none;    
+    text-shadow: none;
     border-radius: 50px;
     line-height: 12px;
     margin-top: 5px;
@@ -56,6 +56,12 @@ select {
     pointer-events: none;
     color: rgb(0, 0, 0);
     border-style: none;
+    padding-left: 0px;
+    padding-right: 14px;
+}
+
+select.disabled-inputs {
+    text-indent: -1px;
 }
 
 .float-rt {
@@ -82,46 +88,103 @@ select {
     /* really tiny screens */
 
     input[type=text], select {
-        width: 100px
+        width: 100px;
     }
+
     input[type=button], input[type=submit], input[type=reset] {
-      min-width: 51px;
-      height: 30px;
+        min-width: 51px;
+        height: 30px;
+    }
+    input[type=text], select, input[type=button], input[type=submit], input[type=reset], label{
+        font-size: xx-small;
+        vertical-align: middle;
     }
 }
 
-@media (min-width: 241px) and (max-width: 319px) {
+@media (min-width: 241px) and (max-width: 360px) {
     /* a little bit bigger screens */
 
     input[type=text], select {
-        width: 100px
+        width: 125px;
+        height: 25px;
     }
+
     input[type=button], input[type=submit], input[type=reset] {
-      min-width: 51px;
-      height: 30px;
+        min-width: 51px;
+        height: 30px;       
+    }
+    input[type=text], select, input[type=button], input[type=submit], input[type=reset], label{
+        font-size: 8px;
+        vertical-align: text-bottom;
+        display: inline;
+    }
+
+}
+
+@media (min-width: 361px) and (max-width: 480px) {
+    input[type=text], select {
+        width: 175px;
+        height: 25px;
+    }
+
+    .nowrap {
+        flex-wrap: nowrap!important
+    }
+
+    input[type=text], select, input[type=button], input[type=submit], input[type=reset], label{
+        font-size: x-small;
     }
 }
 
-@media (min-width: 320px) and (max-width: 767px) {
+@media (min-width: 480px) and (max-width: 768px) {
     /* Basically up to, but not including an iPad */
 
     input[type=text], select {
-        width: 150px
+        width: 150px;
     }
+
     input[type=button], input[type=submit], input[type=reset] {
-      min-width: 70px;
-      height: 30px;
+        min-width: 70px;
+        height: 30px;
     }
+    input[type=text], select, input[type=button], input[type=submit], input[type=reset], label{
+        font-size: smaller;
+    }
+
 }
 
 @media (min-width: 768px) {
     /* iPad and bigger */
 
     input[type=text], select {
-        width: 250px
+        width: 300px;
     }
+
     input[type=button], input[type=submit], input[type=reset] {
-      min-width: 102px;
-      height: 30px;
+        min-width: 102px;
+        height: 30px;
+    }
+    input[type=text], select, input[type=button], input[type=submit], input[type=reset], label{
+        font-size : small;
     }
 }
+
+@media (max-width: 950px) {
+    .tablemobile {
+        overflow-x: auto;
+        display: block;
+    }
+    .tablemobileoverflowx{
+        overflow-x: auto;
+    }
+}
+
+@media (min-width: 1500px) {
+
+    .container-width{
+        width: 1550px;
+        max-width: 1550px;
+    }
+
+}
+

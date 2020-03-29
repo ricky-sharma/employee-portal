@@ -10,7 +10,7 @@ function AlertMessage(props) {
     return (
         <div className={className}>
         <div className="col-lg-2"></div>
-            <div className="col-sm-5 col-5 col-md-5 col-lg-8 margin-top-75">
+            <div className="col-12 col-lg-8 margin-top-75">
                 <Alert className="txt-center opacity-100" color={type}> {message} </Alert>
             </div>
         </div>

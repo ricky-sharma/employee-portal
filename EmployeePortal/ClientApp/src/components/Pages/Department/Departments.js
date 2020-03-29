@@ -71,6 +71,8 @@ export class Departments extends Component {
             if (key === '') {
                 return <th key={index}></th>
             }
+            if (key.toUpperCase() === 'ID')
+                return <th className="col1width15" key={index}>ID</th>
             return <th key={index}>{key.toUpperCase()}</th>
         })
     }
@@ -129,7 +131,7 @@ export class Departments extends Component {
             <div className="container">
                 <div className="table-wrapper">
                     <div className="table-title">
-                        <div className="row">
+                        <div className="row nowrap">
                             <div className="col-sm-8"><h2>Department <b>Details</b></h2></div>
                             <div className="col-sm-4">
                                 <button type="button" onClick={this.handleAddDepartment} className="btn btn-success add-new">
@@ -138,7 +140,7 @@ export class Departments extends Component {
                             </div>
                         </div>
                     </div>
-                    <table className="table table-striped table-hover table-bordered">
+                    <table className="table table-striped table-hover table-bordered tablemobileoverflowx">
                         <thead>
                             <tr className="bg-secondary">
                                 {this.renderTableHeader()}

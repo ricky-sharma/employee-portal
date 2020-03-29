@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
-import { Redirect, Link } from 'react-router-dom'
+import { Redirect } from 'react-router-dom'
 import WebApi from '../../Helpers/WebApi';
 import { Container } from 'reactstrap';
 import moment from 'moment';
+import SideBar from '../../SideBar';
 
 export class UserProfile extends Component {
     constructor(props) {
@@ -19,6 +20,18 @@ export class UserProfile extends Component {
             Phone: '',
         }
     }
+
+    menuItems = [
+        {
+            id: 1,
+            label: 'Create User',
+            link: '/CreateUser'
+        },
+        {
+            id: 1,
+            label: 'Change Password',
+            link: '/ChangePassword'
+        }];
 
     componentDidMount = () => {
         let url = `/api/Account/UserInfo`
@@ -58,62 +71,69 @@ export class UserProfile extends Component {
             return <Redirect to='/' />
 
         return (
-            <div>
-                <Container className="border">
-                    <div className="row  p-2">
-                        <h4 className="mt-2 mb-5 col-11">
-                            <b>User Profile</b>
-                        </h4>
-                        <div className="col-1">
-                            <button type="button" onClick={this.handleEditUser} className="btn btn-success add-new mt-1 float-rt">Edit</button>
-                        </div>
-                    </div>
-                    <form>
-                        <div className="row  p-2">
-                            <div className="col-4">
-                                <label>Username</label>
+            <div className="row">
+                <div className="col-2">
+                    <SideBar menuItems={this.menuItems}></SideBar>
+                </div>
+                <div className="col-8">
+
+                    <Container fluid className="border">
+
+                        <div className="row  p-2 nowrap">
+                            <h4 className="mt-2 mb-5 col-11">
+                                <b>User Profile</b>
+                            </h4>
+                            <div className="col-1">
+                                <button type="button" onClick={this.handleEditUser} className="btn btn-success add-new mt-1 float-rt">Edit</button>
                             </div>
-                            <label className="mt-1">{this.state.UserName}</label>
                         </div>
-                        <div className="row  p-2">
-                            <div className="col-4">
-                                <label>Name</label>
+                        <form>
+                            <div className="row  p-2">
+                                <div className="col-4">
+                                    <label>Username</label>
+                                </div>
+                                <label className="mt-1">{this.state.UserName}</label>
                             </div>
-                            <label className="mt-1">
-                                {this.state.FirstName} {this.state.LastName}
-                            </label>
-                        </div>
-                        <div className="row  p-2">
-                            <div className="col-4">
-                                <label>Email</label>
+                            <div className="row  p-2">
+                                <div className="col-4">
+                                    <label>Name</label>
+                                </div>
+                                <label className="mt-1">
+                                    {this.state.FirstName} {this.state.LastName}
+                                </label>
                             </div>
-                            <label className="mt-1">{this.state.Email}</label>
-                        </div>
-                        <div className="row  p-2">
-                            <div className="col-4">
-                                <label>Phone</label>
+                            <div className="row  p-2">
+                                <div className="col-4">
+                                    <label>Email</label>
+                                </div>
+                                <label className="mt-1">{this.state.Email}</label>
                             </div>
-                            <label className="mt-1">{this.state.Phone}</label>
-                        </div>
-                        <div className="row  p-2">
-                            <div className="col-4">
-                                <label>Gender</label>
+                            <div className="row  p-2">
+                                <div className="col-4">
+                                    <label>Phone</label>
+                                </div>
+                                <label className="mt-1">{this.state.Phone}</label>
                             </div>
-                            <label className="mt-1">{this.state.Gender}</label>
-                        </div>
-                        <div className="row  p-2">
-                            <div className="col-4">
-                                <label>Date of Birth</label>
+                            <div className="row  p-2">
+                                <div className="col-4">
+                                    <label>Gender</label>
+                                </div>
+                                <label className="mt-1">{this.state.Gender}</label>
                             </div>
-                            <label className="mt-1">{this.state.DOB}</label>
-                        </div>
-                        <div className="row  p-2">
-                            <div className="col-4">
+                            <div className="row  p-2">
+                                <div className="col-4">
+                                    <label>Date of Birth</label>
+                                </div>
+                                <label className="mt-1">{this.state.DOB}</label>
                             </div>
-                            <Link to='/ChangePassword' className="mt-1">Change Password</Link>
-                        </div>
-                    </form>
-                </Container>
+                            <div className="row  p-2">
+                                <div className="col-4">
+                                </div>
+                                {/* <Link to='/ChangePassword' className="mt-1">Change Password</Link> */}
+                            </div>
+                        </form>
+                    </Container>
+                </div>
             </div>
         )
     }

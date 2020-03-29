@@ -3,6 +3,7 @@ import { Redirect, Link } from 'react-router-dom';
 import '../../css/Table.css';
 import WebApi from '../../Helpers/WebApi';
 import { format } from "date-fns";
+import { Container } from 'reactstrap';
 
 export class Employees extends Component {
     constructor(props) {
@@ -46,11 +47,11 @@ export class Employees extends Component {
                     <tr key={index}>
                         <td>{ID}</td>
                         <td>{FirstName + " " + LastName}</td>
-                        <td>{Gender}</td>                        
+                        <td>{Gender}</td>
                         <td>{DepartmentName}</td>
-                        <td>{DepartmentLocation}</td>                        
-                        <td>{JoiningDate !==null? format(new Date(JoiningDate),"dd MMM yyyy"): ''}</td>
-                        <td>{InService === true ? "Yes": "No"}</td>
+                        <td>{DepartmentLocation}</td>
+                        <td>{JoiningDate !== null ? format(new Date(JoiningDate), "dd MMM yyyy") : ''}</td>
+                        <td>{InService === true ? "Yes" : "No"}</td>
                         <td>{JobTitle}</td>
                         <td>
                             <Link className="edit" title="Edit" to={{
@@ -77,11 +78,13 @@ export class Employees extends Component {
         return header.map((key, index) => {
             if (key === '')
                 return <th key={index}></th>
+            if (key.toUpperCase() === 'ID')
+                return <th className="col1width15" key={index}>ID</th>
             if (key.toUpperCase() === "DEPARTMENTNAME")
                 return <th key={index}>DEPARTMENT</th>
             if (key.toUpperCase() === "DEPARTMENTLOCATION")
                 return <th key={index}>LOCATION</th>
-            if (key.toUpperCase() !== "FIRSTNAME" && key.toUpperCase() !== "LASTNAME" && key.toUpperCase() !== "DEPARTMENTID" && key.toUpperCase() !== "SALARY"  && key.toUpperCase() !== "LEAVINGDATE")
+            if (key.toUpperCase() !== "FIRSTNAME" && key.toUpperCase() !== "LASTNAME" && key.toUpperCase() !== "DEPARTMENTID" && key.toUpperCase() !== "SALARY" && key.toUpperCase() !== "LEAVINGDATE")
                 return <th key={index}>{key.toUpperCase()}</th>
             if (key.toUpperCase() === "FIRSTNAME")
                 return <th key={index}>NAME</th>
@@ -139,17 +142,17 @@ export class Employees extends Component {
         if (!isLoggedIn)
             return <Redirect to='/' />
 
-        return (<div className="container">
+        return (<Container>
             <div className="table-wrapper">
                 <div className="table-title">
-                    <div className="row">
+                    <div className="row nowrap">
                         <div className="col-sm-8"><h2>Employee <b>Details</b></h2></div>
                         <div className="col-sm-4">
                             <button type="button" onClick={this.handleAddEmployee} className="btn btn-success add-new"><i className="fa fa-plus"></i> Add New</button>
                         </div>
                     </div>
                 </div>
-                <table className="table table-striped table-hover table-bordered border-0">
+                <table className="table table-striped table-hover table-bordered border-0 tablemobile">
                     <thead>
                         <tr className="bg-secondary">
                             {this.renderTableHeader()}
@@ -176,7 +179,7 @@ export class Employees extends Component {
                     </ul>
                 </div>
             </div>
-        </div>)
+        </Container>)
     }
 }
 

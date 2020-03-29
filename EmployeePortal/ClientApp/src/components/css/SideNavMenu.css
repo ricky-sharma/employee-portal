@@ -1,0 +1,58 @@
+.side-nav.default-theme {
+    background-image: linear-gradient(to top, rgb(89, 171, 248), rgb(84, 129, 160));
+}
+
+    .side-nav.default-theme .side-nav-item-link, .side-nav.default-theme .side-nav-item-title {
+        color: rgb(0, 0, 0);
+        display: block;
+        /*font-size: .8125rem;*/
+        font-size: 14px;
+        font-weight: 600;
+        text-decoration: none
+    }
+
+        .side-nav.default-theme .side-nav-item-link:active, .side-nav.default-theme .side-nav-item-link:focus, .side-nav.default-theme .side-nav-item-link:hover, .side-nav.default-theme .side-nav-item-title:active, .side-nav.default-theme .side-nav-item-title:focus, .side-nav.default-theme .side-nav-item-title:hover {
+            color: #a7b1c2;
+            text-decoration: none
+        }
+
+        .side-nav.default-theme .side-nav-item-link:hover, .side-nav.default-theme .side-nav-item-title:hover {
+            background-color:   rgb(89, 171, 248);
+            color: #fff
+        }
+
+    .side-nav.default-theme .side-nav-item {
+        position: relative
+    }
+
+        .side-nav.default-theme .side-nav-item.active, .side-nav.default-theme .side-nav-item.expanded {
+            background-image: linear-gradient(to top, rgb(89, 171, 248), rgb(84, 129, 160));
+        }
+
+            .side-nav.default-theme .side-nav-item.active.level-0 > .side-nav-item-link, .side-nav.default-theme .side-nav-item.active.level-0 > .side-nav-item-title, .side-nav.default-theme .side-nav-item.active.level-1 > .side-nav-item-link, .side-nav.default-theme .side-nav-item.active.level-1 > .side-nav-item-title, .side-nav.default-theme .side-nav-item.active.level-2 > .side-nav-item-link, .side-nav.default-theme .side-nav-item.active.level-2 > .side-nav-item-title, .side-nav.default-theme .side-nav-item.expanded.level-0 > .side-nav-item-link, .side-nav.default-theme .side-nav-item.expanded.level-0 > .side-nav-item-title, .side-nav.default-theme .side-nav-item.expanded.level-1 > .side-nav-item-link, .side-nav.default-theme .side-nav-item.expanded.level-1 > .side-nav-item-title, .side-nav.default-theme .side-nav-item.expanded.level-2 > .side-nav-item-link, .side-nav.default-theme .side-nav-item.expanded.level-2 > .side-nav-item-title {
+                color: rgb(0, 0, 0);
+            }
+
+        .side-nav.default-theme .side-nav-item.level-0 .side-nav-item-link, .side-nav.default-theme .side-nav-item.level-0 .side-nav-item-title {
+            padding: .9375rem 1.25rem .9375rem 1.5625rem
+        }
+
+        .side-nav.default-theme .side-nav-item.level-1 .side-nav-item-link, .side-nav.default-theme .side-nav-item.level-1 .side-nav-item-title {
+            padding: .4375rem .625rem .4375rem 3.125rem
+        }
+
+        .side-nav.default-theme .side-nav-item.level-2 .side-nav-item-link, .side-nav.default-theme .side-nav-item.level-2 .side-nav-item-title {
+            padding: .4375rem .625rem .4375rem 4.6875rem
+        }
+
+    .side-nav.default-theme .side-nav-chevron {
+        display: inline-block;
+        font-size: .5625rem;
+        position: absolute;
+        right: 1.25rem;
+        top: 1.125rem
+    }
+
+    .side-nav.default-theme .side-nav-icon {
+        margin-right: .625rem
+    }

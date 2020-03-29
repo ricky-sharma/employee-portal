@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
 import AlertMessage from '../../AlertMessage';
 import WebApi from '../../Helpers/WebApi';
+import { Container } from 'reactstrap';
 
 export class AddEmployee extends Component {
     constructor(props) {
@@ -77,25 +78,25 @@ export class AddEmployee extends Component {
             return <Redirect to='/' />
         return (
             <div>
-                <div className="container border">
+                <Container className="border">
                     <h4 className="mt-2 mb-5">
                         <b>Add - Employee</b>
                     </h4>
                     <form>
                         <div className="row  p-2">
-                            <div className="col-5">
+                            <div className="col-4">
                                 <label>First name</label>
                             </div>
                             <input type="text" value={fName} onChange={(e) => { this.setState({ fName: e.target.value }) }}></input>
                         </div>
                         <div className="row  p-2">
-                            <div className="col-5">
+                            <div className="col-4">
                                 <label>Last name</label>
                             </div>
                             <input type="text" value={lName} onChange={(e) => { this.setState({ lName: e.target.value }) }}></input>
                         </div>
                         <div className="row  p-2">
-                            <div className="col-5">
+                            <div className="col-4">
                                 <label>Gender</label>
                             </div>
                             <select value={gender} onChange={(e) => { this.setState({ gender: e.target.value }) }}>
@@ -103,13 +104,13 @@ export class AddEmployee extends Component {
                             </select>
                         </div>
                         <div className="row  p-2">
-                            <div className="col-5">
+                            <div className="col-4">
                                 <label>Salary</label>
                             </div>
                             <input value={salary} onChange={(e) => { this.setState({ salary: e.target.value }) }} type="text"></input>
                         </div>
                         <div className="row  p-2">
-                            <div className="col-5">
+                            <div className="col-4">
                                 <label>Department</label>
                             </div>
                             <select value={departmentId} onChange={(e) => { this.setState({ departmentId: e.target.value }) }}>
@@ -117,18 +118,18 @@ export class AddEmployee extends Component {
                             </select>
                         </div>
                         <div className="row  p-2">
-                            <div className="col-5">
+                            <div className="col-4">
                                 <label>Job Title</label>
                             </div>
                             <input value={jobTitle} onChange={(e) => { this.setState({ jobTitle: e.target.value }) }} type="text"></input>
                         </div>
                         <div className="row p-2">
-                            <div className="col-5"></div>
+                            <div className="col-4"></div>
                             <input className="btn btn-success mr-1" value="Save" onClick={this.handleSubmit} type="button"></input>
                             <input className="mr-lg-1 btn bg-dark text-white btn-md" onClick={this.handleBack} type="button" value="Back" />
                         </div>
                     </form>
-                </div>
+                </Container>
                 <AlertMessage message={Message} visible={showAlert} type={alertType}></AlertMessage>
             </div>
         )

@@ -112,30 +112,30 @@ export class EditEmployee extends Component {
         return (
             <div>
                 <div className="container border">
-                    <h4 className="mt-2 mb-5">
+                    <h4 className="mt-2 mb-4">
                         <b>Edit - Employee</b>
                     </h4>
                     <form>
                         <div className="row  p-2">
-                            <div className="col-5">
+                            <div className="col-4">
                                 <label>Employee name</label>
                             </div>
                             <label>{fName} {lName}</label>
                         </div>
                         <div className="row  p-2">
-                            <div className="col-5">
+                            <div className="col-4">
                                 <label>Gender</label>
                             </div>
                             <label>{gender}</label>
                         </div>
                         <div className="row  p-2">
-                            <div className="col-5">
+                            <div className="col-4">
                                 <label>Salary</label>
                             </div>
                             <input className={(readOnly === true ? "disabled-inputs" : "")} value={salary} onChange={(e) => { this.setState({ salary: e.target.value }) }} type="text"></input>
                         </div>
                         <div className="row  p-2">
-                            <div className="col-5">
+                            <div className="col-4">
                                 <label>Department</label>
                             </div>
                             <select className={(readOnly === true ? "disabled-inputs" : "")} value={departmentId} onChange={(e) => { this.setState({ departmentId: e.target.value }) }}>
@@ -143,13 +143,13 @@ export class EditEmployee extends Component {
                             </select>
                         </div>
                         <div className="row  p-2">
-                            <div className="col-5">
+                            <div className="col-4">
                                 <label>Job Title</label>
                             </div>
                             <input className={(readOnly === true ? "disabled-inputs" : "")} value={jobTitle} onChange={(e) => { this.setState({ jobTitle: e.target.value }) }} type="text"></input>
                         </div>
                         <div className="row p-2">
-                            <div className="col-5"></div>
+                            <div className="col-4"></div>
                             <input className="btn btn-success mr-1" value={(readOnly === true ? "Edit" : "Update")} onClick={() => this.handleSubmit()} type="button"></input>
                             <input className="mr-lg-1 btn bg-dark text-white btn-md" onClick={this.handleBack} type="button" value="Back" />
                         </div>
