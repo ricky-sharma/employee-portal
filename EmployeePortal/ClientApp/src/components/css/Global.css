@@ -84,6 +84,24 @@ select.disabled-inputs {
     margin-top: 75px;
 }
 
+.padding-left-0 {
+    padding-left: 0px;
+}
+
+.padding-right-5 {
+    padding-right: 5px;
+}
+
+.padding-5 {
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+.padding-9 {
+    padding-left: 9px;
+    padding-right: 9px;
+}
+
 @media (max-width: 240px) {
     /* really tiny screens */
 
@@ -95,7 +113,8 @@ select.disabled-inputs {
         min-width: 51px;
         height: 30px;
     }
-    input[type=text], select, input[type=button], input[type=submit], input[type=reset], label{
+
+    input[type=text], select, input[type=button], input[type=submit], input[type=reset], label {
         font-size: xx-small;
         vertical-align: middle;
     }
@@ -111,14 +130,18 @@ select.disabled-inputs {
 
     input[type=button], input[type=submit], input[type=reset] {
         min-width: 51px;
-        height: 30px;       
+        height: 30px;
     }
-    input[type=text], select, input[type=button], input[type=submit], input[type=reset], label{
+
+    .nowrap {
+        flex-wrap: nowrap !important
+    }
+
+    input[type=text], select, input[type=button], input[type=submit], input[type=reset], label {
         font-size: 8px;
         vertical-align: text-bottom;
         display: inline;
     }
-
 }
 
 @media (min-width: 361px) and (max-width: 480px) {
@@ -128,10 +151,10 @@ select.disabled-inputs {
     }
 
     .nowrap {
-        flex-wrap: nowrap!important
+        flex-wrap: nowrap !important
     }
 
-    input[type=text], select, input[type=button], input[type=submit], input[type=reset], label{
+    input[type=text], select, input[type=button], input[type=submit], input[type=reset], label {
         font-size: x-small;
     }
 }
@@ -143,14 +166,24 @@ select.disabled-inputs {
         width: 150px;
     }
 
+    .nowrap {
+        flex-wrap: nowrap !important
+    }
+
     input[type=button], input[type=submit], input[type=reset] {
         min-width: 70px;
         height: 30px;
     }
-    input[type=text], select, input[type=button], input[type=submit], input[type=reset], label{
+
+    input[type=text], select, input[type=button], input[type=submit], input[type=reset], label {
         font-size: smaller;
     }
+}
 
+@media (min-width: 768px) and (max-width: 1000px) {
+    input[type=text], select, input[type=button], input[type=submit], input[type=reset], label {
+        font-size: small;
+    }
 }
 
 @media (min-width: 768px) {
@@ -160,12 +193,13 @@ select.disabled-inputs {
         width: 300px;
     }
 
+    .nowrap {
+        flex-wrap: nowrap !important
+    }
+
     input[type=button], input[type=submit], input[type=reset] {
         min-width: 102px;
         height: 30px;
-    }
-    input[type=text], select, input[type=button], input[type=submit], input[type=reset], label{
-        font-size : small;
     }
 }
 
@@ -174,17 +208,19 @@ select.disabled-inputs {
         overflow-x: auto;
         display: block;
     }
-    .tablemobileoverflowx{
+
+    .tablemobileoverflowx {
         overflow-x: auto;
     }
 }
 
-@media (min-width: 1500px) {
-
-    .container-width{
-        width: 1550px;
-        max-width: 1550px;
+@media (max-width: 600px) {
+    .hidesidenav {
+        display: none;
     }
-
 }
 
+.container-width {
+    width: 95vw;
+    max-width: 95vw;
+}

@@ -28,7 +28,7 @@ export class UserProfile extends Component {
             link: '/CreateUser'
         },
         {
-            id: 1,
+            id: 2,
             label: 'Change Password',
             link: '/ChangePassword'
         }];
@@ -72,7 +72,7 @@ export class UserProfile extends Component {
 
         return (
             <div className="row">
-                <div className="col-2">
+                <div className="col-2 padding-left-0 padding-right-5">
                     <SideBar menuItems={this.menuItems}></SideBar>
                 </div>
                 <div className="col-8">

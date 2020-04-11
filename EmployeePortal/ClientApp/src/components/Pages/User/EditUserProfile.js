@@ -67,7 +67,7 @@ export class EditUserProfile extends Component {
 
     handleChangeEmail = (e) => {
         this.setState({ Email: e.target.value }, () => {
-            if (this.state.Email !== this.prevEmail) {
+            if (this.state.Email && this.state.Email !== this.prevEmail) {
                 this.setState({ ShowConfirmEmail: true })
             }
             else {
@@ -78,7 +78,7 @@ export class EditUserProfile extends Component {
 
     handleChangePhone = (e) => {
         this.setState({ Phone: e.target.value }, () => {
-            if (this.state.Phone !== this.prevPhone) {
+            if (this.state.Phone && this.state.Phone !== this.prevPhone) {
                 this.setState({ ShowConfirmPhone: true })
             }
             else {
