@@ -41,6 +41,8 @@ namespace EmployeeService.Controllers
         [ResponseType(typeof(void))]
         public IHttpActionResult PutAspNetUserInfo(string id, UserInfoModel userInfoModel)
         {
+            ModelState.Where(m => m.Key == "userInfoModel.userInfoViewModel.Password").FirstOrDefault().Value.Errors.Clear();
+
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -53,7 +55,7 @@ namespace EmployeeService.Controllers
 
             AspNetUserInfo aspNetUserInfo = new AspNetUserInfo()
             {
-                Id = userInfoModel.Id,                
+                Id = userInfoModel.Id.ToString(),                
                 FirstName = userInfoModel.FirstName,
                 LastName = userInfoModel.LastName,
                 Gender = userInfoModel.Gender,
@@ -101,12 +103,22 @@ namespace EmployeeService.Controllers
 
         // POST: api/AspNetUserInfoes
         [ResponseType(typeof(AspNetUserInfo))]
-        public IHttpActionResult PostAspNetUserInfo(AspNetUserInfo aspNetUserInfo)
+        public IHttpActionResult PostAspNetUserInfo(UserInfoModel userInfoModel)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
+
+            AspNetUserInfo aspNetUserInfo = new AspNetUserInfo()
+            {
+                Id= Guid.NewGuid().ToString(),
+                FirstName = userInfoModel.FirstName,
+                LastName = userInfoModel.LastName,
+                Gender = userInfoModel.Gender,
+                DOB = userInfoModel.DOB,
+                UsersId = db.AspNetUsers.FirstOrDefault(i => i.UserName == userInfoModel.userInfoViewModel.UserName).Id
+            };
 
             db.AspNetUserInfoes.Add(aspNetUserInfo);
 
@@ -126,7 +138,7 @@ namespace EmployeeService.Controllers
                 }
             }
 
-            return CreatedAtRoute("DefaultApi", new { id = aspNetUserInfo.Id }, aspNetUserInfo);
+            return Ok(new { Message = "SUCCESS" });
         }
 
         // DELETE: api/AspNetUserInfoes/5

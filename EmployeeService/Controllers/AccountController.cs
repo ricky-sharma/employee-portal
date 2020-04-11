@@ -325,14 +325,20 @@ namespace EmployeeService.Controllers
         // POST api/Account/Register
         [AllowAnonymous]
         [Route("Register")]
-        public async Task<IHttpActionResult> Register(RegisterBindingModel model)
+        public async Task<IHttpActionResult> Register(UserInfoViewModel model)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var user = new ApplicationUser() { UserName = model.UserName, Email = model.Email };
+            var user = new ApplicationUser() { 
+                UserName = model.UserName,
+                Email = model.Email,
+                EmailConfirmed = model.Email == model.ConfirmEmail ? true : false,
+                PhoneNumber= model.Phone,
+                PhoneNumberConfirmed =model.Phone == model.ConfirmPhone ? true :false
+            };
 
             IdentityResult result = await UserManager.CreateAsync(user, model.Password);
 
@@ -341,7 +347,7 @@ namespace EmployeeService.Controllers
                 return GetErrorResult(result);
             }
 
-            return Ok();
+            return Ok(new { Message = "SUCCESS" });
         }
 
         // POST api/Account/RegisterExternal
