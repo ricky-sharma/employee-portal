@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import { Redirect } from 'react-router-dom'
 import WebApi from '../../Helpers/WebApi';
 import { Container } from 'reactstrap';
 import DatePicker from "react-datepicker";
@@ -14,7 +13,7 @@ export class EditUserProfile extends Component {
         this.state = {
             UserId: '',
             Id: '',
-            UserName: localStorage.getItem("myUserName"),
+            UserName: '',
             Email: '',
             ConfirmEmail: '',
             FirstName: '',
@@ -32,19 +31,22 @@ export class EditUserProfile extends Component {
 
         this.prevEmail = ''
         this.prevPhone = ''
+        this.id = 0;
     }
 
     componentDidMount = () => {
-        let url = `/api/Account/UserInfo`
+        let url = this.id === 0 ? `/api/Account/UserInfo` : '/api/Account/UserInfo/' + this.id
         WebApi(url, '', 'GET')
             .then(response => {
                 if (response.UserId) {
                     this.setState({
+                        UserName: response.UserName ? response.UserName : "",
                         UserId: response.UserId ? response.UserId : "",
                         Email: response.Email ? response.Email : "",
                         Phone: response.Phone ? response.Phone : ""
                     }, () => {
-                        url = `/api/AspNetUserInfoes/` + this.state.UserId
+
+                        url = this.id === 0 ? `/api/AspNetUserInfoes/` + this.state.UserId : `/api/AspNetUserInfoes/` + this.id
                         WebApi(url, '', 'GET')
                             .then(response => {
                                 this.prevEmail = this.state.Email
@@ -57,7 +59,6 @@ export class EditUserProfile extends Component {
                                         Gender: response.Gender,
                                         DOB: response.DOB !== null ? new Date(response.DOB) : ''
                                     })
-
                                 }
                             })
                     })
@@ -135,7 +136,7 @@ export class EditUserProfile extends Component {
             .then(response => {
                 console.log(response)
                 if (response.Message && response.Message === 'SUCCESS')
-                    this.props.history.push('/UserProfile')
+                    return this.props.history.goBack()
                 else
                     this.setState({
                         showAlert: true, alertType: 'danger', message: response
@@ -148,12 +149,11 @@ export class EditUserProfile extends Component {
     }
 
     render() {
-        const isLoggedIn = localStorage.getItem("myToken");
-        if (!isLoggedIn)
-            return <Redirect to='/' />
-
         const GenderOptions = [<option key="1" value="Male">Male</option>,
         <option key="2" value="Female">Female</option>];
+
+        if (this.props.location && this.props.location.data && this.props.location.data.UsersId)
+            this.id = this.props.location.data.UsersId
 
         const { Email, FirstName, LastName, Gender, DOB, Phone, ConfirmPhone, ConfirmEmail, showAlert, alertType, message } = this.state
 
@@ -237,7 +237,7 @@ export class EditUserProfile extends Component {
                         <div className="row  p-2">
                             <div className="col-4">
                             </div>
-                            <input className="btn btn-success mr-1" value="Save" onClick={() => this.handleSubmit()} type="button"></input>
+                            <input className="btn btn-success mr-1" value="Save" onClick={() => this.handleSubmit()} type="button" />
                             <input className="mr-lg-1 btn bg-dark text-white btn-md" onClick={this.handleBack} type="button" value="Back" />
                         </div>
                     </form>

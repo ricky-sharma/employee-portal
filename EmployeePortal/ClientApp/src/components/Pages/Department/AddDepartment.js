@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Redirect } from 'react-router-dom';
 import AlertMessage from '../../AlertMessage';
 import WebApi from '../../Helpers/WebApi';
 
@@ -37,10 +36,6 @@ export class AddDepartment extends Component {
 
     render() {
         const { Name, Location, showAlert, alertType } = this.state
-        const isLoggedIn = localStorage.getItem("myToken");
-
-        if (!isLoggedIn)
-            return <Redirect to='/' />
         const SuccessMessage = "Department has been added successfully."
         const ErrorMessage = "Name and Location fields cannot be empty."
         let Message

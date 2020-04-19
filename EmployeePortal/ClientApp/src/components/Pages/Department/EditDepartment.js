@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
-import { Redirect } from 'react-router-dom';
 import AlertMessage from '../../AlertMessage';
 import WebApi from '../../Helpers/WebApi';
 import { Container } from 'reactstrap';
-
+import { Prompt, Redirect } from "react-router-dom";
 export class EditDepartment extends Component {
     constructor(props) {
         super(props)
@@ -14,18 +13,49 @@ export class EditDepartment extends Component {
             showAlert: false,
             alertType: '',
             message: '',
-            readOnly: false
+            readOnly: false,
+            isBlocking: false
         }
         this.id = 0;
     }
 
+    saveStateToLocalStorage() {
+        const user = localStorage.getItem("myUserName")
+        // for every item in React state
+        for (let key in this.state) {
+            // save to localStorage
+            localStorage.setItem(key + user, JSON.stringify(this.state[key]));
+        }
+
+        localStorage.setItem("id" + user, this.id);
+    }
+
+    hydrateStateWithLocalStorage() {
+        const user = localStorage.getItem("myUserName")
+        // for every item in React state
+        this.setState({
+            Name: JSON.parse(localStorage.getItem("Name" + user)), Location: JSON.parse(localStorage.getItem("Location" + user)),
+            showAlert: JSON.parse(localStorage.getItem("showAlert" + user)), alertType: JSON.parse(localStorage.getItem("alertType" + user)),
+            message: JSON.parse(localStorage.getItem("message" + user)), readOnly: JSON.parse(localStorage.getItem("readOnly" + user)),
+            isBlocking: JSON.parse(localStorage.getItem("isBlocking" + user))
+        });
+
+        this.id = localStorage.getItem("id" + user)
+    }
+
     componentDidMount = () => {
-        if (this.id !== 0) {
+        const user = localStorage.getItem("myUserName")
+        if (this.id !== 0 && !localStorage.getItem("id" + user)) {
             let url = `/api/Departments/` + this.id
             WebApi(url, '', 'GET')
                 .then(response => {
-                    this.setState({ Name: response.Name, Location: response.Location })
+                    this.setState({ Name: response.Name, Location: response.Location }
+                        , () => this.saveStateToLocalStorage()
+                    )
                 });
+        }
+        else {
+            this.hydrateStateWithLocalStorage();
         }
     }
 
@@ -45,8 +75,9 @@ export class EditDepartment extends Component {
             })
             WebApi(url, data, 'PUT')
                 .then(response => {
-                    if (response.Message && response.Message.toUpperCase() === "SUCCESS")
-                        this.setState({ showAlert: true, alertType: 'success', readOnly: true })
+                    if (response.Message && response.Message.toUpperCase() === "SUCCESS") {
+                        this.setState({ showAlert: true, alertType: 'success', readOnly: true, isBlocking: false })
+                    }
                     else
                         return this.setState({ showAlert: true, alertType: "danger", message: "Some error occured, please try again." })
                 });
@@ -57,14 +88,31 @@ export class EditDepartment extends Component {
         return this.props.history.goBack()
     }
 
+    handlePrompt = () => {
+        return `Are you sure you want to do this action, any unsaved changes may be lost`
+    }
+
+    componentWillUnmount() {
+        const user = localStorage.getItem("myUserName")
+        // for every item in React state
+        for (let key in this.state) {
+
+            // save to localStorage
+            localStorage.removeItem(key + user)
+        }
+        localStorage.removeItem("id" + user);
+    }
+
     render() {
+        const user = localStorage.getItem("myUserName")
         const { Name, Location, showAlert, alertType, message, readOnly } = this.state
-        const IsLoggedIn = localStorage.getItem("myToken");
-        if (!IsLoggedIn)
-            return <Redirect to='/' />
 
         if (this.props.location && this.props.location.data && this.props.location.data.ID)
             this.id = this.props.location.data.ID
+
+        if ((!this.id || this.id === 0) && !localStorage.getItem("id" + user)) {
+            return <Redirect to='/Departments' />
+        }
 
         const SuccessMessage = "Department has been edited successfully."
         const ErrorMessage = "Name and Location fields cannot be empty."
@@ -80,6 +128,7 @@ export class EditDepartment extends Component {
 
         return (
             <div>
+                <Prompt when={this.state.isBlocking} message={this.handlePrompt} />
                 <Container className="border">
                     <h4 className="mt-2 mb-5">
                         <b>Edit - Department</b>
@@ -89,13 +138,13 @@ export class EditDepartment extends Component {
                             <div className="col-4">
                                 <label>Department name</label>
                             </div>
-                            <input value={Name} onChange={(e) => { this.setState({ Name: e.target.value }) }} className={"mb-1 " + (readOnly === true ? "disabled-inputs" : "")} type="text"></input>
+                            <input value={Name} onChange={(e) => { this.setState({ Name: e.target.value, isBlocking: true }, () => this.saveStateToLocalStorage()) }} className={"mb-1 " + (readOnly === true ? "disabled-inputs" : "")} type="text"></input>
                         </div>
                         <div className="row  p-2">
                             <div className="col-4">
                                 <label>Location</label>
                             </div>
-                            <input value={Location} onChange={(e) => { this.setState({ Location: e.target.value }) }} className={"mb-1 " + (readOnly === true ? "disabled-inputs" : "")} type="text"></input>
+                            <input value={Location} onChange={(e) => { this.setState({ Location: e.target.value, isBlocking: true }, () => this.saveStateToLocalStorage()) }} className={"mb-1 " + (readOnly === true ? "disabled-inputs" : "")} type="text"></input>
                         </div>
                         <div className="row p-2">
                             <div className="col-4"></div>

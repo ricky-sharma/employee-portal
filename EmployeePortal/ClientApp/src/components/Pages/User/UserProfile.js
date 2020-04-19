@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import { Redirect } from 'react-router-dom'
 import WebApi from '../../Helpers/WebApi';
 import { Container } from 'reactstrap';
 import moment from 'moment';
@@ -66,10 +65,6 @@ export class UserProfile extends Component {
     }
 
     render() {
-        const isLoggedIn = localStorage.getItem("myToken");
-        if (!isLoggedIn)
-            return <Redirect to='/' />
-
         return (
             <div className="row">
                 <div className="col-2 padding-left-0 padding-right-5">

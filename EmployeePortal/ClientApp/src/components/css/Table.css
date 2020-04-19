@@ -53,6 +53,11 @@ table.table td:last-child {
     width: 50px;
 }
 
+table.table td.customWidth100{
+    width: 100px !important;
+    text-align: center!important;
+}
+
 table.table td a {
     color: #a0a5b1;
     display: inline-block;
@@ -65,6 +70,10 @@ table.table td a {
 
     table.table td a.edit {
         color: #FFC107;
+    }
+
+    table.table td a.changePassword {
+        color: rgb(15, 255, 7);
     }
 
     table.table td a.delete {

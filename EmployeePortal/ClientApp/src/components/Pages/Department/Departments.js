@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Redirect, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import '../../css/Table.css';
 import WebApi from '../../Helpers/WebApi';
 
@@ -8,7 +8,6 @@ export class Departments extends Component {
         super(props)
 
         this.state = {
-            token: localStorage.getItem('myToken') || '',
             departmentData: [],
             keys: [],
             noOfPages: 0,
@@ -123,9 +122,7 @@ export class Departments extends Component {
     }
 
     render() {
-        const isLoggedIn = localStorage.getItem("myToken");
-        if (!isLoggedIn)
-            return <Redirect to='/' />
+        const { totalRows, currentPageRows, firstRow, activePage, noOfPages } = this.state
 
         return (
             <div className="container">
@@ -147,19 +144,19 @@ export class Departments extends Component {
                             </tr>
                         </thead>
                         <tbody>
-                            {this.renderTableData(this.state.firstRow, this.state.currentPageRows)}
+                            {this.renderTableData(firstRow, currentPageRows)}
                         </tbody>
                     </table>
                     <div className="clearfix">
-                        <div className="hint-text">Showing <b>{this.state.currentPageRows}</b> out of <b>{this.state.totalRows}</b> entries</div>
+                        <div className="hint-text">Showing <b>{totalRows > currentPageRows ? currentPageRows : totalRows}</b> out of <b>{totalRows}</b> entries</div>
                         <ul className="pagination">
-                            <li className={"page-item " + (this.state.activePage === 1 ? "disabled" : "")}>
+                            <li className={"page-item " + (activePage === 1 ? "disabled" : "")}>
                                 <a onClick={(e) => this.handleBackwardPage(e)} href="/" className="page-link">
                                     <i className="fa fa-angle-double-left"></i>
                                 </a>
                             </li>
                             {this.renderPagination()}
-                            <li className={"page-item " + (this.state.activePage === this.state.noOfPages ? "disabled" : "")}>
+                            <li className={"page-item " + (activePage === noOfPages ? "disabled" : "")}>
                                 <a onClick={(e) => this.handleForwardPage(e)} href="/" className="page-link">
                                     <i className="fa fa-angle-double-right"></i>
                                 </a>

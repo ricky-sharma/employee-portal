@@ -37,10 +37,10 @@ export class NavMenu extends Component {
     render() {
         let User, SignOut;
         const isLoggedIn = localStorage.getItem("myToken");
-        if (isLoggedIn) {
-            SignOut = <NavLink tag={Link} type="button" onClick={this.handleSignOut} to="/" className="btn btn-danger button-signout margin-rt10 float-rt">Sign Out</NavLink>
-            User = <NavLink tag={Link} className="text-white float-rt mt-1 margin-rt10 margin-rt20" to='/UserProfile'>{localStorage.getItem("myUserName")}</NavLink>
-        }
+
+        SignOut = <NavLink tag={Link} type="button" onClick={this.handleSignOut} to="/" className="btn btn-danger button-signout margin-rt10 float-rt">Sign Out</NavLink>
+        User = <NavLink tag={Link} className="text-white float-rt mt-1 margin-rt10 margin-rt20" to='/UserProfile'>{localStorage.getItem("myUserName")}</NavLink>
+
         return (
             <header>
                 <Navbar className="theme1 navbar-expand-sm navbar-toggleable-sm ng-white border-bottom box-shadow mb-3" light>
@@ -51,8 +51,8 @@ export class NavMenu extends Component {
                             </h3>
                         </NavbarBrand>
                         <NavbarToggler onClick={this.toggleNavbar} className="mr-2 marginleft55 marginleft40" />
-                        <Collapse className="d-sm-inline-flex flex-sm-row-reverse boxshadow" isOpen={!this.state.collapsed} navbar>
-                            <ul className="navbar-nav flex-grow ml-1">
+                        <Collapse className={"d-sm-inline-flex flex-sm-row-reverse boxshadow " + (!isLoggedIn?"d-none":"")} isOpen={!this.state.collapsed} navbar>
+                            <ul className={"navbar-nav flex-grow ml-1 " + (!isLoggedIn?"d-none":"")}>
 
                                 <NavItem className="text-black padding-5">
                                     <NavLink tag={Link} className="text-black d-none d-md-block d-lg-block d-xl-block" to="/"><b>Home</b></NavLink>
@@ -111,7 +111,7 @@ export class NavMenu extends Component {
                             </ul>
                         </Collapse>
                     </Container>
-                    <div>
+                    <div className={(!isLoggedIn?"d-none":"")}>
                         <div className="d-none d-md-block d-lg-block d-xl-block"><small>{User}</small></div>
                         <div className="d-none d-md-block d-lg-block d-xl-block"><small>{SignOut}</small></div>
                     </div>

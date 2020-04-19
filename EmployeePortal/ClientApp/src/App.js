@@ -1,20 +1,21 @@
 import React, { Component } from 'react';
 import { Route, Switch } from 'react-router';
+import './components/css/Global.css';
+import { RequireAuth } from './components/Helpers/RequireAuth';
 import { Layout } from './components/Layout';
-import { Home } from './components/Pages/Home';
-import { Employees } from './components/Pages/Employee/Employees';
-import { Departments } from './components/Pages/Department/Departments';
 import { AddDepartment } from './components/Pages/Department/AddDepartment';
+import { Departments } from './components/Pages/Department/Departments';
 import { EditDepartment } from './components/Pages/Department/EditDepartment';
 import { AddEmployee } from './components/Pages/Employee/AddEmployee';
 import { EditEmployee } from './components/Pages/Employee/EditEmployee';
-import { UserProfile } from './components/Pages/User/UserProfile';
+import { Employees } from './components/Pages/Employee/Employees';
+import { Home } from './components/Pages/Home';
 import { NotFoundPage } from './components/Pages/NotFoundPage';
 import { ChangePassword } from './components/Pages/User/ChangePassword';
-import { EditUserProfile } from './components/Pages/User/EditUserProfile';
 import { CreateUser } from './components/Pages/User/CreateUser';
+import { EditUserProfile } from './components/Pages/User/EditUserProfile';
+import { UserProfile } from './components/Pages/User/UserProfile';
 import { Users } from './components/Pages/User/Users';
-import './components/css/Global.css';
 
 export default class App extends Component {
   static displayName = App.name;
@@ -24,17 +25,18 @@ export default class App extends Component {
       <Layout>
         <Switch>
           <Route exact={true} path='/' component={Home} />
-          <Route exact={true} path='/Employees' component={Employees} />
-          <Route exact={true} path='/Departments' component={Departments} />
-          <Route exact={true} path='/AddDepartment' component={AddDepartment} />
-          <Route exact={true} path='/EditDepartment' component={EditDepartment} />
-          <Route exact={true} path='/AddEmployee' component={AddEmployee} />
-          <Route exact={true} path='/EditEmployee' component={EditEmployee} />
-          <Route exact={true} path='/UserProfile' component={UserProfile} />
-          <Route exact={true} path='/ChangePassword' component={ChangePassword} />
-          <Route exact={true} path='/EditUserProfile' component={EditUserProfile} />
-          <Route exact={true} path='/CreateUser' component={CreateUser} />
-          <Route exact={true} path='/Users' component={Users} />
+          <Route exact={true} path='/Employees' component={RequireAuth(Employees)} />
+          <Route exact={true} path='/Departments' component={RequireAuth(Departments)} />
+          <Route exact={true} path='/AddDepartment' component={RequireAuth(AddDepartment)} />
+          <Route exact={true} path='/EditDepartment' component={RequireAuth(EditDepartment)} />
+          <Route exact={true} path='/AddEmployee' component={RequireAuth(AddEmployee)} />
+          <Route exact={true} path='/EditEmployee' component={RequireAuth(EditEmployee)} />
+          <Route exact={true} path='/UserProfile' component={RequireAuth(UserProfile)} />
+          <Route exact={true} path='/ChangePassword' component={RequireAuth(ChangePassword)} />
+          <Route exact={true} path='/ResetPassword' component={RequireAuth(ChangePassword)} />
+          <Route exact={true} path='/EditUserProfile' component={RequireAuth(EditUserProfile)} />
+          <Route exact={true} path='/CreateUser' component={RequireAuth(CreateUser)} />
+          <Route exact={true} path='/Users' component={RequireAuth(Users)} />
           <Route path='/*' component={NotFoundPage} />
         </Switch>
       </Layout>

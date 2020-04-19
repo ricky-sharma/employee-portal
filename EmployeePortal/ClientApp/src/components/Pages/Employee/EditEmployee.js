@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Redirect } from 'react-router-dom';
 import AlertMessage from '../../AlertMessage';
 import WebApi from '../../Helpers/WebApi';
 
@@ -89,10 +88,6 @@ export class EditEmployee extends Component {
     }
 
     render(props) {
-        const IsLoggedIn = localStorage.getItem("myToken");
-        if (!IsLoggedIn)
-            return <Redirect to='/' />
-
         if (this.props.location && this.props.location.data && this.props.location.data.ID)
             this.id = this.props.location.data.ID
 

@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import { Redirect } from 'react-router-dom'
 import WebApi from '../../Helpers/WebApi';
 import { Container } from 'reactstrap';
 import DatePicker from "react-datepicker";
@@ -107,43 +106,42 @@ export class CreateUser extends Component {
         }
         else
             userInforViewModel["ConfirmPhone"] = this.state.ConfirmPhone
-        
-        let url =`/api/Account/Register`
-        let data =JSON.stringify(userInforViewModel)
-        WebApi(url, data, 'POST')
-        .then(response => {
-            console.log(response)
-            if (response.Message && response.Message === 'SUCCESS')
-            {
-                url = `/api/AspNetUserInfoes`
-                data = JSON.stringify({
-                    "Id": 0,
-                    "FirstName": this.state.FirstName,
-                    "LastName": this.state.LastName,
-                    "Gender": this.state.Gender,
-                    "DOB": this.state.DOB != null ? moment(this.state.DOB).format('DD-MMM-YYYY') : '',
-                    "UsersId": 0,
-                    "userInfoViewModel": userInforViewModel
-                })
-                WebApi(url, data, 'POST')
-                    .then(response => {
-                        console.log(response)
-                        if (response.Message && response.Message === 'SUCCESS')
-                            this.props.history.push('/Users')
-                        else
-                            this.setState({
-                                showAlert: true, alertType: 'danger', message: response
-                            });
-                    });
-            }
-            else
-                this.setState({
-                    showAlert: true, alertType: 'danger', message: response
-                });
-        });
 
-        
-       
+        let url = `/api/Account/Register`
+        let data = JSON.stringify(userInforViewModel)
+        WebApi(url, data, 'POST')
+            .then(response => {
+                console.log(response)
+                if (response.Message && response.Message === 'SUCCESS') {
+                    url = `/api/AspNetUserInfoes`
+                    data = JSON.stringify({
+                        "Id": 0,
+                        "FirstName": this.state.FirstName,
+                        "LastName": this.state.LastName,
+                        "Gender": this.state.Gender,
+                        "DOB": this.state.DOB != null ? moment(this.state.DOB).format('DD-MMM-YYYY') : '',
+                        "UsersId": 0,
+                        "userInfoViewModel": userInforViewModel
+                    })
+                    WebApi(url, data, 'POST')
+                        .then(response => {
+                            console.log(response)
+                            if (response.Message && response.Message === 'SUCCESS')
+                                this.props.history.push('/Users')
+                            else
+                                this.setState({
+                                    showAlert: true, alertType: 'danger', message: response
+                                });
+                        });
+                }
+                else
+                    this.setState({
+                        showAlert: true, alertType: 'danger', message: response
+                    });
+            });
+
+
+
     }
 
     handleBack = () => {
@@ -151,9 +149,6 @@ export class CreateUser extends Component {
     }
 
     render() {
-        const isLoggedIn = localStorage.getItem("myToken");
-        if (!isLoggedIn)
-            return <Redirect to='/' />
         const GenderOptions = [<option key="1" value="Male">Male</option>,
         <option key="2" value="Female">Female</option>];
 

@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Redirect } from 'react-router-dom';
 import AlertMessage from '../../AlertMessage';
 import WebApi from '../../Helpers/WebApi';
 import { Container } from 'reactstrap';
@@ -64,7 +63,6 @@ export class AddEmployee extends Component {
     render() {
         const GenderOptions = [<option key="1" value="Male">Male</option>,
         <option key="2" value="Female">Female</option>];
-        const IsLoggedIn = localStorage.getItem("myToken");
         const { fName, lName, gender, salary, departmentId, jobTitle, showAlert, alertType } = this.state
         const SuccessMessage = "Employee has been added successfully."
         const ErrorMessage = "Please fill in all required fields."
@@ -74,8 +72,6 @@ export class AddEmployee extends Component {
         else if (alertType === "danger")
             Message = ErrorMessage
 
-        if (!IsLoggedIn)
-            return <Redirect to='/' />
         return (
             <div>
                 <Container className="border">
