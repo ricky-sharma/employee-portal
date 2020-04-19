@@ -85,7 +85,7 @@ export class EditDepartment extends Component {
     }
 
     handleBack = () => {
-        return this.props.history.goBack()
+        return this.props.history.push('/Departments')
     }
 
     handlePrompt = () => {
@@ -96,7 +96,6 @@ export class EditDepartment extends Component {
         const user = localStorage.getItem("myUserName")
         // for every item in React state
         for (let key in this.state) {
-
             // save to localStorage
             localStorage.removeItem(key + user)
         }
