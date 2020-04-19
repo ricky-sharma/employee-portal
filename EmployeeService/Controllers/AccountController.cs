@@ -61,12 +61,27 @@ namespace EmployeeService.Controllers
 
             return new UserInfoViewModel
             {
-                UserId= User.Identity.GetUserId(),
+                UserId = User.Identity.GetUserId(),
                 Email = user.Email,
                 Phone = user.PhoneNumber,
                 UserName = User.Identity.GetUserName(),
                 HasRegistered = externalLogin == null,
                 LoginProvider = externalLogin != null ? externalLogin.LoginProvider : null
+            };
+        }
+
+        // GET api/Account/UserInfo/id
+        [Route("UserInfo/{id}")]
+        public async Task<UserInfoViewModel> GetUserInfo(string id)
+        {
+            IdentityUser user = await UserManager.FindByIdAsync(id);
+
+            return new UserInfoViewModel
+            {
+                UserId = user.Id,
+                Email = user.Email,
+                Phone = user.PhoneNumber,
+                UserName = user.UserName
             };
         }
 
@@ -129,13 +144,13 @@ namespace EmployeeService.Controllers
 
             IdentityResult result = await UserManager.ChangePasswordAsync(User.Identity.GetUserId(), model.OldPassword,
                 model.NewPassword);
-            
+
             if (!result.Succeeded)
             {
                 return GetErrorResult(result);
             }
 
-            return Ok(new {Message ="SUCCESS" });
+            return Ok(new { Message = "SUCCESS" });
         }
 
         // POST api/Account/SetPassword
@@ -155,6 +170,27 @@ namespace EmployeeService.Controllers
             }
 
             return Ok();
+        }
+
+        // POST api/Account/ResetPassword
+        [Route("ResetPassword")]
+        public async Task<IHttpActionResult> ResetPassword(SetPasswordBindingModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            string token = await UserManager.GeneratePasswordResetTokenAsync(model.UserId);
+
+            IdentityResult result = await UserManager.ResetPasswordAsync(model.UserId, token, model.NewPassword);
+
+            if (!result.Succeeded)
+            {
+                return GetErrorResult(result);
+            }
+
+            return Ok(new { Message = "SUCCESS" });
         }
 
         // POST api/Account/AddExternalLogin
@@ -262,9 +298,9 @@ namespace EmployeeService.Controllers
             if (hasRegistered)
             {
                 Authentication.SignOut(DefaultAuthenticationTypes.ExternalCookie);
-                
-                 ClaimsIdentity oAuthIdentity = await user.GenerateUserIdentityAsync(UserManager,
-                    OAuthDefaults.AuthenticationType);
+
+                ClaimsIdentity oAuthIdentity = await user.GenerateUserIdentityAsync(UserManager,
+                   OAuthDefaults.AuthenticationType);
                 ClaimsIdentity cookieIdentity = await user.GenerateUserIdentityAsync(UserManager,
                     CookieAuthenticationDefaults.AuthenticationType);
 
@@ -323,7 +359,6 @@ namespace EmployeeService.Controllers
         }
 
         // POST api/Account/Register
-        [AllowAnonymous]
         [Route("Register")]
         public async Task<IHttpActionResult> Register(UserInfoViewModel model)
         {
@@ -332,12 +367,13 @@ namespace EmployeeService.Controllers
                 return BadRequest(ModelState);
             }
 
-            var user = new ApplicationUser() { 
+            var user = new ApplicationUser()
+            {
                 UserName = model.UserName,
                 Email = model.Email,
                 EmailConfirmed = model.Email == model.ConfirmEmail ? true : false,
-                PhoneNumber= model.Phone,
-                PhoneNumberConfirmed =model.Phone == model.ConfirmPhone ? true :false
+                PhoneNumber = model.Phone,
+                PhoneNumberConfirmed = model.Phone == model.ConfirmPhone ? true : false
             };
 
             IdentityResult result = await UserManager.CreateAsync(user, model.Password);
@@ -378,7 +414,7 @@ namespace EmployeeService.Controllers
             result = await UserManager.AddLoginAsync(user.Id, info.Login);
             if (!result.Succeeded)
             {
-                return GetErrorResult(result); 
+                return GetErrorResult(result);
             }
             return Ok();
         }

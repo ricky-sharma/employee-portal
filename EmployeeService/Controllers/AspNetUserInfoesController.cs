@@ -24,7 +24,7 @@ namespace EmployeeService.Controllers
             return GetUserInfoes();
         }
        
-        // GET: api/AspNetUserInfoes/5
+        // GET: api/AspNetUserInfoes/id
         [ResponseType(typeof(UserInfoModel))]
         public IHttpActionResult GetAspNetUserInfo(string id)
         {
