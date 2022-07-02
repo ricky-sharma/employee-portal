@@ -1,0 +1,15 @@
+vs
+node_modules
+v2
+FileContentIndex
+*.dll
+bin
+.vs
+obj
+package-lock
+*.sql
+.user
+*.user
+packages
+build
+/EmployeePortal/ClientApp/package-lock.json
