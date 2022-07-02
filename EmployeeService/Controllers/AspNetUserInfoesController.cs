@@ -28,7 +28,8 @@ namespace EmployeeService.Controllers
         [ResponseType(typeof(UserInfoModel))]
         public IHttpActionResult GetAspNetUserInfo(string id)
         {
-            UserInfoModel userInfo = GetUserInfoes().FirstOrDefault(i => i.UsersId == id);           
+            var getUserInfoes = GetUserInfoes();
+            UserInfoModel userInfo = getUserInfoes?.Any() == true ? getUserInfoes?.FirstOrDefault(i => i.UsersId == id): null;
             if (userInfo == null)
             {
                 return NotFound();
@@ -41,7 +42,7 @@ namespace EmployeeService.Controllers
         [ResponseType(typeof(void))]
         public IHttpActionResult PutAspNetUserInfo(string id, UserInfoModel userInfoModel)
         {
-            ModelState.Where(m => m.Key == "userInfoModel.userInfoViewModel.Password").FirstOrDefault().Value.Errors.Clear();
+            ModelState.Where(m => m.Key == "userInfoModel.userInfoViewModel.Password")?.FirstOrDefault().Value.Errors.Clear();
 
             if (!ModelState.IsValid)
             {
@@ -55,7 +56,7 @@ namespace EmployeeService.Controllers
 
             AspNetUserInfo aspNetUserInfo = new AspNetUserInfo()
             {
-                Id = userInfoModel.Id.ToString(),                
+                Id = userInfoModel.Id.ToString(),
                 FirstName = userInfoModel.FirstName,
                 LastName = userInfoModel.LastName,
                 Gender = userInfoModel.Gender,
@@ -117,7 +118,7 @@ namespace EmployeeService.Controllers
                 LastName = userInfoModel.LastName,
                 Gender = userInfoModel.Gender,
                 DOB = userInfoModel.DOB,
-                UsersId = db.AspNetUsers.FirstOrDefault(i => i.UserName == userInfoModel.userInfoViewModel.UserName).Id
+                UsersId = db.AspNetUsers?.FirstOrDefault(i => i.UserName == userInfoModel.userInfoViewModel.UserName).Id
             };
 
             db.AspNetUserInfoes.Add(aspNetUserInfo);
@@ -145,7 +146,7 @@ namespace EmployeeService.Controllers
         [ResponseType(typeof(AspNetUserInfo))]
         public IHttpActionResult DeleteAspNetUserInfo(string id)
         {
-            AspNetUserInfo aspNetUserInfo = db.AspNetUserInfoes.Find(id);
+            AspNetUserInfo aspNetUserInfo = db.AspNetUserInfoes?.Find(id);
             if (aspNetUserInfo == null)
             {
                 return NotFound();
@@ -173,15 +174,16 @@ namespace EmployeeService.Controllers
 
         private IQueryable<UserInfoModel> GetUserInfoes()
         {
-            return db.AspNetUserInfoes.Select(i => new UserInfoModel()
+            return db.AspNetUserInfoes?.Any() == true ? db.AspNetUserInfoes?.Select(i => new UserInfoModel()
             {
-                Id = i.Id,
-                DOB = i.DOB,
-                UsersId = i.UsersId,
-                FirstName = i.FirstName,
-                LastName = i.LastName,
-                Gender = i.Gender
-            });
+                Id = i !=null ? i.Id : "",
+                Email = i != null ? i.AspNetUser.Email : "",
+                DOB = i != null ? i.DOB : null,
+                UsersId = i != null ? i.UsersId : "",
+                FirstName = i != null ? i.FirstName : "",
+                LastName = i != null ? i.LastName : "",
+                Gender = i != null ? i.Gender : ""
+            }) : null;
         }
     }
 }
