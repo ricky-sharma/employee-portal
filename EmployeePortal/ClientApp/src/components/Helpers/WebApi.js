@@ -2,7 +2,8 @@ import { trackPromise } from 'react-promise-tracker';
 
 function WebApi(apiUrl, data, method = 'POST', auth = true) {
     let authHeader = 'Bearer ' + localStorage.getItem('myToken')
-
+    let serviceUrl = (window.location.protocol !== 'https:' ?
+     'http://employee.service.com':'https://employee.service.com')
     let headers = {
         "Content-Type": 'application/json',
         "Accept": 'application/json',
@@ -19,7 +20,8 @@ function WebApi(apiUrl, data, method = 'POST', auth = true) {
     if (method === 'POST' || method === 'PUT')
         requestInfo.body = data
 
-    return trackPromise(fetch('http://employee.service.com' + apiUrl, requestInfo).then(res => {        
+    return trackPromise(
+        fetch(serviceUrl + apiUrl, requestInfo).then(res => {        
         if (res.ok) {
             return res.json();
         } else {            

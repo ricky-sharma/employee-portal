@@ -48,7 +48,7 @@ export class Home extends Component {
                                     <input type="email" className="form-control" placeholder="Username" value={this.state.Username} onChange={(e) => { this.setState({ Username: e.target.value }) }} />
                                 </div>
                                 <div className="form-label-group">
-                                    <input type="password" id="inputPassword" className="form-control" value={this.state.Password} onChange={(e) => { this.setState({ Password: e.target.value }) }} placeholder="Password" />
+                                    <input type="password" id="inputPassword" className="form-control" placeholder="Password" value={this.state.Password} onChange={(e) => { this.setState({ Password: e.target.value }) }} />
                                 </div>
                                 <div className="custom-control custom-checkbox mb-3">
                                     <input type="checkbox" className="custom-control-input" id="customCheck1" />
