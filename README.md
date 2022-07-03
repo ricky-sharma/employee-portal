@@ -18,3 +18,6 @@ This folder contain all supporting packages required to run the solution.
 
 
 Please note: The main website project is configured for IIS hosting, so please install [Microsoft URL Rewrite Module](https://www.microsoft.com/en-us/download/details.aspx?id=47337).
+
+
+![image](https://user-images.githubusercontent.com/61348196/177049353-a4d94361-6ea2-431a-8e9f-2e7249d94d1e.png)
