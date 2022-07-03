@@ -49,9 +49,9 @@ export class EditUserProfile extends Component {
                         url = this.id === 0 ? `/api/AspNetUserInfoes/` + this.state.UserId : `/api/AspNetUserInfoes/` + this.id
                         WebApi(url, '', 'GET')
                             .then(response => {
-                                this.prevEmail = this.state.Email
-                                this.prevPhone = this.state.Phone
-                                if (response) {
+                                if(response) {
+                                    this.prevEmail = this.state.Email
+                                    this.prevPhone = this.state.Phone
                                     this.setState({
                                         Id: response.Id,
                                         FirstName: response.FirstName,

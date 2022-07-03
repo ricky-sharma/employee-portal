@@ -26,27 +26,30 @@ export class Users extends Component {
         let url = `/api/AspNetUserInfoes`
         WebApi(url, '', 'GET')
             .then(response => {
-                let totalRows = response.length
-                let noOfPages = parseInt(totalRows / this.state.pageRows, 10)
-                let lastPageRows = parseInt(totalRows % this.state.pageRows, 10)
-                if (lastPageRows > 0)
-                    noOfPages++;
-                this.setState({
-                    userData: response, keys: Object.keys(response[0]), noOfPages: noOfPages,
-                    totalRows: totalRows, lastPageRows: lastPageRows
-                })
+                if(response != null) {
+                    let totalRows = response.length
+                    let noOfPages = parseInt(totalRows / this.state.pageRows, 10)
+                    let lastPageRows = parseInt(totalRows % this.state.pageRows, 10)
+                    if (lastPageRows > 0)
+                        noOfPages++;
+                    this.setState({
+                        userData: response, keys: Object.keys(response[0]), noOfPages: noOfPages,
+                        totalRows: totalRows, lastPageRows: lastPageRows
+                    })
+                }
             });
     }
 
     renderTableData = (first, count) => {
         if (typeof (this.state.userData) === 'object' && this.state.userData && this.state.userData.length) {
             return this.state.userData.slice(first, first + count).map((user, index) => {
-                const { FirstName, LastName, Gender, DOB, UsersId } = user //destructuring
+                const { FirstName, LastName, Gender, DOB, Email, UsersId } = user //destructuring
                 return (
                     <tr key={index}>
                         <td>{FirstName + " " + LastName}</td>
                         <td>{Gender}</td>
                         <td>{DOB != null ? moment(DOB).format('DD-MMM-YYYY') : ''}</td>
+                        <td>{Email}</td>
                         <td className="customWidth100"> 
                             <Link className="edit" title="Edit" to={{
                                 pathname: '/EditUserProfile',
