@@ -13,7 +13,7 @@ export class Home extends Component {
             loggedInUser: ''
         };
     }
-    
+
     handleClick = () => {
         let url = `/token`;
         let data = 'username=' + this.state.Username +
@@ -21,15 +21,17 @@ export class Home extends Component {
 
         WebApi(url, data, 'POST', false)
             .then(response => {
-                console.log("UserName:" + response.userName)
-                this.setState({
-                    token: response.access_token,
-                    loggedInUser: response.userName
-                }, () => {
-                    localStorage.setItem('myToken', this.state.token)
-                    localStorage.setItem('myUserName', this.state.loggedInUser)
-                    this.props.history.push('/Employees')
-                });
+                console.log(response)
+                if (response) {
+                    this.setState({
+                        token: response.access_token,
+                        loggedInUser: response.userName
+                    }, () => {
+                        localStorage.setItem('myToken', this.state.token)
+                        localStorage.setItem('myUserName', this.state.loggedInUser)
+                        this.props.history.push('/Employees')
+                    });
+                }
             });
     }
 

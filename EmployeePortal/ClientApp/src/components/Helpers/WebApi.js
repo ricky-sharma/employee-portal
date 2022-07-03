@@ -1,9 +1,10 @@
 import { trackPromise } from 'react-promise-tracker';
+import AlertDialog from '../AlertDialog';
 
 function WebApi(apiUrl, data, method = 'POST', auth = true) {
     let authHeader = 'Bearer ' + localStorage.getItem('myToken')
     let serviceUrl = (window.location.protocol !== 'https:' ?
-     'http://employee.service.com':'https://employee.service.com')
+        'http://employee.service.com' : 'https://employee.service.com')
     let headers = {
         "Content-Type": 'application/json',
         "Accept": 'application/json',
@@ -21,27 +22,40 @@ function WebApi(apiUrl, data, method = 'POST', auth = true) {
         requestInfo.body = data
 
     return trackPromise(
-        fetch(serviceUrl + apiUrl, requestInfo).then(res => {        
-        if (res.ok) {
-            return res.json();
-        } else {            
-            var error = res.text();
-            let errorStatus = res.statusText
-            if (errorStatus.toUpperCase() === 'UNAUTHORIZED') {
-                alert('Session has expired.')
-                localStorage.removeItem('myToken')
+        fetch(serviceUrl + apiUrl, requestInfo).then(res => {
+            if (res.ok) {
+                return res.json();
+            } else {
+                var errorObj = res.text().then(res1 => {
+                    let jsonParseRes1 = JSON.parse(res1)
+                    let errorStatus = jsonParseRes1.statusText
+                    let responseError = jsonParseRes1.error
+                    let error_description = jsonParseRes1.error_description
+                    let errorMessage = jsonParseRes1.Message
+                    if (errorStatus && errorStatus.toUpperCase() === 'UNAUTHORIZED') {
+                        localStorage.removeItem('myToken')
+                        AlertDialog('Unauthorized Access')
+                    }
+                    else if (responseError && responseError.toUpperCase() == 'INVALID_GRANT') {
+                        localStorage.removeItem('myToken')
+                        AlertDialog(error_description)
+                    }
+                    else if (errorMessage) {
+                        localStorage.removeItem('myToken')
+                        AlertDialog(errorMessage)
+                    }
+                    return null;
+                });
             }
-            throw error;
         }
-    }).then(result => {
-        return result;
-    }, error => {
-        if (error.toString() === 'TypeError: Failed to fetch') {
-            alert('Session has expired.')
-            localStorage.removeItem('myToken')
-        }        
-        return error;
-    }))
+            , error => {
+                console.log(error)
+                if (error.toString() === 'TypeError: Failed to fetch') {
+                    localStorage.removeItem('myToken')
+                    AlertDialog('Employee services are down, please try again later.')
+                }
+                return null;
+            }))
 }
 
 export default WebApi

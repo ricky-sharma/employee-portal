@@ -53,9 +53,9 @@ table.table td:last-child {
     width: 50px;
 }
 
-table.table td.customWidth100{
+table.table td.customWidth100 {
     width: 100px !important;
-    text-align: center!important;
+    text-align: center !important;
 }
 
 table.table td a {

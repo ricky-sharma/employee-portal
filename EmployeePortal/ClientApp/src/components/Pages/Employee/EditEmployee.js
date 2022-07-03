@@ -39,7 +39,6 @@ export class EditEmployee extends Component {
             url = `/api/Employees/` + this.id
             WebApi(url, '', 'GET')
                 .then(response => {
-                    console.log(response)
                     if (response) {
                         this.setState({
                             fName: response.FirstName, lName: response.LastName, gender: response.Gender, salary: response.Salary,
@@ -71,13 +70,14 @@ export class EditEmployee extends Component {
             })
             WebApi(url, data, 'PUT')
                 .then(response => {
-                    if (response.Message && response.Message.toUpperCase() === "SUCCESS")
-                        this.setState({
-                            showAlert: true, alertType: 'success', readOnly: true
-                        })
-                    else {
-                        console.log(response)
-                        return this.setState({ showAlert: true, alertType: "danger", message: "Some error occured, please try again." })
+                    if (response) {
+                        if (response.Message && response.Message.toUpperCase() === "SUCCESS")
+                            this.setState({
+                                showAlert: true, alertType: 'success', readOnly: true
+                            })
+                        else {
+                            return this.setState({ showAlert: true, alertType: "danger", message: "Some error occured, please try again." })
+                        }
                     }
                 });
         }

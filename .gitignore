@@ -13,3 +13,9 @@ package-lock
 packages
 build
 /EmployeePortal/ClientApp/package-lock.json
+/EmployeePortal/static/js
+/EmployeePortal/static/css
+/EmployeePortal/asset-manifest.json
+/EmployeePortal/favicon.ico
+/EmployeePortal/index.html
+/EmployeePortal/manifest.json

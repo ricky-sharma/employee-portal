@@ -49,7 +49,7 @@ export class EditUserProfile extends Component {
                         url = this.id === 0 ? `/api/AspNetUserInfoes/` + this.state.UserId : `/api/AspNetUserInfoes/` + this.id
                         WebApi(url, '', 'GET')
                             .then(response => {
-                                if(response) {
+                                if (response) {
                                     this.prevEmail = this.state.Email
                                     this.prevPhone = this.state.Phone
                                     this.setState({
@@ -92,7 +92,6 @@ export class EditUserProfile extends Component {
         this.setState({
             DOB: date
         }, () => {
-            console.log(this.state.DOB)
         });
     };
 
@@ -134,13 +133,14 @@ export class EditUserProfile extends Component {
         })
         WebApi(url, data, 'PUT')
             .then(response => {
-                console.log(response)
-                if (response.Message && response.Message === 'SUCCESS')
-                    return this.props.history.goBack()
-                else
-                    this.setState({
-                        showAlert: true, alertType: 'danger', message: response
-                    });
+                if (response) {
+                    if (response.Message && response.Message === 'SUCCESS')
+                        return this.props.history.goBack()
+                    else
+                        this.setState({
+                            showAlert: true, alertType: 'danger', message: response
+                        });
+                }
             });
     }
 

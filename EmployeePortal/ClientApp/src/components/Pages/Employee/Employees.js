@@ -26,15 +26,17 @@ export class Employees extends Component {
         let url = `/api/Employees`
         WebApi(url, '', 'GET')
             .then(response => {
-                let totalRows = response.length
-                let noOfPages = parseInt(totalRows / this.state.pageRows, 10)
-                let lastPageRows = parseInt(totalRows % this.state.pageRows, 10)
-                if (lastPageRows > 0)
-                    noOfPages++;
-                this.setState({
-                    employeeData: response, keys: Object.keys(response[0]), noOfPages: noOfPages,
-                    totalRows: totalRows, lastPageRows: lastPageRows
-                })
+                if (response) {
+                    let totalRows = response.length
+                    let noOfPages = parseInt(totalRows / this.state.pageRows, 10)
+                    let lastPageRows = parseInt(totalRows % this.state.pageRows, 10)
+                    if (lastPageRows > 0)
+                        noOfPages++;
+                    this.setState({
+                        employeeData: response, keys: Object.keys(response[0]), noOfPages: noOfPages,
+                        totalRows: totalRows, lastPageRows: lastPageRows
+                    })
+                }
             });
     }
 
@@ -69,7 +71,6 @@ export class Employees extends Component {
 
     renderTableHeader = () => {
         let header = this.state.keys
-        console.log(header)
         if (header[header.length - 1] === '') {
             header.pop()
         }

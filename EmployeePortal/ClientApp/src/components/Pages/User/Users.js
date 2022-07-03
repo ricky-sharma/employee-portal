@@ -26,7 +26,7 @@ export class Users extends Component {
         let url = `/api/AspNetUserInfoes`
         WebApi(url, '', 'GET')
             .then(response => {
-                if(response != null) {
+                if (response != null) {
                     let totalRows = response.length
                     let noOfPages = parseInt(totalRows / this.state.pageRows, 10)
                     let lastPageRows = parseInt(totalRows % this.state.pageRows, 10)
@@ -50,7 +50,7 @@ export class Users extends Component {
                         <td>{Gender}</td>
                         <td>{DOB != null ? moment(DOB).format('DD-MMM-YYYY') : ''}</td>
                         <td>{Email}</td>
-                        <td className="customWidth100"> 
+                        <td className="customWidth100">
                             <Link className="edit" title="Edit" to={{
                                 pathname: '/EditUserProfile',
                                 data: { UsersId }
