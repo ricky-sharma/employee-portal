@@ -24,15 +24,17 @@ export class Departments extends Component {
         let url = `/api/Departments`
         WebApi(url, '', 'GET')
             .then(response => {
-                let totalRows = response.length
-                let noOfPages = parseInt(totalRows / this.state.pageRows, 10)
-                let lastPageRows = parseInt(totalRows % this.state.pageRows, 10)
-                if (lastPageRows > 0)
-                    noOfPages++;
-                this.setState({
-                    departmentData: response, keys: Object.keys(response[0]), noOfPages: noOfPages,
-                    totalRows: totalRows, lastPageRows: lastPageRows
-                })
+                if (response) {
+                    let totalRows = response.length
+                    let noOfPages = parseInt(totalRows / this.state.pageRows, 10)
+                    let lastPageRows = parseInt(totalRows % this.state.pageRows, 10)
+                    if (lastPageRows > 0)
+                        noOfPages++;
+                    this.setState({
+                        departmentData: response, keys: Object.keys(response[0]), noOfPages: noOfPages,
+                        totalRows: totalRows, lastPageRows: lastPageRows
+                    })
+                }
             });
     }
 

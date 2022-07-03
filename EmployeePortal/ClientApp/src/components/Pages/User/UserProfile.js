@@ -45,7 +45,6 @@ export class UserProfile extends Component {
                         url = `/api/AspNetUserInfoes/` + this.state.UserId
                         WebApi(url, '', 'GET')
                             .then(resp => {
-                                console.log(resp)
                                 if (resp) {
                                     this.setState({
                                         FirstName: resp.FirstName,

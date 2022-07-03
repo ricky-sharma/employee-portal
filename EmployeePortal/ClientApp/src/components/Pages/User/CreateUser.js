@@ -70,7 +70,6 @@ export class CreateUser extends Component {
         this.setState({
             DOB: date
         }, () => {
-            console.log(this.state.DOB)
         });
     };
 
@@ -111,37 +110,36 @@ export class CreateUser extends Component {
         let data = JSON.stringify(userInforViewModel)
         WebApi(url, data, 'POST')
             .then(response => {
-                console.log(response)
-                if (response.Message && response.Message === 'SUCCESS') {
-                    url = `/api/AspNetUserInfoes`
-                    data = JSON.stringify({
-                        "Id": 0,
-                        "FirstName": this.state.FirstName,
-                        "LastName": this.state.LastName,
-                        "Gender": this.state.Gender,
-                        "DOB": this.state.DOB != null ? moment(this.state.DOB).format('DD-MMM-YYYY') : '',
-                        "UsersId": 0,
-                        "userInfoViewModel": userInforViewModel
-                    })
-                    WebApi(url, data, 'POST')
-                        .then(response => {
-                            console.log(response)
-                            if (response.Message && response.Message === 'SUCCESS')
-                                this.props.history.push('/Users')
-                            else
-                                this.setState({
-                                    showAlert: true, alertType: 'danger', message: response
-                                });
+                if (response) {
+                    if (response.Message && response.Message === 'SUCCESS') {
+                        url = `/api/AspNetUserInfoes`
+                        data = JSON.stringify({
+                            "Id": 0,
+                            "FirstName": this.state.FirstName,
+                            "LastName": this.state.LastName,
+                            "Gender": this.state.Gender,
+                            "DOB": this.state.DOB != null ? moment(this.state.DOB).format('DD-MMM-YYYY') : '',
+                            "UsersId": 0,
+                            "userInfoViewModel": userInforViewModel
+                        })
+                        WebApi(url, data, 'POST')
+                            .then(response => {
+                                if (response) {
+                                    if (response.Message && response.Message === 'SUCCESS')
+                                        this.props.history.push('/Users')
+                                    else
+                                        this.setState({
+                                            showAlert: true, alertType: 'danger', message: response
+                                        });
+                                }
+                            });
+                    }
+                    else
+                        this.setState({
+                            showAlert: true, alertType: 'danger', message: response
                         });
                 }
-                else
-                    this.setState({
-                        showAlert: true, alertType: 'danger', message: response
-                    });
             });
-
-
-
     }
 
     handleBack = () => {

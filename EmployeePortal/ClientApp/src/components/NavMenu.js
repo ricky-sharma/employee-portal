@@ -24,7 +24,6 @@ export class NavMenu extends Component {
 
     handleSignOut = () => {
         localStorage.removeItem('myToken')
-        console.log("session expired")
     }
 
     static getDerivedStateFromProps(state, prev) {
@@ -51,8 +50,8 @@ export class NavMenu extends Component {
                             </h3>
                         </NavbarBrand>
                         <NavbarToggler onClick={this.toggleNavbar} className="mr-2 marginleft55 marginleft40" />
-                        <Collapse className={"d-sm-inline-flex flex-sm-row-reverse boxshadow " + (!isLoggedIn?"d-none":"")} isOpen={!this.state.collapsed} navbar>
-                            <ul className={"navbar-nav flex-grow ml-1 " + (!isLoggedIn?"d-none":"")}>
+                        <Collapse className={"d-sm-inline-flex flex-sm-row-reverse boxshadow " + (!isLoggedIn ? "d-none" : "")} isOpen={!this.state.collapsed} navbar>
+                            <ul className={"navbar-nav flex-grow ml-1 " + (!isLoggedIn ? "d-none" : "")}>
 
                                 <NavItem className="text-black padding-5">
                                     <NavLink tag={Link} className="text-black d-none d-md-block d-lg-block d-xl-block" to="/"><b>Home</b></NavLink>
@@ -111,7 +110,7 @@ export class NavMenu extends Component {
                             </ul>
                         </Collapse>
                     </Container>
-                    <div className={(!isLoggedIn?"d-none":"")}>
+                    <div className={(!isLoggedIn ? "d-none" : "")}>
                         <div className="d-none d-md-block d-lg-block d-xl-block"><small>{User}</small></div>
                         <div className="d-none d-md-block d-lg-block d-xl-block"><small>{SignOut}</small></div>
                     </div>

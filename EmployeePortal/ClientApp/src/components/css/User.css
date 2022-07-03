@@ -20,7 +20,7 @@
 }
 
 @media (min-width: 361px) and (max-width: 480px) {
-  input[type=password].UserProfile {
+    input[type=password].UserProfile {
         width: 175px;
         height: 25px;
         font-size: x-small;
@@ -35,16 +35,17 @@
         font-size: smaller;
     }
 }
+
 @media (min-width: 768px) and (max-width: 1000px) {
     input[type=password].UserProfile {
-        font-size : small;
+        font-size: small;
     }
 }
 
 @media (min-width: 768px) {
     /* iPad and bigger */
 
-   input[type=password].UserProfile {
+    input[type=password].UserProfile {
         width: 300px;
     }
 }

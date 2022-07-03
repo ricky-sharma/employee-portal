@@ -19,16 +19,15 @@ html {
 }
 
 .button-signout {
-    height: 30px;
-    font-weight: bold;
-    font-size: 12px;
-    text-shadow: none;
-    min-width: 60px;
-    border-radius: 50px;
-    line-height: 12px;
-    margin-top: 5px;
+    height: 30px !important;
+    font-weight: bold !important;
+    font-size: 12px !important;
+    text-shadow: none !important;
+    min-width: 60px !important;
+    border-radius: 50px !important;
+    line-height: 12px !important;
+    margin-top: 5px !important;
 }
-
 
 .margin-rt10 {
     margin-right: 10px;
@@ -47,22 +46,22 @@ html {
     background-image: linear-gradient(to left, rgb(89, 171, 248), rgb(84, 129, 160));
 }
 
-
 @media (min-width: 241px) and (max-width: 360px) {
     /* a little bit bigger screens */
     .marginleft45 {
         margin-left: 45px !important
     }
+
     .marginleft40 {
         margin-left: 40px !important
     }
+
     .justifycontent-normal {
         justify-content: normal !important
     }
-
 }
 
-@media (min-width: 361px) and  (max-width: 480px) {
+@media (min-width: 361px) and (max-width: 480px) {
     .justifycontent-normal {
         justify-content: normal !important
     }
@@ -70,10 +69,11 @@ html {
     .marginleft50 {
         margin-left: 50px !important
     }
+
     .marginleft55 {
         margin-left: 55px !important
     }
- 
+
     .margin-rt20 {
         margin-right: 20px !important;
     }

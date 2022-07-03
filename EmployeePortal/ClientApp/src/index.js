@@ -11,29 +11,29 @@ const baseUrl = document.getElementsByTagName('base')[0].getAttribute('href');
 const rootElement = document.getElementById('root');
 
 const LoadingIndicator = props => {
-  const { promiseInProgress } = usePromiseTracker();
-  return (
-    promiseInProgress &&
-    <div
-      style={{
-        width: "100%",
-        height: "70",
-        display: "flex",
-        justifyContent: "center", alignItems: "center"
-      }}
-    >
-      <Loader type="ThreeDots" color="#2BAD60" height={70} width={70} />    </div>
-  );
+    const { promiseInProgress } = usePromiseTracker();
+    return (
+        promiseInProgress &&
+        <div
+            style={{
+                width: "100%",
+                height: "70",
+                display: "flex",
+                justifyContent: "center", alignItems: "center"
+            }}
+        >
+            <Loader type="ThreeDots" color="#2BAD60" height={70} width={70} />    </div>
+    );
 }
 
 ReactDOM.render(
-  <BrowserRouter basename={baseUrl}>
-    <div>
-      <App />
-      <LoadingIndicator />
-    </div>
-  </BrowserRouter>,
+    <BrowserRouter basename={baseUrl}>
+        <div>
+            <App />
+            <LoadingIndicator />
+        </div>
+    </BrowserRouter>,
 
-  rootElement);
+    rootElement);
 
 registerServiceWorker();
