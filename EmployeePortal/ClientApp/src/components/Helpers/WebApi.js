@@ -49,7 +49,6 @@ function WebApi(apiUrl, data, method = 'POST', auth = true) {
             }
         }
             , error => {
-                console.log(error)
                 if (error.toString() === 'TypeError: Failed to fetch') {
                     localStorage.removeItem('myToken')
                     AlertDialog('Employee services are down, please try again later.')

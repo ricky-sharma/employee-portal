@@ -38,7 +38,7 @@ export class NavMenu extends Component {
         const isLoggedIn = localStorage.getItem("myToken");
 
         SignOut = <NavLink tag={Link} type="button" onClick={this.handleSignOut} to="/" className="btn btn-danger button-signout margin-rt10 float-rt">Sign Out</NavLink>
-        User = <NavLink tag={Link} className="text-white float-rt mt-1 margin-rt10 margin-rt20" to='/UserProfile'>{localStorage.getItem("myUserName")}</NavLink>
+        User = <NavLink tag={Link} className="text-white float-rt mt-1 margin-rt10 margin-rt20" to='/UserProfile'>{localStorage.getItem("myFullUserName") ?? localStorage.getItem("myUserName")}</NavLink>
 
         return (
             <header>

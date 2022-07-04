@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import '../css/Home.css';
 import WebApi from '../Helpers/WebApi';
+import GetUserInfo from '../Helpers/GetUserInfo';
 
 export class Home extends Component {
     static displayName = Home.name;
@@ -21,15 +22,20 @@ export class Home extends Component {
 
         WebApi(url, data, 'POST', false)
             .then(response => {
-                console.log(response)
                 if (response) {
                     this.setState({
                         token: response.access_token,
                         loggedInUser: response.userName
                     }, () => {
                         localStorage.setItem('myToken', this.state.token)
-                        localStorage.setItem('myUserName', this.state.loggedInUser)
-                        this.props.history.push('/Employees')
+                        GetUserInfo(0)
+                            .then(response => {
+                                if (response) {
+                                    localStorage.setItem('myUserName', response.Username ?? this.state.loggedInUser)
+                                    localStorage.setItem('myFullUserName', response.FullName ?? null)
+                                    this.props.history.push('/Employees')
+                                }
+                            })
                     });
                 }
             });
