@@ -224,3 +224,12 @@ select.disabled-inputs {
     width: 95vw;
     max-width: 95vw;
 }
+
+.navbar {
+    border-radius: 0px !important;
+}
+
+.userName {
+    height: 100%;
+    text-align: center;
+}

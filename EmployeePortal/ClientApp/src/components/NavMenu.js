@@ -39,11 +39,12 @@ export class NavMenu extends Component {
         let User, SignOut;
         const isLoggedIn = localStorage.getItem("myToken");
 
-        SignOut = <NavLink tag={Link} type="button" onClick={this.handleSignOut} to="/" className="btn btn-danger button-signout margin-rt10 float-rt"><FontAwesomeIcon icon={faPowerOff} /></NavLink>
+        SignOut = <NavLink tag={Link} type="button" onClick={this.handleSignOut} to="/" className="btn btn-danger button-signout margin-rt10 float-rt m-0"><FontAwesomeIcon icon={faPowerOff} /></NavLink>
         User = <NavLink tag={Link} className="text-white float-rt mt-1 margin-rt10 margin-rt20" to='/UserProfile'>{localStorage.getItem("myFullUserName") ?? localStorage.getItem("myUserName")}</NavLink>
 
         return (
-            <header>
+            <header className="row p-0">
+                <div className="col-sm-11 col-12 p-0">
                 <Navbar className="theme1 navbar-expand-sm navbar-toggleable-sm ng-white border-bottom box-shadow mb-3" light>
                     <Container className="justifycontent-normal container-width">
                         <NavbarBrand className="text-black mb-4 mt-4 wrdbreak" tag={Link} to="/">
@@ -103,20 +104,28 @@ export class NavMenu extends Component {
                                         </DropdownItem>
                                     </DropdownMenu>
                                 </UncontrolledDropdown>
-                                <NavItem className="d-md-none">
+                                <NavItem className="d-sm-none">
                                     <div><small>{User}</small></div>
                                 </NavItem>
-                                <NavItem className="d-md-none">
+                                <NavItem className="d-sm-none">
                                     <div><small>{SignOut}</small></div>
                                 </NavItem>
                             </ul>
                         </Collapse>
-                    </Container>
-                    <div className={(!isLoggedIn ? "d-none" : "")}>
-                        <div className="d-none d-md-block d-lg-block d-xl-block"><small>{User}</small></div>
-                        <div className="d-none d-md-block d-lg-block d-xl-block"><small>{SignOut}</small></div>
+                    </Container>      
+                    </Navbar>
+                </div>
+                <div className="col-sm-1 mb-3 p-0 d-none d-sm-block d-md-block d-lg-block d-xl-block">
+                    <div className={(!isLoggedIn ? "d-none theme1 userName p-0 m-0" : "theme1 userName p-0 m-0")} >
+                       
+                        <div className="row col-12 p-0 m-0 pt-3" style={{ height: "50%" }}>
+                            <div className="col-lg-8 col-md-9 col-10 p-0 m-0"><small>{SignOut}</small></div>
+                        </div>
+                        <div className="row col-12 p-0 m-0 pt-2" style={{ height: "50%" }}>
+                            <div><small>{User}</small></div>
+                        </div>
                     </div>
-                </Navbar>
+                </div>
             </header>
         );
     }
