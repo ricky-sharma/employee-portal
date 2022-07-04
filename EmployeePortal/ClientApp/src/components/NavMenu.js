@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { Collapse, Container, Navbar, NavbarBrand, NavbarToggler, NavItem, NavLink, UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import './css/NavMenu.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faPowerOff } from '@fortawesome/free-solid-svg-icons'
 
 export class NavMenu extends Component {
     static displayName = NavMenu.name;
@@ -37,7 +39,7 @@ export class NavMenu extends Component {
         let User, SignOut;
         const isLoggedIn = localStorage.getItem("myToken");
 
-        SignOut = <NavLink tag={Link} type="button" onClick={this.handleSignOut} to="/" className="btn btn-danger button-signout margin-rt10 float-rt">Sign Out</NavLink>
+        SignOut = <NavLink tag={Link} type="button" onClick={this.handleSignOut} to="/" className="btn btn-danger button-signout margin-rt10 float-rt"><FontAwesomeIcon icon={faPowerOff} /></NavLink>
         User = <NavLink tag={Link} className="text-white float-rt mt-1 margin-rt10 margin-rt20" to='/UserProfile'>{localStorage.getItem("myFullUserName") ?? localStorage.getItem("myUserName")}</NavLink>
 
         return (
