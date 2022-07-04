@@ -1,6 +1,5 @@
 .side-nav.default-theme {
     background-image: linear-gradient(to top, rgb(89, 171, 248), rgb(84, 129, 160));
-    min-height: 150px;
 }
 
     .side-nav.default-theme .side-nav-item-link, .side-nav.default-theme .side-nav-item-title {

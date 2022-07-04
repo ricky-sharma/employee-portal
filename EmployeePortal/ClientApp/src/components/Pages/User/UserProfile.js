@@ -23,11 +23,6 @@ export class UserProfile extends Component {
     menuItems = [
         {
             id: 1,
-            label: 'Create User',
-            link: '/CreateUser'
-        },
-        {
-            id: 2,
             label: 'Change Password',
             link: '/ChangePassword'
         }];
