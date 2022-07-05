@@ -28,6 +28,14 @@ export class NavMenu extends Component {
         localStorage.removeItem('myToken')
     }
 
+    userProfileName = () => {
+        let fullname = (localStorage.getItem("myFullUserName") ?? localStorage.getItem("myUserName"))
+        if (fullname && fullname.length > 12) {
+            return fullname.substring(0, 9) + '...'
+        }
+        return fullname
+    }
+
     static getDerivedStateFromProps(state, prev) {
         if (!prev.collapsed && !prev.IsButtonClicked) {
             return { collapsed: true }
@@ -40,7 +48,7 @@ export class NavMenu extends Component {
         const isLoggedIn = localStorage.getItem("myToken");
 
         SignOut = <NavLink tag={Link} type="button" onClick={this.handleSignOut} to="/" className="btn btn-danger button-signout margin-rt10 float-rt m-0"><FontAwesomeIcon icon={faPowerOff} /></NavLink>
-        User = <NavLink tag={Link} className="text-white float-rt mt-1 margin-rt10 margin-rt20" to='/UserProfile'>{localStorage.getItem("myFullUserName") ?? localStorage.getItem("myUserName")}</NavLink>
+        User = <NavLink tag={Link} className="text-white mt-2 pt-2 m-0 p-0 userName" to='/UserProfile'>{this.userProfileName()}</NavLink>
 
         return (
             <header className="row p-0 m-0">
@@ -93,7 +101,7 @@ export class NavMenu extends Component {
                                         </DropdownMenu>
                                     </UncontrolledDropdown>
                                     <NavItem className="d-sm-none">
-                                        <div><small>{User}</small></div>
+                                        <div className="float-rt py-2 pr-2"><small>{User}</small></div>
                                     </NavItem>
                                     <NavItem className="d-sm-none">
                                         <div><small>{SignOut}</small></div>
@@ -108,8 +116,8 @@ export class NavMenu extends Component {
                         <div className="row col-12 p-0 m-0 pt-3" style={{ height: "50%" }}>
                             <div className="col-lg-8 col-md-9 col-10 p-0 m-0"><small>{SignOut}</small></div>
                         </div>
-                        <div className="row col-12 p-0 m-0 pt-2" style={{ height: "50%" }}>
-                            <div><small>{User}</small></div>
+                        <div className="row col-12 pt-1 m-0 p-0" style={{ height: "50%" }}>
+                            <div className="userName col-12"><small>{User}</small></div>
                         </div>
                     </div>
                 </div>

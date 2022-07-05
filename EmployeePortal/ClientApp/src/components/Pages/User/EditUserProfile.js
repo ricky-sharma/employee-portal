@@ -5,6 +5,7 @@ import { Container } from 'reactstrap';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import AlertMessage from '../../AlertMessage';
+import AlertDialog from '../../AlertDialog';
 import moment from 'moment';
 
 export class EditUserProfile extends Component {
@@ -125,13 +126,20 @@ export class EditUserProfile extends Component {
         WebApi(url, data, 'PUT')
             .then(response => {
                 if (response) {
-                    if (response.Message && response.Message === 'SUCCESS')
-                        return this.props.history.goBack()
-                    else
-                        this.setState({
-                            showAlert: true, alertType: 'danger', message: response
-                        });
+                    if (response.Message && response.Message === 'SUCCESS') {
+                        localStorage.setItem('myFullUserName', (this.state.FirstName + ' ' + this.state.LastName) ?? null)
+                        AlertDialog('User data saved successfully.')
+                        return true
+                    }
+                    else {
+                        AlertDialog('Error while saving user data.')
+                        return false
+                    }
                 }
+            }).
+            then(response => {
+                if (response == true)
+                    return this.props.history.goBack()
             });
     }
 
