@@ -4,8 +4,12 @@
     word-break: break-all;
 }
 
-html {
-    font-size: 14px;
+.text-gainsboro {
+    color: gainsboro !important;
+}
+
+.navbar-light .navbar-nav .nav-link:focus, .navbar-light .navbar-nav .nav-link:hover {
+    color: gainsboro !important;
 }
 
 @media (min-width: 768px) {
@@ -20,7 +24,7 @@ html {
 
 .button-signout {
     font-weight: bold !important;
-    font-size: 16px !important;
+    font-size: 12px !important;
     text-shadow: none !important;
     border-radius: 50px !important;
     line-height: 12px !important;

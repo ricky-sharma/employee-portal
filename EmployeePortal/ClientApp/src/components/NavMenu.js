@@ -56,7 +56,7 @@ export class NavMenu extends Component {
                 <div className={(!isLoggedIn ? "col-sm-12 col-12 p-0" : "col-sm-11 col-12 p-0")}>
                     <Navbar className="theme1 navbar-expand-sm navbar-toggleable-sm ng-white border-bottom box-shadow mb-3" light>
                         <Container className="justifycontent-normal container-width">
-                            <NavbarBrand className="text-black mb-4 mt-4 wrdbreak" tag={Link} to="/">
+                            <NavbarBrand className="text-gainsboro mb-4 mt-4 wrdbreak" tag={Link} to="/">
                                 <h3>
                                     <b>Employee Portal</b>
                                 </h3>
