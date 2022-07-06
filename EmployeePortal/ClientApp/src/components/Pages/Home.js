@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import '../css/Home.css';
 import WebApi from '../Helpers/WebApi';
 import GetUserInfo from '../Helpers/GetUserInfo';
+import { Logger } from './../Helpers/Logger.ts';
 
 export class Home extends Component {
     static displayName = Home.name;
@@ -33,6 +34,7 @@ export class Home extends Component {
                                 if (response) {
                                     localStorage.setItem('myUserName', response.Username ?? this.state.loggedInUser)
                                     localStorage.setItem('myFullUserName', response.FullName ?? null)
+                                    Logger({ 'UserId': response.UserId, 'LogMessage': 'User LogIn', 'Type': 'UserActivity' });
                                     this.props.history.push('/Employees')
                                 }
                             })

@@ -8,7 +8,6 @@
         <EntityTypeShape EntityType="EmployeeDBModel.tblDepartment" Width="1.5" PointX="2.25" PointY="1.375" IsExpanded="true" />
         <EntityTypeShape EntityType="EmployeeDBModel.tblEmployee" Width="1.5" PointX="5" PointY="1.25" IsExpanded="true" />
         <AssociationConnector Association="EmployeeDBModel.FK_dbo_tblEmployees_dbo_tblDepartments_DepartmentId" ManuallyRouted="false" />
-        <EntityTypeShape EntityType="EmployeeDBModel.C__MigrationHistory" Width="1.5" PointX="16.25" PointY="0.875" />
         <EntityTypeShape EntityType="EmployeeDBModel.AspNetRole" Width="1.5" PointX="8.375" PointY="0.5" />
         <EntityTypeShape EntityType="EmployeeDBModel.AspNetUserClaim" Width="1.5" PointX="10.875" PointY="0.5" />
         <EntityTypeShape EntityType="EmployeeDBModel.AspNetUserLogin" Width="1.5" PointX="12.75" PointY="3.375" />
@@ -19,6 +18,8 @@
         <AssociationConnector Association="EmployeeDBModel.AspNetUserRoles" />
         <EntityTypeShape EntityType="EmployeeDBModel.AspNetUserInfo" Width="1.5" PointX="10.75" PointY="4.625" />
         <AssociationConnector Association="EmployeeDBModel.FK_AspNetUserInfo_AspNetUsers" />
+        <EntityTypeShape EntityType="EmployeeDBModel.C__MigrationHistory" Width="1.5" PointX="0.75" PointY="4.75" />
+        <EntityTypeShape EntityType="EmployeeDBModel.tblLog" Width="1.5" PointX="3.375" PointY="5.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
