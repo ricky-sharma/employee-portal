@@ -27,13 +27,15 @@ const LoadingIndicator = props => {
 }
 
 ReactDOM.render(
-    <BrowserRouter basename={baseUrl}>
-        <div>
-            <App />
-            <LoadingIndicator />
-        </div>
-    </BrowserRouter>,
-
+    <>
+        <BrowserRouter basename={baseUrl}>
+            <div>
+                <App />
+                <LoadingIndicator />
+            </div>
+        </BrowserRouter>
+        <div id="alertDialogDiv"></div>
+    </>,
     rootElement);
 
 registerServiceWorker();

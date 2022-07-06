@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import WebApi from '../../Helpers/WebApi';
+import GetUserInfo from '../../Helpers/GetUserInfo';
 import { Container } from 'reactstrap';
 import moment from 'moment';
 import SideBar from '../../SideBar';
@@ -23,40 +23,25 @@ export class UserProfile extends Component {
     menuItems = [
         {
             id: 1,
-            label: 'Create User',
-            link: '/CreateUser'
-        },
-        {
-            id: 2,
             label: 'Change Password',
             link: '/ChangePassword'
         }];
 
     componentDidMount = () => {
-        let url = `/api/Account/UserInfo`
-        WebApi(url, '', 'GET')
+        GetUserInfo(0)
             .then(response => {
-                if (response.UserId) {
+                if (response) {
                     this.setState({
-                        UserId: response.UserId,
-                        Email: response.Email,
-                        Phone: response.Phone
-                    }, () => {
-                        url = `/api/AspNetUserInfoes/` + this.state.UserId
-                        WebApi(url, '', 'GET')
-                            .then(resp => {
-                                if (resp) {
-                                    this.setState({
-                                        FirstName: resp.FirstName,
-                                        LastName: resp.LastName,
-                                        Gender: resp.Gender,
-                                        DOB: resp.DOB != null ? moment(resp.DOB).format('DD-MMM-YYYY') : ''
-                                    })
-                                }
-                            })
+                        UserId: response.UserId ? response.UserId : "",
+                        Email: response.Email ? response.Email : "",
+                        Phone: response.Phone ? response.Phone : "",
+                        FirstName: response.FirstName,
+                        LastName: response.LastName,
+                        Gender: response.Gender,
+                        DOB: response.DOB !== null ? moment(response.DOB).format('DD-MMM-YYYY') : ''
                     })
                 }
-            });
+            })
     }
 
     handleEditUser = () => {

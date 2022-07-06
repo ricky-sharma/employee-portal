@@ -6,7 +6,7 @@ import './css/Alert.css';
 const node = document.createElement("div");
 
 function AlertDialog(message) {
-    document.body.appendChild(node);
+    document.getElementById('alertDialogDiv').appendChild(node);
     const AlertDialogContent = () => {
         return (
             <div className="alertDialog">
@@ -24,7 +24,6 @@ function AlertDialog(message) {
                                 <button onClick={onHide} type="button" className="btn btn-default btn-secondary" data-dismiss="modal">Close</button>
                             </div>
                         </div>
-
                     </div>
                 </div>
             </div>

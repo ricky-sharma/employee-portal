@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import AlertMessage from '../../AlertMessage';
 import WebApi from '../../Helpers/WebApi';
+import AlertDialog from '../../AlertDialog';
 
 export class EditEmployee extends Component {
     constructor(props) {
@@ -71,12 +72,12 @@ export class EditEmployee extends Component {
             WebApi(url, data, 'PUT')
                 .then(response => {
                     if (response) {
-                        if (response.Message && response.Message.toUpperCase() === "SUCCESS")
-                            this.setState({
-                                showAlert: true, alertType: 'success', readOnly: true
-                            })
+                        if (response.Message && response.Message.toUpperCase() === "SUCCESS") {
+                            this.setState({readOnly: true})
+                            AlertDialog('Employee data saved successfully.')
+                        }
                         else {
-                            return this.setState({ showAlert: true, alertType: "danger", message: "Some error occured, please try again." })
+                            AlertDialog('Some error occured, please try again.')
                         }
                     }
                 });

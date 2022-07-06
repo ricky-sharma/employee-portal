@@ -1,9 +1,11 @@
 import React, { Component } from 'react'
 import WebApi from '../../Helpers/WebApi';
+import GetUserInfo from '../../Helpers/GetUserInfo';
 import { Container } from 'reactstrap';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import AlertMessage from '../../AlertMessage';
+import AlertDialog from '../../AlertDialog';
 import moment from 'moment';
 
 export class EditUserProfile extends Component {
@@ -35,35 +37,25 @@ export class EditUserProfile extends Component {
     }
 
     componentDidMount = () => {
-        let url = this.id === 0 ? `/api/Account/UserInfo` : '/api/Account/UserInfo/' + this.id
-        WebApi(url, '', 'GET')
+        GetUserInfo(this.id)
             .then(response => {
-                if (response.UserId) {
+                if (response) {
                     this.setState({
                         UserName: response.UserName ? response.UserName : "",
                         UserId: response.UserId ? response.UserId : "",
                         Email: response.Email ? response.Email : "",
-                        Phone: response.Phone ? response.Phone : ""
+                        Phone: response.Phone ? response.Phone : "",
+                        Id: response.Id,
+                        FirstName: response.FirstName,
+                        LastName: response.LastName,
+                        Gender: response.Gender,
+                        DOB: response.DOB !== null ? new Date(response.DOB) : ''
                     }, () => {
-
-                        url = this.id === 0 ? `/api/AspNetUserInfoes/` + this.state.UserId : `/api/AspNetUserInfoes/` + this.id
-                        WebApi(url, '', 'GET')
-                            .then(response => {
-                                if (response) {
-                                    this.prevEmail = this.state.Email
-                                    this.prevPhone = this.state.Phone
-                                    this.setState({
-                                        Id: response.Id,
-                                        FirstName: response.FirstName,
-                                        LastName: response.LastName,
-                                        Gender: response.Gender,
-                                        DOB: response.DOB !== null ? new Date(response.DOB) : ''
-                                    })
-                                }
-                            })
+                        this.prevEmail = this.state.Email
+                        this.prevPhone = this.state.Phone
                     })
                 }
-            });
+            })
     }
 
     handleChangeEmail = (e) => {
@@ -134,13 +126,20 @@ export class EditUserProfile extends Component {
         WebApi(url, data, 'PUT')
             .then(response => {
                 if (response) {
-                    if (response.Message && response.Message === 'SUCCESS')
-                        return this.props.history.goBack()
-                    else
-                        this.setState({
-                            showAlert: true, alertType: 'danger', message: response
-                        });
+                    if (response.Message && response.Message === 'SUCCESS') {
+                        localStorage.setItem('myFullUserName', (this.state.FirstName + ' ' + this.state.LastName) ?? null)
+                        AlertDialog('User data saved successfully.')
+                        return true
+                    }
+                    else {
+                        AlertDialog('Error while saving user data, please try again.')
+                        return false
+                    }
                 }
+            }).
+            then(response => {
+                if (response == true)
+                    return this.props.history.goBack()
             });
     }
 
