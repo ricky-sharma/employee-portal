@@ -132,7 +132,7 @@ export class EditUserProfile extends Component {
                         return true
                     }
                     else {
-                        AlertDialog('Error while saving user data.')
+                        AlertDialog('Error while saving user data, please try again.')
                         return false
                     }
                 }

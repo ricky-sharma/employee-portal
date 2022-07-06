@@ -3,6 +3,8 @@ import AlertMessage from '../../AlertMessage';
 import WebApi from '../../Helpers/WebApi';
 import { Container } from 'reactstrap';
 import { Prompt, Redirect } from "react-router-dom";
+import AlertDialog from '../../AlertDialog';
+
 export class EditDepartment extends Component {
     constructor(props) {
         super(props)
@@ -76,10 +78,11 @@ export class EditDepartment extends Component {
             WebApi(url, data, 'PUT')
                 .then(response => {
                     if (response.Message && response.Message.toUpperCase() === "SUCCESS") {
-                        this.setState({ showAlert: true, alertType: 'success', readOnly: true, isBlocking: false })
+                        this.setState({ readOnly: true, isBlocking: false })
+                        AlertDialog('Department data saved successfully.')
                     }
                     else
-                        return this.setState({ showAlert: true, alertType: "danger", message: "Some error occured, please try again." })
+                        AlertDialog('Some error occured, please try again.')
                 });
         }
     }
