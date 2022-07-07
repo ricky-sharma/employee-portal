@@ -98,7 +98,7 @@ export class ChangePassword extends Component {
                             <div className="col-4">
                                 <label>Username</label>
                             </div>
-                            <label className="mt-1">{this.state.UserName}</label>
+                            <label className="mt-1 ml-2">{this.state.UserName}</label>
                         </div>
                         <div className={"row p-2 " + (this.id === 0 ? "" : "d-none")}>
                             <div className="col-4">

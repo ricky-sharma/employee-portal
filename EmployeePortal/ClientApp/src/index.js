@@ -5,7 +5,7 @@ import { BrowserRouter } from 'react-router-dom';
 import App from './App';
 import registerServiceWorker from './registerServiceWorker';
 import { usePromiseTracker } from "react-promise-tracker";
-import Loader from 'react-loader-spinner'
+import { ThreeDots } from 'react-loader-spinner'
 
 const baseUrl = document.getElementsByTagName('base')[0].getAttribute('href');
 const rootElement = document.getElementById('root');
@@ -22,7 +22,7 @@ const LoadingIndicator = props => {
                 justifyContent: "center", alignItems: "center"
             }}
         >
-            <Loader type="ThreeDots" color="#2BAD60" height={70} width={70} />    </div>
+            <ThreeDots color="#00BFFF" height={80} width={80} />   </div>
     );
 }
 
