@@ -15,6 +15,7 @@ input, select {
     -moz-box-sizing: border-box;
     -webkit-box-sizing: border-box;
     box-sizing: border-box;
+    height: 30px !important;
 }
 
 .label-padding {

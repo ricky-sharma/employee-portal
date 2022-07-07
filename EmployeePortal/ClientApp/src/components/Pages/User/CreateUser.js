@@ -175,75 +175,99 @@ export class CreateUser extends Component {
                             <div className="col-4">
                                 <label>Username</label>
                             </div>
-                            <input value={NewUserName} onChange={(e) => { this.setState({ NewUserName: e.target.value }) }} type="text"></input>
+                            <div className="col-4">
+                                <input value={NewUserName} onChange={(e) => { this.setState({ NewUserName: e.target.value }) }} type="text"></input>
+                            </div>
                         </div>
                         <div className="row  p-2">
                             <div className="col-4">
                                 <label>Password</label>
                             </div>
-                            <input className="UserProfile" value={Password} onChange={(e) => this.handleChangePassword(e)} type="password"></input>
+                            <div className="col-4">
+                                <input className="UserProfile" value={Password} onChange={(e) => this.handleChangePassword(e)} type="password"></input>
+                            </div>
                         </div>
                         <div className={"row  p-2 " + (this.state.ShowConfirmPassword === true ? " " : "d-none")}>
                             <div className="col-4">
                                 <label>Confirm Password</label>
                             </div>
-                            <input className="UserProfile" value={ConfirmPassword} onChange={(e) => { this.setState({ ConfirmPassword: e.target.value }) }} type="password"></input>
+                            <div className="col-4">
+                                <input className="UserProfile" value={ConfirmPassword} onChange={(e) => { this.setState({ ConfirmPassword: e.target.value }) }} type="password"></input>
+                            </div>
                         </div>
                         <div className="row  p-2">
                             <div className="col-4">
                                 <label>First Name</label>
                             </div>
-                            <input value={FirstName} onChange={(e) => { this.setState({ FirstName: e.target.value }) }} type="text"></input>
+                            <div className="col-4">
+                                <input value={FirstName} onChange={(e) => { this.setState({ FirstName: e.target.value }) }} type="text"></input>
+                            </div>
                         </div>
                         <div className="row  p-2">
                             <div className="col-4">
                                 <label>Last Name</label>
                             </div>
-                            <input value={LastName} onChange={(e) => { this.setState({ LastName: e.target.value }) }} type="text"></input>
+                            <div className="col-4">
+                                <input value={LastName} onChange={(e) => { this.setState({ LastName: e.target.value }) }} type="text"></input>
+                            </div>
                         </div>
                         <div className="row  p-2">
                             <div className="col-4">
                                 <label>Email</label>
                             </div>
-                            <input value={Email} onChange={(e) => this.handleChangeEmail(e)} type="text"></input>
+                            <div className="col-4">
+                                <input value={Email} onChange={(e) => this.handleChangeEmail(e)} type="text"></input>
+                            </div>
                         </div>
                         <div className={"row  p-2 " + (this.state.ShowConfirmEmail === true ? " " : "d-none")}>
                             <div className="col-4">
                                 <label>Confirm Email</label>
                             </div>
-                            <input value={ConfirmEmail} onChange={(e) => { this.setState({ ConfirmEmail: e.target.value }) }} type="text"></input>
+                            <div className="col-4">
+                                <input value={ConfirmEmail} onChange={(e) => { this.setState({ ConfirmEmail: e.target.value }) }} type="text"></input>
+                            </div>
                         </div>
                         <div className="row  p-2">
                             <div className="col-4">
                                 <label>Phone</label>
                             </div>
-                            <input value={Phone} onChange={(e) => this.handleChangePhone(e)} type="text"></input>
+                            <div className="col-4">
+                                <input value={Phone} onChange={(e) => this.handleChangePhone(e)} type="text"></input>
+                            </div>
                         </div>
                         <div className={"row  p-2 " + (this.state.ShowConfirmPhone === true ? " " : "d-none")}>
                             <div className="col-4">
                                 <label>Confirm Phone</label>
                             </div>
-                            <input value={ConfirmPhone} onChange={(e) => { this.setState({ ConfirmPhone: e.target.value }) }} type="text"></input>
+                            <div className="col-4">
+                                <input value={ConfirmPhone} onChange={(e) => { this.setState({ ConfirmPhone: e.target.value }) }} type="text"></input>
+                            </div>
                         </div>
                         <div className="row  p-2">
                             <div className="col-4">
                                 <label>Gender</label>
                             </div>
-                            <select value={Gender} onChange={(e) => { this.setState({ Gender: e.target.value }) }}>
-                                <option key="0" value="select">Select</option>{GenderOptions}
-                            </select>
+                            <div className="col-4">
+                                <select value={Gender} onChange={(e) => { this.setState({ Gender: e.target.value }) }}>
+                                    <option key="0" value="select">Select</option>{GenderOptions}
+                                </select>
+                            </div>
                         </div>
                         <div className="row  p-2">
                             <div className="col-4">
                                 <label>Date of Birth</label>
                             </div>
-                            <DatePicker placeholderText="dd/MM/yyyy" dateFormat="dd/MM/yyyy" selected={DOB} onChange={this.handleChangeDOB} />
+                            <div className="col-4">
+                                <DatePicker placeholderText="dd/MM/yyyy" dateFormat="dd/MM/yyyy" selected={DOB} onChange={this.handleChangeDOB} />
+                            </div>
                         </div>
                         <div className="row  p-2">
                             <div className="col-4">
                             </div>
-                            <input className="btn btn-success mr-1" value="Save" onClick={() => this.handleSubmit()} type="button"></input>
-                            <input className="mr-lg-1 btn bg-dark text-white btn-md" onClick={this.handleBack} type="button" value="Back" />
+                            <div className="col-4">
+                                <input className="btn btn-success mr-1" value="Save" onClick={() => this.handleSubmit()} type="button"></input>
+                                <input className="mr-lg-1 btn bg-dark text-white btn-md" onClick={this.handleBack} type="button" value="Back" />
+                            </div>
                         </div>
                     </form>
 
