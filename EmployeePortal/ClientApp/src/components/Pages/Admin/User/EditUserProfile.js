@@ -1,11 +1,11 @@
 import React, { Component } from 'react'
-import WebApi from '../../Helpers/WebApi';
-import GetUserInfo from '../../Helpers/GetUserInfo';
+import WebApi from '../../../Helpers/WebApi';
+import GetUserInfo from '../../../Helpers/GetUserInfo';
 import { Container } from 'reactstrap';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import AlertMessage from '../../AlertMessage';
-import AlertDialog from '../../AlertDialog';
+import AlertMessage from '../../../AlertMessage';
+import AlertDialog from '../../../AlertDialog';
 import moment from 'moment';
 
 export class EditUserProfile extends Component {

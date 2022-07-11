@@ -1,11 +1,11 @@
 import React, { Component } from 'react'
-import WebApi from '../../Helpers/WebApi';
+import WebApi from '../../../Helpers/WebApi';
 import { Container } from 'reactstrap';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import AlertMessage from '../../AlertMessage';
+import AlertMessage from '../../../AlertMessage';
 import moment from 'moment';
-import "../../css/User.css";
+import "../../../css/User.css";
 
 export class CreateUser extends Component {
 

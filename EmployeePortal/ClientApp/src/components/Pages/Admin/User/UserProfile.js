@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
-import GetUserInfo from '../../Helpers/GetUserInfo';
+import GetUserInfo from '../../../Helpers/GetUserInfo';
 import { Container } from 'reactstrap';
 import moment from 'moment';
-import SideBar from '../../SideBar';
+import SideBar from '../../../SideBar';
 
 export class UserProfile extends Component {
     constructor(props) {

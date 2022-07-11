@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import '../../css/Table.css';
-import WebApi from '../../Helpers/WebApi';
+import '../../../css/Table.css';
+import WebApi from '../../../Helpers/WebApi';
 import moment from 'moment';
 
 export class Users extends Component {

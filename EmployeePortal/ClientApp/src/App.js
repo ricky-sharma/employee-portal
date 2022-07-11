@@ -11,11 +11,12 @@ import { EditEmployee } from './components/Pages/Employee/EditEmployee';
 import { Employees } from './components/Pages/Employee/Employees';
 import { Home } from './components/Pages/Home';
 import { NotFoundPage } from './components/Pages/NotFoundPage';
-import { ChangePassword } from './components/Pages/User/ChangePassword';
-import { CreateUser } from './components/Pages/User/CreateUser';
-import { EditUserProfile } from './components/Pages/User/EditUserProfile';
-import { UserProfile } from './components/Pages/User/UserProfile';
-import { Users } from './components/Pages/User/Users';
+import { ChangePassword } from './components/Pages/Admin/User/ChangePassword';
+import { CreateUser } from './components/Pages/Admin/User/CreateUser';
+import { EditUserProfile } from './components/Pages/Admin/User/EditUserProfile';
+import { UserProfile } from './components/Pages/Admin/User/UserProfile';
+import { Users } from './components/Pages/Admin/User/Users';
+import { Logs } from './components/Pages/Admin/Logs';
 
 export default class App extends Component {
     static displayName = App.name;
@@ -37,6 +38,7 @@ export default class App extends Component {
                     <Route exact={true} path='/EditUserProfile' component={RequireAuth(EditUserProfile)} />
                     <Route exact={true} path='/CreateUser' component={RequireAuth(CreateUser)} />
                     <Route exact={true} path='/Users' component={RequireAuth(Users)} />
+                    <Route exact={true} path='/Logs' component={RequireAuth(Logs)} />
                     <Route path='/*' component={NotFoundPage} />
                 </Switch>
             </Layout>
