@@ -61,7 +61,7 @@ export class Users extends Component {
     }
 
     rowClicked = (e, row) => {
-        this.props.history.push({ pathname: '/EditUserProfile', state: row.ID })
+        this.props.history.push({ pathname: '/EditUserProfile', state: row.UsersId })
     }
 
     Type1ButtonClicked = (e, row) => {

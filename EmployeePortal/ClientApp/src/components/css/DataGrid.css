@@ -92,6 +92,6 @@ td.col1width25, th.col1width25 {
     max-width: 25px !important;
 }
 
-.changePassword.MuiButton-root:hover, edit.MuiButton-root:hover {
+.changePassword.MuiButton-root:hover, .edit.MuiButton-root:hover {
     background-color: transparent !important;
 }
