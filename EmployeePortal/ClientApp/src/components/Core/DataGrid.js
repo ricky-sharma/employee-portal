@@ -1,9 +1,10 @@
-﻿import React, { Component } from 'react'
-import { Container } from 'reactstrap';
+﻿import { format } from "date-fns";
+import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import '../css/Table.css';
-import '../css/DataGrid.css';
+import { Container } from 'reactstrap';
 import IsNull from '../Common/Global';
+import '../css/DataGrid.css';
+import '../css/Table.css';
 
 export class DataGrid extends Component {
     constructor(props) {
@@ -13,7 +14,7 @@ export class DataGrid extends Component {
             columns: !IsNull(Columns) ? Columns : null,
             rowsData: RowsData,
             totalRows: RowsData.length,
-            EnablePaging: IsNull(PageRows),
+            EnablePaging: !IsNull(PageRows),
             pageRows: !IsNull(PageRows) ? PageRows : RowsData.length,
             noOfPages: 0,
             firstRow: 0,
@@ -26,6 +27,25 @@ export class DataGrid extends Component {
             hiddenColIndex: !IsNull(Columns) ? Columns.map((col, key) => {
                 if (!IsNull(col.Hidden) && col.Hidden)
                     return key;
+                else
+                    return null;
+            }) : null,
+            concatColumns: !IsNull(Columns) ? Columns.map((col) => {
+                let separator = ' '
+                if (!IsNull(col.ConcatColumns) && !IsNull(col.ConcatColumns.Columns)) {
+                    if (!IsNull(col.ConcatColumns.Separator))
+                        separator = col.ConcatColumns.Separator
+                    return { cols: col.ConcatColumns.Columns, sep: separator };
+                }
+            }) : null,
+            columnFormatting: !IsNull(Columns) ? Columns.map((col) => {
+                if (!IsNull(col.Formatting) && !IsNull(col.Formatting.Type) && !IsNull(col.Formatting.Format)) {
+                    return { type: col.Formatting.Type, format: col.Formatting.Format };
+                }
+            }) : null,
+            cssClassColumns: !IsNull(Columns) ? Columns.map((col, key) => {
+                if (!IsNull(col.cssClass))
+                    return col.cssClass;
                 else
                     return null;
             }) : null,
@@ -82,13 +102,41 @@ export class DataGrid extends Component {
 
     renderTableData = (first, count) => {
         let hiddenCols = this.state.hiddenColIndex;
+        let concatCols = this.state.concatColumns;
+        let colFormatting = this.state.columnFormatting;
+        let cssClassCols = this.state.cssClassColumns;
         if (typeof (this.state.rowsData) === 'object' && this.state.rowsData && this.state.rowsData.length) {
             return this.state.rowsData.slice(first, (parseInt(first) + parseInt(count))).map((row, index) => {
                 let cols = Object.values(row).map((col, key) => {
+                    let conCols = null;
+                    let conSep = null;
+                    let conValue = '';
+                    if (!IsNull(concatCols[key]) && !IsNull(concatCols[key].cols)) {
+                        conCols = concatCols[key].cols
+                        conSep = concatCols[key].sep
+                    }
+                    this.state.columns.map((c) => {
+                        if (!IsNull(conCols) && !IsNull(c.Name) && conCols.some(x => x.toUpperCase() === c.Name.toUpperCase())) {
+                            conValue = conValue + row[c.Name] + conSep
+                        }
+                    })
+                    if (!IsNull(conSep) && !IsNull(conValue)) {
+                        let sepLenth = conSep.length
+                        if (conValue.length > 0 && conValue.slice(-sepLenth) === conSep) {
+                            conValue = conValue.slice(0, conValue.length - sepLenth)
+                        }
+                    }
                     let classNames = ''
+                    if (!IsNull(cssClassCols[key]))
+                        classNames = cssClassCols[key];
                     if (hiddenCols.some(x => x === key))
                         classNames = classNames + ' d-none';
-                    return <td className={classNames} key={key}><div className="px-2">{col}</div></td>
+                    let columnValue = conValue !== '' ? conValue : col
+                    if (!IsNull(columnValue) && !IsNull(colFormatting[key]) && !IsNull(colFormatting[key].type) && !IsNull(colFormatting[key].format)) {
+                        if (colFormatting[key].type.toUpperCase() === 'DATE' || colFormatting[key].type.toUpperCase() === 'DATETIME')
+                            columnValue = format(new Date(columnValue), colFormatting[key].format)
+                    }
+                    return <td className={classNames} key={key}><div className="px-2">{columnValue}</div></td>
                 })
                 let editButton = ''
                 let type1Button = ''
@@ -136,7 +184,6 @@ export class DataGrid extends Component {
             var inputProps = {
                 className: header.cssClass !== undefined && header.cssClass !== null ? header.cssClass + ' ' + classNames : classNames
             };
-
             if (header === '')
                 return <th className={(this.state.editButtonEnabled === true && this.state.type1ButtonEnabled === true) ?
                     "customWidth45" : "customWidth20"} key={key}><div><span></span></div></th>

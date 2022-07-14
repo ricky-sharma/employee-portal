@@ -109,8 +109,8 @@ export class EditDepartment extends Component {
         const user = localStorage.getItem("myUserName")
         const { Name, Location, showAlert, alertType, message, readOnly } = this.state
 
-        if (this.props.location && this.props.location.data && this.props.location.data.ID)
-            this.id = this.props.location.data.ID
+        if (this.props.location && this.props.location.state)
+            this.id = this.props.location.state
 
         if ((!this.id || this.id === 0) && !localStorage.getItem("id" + user)) {
             return <Redirect to='/Departments' />

@@ -1,17 +1,15 @@
 import React, { Component } from 'react';
-import '../../css/Table.css';
-import WebApi from '../../Helpers/WebApi';
-import { format } from "date-fns";
 import { Container } from 'reactstrap';
 import { DataGrid } from '../../Core/DataGrid';
+import '../../css/Table.css';
+import WebApi from '../../Helpers/WebApi';
 
 export class Employees extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            emData: [],
-            empColumns: [],
-            empFormatColumns: [],
+            employeeData: [],
+            employeeColumns: [],
             key: 0
         }
     }
@@ -21,38 +19,51 @@ export class Employees extends Component {
         WebApi(url, '', 'GET')
             .then(response => {
                 if (response) {
-                    this.setState({
-                        empColumns: Object.keys(response[0])
-                    }, () => {
-                        let cols = []
-                        this.state.empColumns.map((val) => {
-                            if (val.toUpperCase() === 'DEPARTMENTNAME')
-                                cols.push({
-                                    Name: val,
-                                    Alias: 'Department'
-                                })
-                            else if (val.toUpperCase() === 'DEPARTMENTLOCATION')
-                                cols.push({
-                                    Name: val,
-                                    Alias: 'Location'
-                                })
-                            else if (val.toUpperCase() === 'FIRSTNAME')
-                                cols.push({
-                                    Name: val,
-                                    Alias: 'Name'
-                                })
-                            else if (val.toUpperCase() === 'DEPARTMENTID' || val.toUpperCase() === 'LEAVINGDATE'
-                                || val.toUpperCase() === 'INSERVICE' || val.toUpperCase() === 'LASTNAME')
-                                cols.push({
-                                    Name: val,
-                                    Hidden: true
-                                })
-                            else
-                                cols.push({ Name: val })
-                        })
+                    let Columns = Object.keys(response[0])
+                    let cols = []
+                    Columns.map((val) => {
+                        if (val.toUpperCase() === 'ID')
+                            cols.push({
+                                Name: val,
+                                cssClass: 'col1width25'
+                            })
+                        else if (val.toUpperCase() === 'DEPARTMENTNAME')
+                            cols.push({
+                                Name: val,
+                                Alias: 'Department'
+                            })
+                        else if (val.toUpperCase() === 'DEPARTMENTLOCATION')
+                            cols.push({
+                                Name: val,
+                                Alias: 'Location'
+                            })
+                        else if (val.toUpperCase() === 'JOININGDATE')
+                            cols.push({
+                                Name: val,
+                                Formatting: {
+                                    Type: 'Date', Format: 'dd MMM yyyy'
+                                }
+                            })
+                        else if (val.toUpperCase() === 'FIRSTNAME')
+                            cols.push({
+                                Name: val,
+                                Alias: 'Name',
+                                ConcatColumns: {
+                                    Columns: ['FIRSTNAME', 'LASTNAME']
+                                }
+                            })
+                        else if (val.toUpperCase() === 'DEPARTMENTID' || val.toUpperCase() === 'LEAVINGDATE'
+                            || val.toUpperCase() === 'INSERVICE' || val.toUpperCase() === 'GENDER' || val.toUpperCase() === 'LASTNAME')
+                            cols.push({
+                                Name: val,
+                                Hidden: true
+                            })
+                        else
+                            cols.push({ Name: val })
+
                         this.setState({
-                            emData: response,
-                            empFormatColumns: cols,
+                            employeeData: response,
+                            employeeColumns: cols,
                             key: Math.random()
                         })
                     })
@@ -64,7 +75,7 @@ export class Employees extends Component {
         this.props.history.push('/AddEmployee')
     }
 
-    rowClicked = (row, e) => {
+    rowClicked = (row) => {
         this.props.history.push({ pathname: '/EditEmployee', state: row.ID })
     }
 
@@ -76,12 +87,12 @@ export class Employees extends Component {
                     <div className="row nowrap m-0 p-0">
                         <div className="col-sm-8"><h2>Employee <b>Details</b></h2></div>
                         <div className="col-sm-4">
-                            <button type="button" onClick={this.handleAddEmployee} className="btn btn-success add-new"><i className="fa fa-plus"></i> Add New</button>
+                            <button type="button" onClick={this.handleAddEmployee} className="btn btn-success add-new">Add New</button>
                         </div>
                     </div>
                 </div>
                 <div>
-                    <DataGrid key={this.state.key} Columns={this.state.empFormatColumns} RowsData={this.state.emData} PageRows={15} GridEvents={gridEvents} />
+                    <DataGrid key={this.state.key} Columns={this.state.employeeColumns} RowsData={this.state.employeeData} PageRows={15} GridEvents={gridEvents} />
                 </div>
             </div>
         </Container>)

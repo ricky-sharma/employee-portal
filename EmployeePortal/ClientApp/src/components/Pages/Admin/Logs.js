@@ -1,7 +1,7 @@
 ﻿import React from 'react';
-import { DataGrid } from '../../Core/DataGrid'
-import { useLogService } from './../../Helpers/Logger.ts';
 import { Container } from 'reactstrap';
+import { DataGrid } from '../../Core/DataGrid';
+import { useLogService } from './../../Helpers/Logger.ts';
 
 export function Logs() {
     let rowClicked = (e) => {
@@ -15,7 +15,12 @@ export function Logs() {
             if (val === 'UserId')
                 columns.push({ Name: val, Alias: 'User' })
             else if (val === 'CreatedOn')
-                columns.push({ Name: val, Alias: 'Date' })
+                columns.push({
+                    Name: val, Alias: 'Date',
+                    Formatting: {
+                        Type: 'Date', Format: 'dd MMM yyyy h:mm:ss a'
+                    }
+                })
             else if (val === 'LogMessage')
                 columns.push({ Name: val, Alias: 'Log' })
             else if (val === 'ID')
@@ -36,7 +41,7 @@ export function Logs() {
                         </div>
                     </div>
                     <div>
-                        <DataGrid Columns={columns} RowsData={data} PageRows={15}/>
+                        <DataGrid Columns={columns} RowsData={data} PageRows={15} />
                     </div>
                 </div>
             </Container>)

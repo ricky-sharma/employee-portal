@@ -151,8 +151,8 @@ export class EditUserProfile extends Component {
         const GenderOptions = [<option key="1" value="Male">Male</option>,
         <option key="2" value="Female">Female</option>];
 
-        if (this.props.location && this.props.location.data && this.props.location.data.UsersId)
-            this.id = this.props.location.data.UsersId
+        if (this.props.location && this.props.location.state)
+            this.id = this.props.location.state
 
         const { Email, FirstName, LastName, Gender, DOB, Phone, ConfirmPhone, ConfirmEmail, showAlert, alertType, message } = this.state
 

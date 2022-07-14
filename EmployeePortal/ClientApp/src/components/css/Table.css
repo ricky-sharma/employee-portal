@@ -154,8 +154,9 @@ table.table td i {
         font-size: 12px;
     }
 
-    .col1width15 {
-        width: 15px !important;
+    .col1width25 {
+        width: 25px !important;
+        max-width: 25px !important;
     }
 }
 
