@@ -64,6 +64,7 @@ table.table td.customWidth20, th.customWidth20 {
     text-align: center !important;
     padding-left: 0 !important;
     margin-left: 0 !important;
+    padding-bottom: 5px !important;
 }
 
 table.table td.customWidth45, th.customWidth45 {
@@ -71,30 +72,34 @@ table.table td.customWidth45, th.customWidth45 {
     max-width: 45px !important;
     text-align: center !important;
     margin-left: 0 !important;
+    padding-bottom: 5px !important;
 }
 
+table.table td a.changePassword, button.changePassword {
+    color: rgb(15, 255, 7) !important;
+    min-width: fit-content !important;
+}
+
+table.table td a.view, button.view {
+    color: #03A9F4;
+    min-width: fit-content !important;
+}
+
+table.table td a.edit, button.edit {
+    color: #FFC107;
+    min-width: fit-content !important;
+}
+
+table.table td a.delete, button.delete {
+    color: #E34724;
+    min-width: fit-content !important;
+}
 
 table.table td a {
     color: #a0a5b1;
     display: inline-block;
     margin: 0 5px;
 }
-
-    table.table td a.view {
-        color: #03A9F4;
-    }
-
-    table.table td a.edit {
-        color: #FFC107;
-    }
-
-    table.table td a.changePassword {
-        color: rgb(15, 255, 7);
-    }
-
-    table.table td a.delete {
-        color: #E34724;
-    }
 
 table.table td i {
     font-size: 19px;

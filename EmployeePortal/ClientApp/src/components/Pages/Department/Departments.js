@@ -45,7 +45,7 @@ export class Departments extends Component {
         this.props.history.push('/AddDepartment')
     }
 
-    rowClicked = (row) => {
+    rowClicked = (e, row) => {
         this.props.history.push({ pathname: '/EditDepartment', state: row.ID })
     }
 

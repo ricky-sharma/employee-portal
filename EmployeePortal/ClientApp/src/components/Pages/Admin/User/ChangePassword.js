@@ -70,8 +70,8 @@ export class ChangePassword extends Component {
     render() {
         let title = "Change Password"
 
-        if (this.props.location && this.props.location.data && this.props.location.data.UsersId)
-            this.id = this.props.location.data.UsersId
+        if (this.props.location && this.props.location.state)
+            this.id = this.props.location.state
 
         if (this.id !== 0)
             title = "Reset Password"

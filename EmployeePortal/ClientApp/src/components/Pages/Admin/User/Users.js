@@ -25,7 +25,8 @@ export class Users extends Component {
                     let Columns = Object.keys(response[0])
                     let cols = []
                     Columns.map((val) => {
-                        if (val.toUpperCase() === 'ID' || val.toUpperCase() === 'DOB' || val.toUpperCase() === 'GENDER' || val.toUpperCase() === 'USERSID' || val.toUpperCase() === 'USERINFOVIEWMODEL')
+                        if (val.toUpperCase() === 'ID' || val.toUpperCase() === 'DOB' || val.toUpperCase() === 'GENDER'
+                            || val.toUpperCase() === 'USERSID' || val.toUpperCase() === 'USERINFOVIEWMODEL')
                             cols.push({
                                 Hidden: true
                             })
@@ -59,13 +60,18 @@ export class Users extends Component {
         this.props.history.push('/CreateUser')
     }
 
-    rowClicked = (row) => {
+    rowClicked = (e, row) => {
         this.props.history.push({ pathname: '/EditUserProfile', state: row.ID })
+    }
+
+    Type1ButtonClicked = (e, row) => {
+        console.log(row)
+        this.props.history.push({ pathname: '/ResetPassword', state: row.UsersId })
     }
 
     render() {
         let gridEvents = { OnRowClick: this.rowClicked }
-        let options = { Type1Button: { Event: this.rowClicked } }
+        let options = { Type1Button: { Event: this.Type1ButtonClicked } }
         return (<Container className="mx-0 px-0">
             <div className="table-wrapper">
                 <div className="table-title">

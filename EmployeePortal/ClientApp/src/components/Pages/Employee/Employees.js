@@ -75,7 +75,7 @@ export class Employees extends Component {
         this.props.history.push('/AddEmployee')
     }
 
-    rowClicked = (row) => {
+    rowClicked = (e, row) => {
         this.props.history.push({ pathname: '/EditEmployee', state: row.ID })
     }
 

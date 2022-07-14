@@ -1,4 +1,5 @@
-﻿import { format } from "date-fns";
+﻿import { Button } from "@material-ui/core";
+import { format } from "date-fns";
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { Container } from 'reactstrap';
@@ -141,20 +142,20 @@ export class DataGrid extends Component {
                 let editButton = ''
                 let type1Button = ''
                 if (this.state.editButtonEnabled === true) {
-                    editButton = <Link className="edit" title="Edit" onClick={this.state.editButtonEvent} to={(e) => { e.preventDefault(); }} data-toggle="tooltip">
+                    editButton = <Button className="edit px-2 p-0 m-0" title="Edit" onClick={(e) => this.state.editButtonEvent(e, row)} data-toggle="tooltip">
                         <i className="material-icons">&#xE254;</i>
-                    </Link>
+                    </Button>
                 }
                 if (this.state.type1ButtonEnabled === true) {
-                    type1Button = <Link className="changePassword" title="Change Password" onClick={this.state.type1ButtonEvent} to={(e) => { e.preventDefault(); }} data-toggle="tooltip">
+                    type1Button = <Button className="changePassword px-2 p-0 m-0" title="Change Password" onClick={(e) => this.state.type1ButtonEvent(e, row)} data-toggle="tooltip">
                         <i className="material-icons">vpn_key</i>
-                    </Link>
+                    </Button>
                 }
                 if (this.state.editButtonEnabled === true || this.state.type1ButtonEnabled === true)
-                    cols.push(<td className={(this.state.editButtonEnabled === true && this.state.type1ButtonEnabled === true) ?
+                    cols.push(<td onClick={(e) => e.stopPropagation()} style={{ cursor: "auto"}} className={(this.state.editButtonEnabled === true && this.state.type1ButtonEnabled === true) ?
                         "customWidth45" : "customWidth20"} key={"gridButtons"} >{editButton}{type1Button}</td >)
                 return (
-                    <tr key={index} style={this.state.rowClickEnabled ? { cursor: 'pointer' } : {}} onClick={(e) => { this.state.onRowClick(row, e) }} className={this.state.rowCssClass !== undefined && this.state.rowCssClass !== null ? this.state.rowCssClass : "gridRows"}>
+                    <tr key={index} style={this.state.rowClickEnabled ? { cursor: 'pointer' } : {}} onClick={(e) => this.state.onRowClick(e, row)} className={this.state.rowCssClass !== undefined && this.state.rowCssClass !== null ? this.state.rowCssClass : "gridRows"}>
                         {cols}
                     </tr>
                 )
