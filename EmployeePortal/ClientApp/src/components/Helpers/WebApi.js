@@ -2,8 +2,6 @@ import { trackPromise } from 'react-promise-tracker';
 import AlertDialog from '../AlertDialog';
 
 function WebApi(apiUrl, data, method = 'POST', auth = true) {
-    console.log(apiUrl)
-    console.log(data)
     let authHeader = 'Bearer ' + localStorage.getItem('myToken')
     let serviceUrl = (window.location.protocol !== 'https:' ?
         'http://employee.service.com' : 'https://employee.service.com')
