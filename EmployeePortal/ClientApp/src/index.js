@@ -5,25 +5,15 @@ import { BrowserRouter } from 'react-router-dom';
 import App from './App';
 import registerServiceWorker from './registerServiceWorker';
 import { usePromiseTracker } from "react-promise-tracker";
-import { ThreeDots } from 'react-loader-spinner'
+import { Oval } from 'react-loader-spinner'
 
 const baseUrl = document.getElementsByTagName('base')[0].getAttribute('href');
 const rootElement = document.getElementById('root');
-
-const LoadingIndicator = props => {
+const LoadingIndicator = () => {
     const { promiseInProgress } = usePromiseTracker();
     return (
         promiseInProgress &&
-        <div
-            style={{
-                width: "100%",
-                height: "70",
-                display: "flex",
-                justifyContent: "center", alignItems: "center"
-            }}
-        >
-            <ThreeDots color="#00BFFF" height={80} width={80} />   </div>
-    );
+        <div><div className="loading-image"> <Oval ariaLabel="loading-indicator" height={90} width={90} strokeWidth={5} color="#00BFFF" secondaryColor="#00BFFF" /></div></div>);
 }
 
 ReactDOM.render(

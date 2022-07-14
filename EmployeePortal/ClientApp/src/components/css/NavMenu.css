@@ -49,6 +49,10 @@
     background-image: linear-gradient(to left, rgb(89, 171, 248), rgb(84, 129, 160));
 }
 
+.justifycontent-normal {
+    justify-content: normal !important
+}
+
 @media (min-width: 241px) and (max-width: 360px) {
     /* a little bit bigger screens */
     .marginleft45 {
@@ -94,4 +98,8 @@
         box-shadow: inset 0 0px 0 !important;
         -webkit-box-shadow: inset 0 0px 0 !important;
     }
+}
+
+.container-fluid {
+    justify-content: normal !important;
 }

@@ -89,8 +89,8 @@ export class EditEmployee extends Component {
     }
 
     render(props) {
-        if (this.props.location && this.props.location.data && this.props.location.data.ID)
-            this.id = this.props.location.data.ID
+        if (this.props.location && this.props.location.state)
+            this.id = this.props.location.state
 
         const { fName, lName, gender, salary, departmentId, jobTitle, showAlert, alertType, message, readOnly } = this.state
         const SuccessMessage = "Employee data has been edited successfully."

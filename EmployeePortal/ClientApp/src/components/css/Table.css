@@ -53,9 +53,46 @@ table.table td:last-child {
     width: 50px;
 }
 
-table.table td.customWidth100 {
+table.table td.customWidth100, th.customWidth100 {
     width: 100px !important;
     text-align: center !important;
+}
+
+table.table td.customWidth20, th.customWidth20 {
+    width: 20px !important;
+    max-width: 20px !important;
+    text-align: center !important;
+    padding-left: 0 !important;
+    margin-left: 0 !important;
+    padding-bottom: 5px !important;
+}
+
+table.table td.customWidth45, th.customWidth45 {
+    width: 45px !important;
+    max-width: 45px !important;
+    text-align: center !important;
+    margin-left: 0 !important;
+    padding-bottom: 5px !important;
+}
+
+table.table td a.changePassword, button.changePassword {
+    color: rgb(15, 255, 7) !important;
+    min-width: fit-content !important;
+}
+
+table.table td a.view, button.view {
+    color: #03A9F4;
+    min-width: fit-content !important;
+}
+
+table.table td a.edit, button.edit {
+    color: #FFC107;
+    min-width: fit-content !important;
+}
+
+table.table td a.delete, button.delete {
+    color: #E34724;
+    min-width: fit-content !important;
 }
 
 table.table td a {
@@ -63,22 +100,6 @@ table.table td a {
     display: inline-block;
     margin: 0 5px;
 }
-
-    table.table td a.view {
-        color: #03A9F4;
-    }
-
-    table.table td a.edit {
-        color: #FFC107;
-    }
-
-    table.table td a.changePassword {
-        color: rgb(15, 255, 7);
-    }
-
-    table.table td a.delete {
-        color: #E34724;
-    }
 
 table.table td i {
     font-size: 19px;
@@ -91,13 +112,13 @@ table.table td i {
 
     .pagination li a {
         border: none;
-        font-size: 95%;
-        width: 30px;
-        height: 30px;
+        font-size: 70%;
+        width: 20px;
+        height: 20px;
         color: #999;
         margin: 0 2px;
-        line-height: 30px;
-        border-radius: 30px !important;
+        line-height: 20px;
+        border-radius: 20px !important;
         text-align: center;
         padding: 0;
     }
@@ -130,11 +151,28 @@ table.table td i {
 }
 
 @media only screen and (max-width: 768px) {
-    table.table tr th {
+    table.table tr {
         width: 100%;
     }
 
-    .col1width15 {
-        width: 15px !important;
+    table.table td i {
+        font-size: 12px;
+    }
+
+    .col1width25 {
+        width: 25px !important;
+        max-width: 25px !important;
+    }
+}
+
+@media only screen and (max-width: 300px) {
+    table.table td i {
+        font-size: 10px !important;
+        margin: 0 !important;
+    }
+
+    table.table td.customWidth45, th.customWidth45 {
+        padding-left: 0 !important;
+        padding-right: 0 !important;
     }
 }

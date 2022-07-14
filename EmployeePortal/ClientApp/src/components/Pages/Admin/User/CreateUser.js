@@ -1,21 +1,21 @@
 import React, { Component } from 'react'
-import WebApi from '../../Helpers/WebApi';
-import GetUserInfo from '../../Helpers/GetUserInfo';
+import WebApi from '../../../Helpers/WebApi';
 import { Container } from 'reactstrap';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import AlertMessage from '../../AlertMessage';
-import AlertDialog from '../../AlertDialog';
+import AlertMessage from '../../../AlertMessage';
 import moment from 'moment';
+import "../../../css/User.css";
 
-export class EditUserProfile extends Component {
+export class CreateUser extends Component {
+
     constructor(props) {
         super(props)
 
         this.state = {
-            UserId: '',
-            Id: '',
-            UserName: '',
+            NewUserName: '',
+            Password: '',
+            ConfirmPassword: '',
             Email: '',
             ConfirmEmail: '',
             FirstName: '',
@@ -26,36 +26,11 @@ export class EditUserProfile extends Component {
             ConfirmPhone: '',
             ShowConfirmEmail: false,
             ShowConfirmPhone: false,
+            ShowConfirmPassword: false,
             showAlert: false,
             alertType: '',
             message: '',
         }
-
-        this.prevEmail = ''
-        this.prevPhone = ''
-        this.id = 0;
-    }
-
-    componentDidMount = () => {
-        GetUserInfo(this.id)
-            .then(response => {
-                if (response) {
-                    this.setState({
-                        UserName: response.UserName ? response.UserName : "",
-                        UserId: response.UserId ? response.UserId : "",
-                        Email: response.Email ? response.Email : "",
-                        Phone: response.Phone ? response.Phone : "",
-                        Id: response.Id,
-                        FirstName: response.FirstName,
-                        LastName: response.LastName,
-                        Gender: response.Gender,
-                        DOB: response.DOB !== null ? new Date(response.DOB) : ''
-                    }, () => {
-                        this.prevEmail = this.state.Email
-                        this.prevPhone = this.state.Phone
-                    })
-                }
-            })
     }
 
     handleChangeEmail = (e) => {
@@ -80,6 +55,17 @@ export class EditUserProfile extends Component {
         })
     }
 
+    handleChangePassword = (e) => {
+        this.setState({ Password: e.target.value }, () => {
+            if (this.state.Password && this.state.Password !== this.prevPassword) {
+                this.setState({ ShowConfirmPassword: true })
+            }
+            else {
+                this.setState({ ShowConfirmPassword: false })
+            }
+        })
+    }
+
     handleChangeDOB = date => {
         this.setState({
             DOB: date
@@ -88,19 +74,26 @@ export class EditUserProfile extends Component {
     };
 
     handleSubmit = () => {
-        if (this.state.FirstName === '' || this.state.LastName === '' || this.state.Gender === 'select'
+        if (this.state.FirstName === '' || this.state.LastName === '' || this.state.Password === '' || this.state.Gender === 'select'
             || this.state.DOB === '' || this.state.Phone === '' || this.state.Email === '') {
             return this.setState({ showAlert: true, alertType: "danger" })
         }
 
         let userInforViewModel =
         {
-            "UserId": this.state.UserId,
-            "UserName": this.state.UserName,
+            "UserId": 0,
+            "UserName": this.state.NewUserName,
             "Email": this.state.Email,
-            "Phone": this.state.Phone
-
+            "Phone": this.state.Phone,
+            "Password": this.state.Password
         }
+
+        if (!this.state.ShowConfirmPassword) {
+            userInforViewModel["ConfirmPassword"] = this.state.Password
+        }
+        else
+            userInforViewModel["ConfirmPassword"] = this.state.ConfirmPassword
+
         if (!this.state.ShowConfirmEmail) {
             userInforViewModel["ConfirmEmail"] = this.state.Email
         }
@@ -113,33 +106,39 @@ export class EditUserProfile extends Component {
         else
             userInforViewModel["ConfirmPhone"] = this.state.ConfirmPhone
 
-        let url = `/api/AspNetUserInfoes/` + this.state.UserId
-        let data = JSON.stringify({
-            "Id": this.state.Id,
-            "FirstName": this.state.FirstName,
-            "LastName": this.state.LastName,
-            "Gender": this.state.Gender,
-            "DOB": this.state.DOB != null ? moment(this.state.DOB).format('DD-MMM-YYYY') : '',
-            "UsersId": this.state.UserId,
-            "userInfoViewModel": userInforViewModel
-        })
-        WebApi(url, data, 'PUT')
+        let url = `/api/Account/Register`
+        let data = JSON.stringify(userInforViewModel)
+        WebApi(url, data, 'POST')
             .then(response => {
                 if (response) {
                     if (response.Message && response.Message === 'SUCCESS') {
-                        localStorage.setItem('myFullUserName', (this.state.FirstName + ' ' + this.state.LastName) ?? null)
-                        AlertDialog('User data saved successfully.')
-                        return true
+                        url = `/api/AspNetUserInfoes`
+                        data = JSON.stringify({
+                            "Id": 0,
+                            "FirstName": this.state.FirstName,
+                            "LastName": this.state.LastName,
+                            "Gender": this.state.Gender,
+                            "DOB": this.state.DOB != null ? moment(this.state.DOB).format('DD-MMM-YYYY') : '',
+                            "UsersId": 0,
+                            "userInfoViewModel": userInforViewModel
+                        })
+                        WebApi(url, data, 'POST')
+                            .then(response => {
+                                if (response) {
+                                    if (response.Message && response.Message === 'SUCCESS')
+                                        this.props.history.push('/Users')
+                                    else
+                                        this.setState({
+                                            showAlert: true, alertType: 'danger', message: response
+                                        });
+                                }
+                            });
                     }
-                    else {
-                        AlertDialog('Error while saving user data, please try again.')
-                        return false
-                    }
+                    else
+                        this.setState({
+                            showAlert: true, alertType: 'danger', message: response
+                        });
                 }
-            }).
-            then(response => {
-                if (response == true)
-                    return this.props.history.goBack()
             });
     }
 
@@ -151,10 +150,7 @@ export class EditUserProfile extends Component {
         const GenderOptions = [<option key="1" value="Male">Male</option>,
         <option key="2" value="Female">Female</option>];
 
-        if (this.props.location && this.props.location.data && this.props.location.data.UsersId)
-            this.id = this.props.location.data.UsersId
-
-        const { Email, FirstName, LastName, Gender, DOB, Phone, ConfirmPhone, ConfirmEmail, showAlert, alertType, message } = this.state
+        const { NewUserName, Password, ConfirmPassword, Email, FirstName, LastName, Gender, DOB, Phone, ConfirmPhone, ConfirmEmail, showAlert, alertType, message } = this.state
 
         const SuccessMessage = "User Profile has been edited successfully."
         const ErrorMessage = "Please fill in all required fields."
@@ -172,14 +168,32 @@ export class EditUserProfile extends Component {
             <div>
                 <Container className="border">
                     <h4 className="mt-2 mb-5">
-                        <b>Edit - User Profile</b>
+                        <b>Create - User Profile</b>
                     </h4>
                     <form>
                         <div className="row  p-2">
                             <div className="col-4">
                                 <label>Username</label>
                             </div>
-                            <div className="col-4"> <label className="mt-1 ml-2">{this.state.UserName}</label></div>
+                            <div className="col-4">
+                                <input value={NewUserName} onChange={(e) => { this.setState({ NewUserName: e.target.value }) }} type="text"></input>
+                            </div>
+                        </div>
+                        <div className="row  p-2">
+                            <div className="col-4">
+                                <label>Password</label>
+                            </div>
+                            <div className="col-4">
+                                <input className="UserProfile" value={Password} onChange={(e) => this.handleChangePassword(e)} type="password"></input>
+                            </div>
+                        </div>
+                        <div className={"row  p-2 " + (this.state.ShowConfirmPassword === true ? " " : "d-none")}>
+                            <div className="col-4">
+                                <label>Confirm Password</label>
+                            </div>
+                            <div className="col-4">
+                                <input className="UserProfile" value={ConfirmPassword} onChange={(e) => { this.setState({ ConfirmPassword: e.target.value }) }} type="password"></input>
+                            </div>
                         </div>
                         <div className="row  p-2">
                             <div className="col-4">
@@ -251,11 +265,12 @@ export class EditUserProfile extends Component {
                             <div className="col-4">
                             </div>
                             <div className="col-4">
-                                <input className="btn btn-success mr-1" value="Save" onClick={() => this.handleSubmit()} type="button" />
+                                <input className="btn btn-success mr-1" value="Save" onClick={() => this.handleSubmit()} type="button"></input>
                                 <input className="mr-lg-1 btn bg-dark text-white btn-md" onClick={this.handleBack} type="button" value="Back" />
                             </div>
                         </div>
                     </form>
+
                 </Container>
                 <AlertMessage message={Message} visible={showAlert} type={alertType}></AlertMessage>
             </div>
@@ -263,4 +278,4 @@ export class EditUserProfile extends Component {
     }
 }
 
-export default EditUserProfile
+export default CreateUser

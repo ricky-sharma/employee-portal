@@ -7,7 +7,6 @@ export function Logger(log: Dictionary<string>) {
     WebApi('/api/Logger', JSON.stringify(log)).then(r => true);
 }
 
-
 export function useLogService() {
     const [result, setResult] = useState < Service < Dictionary < string > [] >> ({
         status: 'loading'
@@ -15,7 +14,7 @@ export function useLogService() {
 
     useEffect(() => {
         WebApi('/api/Logger', '','GET')
-            .then(response => response.json())
+            .then(response => response)
             .then(response => setResult({ status: 'loaded', payload: response }))
             .catch(error => setResult({ status: 'error', error }));
     }, []);
