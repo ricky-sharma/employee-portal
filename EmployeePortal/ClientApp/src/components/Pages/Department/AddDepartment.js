@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import AlertMessage from '../../AlertMessage';
+import AlertMessage from '../../Core/AlertMessage';
 import WebApi from '../../Helpers/WebApi';
 
 export class AddDepartment extends Component {

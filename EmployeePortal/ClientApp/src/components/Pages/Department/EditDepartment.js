@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import AlertMessage from '../../AlertMessage';
+import AlertMessage from '../../Core/AlertMessage';
 import WebApi from '../../Helpers/WebApi';
 import { Container } from 'reactstrap';
 import { Prompt, Redirect } from "react-router-dom";
-import AlertDialog from '../../AlertDialog';
+import AlertDialog from '../../Core/AlertDialog';
 
 export class EditDepartment extends Component {
     constructor(props) {

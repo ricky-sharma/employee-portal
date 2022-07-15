@@ -1,7 +1,7 @@
-import React, { Component } from 'react'
-import { Link } from 'react-router-dom'
+import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import { SideNav } from 'react-side-nav';
-import './css/SideNavMenu.css';
+import '../css/SideNavMenu.css';
 
 const NavLink = props => (<Link to={props.to} {...props}><i className={`fa ${props.icon}`} />{props.label}</Link>);
 const Chevron = props => (<i className={('fa', props.className, { 'fa-chevron-left': !props.expanded, 'fa-chevron-down': props.expanded })} />);

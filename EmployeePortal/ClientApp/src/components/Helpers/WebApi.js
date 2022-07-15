@@ -1,10 +1,11 @@
 import { trackPromise } from 'react-promise-tracker';
-import AlertDialog from '../AlertDialog';
+import AlertDialog from '../Core/AlertDialog';
+import * as Constants from '../../Constants'
 
 function WebApi(apiUrl, data, method = 'POST', auth = true) {
     let authHeader = 'Bearer ' + localStorage.getItem('myToken')
     let serviceUrl = (window.location.protocol !== 'https:' ?
-        'http://employee.service.com' : 'https://employee.service.com')
+        Constants.DevServiceURL : Constants.ServiceURL)
     let headers = {
         "Content-Type": 'application/json',
         "Accept": 'application/json',
