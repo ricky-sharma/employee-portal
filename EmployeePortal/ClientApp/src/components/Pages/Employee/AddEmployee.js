@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import AlertMessage from '../../AlertMessage';
+import AlertMessage from '../../Core/AlertMessage';
 import WebApi from '../../Helpers/WebApi';
 import { Container } from 'reactstrap';
 

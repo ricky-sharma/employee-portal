@@ -3,7 +3,7 @@ import { format } from "date-fns";
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { Container } from 'reactstrap';
-import IsNull from '../Common/Global';
+import IsNull from '../Common/Common';
 import '../css/DataGrid.css';
 import '../css/Table.css';
 

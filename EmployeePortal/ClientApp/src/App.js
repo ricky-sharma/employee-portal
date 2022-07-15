@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Route, Switch } from 'react-router';
 import './components/css/Global.css';
 import { RequireAuth } from './components/Helpers/RequireAuth';
-import { Layout } from './components/Layout';
+import { Layout } from './components/Core/Layout';
 import { AddDepartment } from './components/Pages/Department/AddDepartment';
 import { Departments } from './components/Pages/Department/Departments';
 import { EditDepartment } from './components/Pages/Department/EditDepartment';

@@ -103,3 +103,7 @@
 .container-fluid {
     justify-content: normal !important;
 }
+
+.display-inline-table {
+    display: inline-table !important;
+}

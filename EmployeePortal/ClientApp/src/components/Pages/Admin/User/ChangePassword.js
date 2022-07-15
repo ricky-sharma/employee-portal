@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import WebApi from '../../../Helpers/WebApi';
 import ParseError from '../../../Helpers/ParseError';
-import AlertMessage from '../../../AlertMessage';
+import AlertMessage from '../../../Core/AlertMessage';
 
 export class ChangePassword extends Component {
     constructor(props) {

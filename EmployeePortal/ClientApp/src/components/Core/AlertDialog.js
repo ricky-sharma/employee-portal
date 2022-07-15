@@ -1,7 +1,7 @@
-import React, { Component } from 'react'
-import ReactDOM from 'react-dom';
 import "bootstrap/dist/css/bootstrap.min.css";
-import './css/Alert.css';
+import React from 'react';
+import ReactDOM from 'react-dom';
+import '../css/Alert.css';
 
 const node = document.createElement("div");
 
