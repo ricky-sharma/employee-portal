@@ -152,7 +152,7 @@ export class DataGrid extends Component {
                     </Button>
                 }
                 if (this.state.editButtonEnabled === true || this.state.type1ButtonEnabled === true)
-                    cols.push(<td onClick={(e) => e.stopPropagation()} style={{ cursor: "auto"}} className={(this.state.editButtonEnabled === true && this.state.type1ButtonEnabled === true) ?
+                    cols.push(<td onClick={(e) => e.stopPropagation()} style={{ cursor: "auto" }} className={(this.state.editButtonEnabled === true && this.state.type1ButtonEnabled === true) ?
                         "customWidth45" : "customWidth20"} key={"gridButtons"} >{editButton}{type1Button}</td >)
                 return (
                     <tr key={index} style={this.state.rowClickEnabled ? { cursor: 'pointer' } : {}} onClick={(e) => this.state.onRowClick(e, row)} className={this.state.rowCssClass !== undefined && this.state.rowCssClass !== null ? this.state.rowCssClass : "gridRows"}>
@@ -178,7 +178,11 @@ export class DataGrid extends Component {
             headers.push(...[''])
         }
         let hiddenCols = this.state.hiddenColIndex;
-        return headers.map((header, key) => {
+        return headers.map((header, key, { length }) => {
+            let thInnerHtml = ''
+            if (length !== key + 1) {
+                thInnerHtml = <span></span>
+            }
             let classNames = '';
             if (hiddenCols.some(x => x === key))
                 classNames = classNames + ' d-none';
@@ -187,11 +191,11 @@ export class DataGrid extends Component {
             };
             if (header === '')
                 return <th className={(this.state.editButtonEnabled === true && this.state.type1ButtonEnabled === true) ?
-                    "customWidth45" : "customWidth20"} key={key}><div><span></span></div></th>
+                    "customWidth45" : "customWidth20"} key={key}><div>{thInnerHtml}</div></th>
             if (header.Alias === null || header.Alias === undefined || header.Name === header.Alias)
-                return <th key={key} {...inputProps}><div><div className="px-2">{header.Name}</div><span></span></div></th>
+                return <th key={key} {...inputProps}><div><div className="px-2">{header.Name}</div>{thInnerHtml}</div></th>
             else if (header.Alias !== null && header.Alias !== undefined && header.Name !== header.Alias)
-                return <th key={key} {...inputProps}><div><div className="px-2">{header.Alias}</div><span></span></div></th>
+                return <th key={key} {...inputProps}><div><div className="px-2">{header.Alias}</div>{thInnerHtml}</div></th>
             return null
         })
     }
@@ -238,7 +242,7 @@ export class DataGrid extends Component {
                                 {this.renderTableData(firstRow, currentPageRows)}
                             </tbody>
                         </table>
-                        <div className="row col-12 pl-3">
+                        <div className="row col-12 pl-3 pb-md-5">
                             <div className="hint-text col-4 pl-sm-2 pl-3 m-0 p-0">Showing <b>{totalRows > currentPageRows ? (((activePage - 1) * pageRows + 1) + " to " + ((activePage - 1) * pageRows + currentPageRows)) : totalRows}</b> out of <b>{totalRows}</b> entries</div>
                             <div className="col-2 m-0 p-0"></div>
                             <div className="float-lt col-6 m-0 p-0">
