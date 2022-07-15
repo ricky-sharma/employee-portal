@@ -1,14 +1,12 @@
 ﻿import React from 'react';
 import { Container } from 'reactstrap';
+import IsNull from '../../Common/Common';
 import { DataGrid } from '../../Core/DataGrid';
 import { useLogService } from './../../Helpers/Logger.ts';
 
 export function Logs() {
-    let rowClicked = (e) => {
-        console.log(e)
-    }
     let userLogs = useLogService()
-    if (userLogs.status == 'loaded') {
+    if (userLogs.status == 'loaded' && !IsNull(userLogs.payload)) {
         let cols = Object.keys(userLogs.payload[0])
         let columns = []
         cols.map((val) => {
@@ -28,8 +26,16 @@ export function Logs() {
             else
                 columns.push({ Name: val })
         })
-        //let options = { EditButton: { Event: rowClicked }, Type1Button: { Event: rowClicked } }
-        let data = userLogs.payload
+        let data = []
+        userLogs.payload.map((resp, k) => {
+            data.push({
+                ID: !IsNull(resp.ID) ? resp.ID : '',
+                Type: !IsNull(resp.Type) ? resp.Type : '',
+                User: ((!IsNull(resp.User) && !IsNull(resp.User.FirstName)) ? resp.User.FirstName : '') + ' ' + ((!IsNull(resp.User) && !IsNull(resp.User.LastName)) ? resp.User.LastName : ''),
+                CreatedOn: !IsNull(resp.CreatedOn) ? resp.CreatedOn : '',
+                LogMessage: !IsNull(resp.LogMessage) ? resp.LogMessage : ''
+            })
+        })
         return (
             <Container className="mx-0 px-0">
                 <div className="table-wrapper">
