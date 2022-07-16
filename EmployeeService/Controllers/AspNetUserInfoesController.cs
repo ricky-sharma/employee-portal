@@ -29,7 +29,7 @@ namespace EmployeeService.Controllers
         public IHttpActionResult GetAspNetUserInfo(string id)
         {
             var getUserInfoes = GetUserInfoes();
-            UserInfoModel userInfo = getUserInfoes?.Any() == true ? getUserInfoes?.FirstOrDefault(i => i.UsersId == id): null;
+            UserInfoModel userInfo = getUserInfoes?.Any() == true ? getUserInfoes?.FirstOrDefault(i => i.UserId == id): null;
             if (userInfo == null)
             {
                 return NotFound();
@@ -49,7 +49,7 @@ namespace EmployeeService.Controllers
                 return BadRequest(ModelState);
             }
 
-            if (id != userInfoModel.UsersId)
+            if (id != userInfoModel.UserId)
             {
                 return BadRequest();
             }
@@ -61,7 +61,7 @@ namespace EmployeeService.Controllers
                 LastName = userInfoModel.LastName,
                 Gender = userInfoModel.Gender,
                 DOB = userInfoModel.DOB,
-                UsersId = userInfoModel.UsersId
+                UsersId = userInfoModel.UserId
             };
 
             AspNetUser aspNetUser = new AspNetUser()
@@ -179,7 +179,7 @@ namespace EmployeeService.Controllers
                 Id = i !=null ? i.Id : "",
                 Email = i != null ? i.AspNetUser.Email : "",
                 DOB = i != null ? i.DOB : null,
-                UsersId = i != null ? i.UsersId : "",
+                UserId = i != null ? i.UsersId : "",
                 FirstName = i != null ? i.FirstName : "",
                 LastName = i != null ? i.LastName : "",
                 Gender = i != null ? i.Gender : ""

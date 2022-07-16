@@ -14,14 +14,33 @@ using SQLDataEntity;
 
 namespace EmployeeService.Controllers
 {
+    [Authorize]
     public class LoggerController : ApiController
     {
         private EmployeeDBEntities db = new EmployeeDBEntities();
 
         // GET: api/Logger
-        public IQueryable<tblLog> GettblLogs()
+        public IQueryable<LogModel> GettblLogs()
         {
-            return db.tblLogs;
+            var tbllogs = db.tblLogs;
+            var logs = tbllogs?.Any() == true ? tbllogs?.Select(i => new LogModel()
+            {
+                CreatedOn = i != null ? i.CreatedOn : null,
+                User = i != null ? db.AspNetUserInfoes.Where(u => u.UsersId == i.UserId).Select(k => new UserInfoModel
+                {
+                    userInfoViewModel = new UserInfoViewModel()
+                    {
+                        UserId = k.UsersId
+                    },
+                    FirstName = k.FirstName,
+                    LastName=k.LastName,
+                    UserId =k.UsersId
+                }).FirstOrDefault() : null,
+                LogMessage = i != null ? i.LogMessage : null,
+                Type = i != null ? i.Type : null,
+                ID = i != null ? i.ID : default
+            }) : null;
+            return logs.OrderByDescending(x=> x.CreatedOn);
         }
 
         // GET: api/Logger/5
@@ -34,7 +53,25 @@ namespace EmployeeService.Controllers
                 return NotFound();
             }
 
-            return Ok(tblLog);
+            var logModel = new LogModel()
+            {
+                CreatedOn = (DateTime)tblLog.CreatedOn,
+                User = db.AspNetUserInfoes.Where(u => u.UsersId == tblLog.UserId).Select(k => new UserInfoModel
+                {
+                    userInfoViewModel = new UserInfoViewModel()
+                    {
+                        UserId = k.UsersId
+                    },
+                    FirstName = k.FirstName,
+                    LastName = k.LastName,
+                    UserId = k.UsersId
+                }).FirstOrDefault(),
+                LogMessage = tblLog.LogMessage,
+                Type = tblLog.Type,
+                ID = tblLog.ID
+            };
+
+            return Ok(logModel);
         }
 
         // POST: api/Logger
@@ -52,7 +89,7 @@ namespace EmployeeService.Controllers
                 CreatedOn = DateTime.Now,
                 LogMessage = logModel.LogMessage ?? string.Empty,
                 Type = logModel.Type ?? string.Empty,
-                UserId = logModel.UserId ?? string.Empty
+                UserId = logModel.User.UserId ?? string.Empty
             };
             db.tblLogs.Add(tblLog);
 

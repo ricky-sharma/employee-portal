@@ -204,9 +204,21 @@ select.disabled-inputs {
     }
 }
 
+@media (max-width: 524px) {
+    .loading-image {
+        left: 37% !important;
+    }
+}
+
 @media (max-width: 600px) {
     .hidesidenav {
         display: none;
+    }
+}
+
+@media (min-width: 525px) and (max-width: 660px) {
+    .loading-image {
+        left: 42% !important;
     }
 }
 
@@ -216,10 +228,21 @@ select.disabled-inputs {
     }
 }
 
+@media (max-width: 400px) {
+    .tablemobile {
+        display: inline-grid;
+    }
+}
+
+@media (min-width: 401px) and (max-width: 950px) {
+    .tablemobile {
+        display: table;
+    }
+}
+
 @media (max-width: 950px) {
     .tablemobile {
         overflow-x: auto;
-        display: inline-grid;
         -ms-overflow-style: none; /* Internet Explorer 10+ */
         scrollbar-width: none; /* Firefox */
     }

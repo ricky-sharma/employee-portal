@@ -12,7 +12,7 @@ namespace EmployeeService.Models
         public string LastName { get; set; }
         public string Gender { get; set; }
         public Nullable<System.DateTime> DOB { get; set; }
-        public string UsersId { get; set; }
+        public string UserId { get; set; }
         public string Email { get; set; }
         public UserInfoViewModel userInfoViewModel { get; set; }
     }

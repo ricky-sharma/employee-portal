@@ -26,7 +26,7 @@ export class Users extends Component {
                     let cols = []
                     Columns.map((val) => {
                         if (val.toUpperCase() === 'ID' || val.toUpperCase() === 'DOB' || val.toUpperCase() === 'GENDER'
-                            || val.toUpperCase() === 'USERSID' || val.toUpperCase() === 'USERINFOVIEWMODEL')
+                            || val.toUpperCase() === 'USERID' || val.toUpperCase() === 'USERINFOVIEWMODEL')
                             cols.push({
                                 Hidden: true
                             })
@@ -65,7 +65,6 @@ export class Users extends Component {
     }
 
     Type1ButtonClicked = (e, row) => {
-        console.log(row)
         this.props.history.push({ pathname: '/ResetPassword', state: row.UsersId })
     }
 
