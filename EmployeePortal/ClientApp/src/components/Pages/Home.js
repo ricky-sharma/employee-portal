@@ -58,7 +58,6 @@ export class Home extends Component {
     }
 
     handleRememberMe = (e) => {
-        console.log(e.target.checked)
         this.setState({ rememberMe: e.target.checked })
         if (e.target.checked) {
             let u = this.state.Username;

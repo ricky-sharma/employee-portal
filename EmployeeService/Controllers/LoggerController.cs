@@ -40,7 +40,7 @@ namespace EmployeeService.Controllers
                 Type = i != null ? i.Type : null,
                 ID = i != null ? i.ID : default
             }) : null;
-            return logs;
+            return logs.OrderByDescending(x=> x.CreatedOn);
         }
 
         // GET: api/Logger/5

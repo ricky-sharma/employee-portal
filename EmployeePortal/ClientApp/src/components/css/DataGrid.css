@@ -107,3 +107,21 @@ td.col1width25, th.col1width25 {
             height: 345px !important;
         }
 }
+
+.pointer {
+    cursor: pointer !important;
+}
+
+.inline-display {
+    display: inline-block !important;
+}
+
+.updown-icon {
+    text-shadow: 1px 1px 1px #ccc;
+    font-size: 15px !important;
+    margin-left: 10px !important;
+}
+    .updown-icon.inactive {
+        color: #ccc !important;
+        
+    }

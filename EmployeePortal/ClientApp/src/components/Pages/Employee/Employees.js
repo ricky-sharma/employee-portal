@@ -40,6 +40,7 @@ export class Employees extends Component {
                         else if (val.toUpperCase() === 'JOININGDATE')
                             cols.push({
                                 Name: val,
+                                Alias: 'Joining Date',
                                 Formatting: {
                                     Type: 'Date', Format: 'dd MMM yyyy'
                                 }

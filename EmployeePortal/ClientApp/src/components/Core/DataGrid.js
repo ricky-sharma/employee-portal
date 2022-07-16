@@ -4,6 +4,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { Container } from 'reactstrap';
 import IsNull from '../Common/Common';
+import { DynamicSort } from "../Common/Sort";
 import '../css/DataGrid.css';
 import '../css/Table.css';
 
@@ -12,6 +13,7 @@ export class DataGrid extends Component {
         super(props)
         const { Columns, RowsData, PageRows, GridEvents, Options } = props
         this.state = {
+            gridID: Math.floor(Math.random() * 10000),
             columns: !IsNull(Columns) ? Columns : null,
             rowsData: RowsData,
             totalRows: RowsData.length,
@@ -57,6 +59,8 @@ export class DataGrid extends Component {
             type1ButtonEnabled: !IsNull(Options) && !IsNull(Options.Type1Button),
             type1ButtonEvent: !IsNull(Options) && !IsNull(Options.Type1Button) && !IsNull(Options.Type1Button.Event) ? Options.Type1Button.Event : () => { }
         }
+        this.sortIconHtml = <i className='updown-icon inactive fa fa-sort' />
+        this.dataRecieved = this.state.rowsData
     }
 
     componentWillMount = () => {
@@ -191,13 +195,64 @@ export class DataGrid extends Component {
             };
             if (header === '')
                 return <th className={(this.state.editButtonEnabled === true && this.state.type1ButtonEnabled === true) ?
-                    "customWidth45" : "customWidth20"} key={key}><div>{thInnerHtml}</div></th>
+                    "customWidth45" : "customWidth20"} key={key}><div className="pl-2 p-0 inline-display">{thInnerHtml}</div></th>
             if (header.Alias === null || header.Alias === undefined || header.Name === header.Alias)
-                return <th key={key} {...inputProps}><div><div className="px-2">{header.Name}</div>{thInnerHtml}</div></th>
+                return <th key={key} {...inputProps}><div><div onClick={(e) => { this.tableHeaderClicked(e, header.Name) }} className="pl-2 p-0 pointer inline-display">{header.Name}{this.sortIconHtml}</div>{thInnerHtml}</div></th>
             else if (header.Alias !== null && header.Alias !== undefined && header.Name !== header.Alias)
-                return <th key={key} {...inputProps}><div><div className="px-2">{header.Alias}</div>{thInnerHtml}</div></th>
+                return <th key={key} {...inputProps}><div><div onClick={(e) => { this.tableHeaderClicked(e, header.Name) }} className="pl-2 p-0 pointer inline-display">{header.Alias}{this.sortIconHtml}</div>{thInnerHtml}</div></th>
             return null
         })
+    }
+
+    tableHeaderClicked = (e, name) => {
+        if (e.target.nodeName == "DIV" || e.target.nodeName == "I") {
+            let sortColumn = ''
+            let element = e.target.nodeName == "I" ? e.target : e.target.querySelector('i');
+            let i = document.createElement('i');
+            i.classList.add("fa", "updown-icon");
+            if (!IsNull(element)) {
+                if (element.classList.contains("fa-sort-down") || element.classList.contains("fa-sort")) {
+                    i.classList.add("fa-sort-up");
+                    sortColumn = name
+                }
+                else {
+                    i.classList.add("fa-sort-down");
+                    sortColumn = '-' + name
+                }
+            }
+            else {
+                i.classList.add("fa-sort-up");
+                sortColumn = name
+            }
+
+            let theadRow = document.getElementById("thead-row-" + this.state.gridID)
+            if (!IsNull(theadRow)) {
+                let sortIcons = theadRow.getElementsByTagName('i')
+                if (!IsNull(sortIcons)) {
+                    Array.from(sortIcons).map((si, k) => {
+                        if (si.classList.contains("fa-sort-up")) si.classList.remove("fa-sort-up")
+                        if (si.classList.contains("fa-sort-down")) si.classList.remove("fa-sort-down")
+                        if (!si.classList.contains("fa-sort")) si.classList.add("fa-sort", "inactive")
+                    })
+                }
+            }
+
+            if (e.target.nodeName == "I") {
+                let parentElement = e.target.parentNode
+                if (!IsNull(element))
+                    parentElement.removeChild(element);
+                parentElement.appendChild(i)
+            }
+            else {
+                if (!IsNull(element))
+                    e.target.removeChild(element);
+                e.target.appendChild(i);
+            }
+
+            let data = this.dataRecieved
+            data.sort(DynamicSort(sortColumn))
+            this.setState({ rowsData: data })
+        }
     }
 
     renderPagination = () => {
@@ -234,7 +289,7 @@ export class DataGrid extends Component {
                     <div className="row col-12 m-0 p-0">
                         <table className="table table-striped table-hover table-bordered border-0 tablemobile pb-1 mx-0 px-0">
                             <thead>
-                                <tr className={this.state.headerCssClass !== undefined && this.state.headerCssClass !== null ? this.state.headerCssClass : "gridHeader"}>
+                                <tr className={this.state.headerCssClass !== undefined && this.state.headerCssClass !== null ? this.state.headerCssClass : "gridHeader"} id={"thead-row-" + this.state.gridID}>
                                     {this.renderTableHeader()}
                                 </tr>
                             </thead>
