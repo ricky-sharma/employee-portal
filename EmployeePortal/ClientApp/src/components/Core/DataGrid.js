@@ -1,7 +1,6 @@
 ﻿import { Button } from "@material-ui/core";
 import { format } from "date-fns";
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
 import { Container } from 'reactstrap';
 import IsNull from '../Common/Common';
 import { DynamicSort } from "../Common/Sort";
@@ -27,6 +26,8 @@ export class DataGrid extends Component {
             gridCssClass: !IsNull(Options) ? Options.GridCssClass : null,
             headerCssClass: !IsNull(Options) ? Options.HeaderCssClass : null,
             rowCssClass: !IsNull(Options) ? Options.RowCssClass : null,
+            enableColumnSearch: !IsNull(Options) ? Options.EnableColumnSearch : null,
+            enableGlobalSearch: !IsNull(Options) ? Options.EnableGlobalSearch : null,
             hiddenColIndex: !IsNull(Columns) ? Columns.map((col, key) => {
                 if (!IsNull(col.Hidden) && col.Hidden)
                     return key;
@@ -61,9 +62,14 @@ export class DataGrid extends Component {
         }
         this.sortIconHtml = <i className='updown-icon inactive fa fa-sort' />
         this.dataRecieved = this.state.rowsData
+        this.searchCols = []
     }
 
     componentWillMount = () => {
+        this.setPagingVariables()
+    }
+
+    setPagingVariables = () => {
         let noOfPages = parseInt(this.state.totalRows / this.state.pageRows, 10)
         let lastPageRows = parseInt(this.state.totalRows % this.state.pageRows, 10)
         if (lastPageRows > 0)
@@ -141,17 +147,17 @@ export class DataGrid extends Component {
                         if (colFormatting[key].type.toUpperCase() === 'DATE' || colFormatting[key].type.toUpperCase() === 'DATETIME')
                             columnValue = format(new Date(columnValue), colFormatting[key].format)
                     }
-                    return <td className={classNames} key={key}><div className="px-2">{columnValue}</div></td>
+                    return <td className={classNames} key={key}>{columnValue}</td>
                 })
                 let editButton = ''
                 let type1Button = ''
                 if (this.state.editButtonEnabled === true) {
-                    editButton = <Button className="edit px-2 p-0 m-0" title="Edit" onClick={(e) => this.state.editButtonEvent(e, row)} data-toggle="tooltip">
+                    editButton = <Button className="edit px-sm-2 p-0 m-0" title="Edit" onClick={(e) => this.state.editButtonEvent(e, row)} data-toggle="tooltip">
                         <i className="material-icons">&#xE254;</i>
                     </Button>
                 }
                 if (this.state.type1ButtonEnabled === true) {
-                    type1Button = <Button className="changePassword px-2 p-0 m-0" title="Change Password" onClick={(e) => this.state.type1ButtonEvent(e, row)} data-toggle="tooltip">
+                    type1Button = <Button className="changePassword px-sm-2 p-0 m-0" title="Change Password" onClick={(e) => this.state.type1ButtonEvent(e, row)} data-toggle="tooltip">
                         <i className="material-icons">vpn_key</i>
                     </Button>
                 }
@@ -174,34 +180,70 @@ export class DataGrid extends Component {
         if (IsNull(this.state.columns) === true) {
             return null
         }
+        let hiddenCols = this.state.hiddenColIndex;
         let headers = this.state.columns
+        let enableColSearch = this.state.enableColumnSearch
+        let columnSearchEnabled = false, searchRowEnabled = false, inputProps = ''
         if (this.state.editButtonEnabled === true || this.state.type1ButtonEnabled === true) {
             if (headers[headers.length - 1] === '') {
                 headers.pop()
             }
             headers.push(...[''])
         }
-        let hiddenCols = this.state.hiddenColIndex;
-        return headers.map((header, key, { length }) => {
+        let thColHeaders = headers.map((header, key, { length }) => {
             let thInnerHtml = ''
             if (length !== key + 1) {
                 thInnerHtml = <span></span>
             }
-            let classNames = '';
+            let classNames = ''
             if (hiddenCols.some(x => x === key))
                 classNames = classNames + ' d-none';
-            var inputProps = {
-                className: header.cssClass !== undefined && header.cssClass !== null ? header.cssClass + ' ' + classNames : classNames
+            inputProps = {
+                className: !IsNull(header.cssClass) ? header.cssClass + ' ' + classNames : classNames
             };
-            if (header === '')
-                return <th className={(this.state.editButtonEnabled === true && this.state.type1ButtonEnabled === true) ?
+            let thHtml = ''
+            if (header === '') {
+                thHtml = <th className={(this.state.editButtonEnabled === true && this.state.type1ButtonEnabled === true) ?
                     "customWidth45" : "customWidth20"} key={key}><div className="pl-2 p-0 inline-display">{thInnerHtml}</div></th>
-            if (header.Alias === null || header.Alias === undefined || header.Name === header.Alias)
-                return <th key={key} {...inputProps}><div><div onClick={(e) => { this.tableHeaderClicked(e, header.Name) }} className="pl-2 p-0 pointer inline-display">{header.Name}{this.sortIconHtml}</div>{thInnerHtml}</div></th>
-            else if (header.Alias !== null && header.Alias !== undefined && header.Name !== header.Alias)
-                return <th key={key} {...inputProps}><div><div onClick={(e) => { this.tableHeaderClicked(e, header.Name) }} className="pl-2 p-0 pointer inline-display">{header.Alias}{this.sortIconHtml}</div>{thInnerHtml}</div></th>
-            return null
+            }
+            else if (IsNull(header.Alias) || header.Name === header.Alias) {
+                thHtml = <th key={key} {...inputProps}><div className="row p-0 m-0"><div onClick={(e) => { this.tableHeaderClicked(e, header.Name) }}
+                    className="pl-2 p-0 pointer inline-display">{header.Name}{this.sortIconHtml}</div>{thInnerHtml}</div></th>
+            }
+            else if (!IsNull(header.Alias) && header.Name !== header.Alias) {
+                thHtml = <th key={key} {...inputProps}><div className="row p-0 m-0"><div onClick={(e) => { this.tableHeaderClicked(e, header.Name) }}
+                    className="pl-2 p-0 pointer inline-display">{header.Alias}{this.sortIconHtml}</div>{thInnerHtml}</div></th>
+            }
+            return thHtml
         })
+        let thSearchHeaders = headers.map((header, key) => {
+            let classNames = ''
+            let formatting = null
+            if (!IsNull(header.Formatting)) {
+                formatting = header.Formatting
+            }
+            if (hiddenCols.some(x => x === key))
+                classNames = classNames + ' d-none';
+            inputProps = {
+                className: !IsNull(header.cssClass) ? header.cssClass + ' ' + classNames : classNames
+            };
+            columnSearchEnabled = (!IsNull(enableColSearch) ? enableColSearch : false) == true ?
+                (!IsNull(header.SearchEnable) ? header.SearchEnable : true) : (!IsNull(header.SearchEnable) ? header.SearchEnable : false)
+            if (columnSearchEnabled) searchRowEnabled = true;
+            if (header === '') {
+                return <th key={key} className={(this.state.editButtonEnabled === true && this.state.type1ButtonEnabled === true) ?
+                    "customWidth45" : "customWidth20"}><div className="pl-2 p-0 inline-display"></div></ th>
+            }
+            else {
+                return <th key={key} {...inputProps}><div className="row searchDiv pl-2 p-0 m-0">
+                    {columnSearchEnabled ? <input className="searchInput" onChange={(e) => this.handleColSearch(e, header.Name, formatting)} type="text" /> : <>.</>}</div></ th>
+            }
+        })
+        let thRowHtml = <tr className={!IsNull(this.state.headerCssClass) ? this.state.headerCssClass : "gridHeader"} id={"thead-row-" + this.state.gridID}>
+            {thColHeaders}</tr>
+        let thRowSearchHtml = <tr className={!IsNull(this.state.headerCssClass) ? this.state.headerCssClass : "searchHeader"}>
+            {thSearchHeaders}</tr>
+        return <thead>{thRowHtml}{searchRowEnabled ? thRowSearchHtml : <></>}</thead>
     }
 
     tableHeaderClicked = (e, name) => {
@@ -224,7 +266,6 @@ export class DataGrid extends Component {
                 i.classList.add("fa-sort-up");
                 sortColumn = name
             }
-
             let theadRow = document.getElementById("thead-row-" + this.state.gridID)
             if (!IsNull(theadRow)) {
                 let sortIcons = theadRow.getElementsByTagName('i')
@@ -236,7 +277,6 @@ export class DataGrid extends Component {
                     })
                 }
             }
-
             if (e.target.nodeName == "I") {
                 let parentElement = e.target.parentNode
                 if (!IsNull(element))
@@ -253,6 +293,46 @@ export class DataGrid extends Component {
             data.sort(DynamicSort(sortColumn))
             this.setState({ rowsData: data })
         }
+    }
+
+    handleColSearch = (e, colName, formatting) => {
+        let searchQuery = e.target.value
+        let keyFormat = ''
+        let formatType = ''
+        if (!IsNull(formatting)) {
+            if (!IsNull(formatting.Type) && !IsNull(formatting.Format)) {
+                keyFormat = formatting.Format
+                formatType = formatting.Type
+            }
+        }
+        let data = this.dataRecieved
+        if (searchQuery !== '') {
+            this.searchCols = this.searchCols.filter(x => x.colName !== colName);
+            this.searchCols.push({ colName, searchQuery, format: { keyFormat, formatType } })
+        }
+        else {
+            this.searchCols = this.searchCols.filter(x => x.colName !== colName);
+        }
+        this.searchCols.map((col, key) => {
+            if ((col.format.formatType.toUpperCase() === 'DATE' || col.format.formatType.toUpperCase() === 'DATETIME') && col.format.keyFormat !== '') {
+                data = data.filter(obj => Object.keys(obj).some(key => key.toString().toLowerCase() === col.colName.toString().toLowerCase()
+                    && format(new Date(obj[key]), col.format.keyFormat)
+                        .toString().toLowerCase().includes(col.searchQuery.toString().toLowerCase())));
+            }
+            else {
+                data = data.filter(obj => Object.keys(obj).some(key => key.toString().toLowerCase() === col.colName.toString().toLowerCase() && obj[key]
+                    .toString().toLowerCase().includes(col.searchQuery.toString().toLowerCase())));
+            }
+        })
+        let dataLength = data.length
+        let pageRows = this.state.pageRows
+        this.setState({
+            rowsData: data,
+            activePage: 1,
+            totalRows: dataLength,
+            firstRow: 0,
+            currentPageRows: pageRows
+        }, () => { this.setPagingVariables() })
     }
 
     renderPagination = () => {
@@ -287,20 +367,16 @@ export class DataGrid extends Component {
             <Container className="mx-0 px-0">
                 <div className={this.state.gridCssClass !== undefined && this.state.gridCssClass !== null ? "col-12 m-0 p-0 " + this.state.gridCssClass : "col-12 m-0 p-0 customGrid"}>
                     <div className="row col-12 m-0 p-0">
-                        <table className="table table-striped table-hover table-bordered border-0 tablemobile pb-1 mx-0 px-0">
-                            <thead>
-                                <tr className={this.state.headerCssClass !== undefined && this.state.headerCssClass !== null ? this.state.headerCssClass : "gridHeader"} id={"thead-row-" + this.state.gridID}>
-                                    {this.renderTableHeader()}
-                                </tr>
-                            </thead>
+                        <table className="table table-striped table-hover table-bordered border-0 tablemobile m-0 mx-0 px-0">
+                            {this.renderTableHeader()}
                             <tbody>
                                 {this.renderTableData(firstRow, currentPageRows)}
                             </tbody>
                         </table>
-                        <div className="row col-12 pl-3 pb-md-5">
-                            <div className="hint-text col-4 pl-sm-2 pl-3 m-0 p-0">Showing <b>{totalRows > currentPageRows ? (((activePage - 1) * pageRows + 1) + " to " + ((activePage - 1) * pageRows + currentPageRows)) : totalRows}</b> out of <b>{totalRows}</b> entries</div>
+                        <div className="row col-12 p-2 p-lg-3 pl-3 page-padding">
+                            <div className="hint-text col-5 pl-sm-2 pl-3 m-0 p-0">Showing <b>{totalRows > currentPageRows ? (((activePage - 1) * pageRows + 1) + " to " + ((activePage - 1) * pageRows + currentPageRows)) : totalRows}</b> out of <b>{totalRows}</b> entries</div>
                             <div className="col-2 m-0 p-0"></div>
-                            <div className="float-lt col-6 m-0 p-0">
+                            <div className="float-lt col-5 m-0 p-0">
                                 <div className="col-12 m-0 p-0">
                                     {EnablePaging === true ? <ul className="pagination">
                                         <li className={"page-item " + (activePage === 1 ? "disabled" : "")}>

@@ -36,6 +36,7 @@ export function Logs() {
                 LogMessage: !IsNull(resp.LogMessage) ? resp.LogMessage : ''
             })
         })
+        let options = { EnableColumnSearch: true }
         return (
             <Container className="mx-0 px-0">
                 <div className="table-wrapper">
@@ -47,7 +48,7 @@ export function Logs() {
                         </div>
                     </div>
                     <div>
-                        <DataGrid Columns={columns} RowsData={data} PageRows={15} />
+                        <DataGrid Columns={columns} RowsData={data} Options={options} PageRows={15} />
                     </div>
                 </div>
             </Container>)

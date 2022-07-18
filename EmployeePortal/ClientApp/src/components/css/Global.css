@@ -236,7 +236,7 @@ select.disabled-inputs {
 
 @media (min-width: 401px) and (max-width: 950px) {
     .tablemobile {
-        display: table;
+        display: inline-grid;
     }
 }
 
