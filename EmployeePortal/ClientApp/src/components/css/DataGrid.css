@@ -171,12 +171,33 @@ td.col1width25, th.col1width25 {
 
 .searchInput {
     width: 70% !important;
-    height: 50% !important;
+    height: 100% !important;
     color: rgba(0, 0, 0);
     font-weight: 400;
     border-color: #dee2e6 !important;
-    border-radius: 5px;
+    border-radius: 4px;
     border-width: 1px;
+}
+
+.globalSearchDiv {
+    display: block !important;
+    padding: 8px !important;
+    padding-right: 0 !important;
+    margin: 0 !important;
+}
+
+input.globalSearch {
+    width: 25% !important;
+    color: rgba(0, 0, 0);
+    font-weight: 400;
+    border-color: #dee2e6 !important;
+    border-radius: 4px;
+    border-width: 1px;
+    float: right !important;
+}
+
+input[type="text" i].globalSearch, input[type="text" i].searchInput {
+    padding: 1px 5px;
 }
 
 :focus-visible {
@@ -231,6 +252,13 @@ td.col1width25, th.col1width25 {
         padding-left: 2px;
         padding-right: 2px;
     }
+
+    input.globalSearch {
+        width: 30% !important;
+        height: 100% !important;
+        padding-left: 2px;
+        padding-right: 2px;
+    }
 }
 
 @media (min-width: 370px) and (max-width: 600px) {
@@ -246,5 +274,9 @@ td.col1width25, th.col1width25 {
 @media (max-width: 900px) {
     .searchHeader th {
         border-bottom: 1px solid rgb(224, 224, 224) !important;
+    }
+
+    input.globalSearch {
+        height: 100% !important;
     }
 }

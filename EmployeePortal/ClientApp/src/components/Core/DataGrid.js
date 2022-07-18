@@ -365,8 +365,12 @@ export class DataGrid extends Component {
         const { totalRows, currentPageRows, firstRow, activePage, noOfPages, pageRows, EnablePaging } = this.state
         return (
             <Container className="mx-0 px-0">
+                <div className="row col-12 globalSearchDiv">
+                    <input className="globalSearch" onChange={(e) => this.handleColSearch(e, 'globalSearch', null)} type="text" />
+                </div>
                 <div className={this.state.gridCssClass !== undefined && this.state.gridCssClass !== null ? "col-12 m-0 p-0 " + this.state.gridCssClass : "col-12 m-0 p-0 customGrid"}>
-                    <div className="row col-12 m-0 p-0">
+
+                    <div className="row col-12 m-0 p-0" >
                         <table className="table table-striped table-hover table-bordered border-0 tablemobile m-0 mx-0 px-0">
                             {this.renderTableHeader()}
                             <tbody>
