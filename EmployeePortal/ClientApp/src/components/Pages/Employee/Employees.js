@@ -82,7 +82,7 @@ export class Employees extends Component {
 
     render() {
         let gridEvents = { OnRowClick: this.rowClicked }
-        let options = { EnableColumnSearch: true }
+        let options = { EnableColumnSearch: true, EnableGlobalSearch: true }
         return (<Container className="mx-0 px-0">
             <div className="table-wrapper">
                 <div className="table-title">

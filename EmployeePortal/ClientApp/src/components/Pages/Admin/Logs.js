@@ -36,7 +36,7 @@ export function Logs() {
                 LogMessage: !IsNull(resp.LogMessage) ? resp.LogMessage : ''
             })
         })
-        let options = { EnableColumnSearch: true }
+        let options = { EnableColumnSearch: true, EnableGlobalSearch: true }
         return (
             <Container className="mx-0 px-0">
                 <div className="table-wrapper">

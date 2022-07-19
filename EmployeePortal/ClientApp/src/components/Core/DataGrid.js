@@ -165,7 +165,8 @@ export class DataGrid extends Component {
                     cols.push(<td onClick={(e) => e.stopPropagation()} style={{ cursor: "auto" }} className={(this.state.editButtonEnabled === true && this.state.type1ButtonEnabled === true) ?
                         "customWidth45" : "customWidth20"} key={"gridButtons"} >{editButton}{type1Button}</td >)
                 return (
-                    <tr key={index} style={this.state.rowClickEnabled ? { cursor: 'pointer' } : {}} onClick={(e) => this.state.onRowClick(e, row)} className={this.state.rowCssClass !== undefined && this.state.rowCssClass !== null ? this.state.rowCssClass : "gridRows"}>
+                    <tr key={index} style={this.state.rowClickEnabled ? { cursor: 'pointer' } : {}} onClick={(e) => this.state.onRowClick(e, row)}
+                        className={this.state.rowCssClass !== undefined && this.state.rowCssClass !== null ? this.state.rowCssClass : "gridRows"}>
                         {cols}
                     </tr>
                 )
@@ -183,6 +184,7 @@ export class DataGrid extends Component {
         let hiddenCols = this.state.hiddenColIndex;
         let headers = this.state.columns
         let enableColSearch = this.state.enableColumnSearch
+        let concatCols = this.state.concatColumns;
         let columnSearchEnabled = false, searchRowEnabled = false, inputProps = ''
         if (this.state.editButtonEnabled === true || this.state.type1ButtonEnabled === true) {
             if (headers[headers.length - 1] === '') {
@@ -217,8 +219,12 @@ export class DataGrid extends Component {
             return thHtml
         })
         let thSearchHeaders = headers.map((header, key) => {
+            let conCols = null;
             let classNames = ''
             let formatting = null
+            if (!IsNull(concatCols[key]) && !IsNull(concatCols[key].cols)) {
+                conCols = concatCols[key].cols
+            }
             if (!IsNull(header.Formatting)) {
                 formatting = header.Formatting
             }
@@ -236,7 +242,7 @@ export class DataGrid extends Component {
             }
             else {
                 return <th key={key} {...inputProps}><div className="row searchDiv pl-2 p-0 m-0">
-                    {columnSearchEnabled ? <input className="searchInput" onChange={(e) => this.handleColSearch(e, header.Name, formatting)} type="text" /> : <>.</>}</div></ th>
+                    {columnSearchEnabled ? <input className="searchInput" placeholder={"Search"} onChange={(e) => this.handleColSearch(e, header.Name, conCols, formatting)} type="text" /> : <>.</>}</div></ th>
             }
         })
         let thRowHtml = <tr className={!IsNull(this.state.headerCssClass) ? this.state.headerCssClass : "gridHeader"} id={"thead-row-" + this.state.gridID}>
@@ -289,16 +295,23 @@ export class DataGrid extends Component {
                 e.target.appendChild(i);
             }
 
-            let data = this.dataRecieved
+            let data = this.state.rowsData
+            if (this.state.totalRows === data.length) {
+                data = this.dataRecieved
+            }
             data.sort(DynamicSort(sortColumn))
             this.setState({ rowsData: data })
         }
     }
 
-    handleColSearch = (e, colName, formatting) => {
+    handleColSearch = (e, colName, colObject, formatting) => {
         let searchQuery = e.target.value
         let keyFormat = ''
         let formatType = ''
+        let colObj = null;
+        if (!IsNull(colObject)) {
+            colObj = colObject
+        }
         if (!IsNull(formatting)) {
             if (!IsNull(formatting.Type) && !IsNull(formatting.Format)) {
                 keyFormat = formatting.Format
@@ -308,20 +321,75 @@ export class DataGrid extends Component {
         let data = this.dataRecieved
         if (searchQuery !== '') {
             this.searchCols = this.searchCols.filter(x => x.colName !== colName);
-            this.searchCols.push({ colName, searchQuery, format: { keyFormat, formatType } })
+            this.searchCols.push({ colName, searchQuery, colObj, format: { keyFormat, formatType } })
         }
         else {
             this.searchCols = this.searchCols.filter(x => x.colName !== colName);
         }
+        let globalSearchData = []
         this.searchCols.map((col, key) => {
-            if ((col.format.formatType.toUpperCase() === 'DATE' || col.format.formatType.toUpperCase() === 'DATETIME') && col.format.keyFormat !== '') {
-                data = data.filter(obj => Object.keys(obj).some(key => key.toString().toLowerCase() === col.colName.toString().toLowerCase()
-                    && format(new Date(obj[key]), col.format.keyFormat)
-                        .toString().toLowerCase().includes(col.searchQuery.toString().toLowerCase())));
+            if (col.colName === '##globalSearch##') {
+                col.colObj.map((c, k) => {
+                    let colObjSearchData = []
+                    let hidden = !IsNull(c.Hidden) ? c.Hidden : false
+                    if (!IsNull(c.format) && !IsNull(c.format.formatType) && !IsNull(c.format.keyFormat) &&
+                        (c.format.formatType.toUpperCase() === 'DATE' || c.format.formatType.toUpperCase() === 'DATETIME') && c.format.keyFormat !== '') {
+                        if (!IsNull(c.ConcatColumns) && !IsNull(c.ConcatColumns.Columns)) {
+                            colObjSearchData =
+                                data.filter(obj => Object.keys(obj).some(key => c.ConcatColumns.Columns.some(x => x.toString().toLowerCase()
+                                    === key.toString().toLowerCase()) && hidden === false && format(new Date(obj[key]), c.format.keyFormat)
+                                        .toString().toLowerCase().includes(col.searchQuery.toString().toLowerCase())))
+                        }
+                        else {
+                            colObjSearchData =
+                                data.filter(obj => Object.keys(obj).some(key => key.toString().toLowerCase() === c.Name.toString().toLowerCase() &&
+                                    hidden === false && format(new Date(obj[key]), c.format.keyFormat).toString().toLowerCase().includes(
+                                        col.searchQuery.toString().toLowerCase())))
+                        }
+                    }
+                    else {
+                        if (!IsNull(c.ConcatColumns) && !IsNull(c.ConcatColumns.Columns)) {
+                            colObjSearchData =
+                                data.filter(obj => Object.keys(obj).some(key => c.ConcatColumns.Columns.some(x => x.toString().toLowerCase() === key.toString()
+                                    .toLowerCase()) && hidden === false && obj[key].toString().toLowerCase().includes(col.searchQuery.toString().toLowerCase())))
+                        }
+                        else {
+                            colObjSearchData =
+                                data.filter(obj => Object.keys(obj).some(key => key.toString().toLowerCase() === c.Name.toString().toLowerCase() && hidden === false
+                                    && obj[key].toString().toLowerCase().includes(col.searchQuery.toString().toLowerCase())))
+                        }
+                    }
+                    if (globalSearchData.length > 0) {
+                        var ids = new Set(globalSearchData.map(d => d.ID));
+                        globalSearchData = [...globalSearchData, ...colObjSearchData.filter(d => !ids.has(d.ID))];
+                    }
+                    else {
+                        globalSearchData = [...colObjSearchData];
+                    }
+                })
+                data = [...globalSearchData]
             }
             else {
-                data = data.filter(obj => Object.keys(obj).some(key => key.toString().toLowerCase() === col.colName.toString().toLowerCase() && obj[key]
-                    .toString().toLowerCase().includes(col.searchQuery.toString().toLowerCase())));
+                if ((col.format.formatType.toUpperCase() === 'DATE' || col.format.formatType.toUpperCase() === 'DATETIME') && col.format.keyFormat !== '') {
+                    if (!IsNull(col.colObj)) {
+                        data = data.filter(obj => Object.keys(obj).some(key => col.colObj.some(x => x.toString().toLowerCase() === key.toString().toLowerCase())
+                            && format(new Date(obj[key]), col.format.keyFormat).toString().toLowerCase().includes(col.searchQuery.toString().toLowerCase())));
+                    }
+                    else {
+                        data = data.filter(obj => Object.keys(obj).some(key => key.toString().toLowerCase() === col.colName.toString().toLowerCase()
+                            && format(new Date(obj[key]), col.format.keyFormat).toString().toLowerCase().includes(col.searchQuery.toString().toLowerCase())));
+                    }
+                }
+                else {
+                    if (!IsNull(col.colObj)) {
+                        data = data.filter(obj => Object.keys(obj).some(key => col.colObj.some(x => x.toString().toLowerCase() === key.toString().toLowerCase())
+                            && obj[key].toString().toLowerCase().includes(col.searchQuery.toString().toLowerCase())));
+                    }
+                    else {
+                        data = data.filter(obj => Object.keys(obj).some(key => key.toString().toLowerCase() === col.colName.toString().toLowerCase() && obj[key]
+                            .toString().toLowerCase().includes(col.searchQuery.toString().toLowerCase())));
+                    }
+                }
             }
         })
         let dataLength = data.length
@@ -365,11 +433,10 @@ export class DataGrid extends Component {
         const { totalRows, currentPageRows, firstRow, activePage, noOfPages, pageRows, EnablePaging } = this.state
         return (
             <Container className="mx-0 px-0">
-                <div className="row col-12 globalSearchDiv">
-                    <input className="globalSearch" onChange={(e) => this.handleColSearch(e, 'globalSearch', null)} type="text" />
-                </div>
+                {this.state.enableGlobalSearch ? <div className="row col-12 globalSearchDiv">
+                    <input className="globalSearch" placeholder="Global Search" onChange={(e) => this.handleColSearch(e, '##globalSearch##', this.state.columns)} type="text" />
+                </div> : <></>}
                 <div className={this.state.gridCssClass !== undefined && this.state.gridCssClass !== null ? "col-12 m-0 p-0 " + this.state.gridCssClass : "col-12 m-0 p-0 customGrid"}>
-
                     <div className="row col-12 m-0 p-0" >
                         <table className="table table-striped table-hover table-bordered border-0 tablemobile m-0 mx-0 px-0">
                             {this.renderTableHeader()}
