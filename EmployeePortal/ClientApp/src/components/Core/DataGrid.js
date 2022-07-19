@@ -444,12 +444,13 @@ export class DataGrid extends Component {
                                 {this.renderTableData(firstRow, currentPageRows)}
                             </tbody>
                         </table>
-                        <div className="row col-12 p-2 p-lg-3 pl-3 page-padding">
-                            <div className="hint-text col-5 pl-sm-2 pl-3 m-0 p-0">Showing <b>{totalRows > currentPageRows ? (((activePage - 1) * pageRows + 1) + " to " + ((activePage - 1) * pageRows + currentPageRows)) : totalRows}</b> out of <b>{totalRows}</b> entries</div>
-                            <div className="col-2 m-0 p-0"></div>
-                            <div className="float-lt col-5 m-0 p-0">
+                        <div className="row col-12 m-0 py-lg-3 px-0 page-padding">
+                            <div className="hint-text col-5 pt-2 pl-2 m-0 p-0">Showing <b>{totalRows > currentPageRows ? (((activePage - 1) * pageRows + 1) + " to " + ((activePage - 1) * pageRows + currentPageRows)) : totalRows}</b> out of <b>{totalRows}</b> entries</div>
+                            <div className="col-2 m-0 pt-sm-2 p-0" style={{ textAlign: "center" }}><select className="pageDDL" style={{}} onChange={(e) => { }}>
+                            </select></div>
+                            <div className="float-lt col-5 pt-1 m-0 p-0">
                                 <div className="col-12 m-0 p-0">
-                                    {EnablePaging === true ? <ul className="pagination">
+                                    {EnablePaging === true ? (<ul className="pagination">
                                         <li className={"page-item " + (activePage === 1 ? "disabled" : "")}>
                                             <a onClick={(e) => this.handleBackwardPage(e)} href="/" className="page-link remove-bg-color icon-align-center">
                                                 <b><i className="fa fa-angle-double-left"></i></b>
@@ -461,7 +462,7 @@ export class DataGrid extends Component {
                                                 <b><i className="fa fa-angle-double-right"></i></b>
                                             </a>
                                         </li>
-                                    </ul> : null}
+                                    </ul>) : null}
                                 </div>
                             </div>
                         </div>

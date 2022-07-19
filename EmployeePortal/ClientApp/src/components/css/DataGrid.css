@@ -8,7 +8,7 @@
     font-weight: 400;
     font-size: 0.875rem;
     line-height: 1.43;
-    letter-spacing: 0.01071em;
+    letter-spacing: 0.0010em;
     outline: none;
     display: flex;
     flex-direction: column;
@@ -196,6 +196,24 @@ input.globalSearch {
     float: right !important;
 }
 
+.pagination {
+    padding-right: 15px !important
+}
+
+    .pagination li a {
+        color: rgba(0, 0, 0, 0.87) !important;
+    }
+
+    .pagination > .active > a {
+        color: #fff !important;
+    }
+
+.pageDDL {
+    width: 20%;
+    border-radius: 4px;
+    height: 20px !important;
+}
+
 input[type="text" i].globalSearch, input[type="text" i].searchInput {
     padding: 1px 5px;
 }
@@ -217,7 +235,7 @@ input[type="text" i].globalSearch, input[type="text" i].searchInput {
 
     .gridHeader th {
         padding-top: 4px !important;
-        padding-bottom: 0px !important;
+        padding-bottom: 4px !important;
         padding-left: 5px !important;
         border-top: 0px !important;
         border-bottom: 0px !important;
@@ -259,6 +277,21 @@ input[type="text" i].globalSearch, input[type="text" i].searchInput {
         padding-left: 2px;
         padding-right: 2px;
     }
+
+    .pagination {
+        padding-right: 1px !important
+    }
+
+        .pagination li a {
+            height: 11px !important;
+            width: 11px !important;
+            line-height: 11px !important;
+        }
+
+        .pagination li i {
+            font-size: 11px !important;
+            padding-top: 2px !important;
+        }
 }
 
 @media (min-width: 370px) and (max-width: 600px) {
