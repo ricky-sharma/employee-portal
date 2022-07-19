@@ -26,7 +26,7 @@ export class Departments extends Component {
                         if (val.toUpperCase() === 'ID')
                             cols.push({
                                 Name: val,
-                                cssClass: 'col1width25'
+                                SearchEnable: false
                             })
                         else
                             cols.push({ Name: val })
@@ -51,6 +51,7 @@ export class Departments extends Component {
 
     render() {
         let gridEvents = { OnRowClick: this.rowClicked }
+        let options = { EnableColumnSearch: true, EnableGlobalSearch: true }
         return (<Container className="mx-0 px-0">
             <div className="table-wrapper">
                 <div className="table-title">
@@ -62,7 +63,8 @@ export class Departments extends Component {
                     </div>
                 </div>
                 <div>
-                    <DataGrid key={this.state.key} Columns={this.state.departmentColumns} RowsData={this.state.departmentData} PageRows={15} GridEvents={gridEvents} />
+                    <DataGrid key={this.state.key} Columns={this.state.departmentColumns} RowsData={this.state.departmentData}
+                        Options={options} PageRows={15} GridEvents={gridEvents} />
                 </div>
             </div>
         </Container>)

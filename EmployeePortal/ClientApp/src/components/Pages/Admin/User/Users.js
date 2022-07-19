@@ -70,7 +70,7 @@ export class Users extends Component {
 
     render() {
         let gridEvents = { OnRowClick: this.rowClicked }
-        let options = { Type1Button: { Event: this.Type1ButtonClicked } }
+        let options = { Type1Button: { Event: this.Type1ButtonClicked }, EnableColumnSearch: true, EnableGlobalSearch: true }
         return (<Container className="mx-0 px-0">
             <div className="table-wrapper">
                 <div className="table-title">
