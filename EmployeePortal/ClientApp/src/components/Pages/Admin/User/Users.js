@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Container } from 'reactstrap';
 import { DataGrid } from '../../../Core/DataGrid';
-import '../../../css/Table.css';
 import WebApi from '../../../Helpers/WebApi';
 
 export class Users extends Component {
@@ -61,11 +60,11 @@ export class Users extends Component {
     }
 
     rowClicked = (e, row) => {
-        this.props.history.push({ pathname: '/EditUserProfile', state: row.UsersId })
+        this.props.history.push({ pathname: '/EditUserProfile', state: row.UserId })
     }
 
     Type1ButtonClicked = (e, row) => {
-        this.props.history.push({ pathname: '/ResetPassword', state: row.UsersId })
+        this.props.history.push({ pathname: '/ResetPassword', state: row.UserId })
     }
 
     render() {

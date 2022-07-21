@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Container } from 'reactstrap';
 import { DataGrid } from '../../Core/DataGrid';
-import '../../css/Table.css';
 import WebApi from '../../Helpers/WebApi';
 
 export class Employees extends Component {
@@ -25,7 +24,9 @@ export class Employees extends Component {
                         if (val.toUpperCase() === 'ID')
                             cols.push({
                                 Name: val,
-                                SearchEnable: false
+                                SearchEnable: false,
+                                cssClass: 'col1width75'
+
                             })
                         else if (val.toUpperCase() === 'DEPARTMENTNAME')
                             cols.push({
@@ -35,12 +36,14 @@ export class Employees extends Component {
                         else if (val.toUpperCase() === 'DEPARTMENTLOCATION')
                             cols.push({
                                 Name: val,
-                                Alias: 'Location'
+                                Alias: 'Location',
+                                cssClass: 'col1width125'
                             })
                         else if (val.toUpperCase() === 'JOININGDATE')
                             cols.push({
                                 Name: val,
                                 Alias: 'Joining Date',
+                                cssClass: 'col1width125',
                                 Formatting: {
                                     Type: 'Date', Format: 'dd MMM yyyy'
                                 }
@@ -95,7 +98,7 @@ export class Employees extends Component {
                 </div>
                 <div>
                     <DataGrid key={this.state.key} Columns={this.state.employeeColumns} RowsData={this.state.employeeData}
-                        Options={options} PageRows={15} GridEvents={gridEvents} />
+                        Options={options} PageRows={10} GridEvents={gridEvents} />
                 </div>
             </div>
         </Container>)

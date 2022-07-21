@@ -1,11 +1,16 @@
 ﻿import { Button } from "@material-ui/core";
 import { format } from "date-fns";
 import React, { Component } from 'react';
+import { usePromiseTracker } from "react-promise-tracker";
 import { Container } from 'reactstrap';
 import IsNull from '../Common/Common';
 import { DynamicSort } from "../Common/Sort";
 import '../css/DataGrid.css';
-import '../css/Table.css';
+
+const LoadingIndicator = () => {
+    const { promiseInProgress } = usePromiseTracker();
+    return (promiseInProgress ? 'Data loading...' : 'No data to display')
+}
 
 export class DataGrid extends Component {
     constructor(props) {
@@ -19,6 +24,7 @@ export class DataGrid extends Component {
             EnablePaging: !IsNull(PageRows),
             pageRows: !IsNull(PageRows) ? PageRows : RowsData.length,
             noOfPages: 0,
+            pagerSelectOptions: [],
             firstRow: 0,
             currentPageRows: !IsNull(PageRows) ? PageRows : RowsData.length,
             lastPageRows: 10,
@@ -76,9 +82,11 @@ export class DataGrid extends Component {
             noOfPages++;
         else if (lastPageRows == 0)
             lastPageRows = this.state.pageRows
+        let pagerSelectOptions = [...Array(noOfPages).keys()].map(i => i + 1);
         this.setState({
             noOfPages: noOfPages,
-            lastPageRows: lastPageRows
+            lastPageRows: lastPageRows,
+            pagerSelectOptions: pagerSelectOptions.map((o, key) => <option key={key} value={o}>{o}</option>)
         })
     }
 
@@ -137,17 +145,17 @@ export class DataGrid extends Component {
                             conValue = conValue.slice(0, conValue.length - sepLenth)
                         }
                     }
-                    let classNames = ''
+                    let classNames = '', hideClass = ''
                     if (!IsNull(cssClassCols[key]))
                         classNames = cssClassCols[key];
                     if (hiddenCols.some(x => x === key))
-                        classNames = classNames + ' d-none';
+                        hideClass = 'd-none';
                     let columnValue = conValue !== '' ? conValue : col
                     if (!IsNull(columnValue) && !IsNull(colFormatting[key]) && !IsNull(colFormatting[key].type) && !IsNull(colFormatting[key].format)) {
                         if (colFormatting[key].type.toUpperCase() === 'DATE' || colFormatting[key].type.toUpperCase() === 'DATETIME')
                             columnValue = format(new Date(columnValue), colFormatting[key].format)
                     }
-                    return <td className={classNames} key={key}>{columnValue}</td>
+                    return <td className={hideClass + (!IsNull(cssClassCols[key]) ? (' ' + cssClassCols[key]) : '')} key={key}><div className={classNames + " m-0 p-0"}>{columnValue}</div></td>
                 })
                 let editButton = ''
                 let type1Button = ''
@@ -162,8 +170,11 @@ export class DataGrid extends Component {
                     </Button>
                 }
                 if (this.state.editButtonEnabled === true || this.state.type1ButtonEnabled === true)
-                    cols.push(<td onClick={(e) => e.stopPropagation()} style={{ cursor: "auto" }} className={(this.state.editButtonEnabled === true && this.state.type1ButtonEnabled === true) ?
-                        "customWidth45" : "customWidth20"} key={"gridButtons"} >{editButton}{type1Button}</td >)
+                    cols.push(<td onClick={(e) => e.stopPropagation()} style={{ cursor: "auto" }} key={"gridButtons"}
+                        className={(this.state.editButtonEnabled === true && this.state.type1ButtonEnabled === true) ?
+                            "col1width125" : "col1width75"} >
+                        <div className={(this.state.editButtonEnabled === true && this.state.type1ButtonEnabled === true) ?
+                            "col1width125 m-0 p-0" : "col1width75 m-0 p-0"}>{editButton}{type1Button}</div></td >)
                 return (
                     <tr key={index} style={this.state.rowClickEnabled ? { cursor: 'pointer' } : {}} onClick={(e) => this.state.onRowClick(e, row)}
                         className={this.state.rowCssClass !== undefined && this.state.rowCssClass !== null ? this.state.rowCssClass : "gridRows"}>
@@ -173,7 +184,7 @@ export class DataGrid extends Component {
             })
         }
         else return <tr key={"No-Data"} className={this.state.rowCssClass !== undefined && this.state.rowCssClass !== null ? this.state.rowCssClass : "gridRows align-page-center"}>
-            <th className="align-page-center" style={{ width: "100%", height: "100%", border: 0 }}>{"No data to display"}</th>
+            <th className="align-page-center" style={{ width: "100%", height: "100%", border: 0 }}><LoadingIndicator /></th>
         </tr>
     }
 
@@ -197,30 +208,34 @@ export class DataGrid extends Component {
             if (length !== key + 1) {
                 thInnerHtml = <span></span>
             }
-            let classNames = ''
+            let classNames = '', hideClass = ''
             if (hiddenCols.some(x => x === key))
-                classNames = classNames + ' d-none';
+                hideClass = 'd-none';
             inputProps = {
-                className: !IsNull(header.cssClass) ? header.cssClass + ' ' + classNames : classNames
+                className: !IsNull(header.cssClass) ? header.cssClass + ' row p-0 m-0' : 'row p-0 m-0'
             };
             let thHtml = ''
             if (header === '') {
-                thHtml = <th className={(this.state.editButtonEnabled === true && this.state.type1ButtonEnabled === true) ?
-                    "customWidth45" : "customWidth20"} key={key}><div className="pl-2 p-0 inline-display">{thInnerHtml}</div></th>
+                thHtml = <th key={key} className={hideClass + ((this.state.editButtonEnabled === true && this.state.type1ButtonEnabled === true) ?
+                    " col1width125 p-0 " : " col1width75 ") + (!IsNull(header.cssClass) ? (' ' + header.cssClass) : '')}>
+                    <div className={(this.state.editButtonEnabled === true && this.state.type1ButtonEnabled === true) ?
+                        "col1width125 p-0 inline-display" : "col1width75 p-0 inline-display"}></div>{thInnerHtml}</th>
             }
             else if (IsNull(header.Alias) || header.Name === header.Alias) {
-                thHtml = <th key={key} {...inputProps}><div className="row p-0 m-0"><div onClick={(e) => { this.tableHeaderClicked(e, header.Name) }}
-                    className="pl-2 p-0 pointer inline-display">{header.Name}{this.sortIconHtml}</div>{thInnerHtml}</div></th>
+                thHtml = <th key={key} className={hideClass + (!IsNull(header.cssClass) ? (' ' + header.cssClass) : '')}>
+                    <div {...inputProps}><div onClick={(e) => { this.tableHeaderClicked(e, header.Name) }}
+                        className="p-0 pointer inline-display">{header.Name}{this.sortIconHtml}</div></div>{thInnerHtml}</th>
             }
             else if (!IsNull(header.Alias) && header.Name !== header.Alias) {
-                thHtml = <th key={key} {...inputProps}><div className="row p-0 m-0"><div onClick={(e) => { this.tableHeaderClicked(e, header.Name) }}
-                    className="pl-2 p-0 pointer inline-display">{header.Alias}{this.sortIconHtml}</div>{thInnerHtml}</div></th>
+                thHtml = <th key={key} className={hideClass + (!IsNull(header.cssClass) ? (' ' + header.cssClass) : '')}>
+                    <div {...inputProps}><div onClick={(e) => { this.tableHeaderClicked(e, header.Name) }}
+                        className="p-0 pointer inline-display">{header.Alias}{this.sortIconHtml}</div></div>{thInnerHtml}</th>
             }
             return thHtml
         })
         let thSearchHeaders = headers.map((header, key) => {
             let conCols = null;
-            let classNames = ''
+            let classNames = '', hideClass = ''
             let formatting = null
             if (!IsNull(concatCols[key]) && !IsNull(concatCols[key].cols)) {
                 conCols = concatCols[key].cols
@@ -229,20 +244,23 @@ export class DataGrid extends Component {
                 formatting = header.Formatting
             }
             if (hiddenCols.some(x => x === key))
-                classNames = classNames + ' d-none';
+                hideClass = 'd-none';
             inputProps = {
-                className: !IsNull(header.cssClass) ? header.cssClass + ' ' + classNames : classNames
+                className: !IsNull(header.cssClass) ? header.cssClass + ' row searchDiv p-0 m-0' : 'row searchDiv p-0 m-0'
             };
             columnSearchEnabled = (!IsNull(enableColSearch) ? enableColSearch : false) == true ?
                 (!IsNull(header.SearchEnable) ? header.SearchEnable : true) : (!IsNull(header.SearchEnable) ? header.SearchEnable : false)
             if (columnSearchEnabled) searchRowEnabled = true;
             if (header === '') {
-                return <th key={key} className={(this.state.editButtonEnabled === true && this.state.type1ButtonEnabled === true) ?
-                    "customWidth45" : "customWidth20"}><div className="pl-2 p-0 inline-display"></div></ th>
+                return <th key={key} className={hideClass + ((this.state.editButtonEnabled === true && this.state.type1ButtonEnabled === true) ?
+                    " col1width125 p-0 " : " col1width75 ") + (!IsNull(header.cssClass) ? (' ' + header.cssClass) : '')}>
+                    <div className={(this.state.editButtonEnabled === true && this.state.type1ButtonEnabled === true) ?
+                        "col1width125 p-0 inline-display" : "col1width75 p-0 inline-display"}></div></ th>
             }
             else {
-                return <th key={key} {...inputProps}><div className="row searchDiv pl-2 p-0 m-0">
-                    {columnSearchEnabled ? <input className="searchInput" placeholder={"Search"} onChange={(e) => this.handleColSearch(e, header.Name, conCols, formatting)} type="text" /> : <>.</>}</div></ th>
+                return <th key={key} className={hideClass + (!IsNull(header.cssClass) ? (' ' + header.cssClass) : '')}><div {...inputProps}>
+                    {columnSearchEnabled ? <input className="searchInput" placeholder={"Search"}
+                        onChange={(e) => this.handleColSearch(e, header.Name, conCols, formatting)} type="text" /> : <>.</>}</div></ th>
             }
         })
         let thRowHtml = <tr className={!IsNull(this.state.headerCssClass) ? this.state.headerCssClass : "gridHeader"} id={"thead-row-" + this.state.gridID}>
@@ -438,18 +456,22 @@ export class DataGrid extends Component {
                 </div> : <></>}
                 <div className={this.state.gridCssClass !== undefined && this.state.gridCssClass !== null ? "col-12 m-0 p-0 " + this.state.gridCssClass : "col-12 m-0 p-0 customGrid"}>
                     <div className="row col-12 m-0 p-0" >
-                        <table className="table table-striped table-hover table-bordered border-0 tablemobile m-0 mx-0 px-0">
+                        <table className="table table-striped table-hover table-bordered border-0 border-bottom m-0 mx-0 px-0">
                             {this.renderTableHeader()}
                             <tbody>
                                 {this.renderTableData(firstRow, currentPageRows)}
                             </tbody>
                         </table>
-                        <div className="row col-12 p-2 p-lg-3 pl-3 page-padding">
-                            <div className="hint-text col-5 pl-sm-2 pl-3 m-0 p-0">Showing <b>{totalRows > currentPageRows ? (((activePage - 1) * pageRows + 1) + " to " + ((activePage - 1) * pageRows + currentPageRows)) : totalRows}</b> out of <b>{totalRows}</b> entries</div>
-                            <div className="col-2 m-0 p-0"></div>
-                            <div className="float-lt col-5 m-0 p-0">
+                        <div className="row col-12 m-0 p-0 align-center">
+                            <div className="col-5 pl-2 m-0 p-0">Showing <b>{totalRows > currentPageRows ? (((activePage - 1) * pageRows + 1) + " to " + ((activePage - 1) * pageRows + currentPageRows)) : totalRows}</b> out of <b>{totalRows}</b> entries</div>
+                            <div className="col-2 m-0 p-0" style={{ textAlign: "center" }}>
+                                <select className="pagerSelect" value={activePage} onChange={(e) => { this.handleChangePage(e, parseInt(e.target.value)) }}>
+                                    {this.state.pagerSelectOptions}
+                                </select>
+                            </div>
+                            <div className="float-lt col-5 m-0 p-0 pr-2">
                                 <div className="col-12 m-0 p-0">
-                                    {EnablePaging === true ? <ul className="pagination">
+                                    {EnablePaging === true ? (<ul className="pagination align-center">
                                         <li className={"page-item " + (activePage === 1 ? "disabled" : "")}>
                                             <a onClick={(e) => this.handleBackwardPage(e)} href="/" className="page-link remove-bg-color icon-align-center">
                                                 <b><i className="fa fa-angle-double-left"></i></b>
@@ -461,7 +483,7 @@ export class DataGrid extends Component {
                                                 <b><i className="fa fa-angle-double-right"></i></b>
                                             </a>
                                         </li>
-                                    </ul> : null}
+                                    </ul>) : null}
                                 </div>
                             </div>
                         </div>

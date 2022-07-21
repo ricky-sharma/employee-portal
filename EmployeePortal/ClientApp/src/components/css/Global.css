@@ -18,6 +18,23 @@ input, select {
     height: 30px !important;
 }
 
+select {
+    padding-left: 10px;
+    padding-right: 14px;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    text-indent: 1px;
+    text-overflow: '';
+}
+
+    select::-ms-expand {
+        display: none;
+    }
+
+    select.disabled-inputs {
+        text-indent: -1px;
+    }
+
 .label-padding {
     padding-left: 10px;
     padding-right: 14px;
@@ -28,30 +45,14 @@ input {
     padding-right: 14px;
 }
 
-select {
-    padding-left: 10px;
-    padding-right: 14px;
-}
-
-input[type=button], input[type=submit], input[type=reset] {
-    font-weight: bold;
-    font-size: 12px;
-    text-shadow: none;
-    border-radius: 50px;
-    line-height: 12px;
-    margin-top: 5px;
-}
-
-select::-ms-expand {
-    display: none;
-}
-
-select {
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    text-indent: 1px;
-    text-overflow: '';
-}
+    input[type=button], input[type=submit], input[type=reset] {
+        font-weight: bold;
+        font-size: 12px;
+        text-shadow: none;
+        border-radius: 50px;
+        line-height: 12px;
+        margin-top: 5px;
+    }
 
 .disabled-inputs {
     pointer-events: none;
@@ -59,10 +60,6 @@ select {
     border-style: none;
     padding-left: 0px;
     padding-right: 14px;
-}
-
-select.disabled-inputs {
-    text-indent: -1px;
 }
 
 .float-rt {
@@ -101,6 +98,104 @@ select.disabled-inputs {
 .padding-9 {
     padding-left: 9px;
     padding-right: 9px;
+}
+
+.table-wrapper {
+    background: #fff;
+    padding: 20px;
+    margin: 30px 0;
+    box-shadow: 0 1px 1px rgba(0,0,0,.05);
+}
+
+.table-title {
+    padding-bottom: 10px;
+    margin: 0 0 10px;
+}
+
+    .table-title h2 {
+        margin: 8px 0 0;
+        font-size: 22px;
+    }
+
+    .table-title .add-new {
+        float: right;
+        height: 30px;
+        font-weight: bold;
+        font-size: 12px;
+        text-shadow: none;
+        min-width: 100px;
+        border-radius: 50px;
+        line-height: 13px;
+        margin-top: 5px;
+    }
+
+        .table-title .add-new i {
+            margin-right: 4px;
+        }
+
+.container-width {
+    width: 95vw;
+    max-width: 95vw;
+}
+
+.navbar {
+    border-radius: 0px !important;
+}
+
+.userName {
+    height: 99.1%;
+    text-align: center;
+}
+
+body {
+    /*overflow: hidden !important;*/ /* Hide scrollbars */
+    overflow-x: hidden !important;
+    -ms-overflow-style: none; /* Internet Explorer 10+ */
+    scrollbar-width: none; /* Firefox */
+}
+
+    body::-webkit-scrollbar {
+        display: none; /* Safari and Chrome */
+    }
+
+.overflow-Y {
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+}
+
+.icon-align-center {
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    height: 70% !important;
+}
+
+.align-page-center {
+    width: 100%;
+    height: 70px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.loading {
+    position: fixed;
+    display: block;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    text-align: center;
+    opacity: 0.7;
+    background-color: #fff;
+    z-index: 100;
+}
+
+.loading-image {
+    position: absolute;
+    top: 40%;
+    left: 47%;
+    z-index: 101
 }
 
 @media (max-width: 240px) {
@@ -278,74 +373,4 @@ select.disabled-inputs {
     .container, .container-lg, .container-md, .container-sm, .container-xl {
         max-width: 1550px !important;
     }
-}
-
-.container-width {
-    width: 95vw;
-    max-width: 95vw;
-}
-
-.navbar {
-    border-radius: 0px !important;
-}
-
-.userName {
-    height: 99.1%;
-    text-align: center;
-}
-
-body {
-    /*overflow: hidden !important;*/ /* Hide scrollbars */
-    overflow-x: hidden !important;
-    -ms-overflow-style: none; /* Internet Explorer 10+ */
-    scrollbar-width: none; /* Firefox */
-}
-
-    body::-webkit-scrollbar {
-        display: none; /* Safari and Chrome */
-    }
-
-.overflow-Y {
-    overflow-y: auto !important;
-    overflow-x: hidden !important;
-}
-
-.pagination > li > .remove-bg-color:focus, .pagination > li > .remove-bg-color:hover {
-    background-color: #ffff !important;
-    box-shadow: 0 0 0 0rem rgb(0 123 255 / 25%);
-}
-
-.icon-align-center {
-    display: flex !important;
-    align-items: center;
-    justify-content: center;
-    height: 70% !important;
-}
-
-.align-page-center {
-    width: 100%;
-    height: 70px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.loading {
-    position: fixed;
-    display: block;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    text-align: center;
-    opacity: 0.7;
-    background-color: #fff;
-    z-index: 100;
-}
-
-.loading-image {
-    position: absolute;
-    top: 40%;
-    left: 47%;
-    z-index: 101
 }
