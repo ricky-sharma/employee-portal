@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Container } from 'reactstrap';
 import { DataGrid } from '../../../Core/DataGrid';
-import '../../../css/Table.css';
 import WebApi from '../../../Helpers/WebApi';
 
 export class Users extends Component {

@@ -14,8 +14,8 @@
     flex-direction: column;
     box-shadow: rgb(0 0 0 / 20%) 0px 3px 1px -2px, rgb(0 0 0 / 14%) 0px 2px 2px 0px, rgb(0 0 0 / 12%) 0px 1px 5px 0px;
     border: 2px solid rgb(224, 224, 224);
-    max-height: 490px !important;
-    height: 490px !important;
+    max-height: 500px !important;
+    height: 500px !important;
 }
 
     .customGrid table tbody {
@@ -25,14 +25,29 @@
         height: 350px !important;
         width: 100%;
         max-width: 100%;
-        display: block;
-        -ms-overflow-style: none; /* Internet Explorer 10+ */
-        scrollbar-width: none; /* Firefox */
     }
 
-        .customGrid table tbody::-webkit-scrollbar {
-            display: none; /* Safari and Chrome */
+        .customGrid table::-webkit-scrollbar, .customGrid table tbody::-webkit-scrollbar {
+            height: 4px !important;
+            width: 4px !important;
+            border: 1px solid #d5d5d5;
+            border-start-end-radius: 2px;
         }
+
+        /* Track */
+        .customGrid table::-webkit-scrollbar-track, .customGrid table tbody::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+
+        /* Handle */
+        .customGrid table::-webkit-scrollbar-thumb, .customGrid table tbody::-webkit-scrollbar-thumb {
+            background: #888;
+        }
+
+            /* Handle on hover */
+            .customGrid table::-webkit-scrollbar-thumb:hover, .customGrid table tbody::-webkit-scrollbar-thumb:hover {
+                background: #555;
+            }
 
     .customGrid thead, tr {
         display: table; /* display purpose; th's border */
@@ -49,16 +64,21 @@
         border-bottom: 1px solid rgb(224, 224, 224) !important;
         border-left: 0px solid rgb(224, 224, 224) !important;
         border-right: 0px solid rgb(224, 224, 224) !important;
-        max-width: 50px !important;
-        width: 50px;
         position: relative;
-        padding: 10px !important;
+        padding-top: 15px !important;
+        padding-bottom: 15px !important;
         padding-right: 0 !important;
+        padding-left: 0px !important;
+        max-width: 200px !important;
+        width: 200px;
         vertical-align: top !important;
     }
 
         .gridHeader th div {
+            max-width: 200px !important;
+            width: 200px;
             position: relative;
+            padding-left: 10px !important;
         }
 
     .gridHeader span {
@@ -66,8 +86,8 @@
         background-color: rgb(224, 224, 224);
         position: absolute;
         right: -3px;
-        top: 0px;
-        bottom: 0px;
+        top: 8px;
+        bottom: 8px;
         z-index: 10;
         padding: 0 !important
     }
@@ -82,19 +102,23 @@
         border-bottom: 1px solid rgb(224, 224, 224) !important;
         border-left: 0px solid rgb(224, 224, 224) !important;
         border-right: 0px solid rgb(224, 224, 224) !important;
-        max-width: 50px !important;
-        width: 50px;
         position: relative;
-        padding: 0px !important;
-        padding-left: 10px !important;
+        padding-top: 5px !important;
+        padding-left: 0px !important;
         padding-bottom: 5px !important;
+        padding-right: 0px !important;
         vertical-align: top !important;
         line-height: 0.5 !important;
+        max-width: 200px !important;
+        width: 200px;
         table-layout: fixed;
     }
 
         .searchHeader th div {
+            max-width: 200px !important;
+            width: 200px;
             position: relative;
+            padding-left: 20px !important;
         }
 
 .gridRows:first-child {
@@ -109,35 +133,61 @@
     border-bottom: 1px solid rgb(224, 224, 224) !important;
 }
 
+.border-bottom {
+    border-bottom: 1px solid #dee2e6 !important;
+}
+
 .gridRows td {
     border-top: 1px solid rgb(224, 224, 224) !important;
     border-bottom: 0px solid rgb(224, 224, 224) !important;
     border-left: 0px solid rgb(224, 224, 224) !important;
     border-right: 0px solid rgb(224, 224, 224) !important;
-    max-width: 50px !important;
-    width: 50px;
-    overflow: hidden;
-    white-space: normal;
-    text-overflow: ellipsis;
     flex: 1;
-    padding: 10px !important;
-    padding-right: 0px !important;
+    padding: 0 !important;
+    max-width: 200px !important;
+    width: 200px;
 }
 
     .gridRows td div {
         overflow: hidden;
-        white-space: nowrap;
+        white-space: normal;
         text-overflow: ellipsis;
+        max-width: 200px !important;
+        width: 200px;
+        padding: 10px !important;
+        padding-right: 0px !important;
+        padding-left: 25px !important;
     }
 
 table {
     overflow-x: auto !important;
-    overflow-y: hidden !important;
+    overflow-y: auto !important;
+    display: inline-grid !important;
 }
 
-td.col1width25, th.col1width25 {
+.col1width25 {
     width: 25px !important;
     max-width: 25px !important;
+}
+
+.col1width40 {
+    width: 40px !important;
+    max-width: 40px !important;
+}
+
+.col1width45 {
+    width: 45px !important;
+    max-width: 45px !important;
+}
+
+.col1width75 {
+    width: 75px !important;
+    max-width: 75px !important;
+}
+
+.col1width125 {
+    width: 125px !important;
+    max-width: 125px !important;
 }
 
 .changePassword.MuiButton-root:hover, .edit.MuiButton-root:hover {
@@ -164,7 +214,7 @@ td.col1width25, th.col1width25 {
 
 .searchDiv {
     align-items: center !important;
-    display: inline-table;
+    display: inline-block;
     justify-content: left;
     color: #fff;
 }
@@ -196,7 +246,58 @@ input.globalSearch {
     float: right !important;
 }
 
+.pagerSelect {
+    width: 25%;
+    border-radius: 4px;
+    height: 20px !important;
+    padding-left: 2px;
+    padding-right: 2px;
+    text-align: center;
+}
+
+input[type="text" i].globalSearch, input[type="text" i].searchInput {
+    padding: 1px 5px;
+}
+
+:focus-visible {
+    outline: -webkit-focus-ring-color auto 0px !important;
+}
+
+table.table-striped tbody tr:nth-of-type(odd) {
+    background-color: #fcfcfc;
+}
+
+table.table-striped.table-hover tbody tr:hover {
+    background: #f5f5f5;
+}
+
+table.table td a.changePassword, button.changePassword {
+    color: rgb(15, 255, 7) !important;
+    min-width: fit-content !important;
+}
+
+table.table td a.view, button.view {
+    color: #03A9F4;
+    min-width: fit-content !important;
+}
+
+table.table td a.edit, button.edit {
+    color: #FFC107;
+    min-width: fit-content !important;
+}
+
+table.table td a.delete, button.delete {
+    color: #E34724;
+    min-width: fit-content !important;
+}
+
+.align-center {
+    display: flex;
+    align-items: center;
+}
+
 .pagination {
+    float: right;
     padding-right: 15px !important
 }
 
@@ -208,24 +309,49 @@ input.globalSearch {
         color: #fff !important;
     }
 
-.pageDDL {
-    width: 20%;
-    border-radius: 4px;
-    height: 20px !important;
-}
+    .pagination li a {
+        border: 0;
+        font-size: 70%;
+        width: 20px;
+        height: 20px;
+        color: #999;
+        margin: 0 1px;
+        line-height: 20px;
+        border-radius: 20px !important;
+        text-align: center;
+        padding: 0;
+    }
 
-input[type="text" i].globalSearch, input[type="text" i].searchInput {
-    padding: 1px 5px;
-}
+        .pagination li a:hover {
+            color: #666;
+        }
 
-:focus-visible {
-    outline: -webkit-focus-ring-color auto 0px !important;
-}
+    .pagination li.active a {
+        background: #03A9F4;
+    }
+
+        .pagination li.active a:hover {
+            background: #0397d6;
+        }
+
+    .pagination li.disabled i {
+        color: #ccc;
+    }
+
+    .pagination li i {
+        font-size: 16px;
+        padding-top: 6px
+    }
+
+    .pagination > li > .remove-bg-color:focus, .pagination > li > .remove-bg-color:hover {
+        background-color: #ffff !important;
+        box-shadow: 0 0 0 0rem rgb(0 123 255 / 25%);
+    }
 
 @media (max-width: 420px) {
     .customGrid {
-        max-height: 450px !important;
-        height: 450px !important;
+        max-height: 470px !important;
+        height: 470px !important;
     }
 
         .customGrid table tbody {
@@ -234,33 +360,53 @@ input[type="text" i].globalSearch, input[type="text" i].searchInput {
         }
 
     .gridHeader th {
-        padding-top: 4px !important;
-        padding-bottom: 4px !important;
-        padding-left: 5px !important;
+        padding-top: 15px !important;
+        padding-bottom: 15px !important;
+        padding-left: 0px !important;
         border-top: 0px !important;
         border-bottom: 0px !important;
-        max-width: 25px !important;
-        width: 25px;
+        max-width: 75px !important;
+        width: 75px;
     }
 
+        .gridHeader th div {
+            max-width: 75px !important;
+            width: 75px;
+            padding-left: 6px !important;
+        }
+
     .searchHeader th {
-        padding: 3px !important;
-        padding-left: 5px !important;
+        padding: 5px !important;
+        padding-left: 0px !important;
+        padding-right: 0px !important;
         border-top: 1px solid rgb(224, 224, 224) !important;
         border-bottom: 1px solid rgb(224, 224, 224) !important;
+        max-width: 75px !important;
+        width: 75px;
     }
+
+        .searchHeader th div {
+            max-width: 75px !important;
+            width: 75px;
+        }
 
     .gridRows td {
         padding-top: 4px !important;
         padding-bottom: 5px !important;
-        padding-left: 5px !important;
+        padding-left: 0px !important;
         padding-right: 0px !important;
-        max-width: 25px !important;
-        width: 25px;
+        max-width: 75px !important;
+        width: 75px;
     }
 
+        .gridRows td div {
+            max-width: 75px !important;
+            width: 75px;
+            padding-left: 12px !important;
+        }
+
     .updown-icon {
-        margin-left: 2px !important;
+        margin-left: 4px !important;
         font-size: 10px !important;
     }
 
@@ -292,6 +438,15 @@ input[type="text" i].globalSearch, input[type="text" i].searchInput {
             font-size: 11px !important;
             padding-top: 2px !important;
         }
+
+    .pagerSelect {
+        height: 15px !important;
+    }
+
+    .col1width50 {
+        width: 50px !important;
+        max-width: 50px !important;
+    }
 }
 
 @media (min-width: 370px) and (max-width: 600px) {
@@ -300,7 +455,7 @@ input[type="text" i].globalSearch, input[type="text" i].searchInput {
     }
 
     .page-padding {
-        padding-top: 15px !important;
+        padding-top: 2px !important;
     }
 }
 
@@ -311,5 +466,9 @@ input[type="text" i].globalSearch, input[type="text" i].searchInput {
 
     input.globalSearch {
         height: 100% !important;
+    }
+
+    .page-padding {
+        padding-top: 2px !important;
     }
 }
