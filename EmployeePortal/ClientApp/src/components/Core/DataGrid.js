@@ -1,10 +1,16 @@
 ﻿import { Button } from "@material-ui/core";
 import { format } from "date-fns";
 import React, { Component } from 'react';
+import { usePromiseTracker } from "react-promise-tracker";
 import { Container } from 'reactstrap';
 import IsNull from '../Common/Common';
 import { DynamicSort } from "../Common/Sort";
 import '../css/DataGrid.css';
+
+const LoadingIndicator = () => {
+    const { promiseInProgress } = usePromiseTracker();
+    return (promiseInProgress ? 'Data loading...' : 'No data to display')
+}
 
 export class DataGrid extends Component {
     constructor(props) {
@@ -178,7 +184,7 @@ export class DataGrid extends Component {
             })
         }
         else return <tr key={"No-Data"} className={this.state.rowCssClass !== undefined && this.state.rowCssClass !== null ? this.state.rowCssClass : "gridRows align-page-center"}>
-            <th className="align-page-center" style={{ width: "100%", height: "100%", border: 0 }}>{"No data to display"}</th>
+            <th className="align-page-center" style={{ width: "100%", height: "100%", border: 0 }}><LoadingIndicator /></th>
         </tr>
     }
 
