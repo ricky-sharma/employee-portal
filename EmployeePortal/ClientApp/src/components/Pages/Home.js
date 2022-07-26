@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import { GetCookie } from '../Common/Common';
+import * as Constants from '../../Constants';
+import IsNull, { GetCookie } from '../Common/Common';
 import '../css/Home.css';
 import GetUserInfo from '../Helpers/GetUserInfo';
 import WebApi from '../Helpers/WebApi';
 import { Logger } from './../Helpers/Logger.ts';
-import * as Constants from '../../Constants'
 
 export class Home extends Component {
     static displayName = Home.name;
@@ -45,10 +45,10 @@ export class Home extends Component {
                         localStorage.setItem('myToken', this.state.token)
                         GetUserInfo(0)
                             .then(response => {
-                                if (response) {
+                                if (!IsNull(response)) {
                                     localStorage.setItem('myUserName', response.Username ?? this.state.loggedInUser)
                                     localStorage.setItem('myFullUserName', response.FullName ?? null)
-                                    Logger({ User: { 'UserId': response.UserId }, 'LogMessage': 'User LogIn', 'Type': 'UserActivity' });
+                                    Logger({ 'LogMessage': 'User LogIn', 'Type': 'UserActivity' });
                                     this.props.history.push('/Employees')
                                 }
                             })

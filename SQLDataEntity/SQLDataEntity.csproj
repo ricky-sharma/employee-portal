@@ -93,6 +93,9 @@
     <Compile Include="tblEmployee.cs">
       <DependentUpon>DBFirstEntity.tt</DependentUpon>
     </Compile>
+    <Compile Include="tblError.cs">
+      <DependentUpon>DBFirstEntity.tt</DependentUpon>
+    </Compile>
     <Compile Include="tblLog.cs">
       <DependentUpon>DBFirstEntity.tt</DependentUpon>
     </Compile>

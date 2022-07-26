@@ -1,11 +1,12 @@
 import 'bootstrap/dist/css/bootstrap.css';
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { Oval } from 'react-loader-spinner';
+import { usePromiseTracker } from "react-promise-tracker";
 import { BrowserRouter } from 'react-router-dom';
 import App from './App';
+import ErrorBoundary from './components/Helpers/ErrorBoundary';
 import registerServiceWorker from './registerServiceWorker';
-import { usePromiseTracker } from "react-promise-tracker";
-import { Oval } from 'react-loader-spinner'
 
 const baseUrl = document.getElementsByTagName('base')[0].getAttribute('href');
 const rootElement = document.getElementById('root');
@@ -19,12 +20,14 @@ const LoadingIndicator = () => {
 ReactDOM.render(
     <>
         <BrowserRouter basename={baseUrl}>
-            <div>
-                <App />
-                <LoadingIndicator />
-            </div>
+            <ErrorBoundary>
+                <div>
+                    <App />
+                    <LoadingIndicator />
+                </div>
+                <div id="alertDialogDiv"></div>
+            </ErrorBoundary>
         </BrowserRouter>
-        <div id="alertDialogDiv"></div>
     </>,
     rootElement);
 

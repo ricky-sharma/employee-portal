@@ -42,8 +42,7 @@ function WebApi(apiUrl, data, method = 'POST', auth = true) {
                         AlertDialog(error_description)
                     }
                     else if (errorMessage) {
-                        localStorage.removeItem('myToken')
-                        AlertDialog(errorMessage)
+                        throw errorMessage
                     }
                     return null;
                 });

@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
 using EmployeeService.Models;
+using Microsoft.AspNet.Identity;
 using SQLDataEntity;
 
 namespace EmployeeService.Controllers
@@ -44,7 +45,7 @@ namespace EmployeeService.Controllers
         }
 
         // GET: api/Logger/5
-        [ResponseType(typeof(tblLog))]
+        [ResponseType(typeof(LogModel))]
         public async Task<IHttpActionResult> GettblLog(Guid id)
         {
             tblLog tblLog = await db.tblLogs.FindAsync(id);
@@ -75,7 +76,6 @@ namespace EmployeeService.Controllers
         }
 
         // POST: api/Logger
-        [ResponseType(typeof(tblLog))]
         public async Task<IHttpActionResult> PosttblLog(LogModel logModel)
         {
             if (!ModelState.IsValid)
@@ -89,7 +89,7 @@ namespace EmployeeService.Controllers
                 CreatedOn = DateTime.Now,
                 LogMessage = logModel.LogMessage ?? string.Empty,
                 Type = logModel.Type ?? string.Empty,
-                UserId = logModel.User.UserId ?? string.Empty
+                UserId = User.Identity.GetUserId() ?? string.Empty
             };
             db.tblLogs.Add(tblLog);
 

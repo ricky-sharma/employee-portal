@@ -21,6 +21,7 @@ namespace SQLDataEntity
             this.AspNetUserLogins = new HashSet<AspNetUserLogin>();
             this.AspNetRoles = new HashSet<AspNetRole>();
             this.AspNetUserInfoes = new HashSet<AspNetUserInfo>();
+            this.tblErrors = new HashSet<tblError>();
         }
     
         public string Id { get; set; }
@@ -44,5 +45,7 @@ namespace SQLDataEntity
         public virtual ICollection<AspNetRole> AspNetRoles { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<AspNetUserInfo> AspNetUserInfoes { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<tblError> tblErrors { get; set; }
     }
 }
