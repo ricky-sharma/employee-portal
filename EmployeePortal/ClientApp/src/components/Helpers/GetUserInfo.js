@@ -1,4 +1,4 @@
-﻿import WebApi from './WebApi';
+﻿import { WebApi } from './WebApi.ts';
 
 function GetUserInfo(id) {
     let url = id === 0 ? `/api/Account/UserInfo` : '/api/Account/UserInfo/' + id

@@ -39,6 +39,7 @@
 
   <ItemGroup>
     <None Remove="ClientApp\src\components\Helpers\Service.tsx" />
+    <None Remove="ClientApp\src\components\Helpers\WebApi.ts" />
     <None Remove="precache-manifest.6b2ff517673808886d3271197afc6ab5.js" />
   </ItemGroup>
 

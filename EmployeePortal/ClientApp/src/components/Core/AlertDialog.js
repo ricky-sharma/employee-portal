@@ -1,12 +1,11 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Redirect } from 'react-router-dom';
 import '../css/Alert.css';
 
 const node = document.createElement("div");
 
-function AlertDialog(message, redirectToHome = false) {
+function AlertDialog(message) {
     document.getElementById('alertDialogDiv').appendChild(node);
     const AlertDialogContent = () => {
         return (
@@ -30,10 +29,9 @@ function AlertDialog(message, redirectToHome = false) {
             </div>
         );
     };
-    const onHide = (redirectToHome) => {
+    const onHide = () => {
         ReactDOM.unmountComponentAtNode(node);
         node.remove();
-        if (redirectToHome) return <Redirect to='/' />
     }
 
     ReactDOM.render(<AlertDialogContent />, node);

@@ -3,7 +3,7 @@ import * as Constants from '../../Constants';
 import IsNull, { GetCookie } from '../Common/Common';
 import '../css/Home.css';
 import GetUserInfo from '../Helpers/GetUserInfo';
-import WebApi from '../Helpers/WebApi';
+import { WebApi } from '../Helpers/WebApi.ts';
 import { Logger } from './../Helpers/Logger.ts';
 
 export class Home extends Component {

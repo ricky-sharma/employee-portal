@@ -101,8 +101,14 @@ export class NavMenu extends Component {
                                             </DropdownItem>
                                             <DropdownItem className="theme1">
                                                 <NavItem className="text-black padding-5">
-                                                    <NavLink tag={Link} className="text-black d-none d-md-block d-lg-block d-xl-block" to="/Logs"><b>Logs</b></NavLink>
-                                                    <NavLink tag={Link} className="text-black d-md-none" onClick={this.toggleNavbar} to="/Logs"><b>Logs</b></NavLink>
+                                                    <NavLink tag={Link} className="text-black d-none d-md-block d-lg-block d-xl-block" to="/ApplicationLogs"><b>Application Logs</b></NavLink>
+                                                    <NavLink tag={Link} className="text-black d-md-none" onClick={this.toggleNavbar} to="/ApplicationLogs"><b>Application Logs</b></NavLink>
+                                                </NavItem>
+                                            </DropdownItem>
+                                            <DropdownItem className="theme1">
+                                                <NavItem className="text-black padding-5">
+                                                    <NavLink tag={Link} className="text-black d-none d-md-block d-lg-block d-xl-block" to="/ApplicationErrors"><b>Application Errors</b></NavLink>
+                                                    <NavLink tag={Link} className="text-black d-md-none" onClick={this.toggleNavbar} to="/ApplicationErrors"><b>Application Errors</b></NavLink>
                                                 </NavItem>
                                             </DropdownItem>
                                         </DropdownMenu>

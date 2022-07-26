@@ -1,20 +1,38 @@
+﻿import { useEffect, useState } from 'react';
 import { trackPromise } from 'react-promise-tracker';
+import * as Constants from '../../Constants';
 import AlertDialog from '../Core/AlertDialog';
-import * as Constants from '../../Constants'
+import { Dictionary } from './Dictionary';
+import { Service } from './Service';
 
-function WebApi(apiUrl, data, method = 'POST', auth = true) {
+export function GetData(apiUrl: any) {
+    const [result, setResult] = useState<Service<Dictionary<string>[]>>({
+        status: 'loading'
+    });
+    useEffect(() => {
+        WebApi(apiUrl, '', 'GET')
+            .then(response => response)
+            .then(response => setResult({ status: 'loaded', payload: response }))
+            .catch(error => setResult({ status: 'error', error }));
+    }, []);
+
+    return result;
+}
+
+export function WebApi(apiUrl: any, data: any, method = 'POST', auth = true) {
     let authHeader = 'Bearer ' + localStorage.getItem('myToken')
     let serviceUrl = (window.location.protocol !== 'https:' ?
         Constants.DevServiceURL : Constants.ServiceURL)
-    let headers = {
+    let headers: Record<string, any> = {};
+    headers = {
         "Content-Type": 'application/json',
         "Accept": 'application/json',
         "Access-Control-Allow-Origin": '*'
     }
     if (auth)
         headers.Authorization = authHeader
-
-    let requestInfo = {
+    let requestInfo: Record<string, any> = {};
+    requestInfo = {
         method: method,
         withCredentials: true,
         headers: headers
@@ -27,7 +45,7 @@ function WebApi(apiUrl, data, method = 'POST', auth = true) {
             if (res.ok) {
                 return res.json();
             } else {
-                var errorObj = res.text().then(res1 => {
+                res.text().then(res1 => {
                     let jsonParseRes1 = JSON.parse(res1)
                     let errorStatus = jsonParseRes1.statusText
                     let responseError = jsonParseRes1.error
@@ -37,12 +55,12 @@ function WebApi(apiUrl, data, method = 'POST', auth = true) {
                         localStorage.removeItem('myToken')
                         AlertDialog('Unauthorized Access')
                     }
-                    else if (responseError && responseError.toUpperCase() == 'INVALID_GRANT') {
+                    else if (responseError && responseError.toUpperCase() === 'INVALID_GRANT') {
                         localStorage.removeItem('myToken')
                         AlertDialog(error_description)
                     }
                     else if (errorMessage) {
-                        throw errorMessage
+                        AlertDialog(errorMessage)
                     }
                     return null;
                 });
@@ -57,4 +75,4 @@ function WebApi(apiUrl, data, method = 'POST', auth = true) {
             }))
 }
 
-export default WebApi
+export default { GetData, WebApi };

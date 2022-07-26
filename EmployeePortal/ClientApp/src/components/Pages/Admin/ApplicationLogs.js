@@ -4,9 +4,9 @@ import IsNull from '../../Common/Common';
 import { DataGrid } from '../../Core/DataGrid';
 import { useLogService } from './../../Helpers/Logger.ts';
 
-export function Logs() {
+export function ApplicationLogs() {
     let userLogs = useLogService()
-    if (userLogs.status == 'loaded' && !IsNull(userLogs.payload)) {
+    if (userLogs.status === 'loaded' && !IsNull(userLogs.payload)) {
         let cols = Object.keys(userLogs.payload[0])
         let columns = []
         cols.map((val) => {
@@ -56,4 +56,4 @@ export function Logs() {
     return (<></>)
 }
 
-export default Logs
+export default ApplicationLogs

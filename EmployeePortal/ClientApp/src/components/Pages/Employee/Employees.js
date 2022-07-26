@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Container } from 'reactstrap';
 import { DataGrid } from '../../Core/DataGrid';
-import WebApi from '../../Helpers/WebApi';
+import { WebApi } from '../../Helpers/WebApi.ts';
 
 export class Employees extends Component {
     constructor(props) {

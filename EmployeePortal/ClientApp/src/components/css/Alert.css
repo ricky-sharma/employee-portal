@@ -1,6 +1,5 @@
 .alertDialog {
     position: relative;
-    top: -300px;
     z-index: 1000;
 }
 

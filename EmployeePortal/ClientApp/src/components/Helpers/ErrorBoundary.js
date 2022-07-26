@@ -1,7 +1,7 @@
 ﻿import { Component } from 'react';
 import { withRouter } from "react-router";
 import IsNull from '../Common/Common';
-import WebApi from '../Helpers/WebApi';
+import { WebApi } from '../Helpers/WebApi.ts';
 
 export class ErrorBoundary extends Component {
     constructor(props) {

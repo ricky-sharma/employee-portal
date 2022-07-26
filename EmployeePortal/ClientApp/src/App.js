@@ -3,7 +3,8 @@ import { Route, Switch } from 'react-router';
 import { Layout } from './components/Core/Layout';
 import './components/css/Global.css';
 import { RequireAuth } from './components/Helpers/RequireAuth';
-import { Logs } from './components/Pages/Admin/Logs';
+import { ApplicationErrors } from './components/Pages/Admin/ApplicationErrors';
+import { ApplicationLogs } from './components/Pages/Admin/ApplicationLogs';
 import { ChangePassword } from './components/Pages/Admin/User/ChangePassword';
 import { CreateUser } from './components/Pages/Admin/User/CreateUser';
 import { EditUserProfile } from './components/Pages/Admin/User/EditUserProfile';
@@ -39,7 +40,8 @@ export default class App extends Component {
                     <Route exact={true} path='/EditUserProfile' component={RequireAuth(EditUserProfile)} />
                     <Route exact={true} path='/CreateUser' component={RequireAuth(CreateUser)} />
                     <Route exact={true} path='/Users' component={RequireAuth(Users)} />
-                    <Route exact={true} path='/Logs' component={RequireAuth(Logs)} />
+                    <Route exact={true} path='/ApplicationLogs' component={RequireAuth(ApplicationLogs)} />
+                    <Route exact={true} path='/ApplicationErrors' component={RequireAuth(ApplicationErrors)} />
                     <Route exact={true} path='/Error' component={RequireAuth(ErrorPage)} />
                     <Route path='/*' component={NotFoundPage} />
                 </Switch>
