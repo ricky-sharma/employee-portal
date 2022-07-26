@@ -4,6 +4,9 @@ import * as Constants from '../../Constants';
 import AlertDialog from '../Core/AlertDialog';
 import { Dictionary } from './Dictionary';
 import { Service } from './Service';
+import { createBrowserHistory } from 'history';
+
+const history = createBrowserHistory();
 
 export function GetData(apiUrl: any) {
     const [result, setResult] = useState<Service<Dictionary<string>[]>>({
@@ -40,6 +43,15 @@ export function WebApi(apiUrl: any, data: any, method = 'POST', auth = true) {
     if (method === 'POST' || method === 'PUT')
         requestInfo.body = data
 
+    const redirectToHome = () => {
+        const url = ((window.location.protocol !== 'https:' ?
+            Constants.DevAPPURL : Constants.APPURL) + '/')
+        if (window.location.href !== url) {
+            history.push('/')
+            history.go(1)
+        }
+    }
+
     return trackPromise(
         fetch(serviceUrl + apiUrl, requestInfo).then(res => {
             if (res.ok) {
@@ -53,11 +65,11 @@ export function WebApi(apiUrl: any, data: any, method = 'POST', auth = true) {
                     let errorMessage = jsonParseRes1.Message
                     if (errorStatus && errorStatus.toUpperCase() === 'UNAUTHORIZED') {
                         localStorage.removeItem('myToken')
-                        AlertDialog('Unauthorized Access')
+                        AlertDialog('Unauthorized Access', redirectToHome)
                     }
                     else if (responseError && responseError.toUpperCase() === 'INVALID_GRANT') {
                         localStorage.removeItem('myToken')
-                        AlertDialog(error_description)
+                        AlertDialog(error_description, redirectToHome)
                     }
                     else if (errorMessage) {
                         AlertDialog(errorMessage)
@@ -68,7 +80,6 @@ export function WebApi(apiUrl: any, data: any, method = 'POST', auth = true) {
         }
             , error => {
                 if (error.toString() === 'TypeError: Failed to fetch') {
-                    localStorage.removeItem('myToken')
                     AlertDialog('Employee services are down, please try again later.')
                 }
                 return null;

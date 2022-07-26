@@ -2,10 +2,11 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import React from 'react';
 import ReactDOM from 'react-dom';
 import '../css/Alert.css';
+import IsNull from '../Common/Common';
 
 const node = document.createElement("div");
 
-function AlertDialog(message) {
+function AlertDialog(message, callback = null) {
     document.getElementById('alertDialogDiv').appendChild(node);
     const AlertDialogContent = () => {
         return (
@@ -32,6 +33,9 @@ function AlertDialog(message) {
     const onHide = () => {
         ReactDOM.unmountComponentAtNode(node);
         node.remove();
+        if (!IsNull(callback)) {
+            callback();
+        }
     }
 
     ReactDOM.render(<AlertDialogContent />, node);

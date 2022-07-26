@@ -25,7 +25,7 @@ ReactDOM.render(
                     <App />
                     <LoadingIndicator />
                 </div>
-                <div id="alertDialogDiv"></div>
+                <div id="alertDialogDiv" className="alert-Dialog"></div>
             </ErrorBoundary>
         </BrowserRouter>
     </>,
