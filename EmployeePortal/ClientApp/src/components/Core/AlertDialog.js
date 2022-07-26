@@ -6,7 +6,7 @@ import IsNull from '../Common/Common';
 
 const node = document.createElement("div");
 
-function AlertDialog(message, callback = null) {
+function AlertDialog(message, callback = () => { }) {
     document.getElementById('alertDialogDiv').appendChild(node);
     const AlertDialogContent = () => {
         return (

@@ -48,7 +48,7 @@ export function WebApi(apiUrl: any, data: any, method = 'POST', auth = true) {
             Constants.DevAPPURL : Constants.APPURL) + '/')
         if (window.location.href !== url) {
             history.push('/')
-            history.go(1)
+            history.go(0)
         }
     }
 
