@@ -20,11 +20,34 @@ namespace EmployeeService.Controllers
     public class ErrorController : ApiController
     {
         private EmployeeDBEntities db = new EmployeeDBEntities();
+        private string lockTransaction = "lockTransaction";
 
         // GET: api/Error
-        public IQueryable<tblError> GettblErrors()
+        public List<ErrorModel> GettblErrors()
         {
-            return db.tblErrors;
+            try
+            {
+                var tblErrors = db.tblErrors;
+                var errors = tblErrors?.Any() == true ? tblErrors?.OrderByDescending(x => x.CreatedOn)
+                    .ToList().Select(i => new ErrorModel()
+                    {
+                        ID = i != null ? i.ID : default,
+                        ErrorCode = i != null ? i.ErrorCode : default,
+                        Error = i != null ? i.Error : null,
+                        ErrorInfo = i != null ? i.ErrorInfo : null,
+                        CreatedOn = i != null ? i.CreatedOn : null,
+                        User = i != null ? new UserInfoModel
+                        {
+                            FirstName = i.AspNetUser?.AspNetUserInfoes?.FirstOrDefault()?.FirstName ?? "",
+                            LastName = i.AspNetUser?.AspNetUserInfoes?.FirstOrDefault()?.LastName ?? ""
+                        } : null
+                    }).ToList() : null;
+                return errors;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
         // GET: api/Error/5
@@ -82,21 +105,18 @@ namespace EmployeeService.Controllers
             {
                 return BadRequest(ModelState);
             }
-
-            var errorCode = db.tblErrors.Any() ? (db.tblErrors.ToList().Select(x => int.Parse(x.ErrorCode)).ToList().Max() + 1) : 100001;
-
-            var tblError = new tblError()
+            var tblError = new tblError();
+            lock (lockTransaction)
             {
-                ID = Guid.NewGuid(),
-                CreatedOn = DateTime.Now,
-                Error = errorModel.Error,
-                ErrorInfo = errorModel.ErrorInfo,
-                ErrorCode = errorCode.ToString(),
-                UserId = User.Identity.GetUserId()
-            };
-
-            db.tblErrors.Add(tblError);
-
+                var errorCode = db.tblErrors.Any() ? (db.tblErrors.ToList().Select(x => int.Parse(x.ErrorCode)).ToList().Max() + 1) : 100001;
+                tblError.ID = Guid.NewGuid();
+                tblError.CreatedOn = DateTime.Now;
+                tblError.Error = errorModel.Error;
+                tblError.ErrorInfo = errorModel.ErrorInfo;
+                tblError.ErrorCode = errorCode.ToString();
+                tblError.UserId = User.Identity.GetUserId();
+                db.tblErrors.Add(tblError);
+            }
             try
             {
                 await db.SaveChangesAsync();

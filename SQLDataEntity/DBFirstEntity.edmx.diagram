@@ -22,6 +22,7 @@
         <EntityTypeShape EntityType="EmployeeDBModel.tblLog" Width="1.5" PointX="3.375" PointY="5.75" />
         <EntityTypeShape EntityType="EmployeeDBModel.tblError" Width="1.5" PointX="10.625" PointY="8.75" />
         <AssociationConnector Association="EmployeeDBModel.FK_tblErrors_AspNetUsers" />
+        <AssociationConnector Association="EmployeeDBModel.FK_tblLogs_AspNetUsers" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

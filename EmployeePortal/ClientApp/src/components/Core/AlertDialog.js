@@ -6,7 +6,7 @@ import IsNull from '../Common/Common';
 
 const node = document.createElement("div");
 
-function AlertDialog(message, callback = () => { }) {
+function AlertDialog(message, callback = () => { }, heading = '') {
     document.getElementById('alertDialogDiv').appendChild(node);
     const AlertDialogContent = () => {
         return (
@@ -15,11 +15,11 @@ function AlertDialog(message, callback = () => { }) {
                     <div className="modal-dialog">
                         <div className="modal-content">
                             <div className="modal-header">
-                                <h4 className="modal-title">ALERT</h4>
+                                <h4 className="modal-title">{heading !== '' ? heading : 'ALERT'}</h4>
                                 <button onClick={onHide} type="button" className="close alertClose" data-dismiss="modal">&times;</button>
                             </div>
                             <div className="modal-body">
-                                <p>{message}</p>
+                                {typeof (message) === 'function' ? message() : <p>{message}</p>}
                             </div>
                             <div className="modal-footer">
                                 <button onClick={onHide} type="button" className="btn btn-default btn-secondary" data-dismiss="modal">Close</button>

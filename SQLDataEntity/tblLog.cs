@@ -19,5 +19,7 @@ namespace SQLDataEntity
         public string UserId { get; set; }
         public Nullable<System.DateTime> CreatedOn { get; set; }
         public string LogMessage { get; set; }
+    
+        public virtual AspNetUser AspNetUser { get; set; }
     }
 }

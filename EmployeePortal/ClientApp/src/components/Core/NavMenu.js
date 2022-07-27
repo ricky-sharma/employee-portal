@@ -99,6 +99,9 @@ export class NavMenu extends Component {
                                                     <NavLink tag={Link} className="text-black d-md-none" onClick={this.toggleNavbar} to="/Users"><b>Users</b></NavLink>
                                                 </NavItem>
                                             </DropdownItem>
+                                            <div className="alignCenter m-0 p-0">
+                                                <DropdownItem divider />
+                                            </div>
                                             <DropdownItem className="theme1">
                                                 <NavItem className="text-black padding-5">
                                                     <NavLink tag={Link} className="text-black d-none d-md-block d-lg-block d-xl-block" to="/ApplicationLogs"><b>Application Logs</b></NavLink>
@@ -111,6 +114,9 @@ export class NavMenu extends Component {
                                                     <NavLink tag={Link} className="text-black d-md-none" onClick={this.toggleNavbar} to="/ApplicationErrors"><b>Application Errors</b></NavLink>
                                                 </NavItem>
                                             </DropdownItem>
+                                            <div className="alignCenter m-0 p-0">
+                                                <DropdownItem divider />
+                                            </div>
                                         </DropdownMenu>
                                     </UncontrolledDropdown>
                                     <NavItem className="d-sm-none">

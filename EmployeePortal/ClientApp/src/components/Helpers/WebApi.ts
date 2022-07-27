@@ -1,10 +1,11 @@
-﻿import { useEffect, useState } from 'react';
+﻿import { createBrowserHistory } from 'history';
+import { useEffect, useState } from 'react';
 import { trackPromise } from 'react-promise-tracker';
 import * as Constants from '../../Constants';
+import IsNull from '../Common/Common';
 import AlertDialog from '../Core/AlertDialog';
 import { Dictionary } from './Dictionary';
 import { Service } from './Service';
-import { createBrowserHistory } from 'history';
 
 const history = createBrowserHistory();
 
@@ -13,7 +14,7 @@ export function GetData(apiUrl: any) {
         status: 'loading'
     });
     useEffect(() => {
-        WebApi(apiUrl, '', 'GET')
+        WebApi(apiUrl, {}, 'GET')
             .then(response => response)
             .then(response => setResult({ status: 'loaded', payload: response }))
             .catch(error => setResult({ status: 'error', error }));
@@ -23,6 +24,7 @@ export function GetData(apiUrl: any) {
 }
 
 export function WebApi(apiUrl: any, data: any, method = 'POST', auth = true) {
+
     let authHeader = 'Bearer ' + localStorage.getItem('myToken')
     let serviceUrl = (window.location.protocol !== 'https:' ?
         Constants.DevServiceURL : Constants.ServiceURL)
@@ -58,22 +60,36 @@ export function WebApi(apiUrl: any, data: any, method = 'POST', auth = true) {
                 return res.json();
             } else {
                 res.text().then(res1 => {
-                    let jsonParseRes1 = JSON.parse(res1)
-                    let errorStatus = jsonParseRes1.statusText
-                    let responseError = jsonParseRes1.error
-                    let error_description = jsonParseRes1.error_description
-                    let errorMessage = jsonParseRes1.Message
-                    if (errorStatus && errorStatus.toUpperCase() === 'UNAUTHORIZED') {
-                        localStorage.removeItem('myToken')
-                        AlertDialog('Unauthorized Access', redirectToHome)
+                    try {
+                        let jsonParseRes1 = JSON.parse(res1)
+                        let errorStatus = jsonParseRes1.statusText
+                        let responseError = jsonParseRes1.error
+                        let error_description = jsonParseRes1.error_description
+                        let errorMessage = jsonParseRes1.Message
+                        if (errorStatus && errorStatus.toUpperCase() === 'UNAUTHORIZED') {
+                            localStorage.removeItem('myToken')
+                            AlertDialog('Unauthorized Access', redirectToHome)
+                        }
+                        else if (responseError && responseError.toUpperCase() === 'INVALID_GRANT') {
+                            localStorage.removeItem('myToken')
+                            AlertDialog(error_description, redirectToHome)
+                        }
+                        else if (errorMessage) {
+                            AlertDialog(errorMessage)
+                        }
+                        return null;
                     }
-                    else if (responseError && responseError.toUpperCase() === 'INVALID_GRANT') {
-                        localStorage.removeItem('myToken')
-                        AlertDialog(error_description, redirectToHome)
+                    catch (ex) {   
+                        var errorData = { "Error": '"' + ex.toString() + '"', "ErrorInfo": JSON.stringify(ex) }
+                        WebApi('/api/Error', JSON.stringify(errorData)).then(resp => {
+                            if (!IsNull(resp) && resp.Message === 'SUCCESS') {
+                                AlertDialog(Constants.SupportText + resp.ErrorCode, () => { }, Constants.ErrorHeading)
+                            }
+                        });
+                        return null;
                     }
-                    else if (errorMessage) {
-                        AlertDialog(errorMessage)
-                    }
+                }, error => {
+                    AlertDialog(error.toString())
                     return null;
                 });
             }
@@ -81,6 +97,9 @@ export function WebApi(apiUrl: any, data: any, method = 'POST', auth = true) {
             , error => {
                 if (error.toString() === 'TypeError: Failed to fetch') {
                     AlertDialog('Employee services are down, please try again later.')
+                }
+                else {
+                    AlertDialog(error.toString())
                 }
                 return null;
             }))
