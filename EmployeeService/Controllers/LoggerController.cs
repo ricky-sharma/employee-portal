@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
 using EmployeeService.Models;
+using Microsoft.AspNet.Identity;
 using SQLDataEntity;
 
 namespace EmployeeService.Controllers
@@ -20,31 +21,26 @@ namespace EmployeeService.Controllers
         private EmployeeDBEntities db = new EmployeeDBEntities();
 
         // GET: api/Logger
-        public IQueryable<LogModel> GettblLogs()
+        public List<LogModel> GettblLogs()
         {
             var tbllogs = db.tblLogs;
-            var logs = tbllogs?.Any() == true ? tbllogs?.Select(i => new LogModel()
+            var logs = tbllogs?.Any() == true ? tbllogs?.OrderByDescending(x => x.CreatedOn).ToList().Select(i => new LogModel()
             {
                 CreatedOn = i != null ? i.CreatedOn : null,
-                User = i != null ? db.AspNetUserInfoes.Where(u => u.UsersId == i.UserId).Select(k => new UserInfoModel
+                User = i != null ? new UserInfoModel
                 {
-                    userInfoViewModel = new UserInfoViewModel()
-                    {
-                        UserId = k.UsersId
-                    },
-                    FirstName = k.FirstName,
-                    LastName=k.LastName,
-                    UserId =k.UsersId
-                }).FirstOrDefault() : null,
+                    FirstName = i.AspNetUser?.AspNetUserInfoes?.FirstOrDefault()?.FirstName ?? "",
+                    LastName = i.AspNetUser?.AspNetUserInfoes?.FirstOrDefault()?.LastName ?? ""
+                } : null,
                 LogMessage = i != null ? i.LogMessage : null,
                 Type = i != null ? i.Type : null,
                 ID = i != null ? i.ID : default
-            }) : null;
-            return logs.OrderByDescending(x=> x.CreatedOn);
+            }).ToList() : null;
+            return logs;
         }
 
         // GET: api/Logger/5
-        [ResponseType(typeof(tblLog))]
+        [ResponseType(typeof(LogModel))]
         public async Task<IHttpActionResult> GettblLog(Guid id)
         {
             tblLog tblLog = await db.tblLogs.FindAsync(id);
@@ -75,7 +71,6 @@ namespace EmployeeService.Controllers
         }
 
         // POST: api/Logger
-        [ResponseType(typeof(tblLog))]
         public async Task<IHttpActionResult> PosttblLog(LogModel logModel)
         {
             if (!ModelState.IsValid)
@@ -89,7 +84,7 @@ namespace EmployeeService.Controllers
                 CreatedOn = DateTime.Now,
                 LogMessage = logModel.LogMessage ?? string.Empty,
                 Type = logModel.Type ?? string.Empty,
-                UserId = logModel.User.UserId ?? string.Empty
+                UserId = User.Identity.GetUserId() ?? string.Empty
             };
             db.tblLogs.Add(tblLog);
 

@@ -2,3 +2,5 @@
 export const DevAPPURL = 'http://localhost:3000'
 export const ServiceURL = 'https://employee.service.com'
 export const DevServiceURL = 'http://employee.service.com'
+export const SupportText = 'Please share the following error code with the support team: '
+export const ErrorHeading = 'Something went wrong'

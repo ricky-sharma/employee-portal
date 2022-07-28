@@ -1,25 +1,13 @@
-﻿import { useEffect, useState } from 'react';
-import { Service } from './Service';
-import { Dictionary } from './Dictionary';
-import WebApi from './WebApi';
+﻿import { Dictionary } from './Dictionary';
+// @ts-ignore
+import { GetData, WebApi } from './WebApi.ts';
 
 export function Logger(log: Dictionary<string>) {
     WebApi('/api/Logger', JSON.stringify(log)).then(r => true);
 }
 
 export function useLogService() {
-    const [result, setResult] = useState < Service < Dictionary < string > [] >> ({
-        status: 'loading'
-    });
-
-    useEffect(() => {
-        WebApi('/api/Logger', '','GET')
-            .then(response => response)
-            .then(response => setResult({ status: 'loaded', payload: response }))
-            .catch(error => setResult({ status: 'error', error }));
-    }, []);
-
-    return result;
+    return GetData('/api/Logger')
 }
 
 export default { Logger, useLogService };

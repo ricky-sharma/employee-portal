@@ -12,13 +12,14 @@ namespace SQLDataEntity
     using System;
     using System.Collections.Generic;
     
-    public partial class tblLog
+    public partial class tblError
     {
         public System.Guid ID { get; set; }
-        public string Type { get; set; }
-        public string UserId { get; set; }
+        public string Error { get; set; }
+        public string ErrorInfo { get; set; }
         public Nullable<System.DateTime> CreatedOn { get; set; }
-        public string LogMessage { get; set; }
+        public string UserId { get; set; }
+        public string ErrorCode { get; set; }
     
         public virtual AspNetUser AspNetUser { get; set; }
     }

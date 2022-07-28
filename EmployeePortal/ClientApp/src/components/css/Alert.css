@@ -1,6 +1,5 @@
 .alertDialog {
     position: relative;
-    top: -300px;
     z-index: 1000;
 }
 
@@ -9,12 +8,25 @@
     font-weight: 900;
 }
 
+.modal-content {
+    border: 2px ridge #dee2e6 !important;
+    border-radius: 1rem !important;
+}
+
 .modal-header {
-    border-bottom: 1px solid #dee2e6 !important;
+    border-bottom: 2px ridge #dee2e6 !important;
     background-image: linear-gradient(to left, rgb(89, 171, 248), rgb(84, 129, 160));
-    padding: 4px 1rem !important;
+    padding: 16px 1rem !important;
+    border-top-left-radius: calc(1rem - 2px) !important;
+    border-top-right-radius: calc(1rem - 1px) !important;
 }
 
 .modal-footer {
-    border-top: 0px solid #dee2e6 !important;
+    border-top: 2px ridge #dee2e6 !important;
+    border-bottom-right-radius: calc(1rem - 2px) !important;
+    border-bottom-left-radius: calc(1rem - 2px) !important;
+}
+
+.modal-header .close {
+    padding: 1.2rem 1rem !important;
 }

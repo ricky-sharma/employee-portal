@@ -100,13 +100,24 @@
           <Property Name="InService" Type="bit" Nullable="false" />
           <Property Name="LeavingDate" Type="datetime" />
         </EntityType>
+        <EntityType Name="tblErrors">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Error" Type="nvarchar(max)" />
+          <Property Name="ErrorInfo" Type="nvarchar(max)" />
+          <Property Name="CreatedOn" Type="datetime" />
+          <Property Name="UserId" Type="nvarchar" MaxLength="128" />
+          <Property Name="ErrorCode" Type="nvarchar(max)" />
+        </EntityType>
         <EntityType Name="tblLogs">
           <Key>
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="uniqueidentifier" Nullable="false" />
           <Property Name="Type" Type="nvarchar(max)" />
-          <Property Name="UserId" Type="nvarchar(max)" />
+          <Property Name="UserId" Type="nvarchar" MaxLength="128" />
           <Property Name="CreatedOn" Type="datetime" />
           <Property Name="LogMessage" Type="nvarchar(max)" />
         </EntityType>
@@ -188,6 +199,30 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_tblErrors_AspNetUsers">
+          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="0..1" />
+          <End Role="tblErrors" Type="Self.tblErrors" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="tblErrors">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblLogs_AspNetUsers">
+          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="0..1" />
+          <End Role="tblLogs" Type="Self.tblLogs" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="tblLogs">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityContainer Name="EmployeeDBModelStoreContainer">
           <EntitySet Name="AspNetRoles" EntityType="Self.AspNetRoles" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AspNetUserClaims" EntityType="Self.AspNetUserClaims" Schema="dbo" store:Type="Tables" />
@@ -198,6 +233,7 @@
           <EntitySet Name="C__MigrationHistory" EntityType="Self.C__MigrationHistory" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblDepartments" EntityType="Self.tblDepartments" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblEmployees" EntityType="Self.tblEmployees" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblErrors" EntityType="Self.tblErrors" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblLogs" EntityType="Self.tblLogs" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK_AspNetUserInfo_AspNetUsers" Association="Self.FK_AspNetUserInfo_AspNetUsers">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
@@ -222,6 +258,14 @@
           <AssociationSet Name="FK_dbo_tblEmployees_dbo_tblDepartments_DepartmentId" Association="Self.FK_dbo_tblEmployees_dbo_tblDepartments_DepartmentId">
             <End Role="tblDepartments" EntitySet="tblDepartments" />
             <End Role="tblEmployees" EntitySet="tblEmployees" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblErrors_AspNetUsers" Association="Self.FK_tblErrors_AspNetUsers">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="tblErrors" EntitySet="tblErrors" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblLogs_AspNetUsers" Association="Self.FK_tblLogs_AspNetUsers">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="tblLogs" EntitySet="tblLogs" />
           </AssociationSet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
@@ -297,6 +341,15 @@
           </AssociationSet>
           <EntitySet Name="C__MigrationHistory" EntityType="EmployeeDBModel.C__MigrationHistory" />
           <EntitySet Name="tblLogs" EntityType="EmployeeDBModel.tblLog" />
+          <EntitySet Name="tblErrors" EntityType="EmployeeDBModel.tblError" />
+          <AssociationSet Name="FK_tblErrors_AspNetUsers" Association="EmployeeDBModel.FK_tblErrors_AspNetUsers">
+            <End Role="AspNetUser" EntitySet="AspNetUsers" />
+            <End Role="tblError" EntitySet="tblErrors" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblLogs_AspNetUsers" Association="EmployeeDBModel.FK_tblLogs_AspNetUsers">
+            <End Role="AspNetUser" EntitySet="AspNetUsers" />
+            <End Role="tblLog" EntitySet="tblLogs" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="AspNetRole">
           <Key>
@@ -347,6 +400,8 @@
           <NavigationProperty Name="AspNetUserLogins" Relationship="EmployeeDBModel.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" FromRole="AspNetUser" ToRole="AspNetUserLogin" />
           <NavigationProperty Name="AspNetRoles" Relationship="EmployeeDBModel.AspNetUserRoles" FromRole="AspNetUser" ToRole="AspNetRole" />
           <NavigationProperty Name="AspNetUserInfoes" Relationship="EmployeeDBModel.FK_AspNetUserInfo_AspNetUsers" FromRole="AspNetUser" ToRole="AspNetUserInfo" />
+          <NavigationProperty Name="tblErrors" Relationship="EmployeeDBModel.FK_tblErrors_AspNetUsers" FromRole="AspNetUser" ToRole="tblError" />
+          <NavigationProperty Name="tblLogs" Relationship="EmployeeDBModel.FK_tblLogs_AspNetUsers" FromRole="AspNetUser" ToRole="tblLog" />
         </EntityType>
         <Association Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
           <End Type="EmployeeDBModel.AspNetUser" Role="AspNetUser" Multiplicity="1">
@@ -420,10 +475,47 @@
           </Key>
           <Property Name="ID" Type="Guid" Nullable="false" />
           <Property Name="Type" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="UserId" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="UserId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
           <Property Name="CreatedOn" Type="DateTime" Precision="3" />
           <Property Name="LogMessage" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="AspNetUser" Relationship="EmployeeDBModel.FK_tblLogs_AspNetUsers" FromRole="tblLog" ToRole="AspNetUser" />
         </EntityType>
+        <EntityType Name="tblError">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Guid" Nullable="false" />
+          <Property Name="Error" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ErrorInfo" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedOn" Type="DateTime" Precision="3" />
+          <Property Name="UserId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="ErrorCode" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="AspNetUser" Relationship="EmployeeDBModel.FK_tblErrors_AspNetUsers" FromRole="tblError" ToRole="AspNetUser" />
+        </EntityType>
+        <Association Name="FK_tblErrors_AspNetUsers">
+          <End Type="EmployeeDBModel.AspNetUser" Role="AspNetUser" Multiplicity="0..1" />
+          <End Type="EmployeeDBModel.tblError" Role="tblError" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUser">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="tblError">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblLogs_AspNetUsers">
+          <End Type="EmployeeDBModel.AspNetUser" Role="AspNetUser" Multiplicity="0..1" />
+          <End Type="EmployeeDBModel.tblLog" Role="tblLog" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUser">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="tblLog">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -537,6 +629,18 @@
                 <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
                 <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblErrors">
+            <EntityTypeMapping TypeName="EmployeeDBModel.tblError">
+              <MappingFragment StoreEntitySet="tblErrors">
+                <ScalarProperty Name="ErrorCode" ColumnName="ErrorCode" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+                <ScalarProperty Name="ErrorInfo" ColumnName="ErrorInfo" />
+                <ScalarProperty Name="Error" ColumnName="Error" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>

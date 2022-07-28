@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import AlertMessage from '../../Core/AlertMessage';
-import WebApi from '../../Helpers/WebApi';
+import { WebApi } from '../../Helpers/WebApi.ts';
 import AlertDialog from '../../Core/AlertDialog';
 
 export class EditEmployee extends Component {

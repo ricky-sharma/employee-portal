@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import WebApi from '../../../Helpers/WebApi';
+import { WebApi } from '../../../Helpers/WebApi.ts';
 import GetUserInfo from '../../../Helpers/GetUserInfo';
 import { Container } from 'reactstrap';
 import DatePicker from "react-datepicker";

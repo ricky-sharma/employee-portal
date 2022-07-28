@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import WebApi from '../../../Helpers/WebApi';
+import { WebApi } from '../../../Helpers/WebApi.ts';
 import ParseError from '../../../Helpers/ParseError';
 import AlertMessage from '../../../Core/AlertMessage';
 

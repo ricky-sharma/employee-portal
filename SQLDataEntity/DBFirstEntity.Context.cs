@@ -34,5 +34,6 @@ namespace SQLDataEntity
         public virtual DbSet<AspNetUserInfo> AspNetUserInfoes { get; set; }
         public virtual DbSet<C__MigrationHistory> C__MigrationHistory { get; set; }
         public virtual DbSet<tblLog> tblLogs { get; set; }
+        public virtual DbSet<tblError> tblErrors { get; set; }
     }
 }

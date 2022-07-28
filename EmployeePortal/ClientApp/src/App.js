@@ -1,22 +1,24 @@
 import React, { Component } from 'react';
 import { Route, Switch } from 'react-router';
+import { Layout } from './components/Core/Layout';
 import './components/css/Global.css';
 import { RequireAuth } from './components/Helpers/RequireAuth';
-import { Layout } from './components/Core/Layout';
+import { ApplicationErrors } from './components/Pages/Admin/ApplicationErrors';
+import { ApplicationLogs } from './components/Pages/Admin/ApplicationLogs';
+import { ChangePassword } from './components/Pages/Admin/User/ChangePassword';
+import { CreateUser } from './components/Pages/Admin/User/CreateUser';
+import { EditUserProfile } from './components/Pages/Admin/User/EditUserProfile';
+import { UserProfile } from './components/Pages/Admin/User/UserProfile';
+import { Users } from './components/Pages/Admin/User/Users';
 import { AddDepartment } from './components/Pages/Department/AddDepartment';
 import { Departments } from './components/Pages/Department/Departments';
 import { EditDepartment } from './components/Pages/Department/EditDepartment';
 import { AddEmployee } from './components/Pages/Employee/AddEmployee';
 import { EditEmployee } from './components/Pages/Employee/EditEmployee';
 import { Employees } from './components/Pages/Employee/Employees';
+import { ErrorPage } from './components/Pages/ErrorPage';
 import { Home } from './components/Pages/Home';
 import { NotFoundPage } from './components/Pages/NotFoundPage';
-import { ChangePassword } from './components/Pages/Admin/User/ChangePassword';
-import { CreateUser } from './components/Pages/Admin/User/CreateUser';
-import { EditUserProfile } from './components/Pages/Admin/User/EditUserProfile';
-import { UserProfile } from './components/Pages/Admin/User/UserProfile';
-import { Users } from './components/Pages/Admin/User/Users';
-import { Logs } from './components/Pages/Admin/Logs';
 
 export default class App extends Component {
     static displayName = App.name;
@@ -38,7 +40,9 @@ export default class App extends Component {
                     <Route exact={true} path='/EditUserProfile' component={RequireAuth(EditUserProfile)} />
                     <Route exact={true} path='/CreateUser' component={RequireAuth(CreateUser)} />
                     <Route exact={true} path='/Users' component={RequireAuth(Users)} />
-                    <Route exact={true} path='/Logs' component={RequireAuth(Logs)} />
+                    <Route exact={true} path='/ApplicationLogs' component={RequireAuth(ApplicationLogs)} />
+                    <Route exact={true} path='/ApplicationErrors' component={RequireAuth(ApplicationErrors)} />
+                    <Route exact={true} path='/Error' component={RequireAuth(ErrorPage)} />
                     <Route path='/*' component={NotFoundPage} />
                 </Switch>
             </Layout>

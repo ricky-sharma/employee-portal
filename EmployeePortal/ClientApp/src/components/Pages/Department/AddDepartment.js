@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import AlertMessage from '../../Core/AlertMessage';
-import WebApi from '../../Helpers/WebApi';
+import { WebApi } from '../../Helpers/WebApi.ts';
 
 export class AddDepartment extends Component {
     constructor(props) {
