@@ -40,6 +40,17 @@ select {
     padding-right: 14px;
 }
 
+input, select {
+    width: 90% !important;
+    height: 100% !important;
+    color: rgba(0, 0, 0);
+    font-weight: 400;
+    border-color: #dee2e6 !important;
+    border-radius: 4px;
+    border-width: 1px;
+    border-style: solid;
+}
+
 input {
     padding-left: 10px;
     padding-right: 14px;
@@ -53,6 +64,27 @@ input {
         line-height: 12px;
         margin-top: 5px;
     }
+
+    input[type=checkbox] {
+        height : 20px!important;
+        width: 10%!important;
+    }
+
+.inputWidth input, .inputWidth select {
+    width: 95% !important;
+}
+
+.fullInputWidth input, .fullInputWidth select {
+    width: 100% !important;
+}
+
+.link-icon {
+    font-size: 16px !important;
+    margin-left: 5px !important;
+    color: #28a745;
+}
+
+
 
 .disabled-inputs {
     pointer-events: none;
@@ -103,8 +135,7 @@ input {
 .table-wrapper {
     background: #fff;
     padding: 20px;
-    margin: 30px 0;
-    box-shadow: 0 1px 1px rgba(0,0,0,.05);
+    margin: 15px 0;
 }
 
 .table-title {
@@ -170,6 +201,12 @@ body {
     height: 70% !important;
 }
 
+.alignCenter {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 .align-page-center {
     width: 100%;
     height: 70px;
@@ -204,6 +241,20 @@ body {
     left: 1%;
     z-index: 101;
     width: 98%;
+}
+
+.profileImage {
+    vertical-align: middle;
+    border: 1px solid;
+    max-width: 100%;
+    height: auto;
+}
+
+hr.rounded {
+    border-top: 1px solid #bbb;
+    border-radius: 1px;
+    height: 1px;
+    width: 100%;
 }
 
 @media (max-width: 240px) {
@@ -245,6 +296,12 @@ body {
         font-size: 8px;
         vertical-align: text-bottom;
         display: inline;
+    }
+}
+
+@media (max-width: 415px) {
+    div, input, select, label {
+        font-size: 8px !important;
     }
 }
 
@@ -313,9 +370,26 @@ body {
     }
 }
 
+@media (min-width: 416px) and (max-width: 600px) {
+    div, input, select, label {
+        font-size: 10px !important;
+    }
+}
+
 @media (max-width: 600px) {
     .hidesidenav {
         display: none;
+    }
+
+    .table-title .add-new {
+        height: 22px;
+        min-width: 70px;
+        font-size: 10px;
+    }
+
+    .link-icon {
+        font-size: 12px !important;
+        margin-left: 3px !important;
     }
 }
 
@@ -325,11 +399,37 @@ body {
     }
 }
 
-@media (min-width: 950px) {
+@media (min-width: 600px) {
     .container, .container-lg, .container-md, .container-sm, .container-xl {
-        max-width: 900px !important;
+        max-width: 580px !important;
     }
 }
+
+@media (min-width: 700px) {
+    .container, .container-lg, .container-md, .container-sm, .container-xl {
+        max-width: 680px !important;
+    }
+}
+
+@media (min-width: 800px) {
+    .container, .container-lg, .container-md, .container-sm, .container-xl {
+        max-width: 780px !important;
+    }
+}
+
+
+@media (min-width: 900px) {
+    .container, .container-lg, .container-md, .container-sm, .container-xl {
+        max-width: 880px !important;
+    }
+}
+
+@media (min-width: 1000px) {
+    .container, .container-lg, .container-md, .container-sm, .container-xl {
+        max-width: 980px !important;
+    }
+}
+
 
 @media (max-width: 400px) {
     .tablemobile {
@@ -359,9 +459,15 @@ body {
     }
 }
 
+@media (min-width: 1100px) {
+    .container, .container-lg, .container-md, .container-sm, .container-xl {
+        max-width: 1080px !important;
+    }
+}
+
 @media (min-width: 1200px) {
     .container, .container-lg, .container-md, .container-sm, .container-xl {
-        max-width: 1180px;
+        max-width: 1180px !important;
     }
 }
 
@@ -380,5 +486,11 @@ body {
 @media (min-width: 1600px) {
     .container, .container-lg, .container-md, .container-sm, .container-xl {
         max-width: 1550px !important;
+    }
+}
+
+@media (min-width: 1700px) {
+    .container, .container-lg, .container-md, .container-sm, .container-xl {
+        max-width: 98% !important;
     }
 }

@@ -80,7 +80,7 @@ export class Home extends Component {
         return (
             <div className="container">
                 <div className="row">
-                    <div className="col-sm-9 col-md-7 col-lg-5 mx-auto">
+                    <div className="col-sm-8 col-md-6 col-lg-4 mx-auto">
                         <div className="card card-signin my-5">
                             <div className="card-body">
                                 <h5 className="card-title text-center">Sign In</h5>

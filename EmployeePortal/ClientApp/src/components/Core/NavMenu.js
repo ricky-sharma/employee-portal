@@ -56,10 +56,10 @@ export class NavMenu extends Component {
                 <div className={(!isLoggedIn ? "col-sm-12 col-12 p-0" : "col-sm-11 col-12 p-0")}>
                     <Navbar className="theme1 navbar-expand-sm navbar-toggleable-sm ng-white border-bottom box-shadow mb-3" light>
                         <Container className="justifycontent-normal container-width row ml-0 mr-0">
-                            <NavbarBrand className="text-gainsboro display-inline-table mt-3 mb-0 wrdbreak col-10 m-0 p-0" tag={Link} to="/">
-                                <h2>
+                            <NavbarBrand className="text-gainsboro display-inline-table mt-1 mb-0 wrdbreak col-10 m-0 p-0" tag={Link} to="/">
+                                <h1>
                                     <b>Employee Portal</b>
-                                </h2>
+                                </h1>
                             </NavbarBrand>
                             <NavbarToggler onClick={this.toggleNavbar} className={(!isLoggedIn ? "d-none mb-4 mt-2" : "mb-4 mt-2")} />
                             <Collapse className={"d-sm-inline-flex flex-sm-row-reverse boxshadow " + (!isLoggedIn ? "d-none" : "")} isOpen={!this.state.collapsed} navbar>

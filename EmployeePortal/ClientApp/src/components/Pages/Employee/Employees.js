@@ -90,7 +90,7 @@ export class Employees extends Component {
             <div className="table-wrapper">
                 <div className="table-title">
                     <div className="row nowrap m-0 p-0">
-                        <div className="col-sm-8"><h2>Employee <b>Details</b></h2></div>
+                        <div className="col-sm-8 p-0"><h2>Manage <b>Employees</b></h2></div>
                         <div className="col-sm-4">
                             <button type="button" onClick={this.handleAddEmployee} className="btn btn-success add-new">Add New</button>
                         </div>

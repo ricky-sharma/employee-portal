@@ -208,7 +208,7 @@ export class DataGrid extends Component {
             if (length !== key + 1) {
                 thInnerHtml = <span></span>
             }
-            let classNames = '', hideClass = ''
+            let hideClass = ''
             if (hiddenCols.some(x => x === key))
                 hideClass = 'd-none';
             inputProps = {
@@ -235,7 +235,7 @@ export class DataGrid extends Component {
         })
         let thSearchHeaders = headers.map((header, key) => {
             let conCols = null;
-            let classNames = '', hideClass = ''
+            let hideClass = ''
             let formatting = null
             if (!IsNull(concatCols[key]) && !IsNull(concatCols[key].cols)) {
                 conCols = concatCols[key].cols
