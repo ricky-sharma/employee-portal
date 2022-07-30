@@ -45,7 +45,7 @@ input, select {
     height: 100% !important;
     color: rgba(0, 0, 0);
     font-weight: 400;
-    border-color: #dee2e6 !important;
+    border-color: #bbb;
     border-radius: 4px;
     border-width: 1px;
     border-style: solid;
@@ -65,11 +65,6 @@ input {
         margin-top: 5px;
     }
 
-    input[type=checkbox] {
-        height : 20px!important;
-        width: 10%!important;
-    }
-
 .inputWidth input, .inputWidth select {
     width: 95% !important;
 }
@@ -78,13 +73,34 @@ input {
     width: 100% !important;
 }
 
+input[type=checkbox] {
+    height: 18px !important;
+    max-width: 10% !important;
+    margin-left: 5px;
+}
+
 .link-icon {
     font-size: 16px !important;
     margin-left: 5px !important;
     color: #28a745;
 }
 
+.wrapperLink {
+    position: relative;
+}
 
+.iconLink {
+    position: absolute;
+    box-sizing: border-box;
+    top: 55%;
+    right: 12%;
+    transform: translateY(-50%);
+}
+
+.inputLink {
+    box-sizing: border-box;
+    padding-right: 1.5rem;
+}
 
 .disabled-inputs {
     pointer-events: none;
@@ -207,6 +223,11 @@ body {
     align-items: center;
 }
 
+.valignCenter {
+    display: flex;
+    align-items: center;
+}
+
 .align-page-center {
     width: 100%;
     height: 70px;
@@ -297,9 +318,13 @@ hr.rounded {
         vertical-align: text-bottom;
         display: inline;
     }
+
+    div, input, select, label {
+        font-size: 7px !important;
+    }
 }
 
-@media (max-width: 415px) {
+@media (min-width: 361px) and (max-width: 415px) {
     div, input, select, label {
         font-size: 8px !important;
     }
@@ -388,7 +413,7 @@ hr.rounded {
     }
 
     .link-icon {
-        font-size: 12px !important;
+        font-size: 9px !important;
         margin-left: 3px !important;
     }
 }

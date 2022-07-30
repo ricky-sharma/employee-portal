@@ -249,10 +249,10 @@ export class EditEmployee extends Component {
                                             </div>
                                             <div className="col-6 p-0">
                                                 <div className="col-12 p-0">Linkedin/Github link</div>
-                                                <div className="col-12 p-0">
-                                                    <input value={linkedinProfile} onChange={(e) => { this.setState({ linkedinProfile: e.target.value }) }} type="text" />
-                                                    <a href={linkedinProfile.indexOf('https:') === 0 ? linkedinProfile : 'https://' + linkedinProfile} target="_blank">
-                                                        <i className="fa fa-external-link link-icon" aria-hidden="true"></i></a>
+                                                <div className="col-12 p-0 wrapperLink">
+                                                    <input className="inputLink" value={linkedinProfile} onChange={(e) => { this.setState({ linkedinProfile: e.target.value }) }} type="text" />
+                                                    <div className="iconLink"><a href={linkedinProfile.indexOf('https:') === 0 ? linkedinProfile : 'https://' + linkedinProfile} target="_blank">
+                                                        <i className="fa fa-external-link link-icon" aria-hidden="true"></i></a></div>
                                                 </div>
                                             </div>
                                         </div>
@@ -264,7 +264,7 @@ export class EditEmployee extends Component {
                                 <div className="col-12 p-0 fullInputWidth">
                                     <div className="col-12 p-0 m-0 row">
                                         <div className="col-12 p-0">
-                                            <h6>Professional Detail </h6>
+                                            <h6>Job Detail </h6>
                                         </div>
                                     </div>
                                     <div className="col-12 p-0 m-0 mt-3 row">
@@ -442,15 +442,9 @@ export class EditEmployee extends Component {
                                         </div>
                                     </div>
                                     <div className="col-12 p-0 m-0 mt-3 row">
-                                        <div className="col-4 p-0 m-0 row">
-                                            
-                                            <div className="col-7 p-0">
-                                                Same as Residential address
-                                            </div>
-                                            <div className="col-1 p-0">
-                                                <input onChange={(e) => { this.setState({ houseNumberPostAdd: e.target.value }) }}
-                                                    type="checkbox"></input>
-                                            </div>
+                                        <div className="col-6 p-0 m-0 row valignCenter">
+                                            Same as Residential Address
+                                            <input onChange={(e) => { this.setState({}) }} type="checkbox" />
                                         </div>
                                     </div>
                                     <div className="col-12 p-0 m-0 mt-3 row">
@@ -469,7 +463,7 @@ export class EditEmployee extends Component {
                                             </div>
                                             <div className="col-12 p-0">
                                                 <input value={streetPostAdd} onChange={(e) => { this.setState({ streetPostAdd: e.target.value }) }}
-                                                    type="text"></input>
+                                                    type="text"></input> 
                                             </div>
                                         </div>
                                     </div>
@@ -492,7 +486,7 @@ export class EditEmployee extends Component {
                                                     type="text"></input>
                                             </div>
                                         </div>
-                                        <div className="col-3 p-0 pl-1">
+                                        <div className="col-3 p-0 pl-3">
                                             <div className="col-12 p-0">
                                                 Postal code
                                             </div>
