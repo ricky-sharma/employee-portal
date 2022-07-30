@@ -8,6 +8,7 @@ import { Dictionary } from './Dictionary';
 import { Service } from './Service';
 
 const history = createBrowserHistory();
+let errorCatched = false;
 
 export function GetData(apiUrl: any) {
     const [result, setResult] = useState<Service<Dictionary<string>[]>>({
@@ -53,7 +54,6 @@ export function WebApi(apiUrl: any, data: any, method = 'POST', auth = true) {
             history.go(0)
         }
     }
-
     return trackPromise(
         fetch(serviceUrl + apiUrl, requestInfo).then(res => {
             if (res.ok) {
@@ -74,18 +74,26 @@ export function WebApi(apiUrl: any, data: any, method = 'POST', auth = true) {
                             localStorage.removeItem('myToken')
                             AlertDialog(error_description, redirectToHome)
                         }
+                        else if (errorMessage && errorMessage.toUpperCase() === 'AUTHORIZATION HAS BEEN DENIED FOR THIS REQUEST.') {
+                            localStorage.removeItem('myToken')
+                            AlertDialog(errorMessage, redirectToHome)
+                        }
                         else if (errorMessage) {
                             AlertDialog(errorMessage)
                         }
                         return null;
                     }
                     catch (ex) {   
-                        var errorData = { "Error": '"' + ex.toString() + '"', "ErrorInfo": JSON.stringify(ex) }
-                        WebApi('/api/Error', JSON.stringify(errorData)).then(resp => {
-                            if (!IsNull(resp) && resp.Message === 'SUCCESS') {
-                                AlertDialog(Constants.SupportText + resp.ErrorCode, () => { }, Constants.ErrorHeading)
-                            }
-                        });
+                        if (!errorCatched) {
+                            errorCatched = true;
+                            var errorData = { "Error": '"' + ex.toString() + '"', "ErrorInfo": JSON.stringify(ex) }
+                            WebApi('/api/Error', JSON.stringify(errorData)).then(resp => {
+                                if (!IsNull(resp) && resp.Message === 'SUCCESS') {
+                                    errorCatched = false
+                                    AlertDialog(Constants.SupportText + resp.ErrorCode, () => { }, Constants.ErrorHeading)
+                                }
+                            });
+                        }
                         return null;
                     }
                 }, error => {
