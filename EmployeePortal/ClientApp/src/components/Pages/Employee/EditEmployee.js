@@ -1,18 +1,17 @@
 import addMonths from '@jsbits/add-months';
 import React, { Component } from 'react';
-import DatePicker from "react-datepicker";
 import { Container } from 'reactstrap';
 import profileImage from '../../../images/blue-person-icon.png';
 import IsNull from '../../Common/Common';
 import AlertDialog from '../../Core/AlertDialog';
 import AlertMessage from '../../Core/AlertMessage';
+import Input from '../../Core/Input';
 import { WebApi } from '../../Helpers/WebApi.ts';
 const addDays = require('add-days');
 
 export class EditEmployee extends Component {
     constructor(props) {
         super(props)
-
         this.state = {
             showAlert: false,
             alertType: '',
@@ -20,8 +19,8 @@ export class EditEmployee extends Component {
             fName: '',
             lName: '',
             gender: '',
-            joiningDate: '',
-            leavingDate: '',
+            joiningDate: null,
+            leavingDate: null,
             mobile: '',
             phone: '',
             email: '',
@@ -29,7 +28,7 @@ export class EditEmployee extends Component {
             salary: '',
             departmentId: '',
             jobTitle: '',
-            dateOfBirth: '',
+            dateOfBirth: null,
             eduQualification: '',
             employmentType: '',
             identificationDocument: '',
@@ -44,6 +43,7 @@ export class EditEmployee extends Component {
             suburbCityPostAdd: '',
             statePostAdd: '',
             postalCodePostAdd: '',
+            sameResidentialAddress: false,
             id: 0,
             message: '',
             readOnly: false
@@ -56,7 +56,7 @@ export class EditEmployee extends Component {
         WebApi(url, '', 'GET')
             .then(response => {
                 if (response) {
-                    const departments = response.map((dep, index) => <option key={index + 1} value={dep.ID}>{dep.Name} ({dep.Location}) </option>)
+                    const departments = response.map((dep, index) => { return { value: dep.ID, text: dep.Name + ' (' + dep.Location + ')' } })
                     this.setState({ departmentOptions: departments }, () => {
                     });
                 }
@@ -67,11 +67,10 @@ export class EditEmployee extends Component {
             WebApi(url, '', 'GET')
                 .then(response => {
                     if (response) {
-                        console.log(response)
                         this.setState({
                             fName: response.FirstName, lName: response.LastName, gender: response.Gender, salary: response.Salary,
                             departmentId: response.DepartmentId, jobTitle: response.JobTitle,
-                            joiningDate: !IsNull(response.JoiningDate) ? new Date(response.JoiningDate) : ''
+                            joiningDate: !IsNull(response.JoiningDate) ? new Date(response.JoiningDate) : null
                         })
                     }
                 });
@@ -127,26 +126,47 @@ export class EditEmployee extends Component {
         });
     }
 
-    handleLeavingDate = date => {
+    handleLeavingDate = (date) => {
         this.setState({
             leavingDate: date
         }, () => {
         });
     }
 
-    render(props) {
+    handleCheckboxSameResiAddress = (e) => {
+        this.setState({
+            sameResidentialAddress: e.target.checked
+        }, () => {
+            if (this.state.sameResidentialAddress) {
+                this.setState({
+                    houseNumberPostAdd: this.state.houseNumberResiAdd,
+                    streetPostAdd: this.state.streetResiAdd,
+                    suburbCityPostAdd: this.state.suburbCityResiAdd,
+                    statePostAdd: this.state.stateResiAdd,
+                    postalCodePostAdd: this.state.postalCodeResiAdd,
+                    readOnly: true
+                })
+            }
+            else {
+                this.setState({
+                    readOnly: false
+                })
+            }
+        })
+    }
+
+    render() {
         if (this.props.location && this.props.location.state)
             this.id = this.props.location.state
-        const GenderOptions = [<option key="1" value="Male">Male</option>,
-        <option key="2" value="Female">Female</option>];
-        const EmploymentTypes = [<option key="1" value="FULL TIME">Full Time</option>,
-        <option key="2" value="PART TIME">Part Time</option>, <option key="3" value="CASUAL">Casual</option>, <option key="4" value="TEMPORARY">Temporary</option>];
-        const IdentificationDocuments = [<option key="1" value="Driver's Licence">Driver's Licence</option>,
-        <option key="2" value="Passport">Passport</option>, <option key="3" value="Birth Certificate">Birth Certificate</option>];
+        const GenderOptions = [{ value: "Male", text: "Male" }, { value: "Female", text: "Female" }]
+        const EmploymentTypes = [{ value: "FULL TIME", text: "Full Time" }, { value: "PART TIME", text: "Part Time" }, { value: "CASUAL", text: "Casual" },
+        { value: "TEMPORARY", text: "Temporary" }]
+        const IdentificationDocuments = [{ value: "Driver's Licence", text: "Driver's Licence" }, { value: "Passport", text: "Passport" },
+        { value: "Birth Certificate", text: "Birth Certificate" }];
         const { fName, lName, gender, salary, departmentId, jobTitle, showAlert, alertType, employmentType, identificationNumber, identificationDocument,
             message, readOnly, dateOfBirth, phone, mobile, email, linkedinProfile, joiningDate, leavingDate, eduQualification, houseNumberResiAdd,
             streetResiAdd, suburbCityResiAdd, stateResiAdd, postalCodeResiAdd, houseNumberPostAdd, streetPostAdd, suburbCityPostAdd, statePostAdd,
-            postalCodePostAdd } = this.state
+            postalCodePostAdd, departmentOptions, sameResidentialAddress } = this.state
         const SuccessMessage = "Employee data has been edited successfully."
         const ErrorMessage = "Please fill in all required fields."
         let Message
@@ -158,7 +178,6 @@ export class EditEmployee extends Component {
             else
                 Message = ErrorMessage
         }
-
         return (
             <Container className="mx-0 px-0">
                 <div className="table-wrapper">
@@ -196,63 +215,62 @@ export class EditEmployee extends Component {
                                     <div className="col-8 p-0">
                                         <div className="col-12 p-0 m-0 row">
                                             <div className="col-6 p-0">
-                                                <div className="col-12 p-0">First name</div>
                                                 <div className="col-12 p-0">
-                                                    <input value={fName} onChange={(e) => { this.setState({ fName: e.target.value }) }} type="text" />
+                                                    <Input label="First name" value={fName} onChange={(e) => { this.setState({ fName: e.target.value }) }}
+                                                        onClear={(value) => { this.setState({ fName: value }) }} />
                                                 </div>
                                             </div>
                                             <div className="col-6 p-0">
-                                                <div className="col-12 p-0">Last name</div>
                                                 <div className="col-12 p-0">
-                                                    <input value={lName} onChange={(e) => { this.setState({ lName: e.target.value }) }} type="text" />
+                                                    <Input label="Last name" value={lName} onChange={(e) => { this.setState({ lName: e.target.value }) }}
+                                                        onClear={(value) => { this.setState({ lName: value }) }} />
                                                 </div>
                                             </div>
                                         </div>
                                         <div className="col-12 p-0 m-0 row mt-3">
                                             <div className="col-6 p-0">
-                                                <div className="col-12 p-0">Gender</div>
                                                 <div className="col-12 p-0">
-                                                    <select value={gender} onChange={(e) => { this.setState({ gender: e.target.value }) }}>
-                                                        <option key="0" value="select">Select</option>{GenderOptions}
-                                                    </select>
+                                                    <Input type="select" value={gender} labelId="gender" labelText="Gender" options={GenderOptions}
+                                                        onChange={(e) => { this.setState({ gender: e.target.value }) }} />
                                                 </div>
                                             </div>
                                             <div className="col-6 p-0">
-                                                <div className="col-12 p-0">Date of Birth</div>
                                                 <div className="col-12 p-0">
-                                                    <DatePicker minDate={new Date('01/01/' + new Date().getFullYear())}
+                                                    <Input type="dateMonth" label="Date of Birth" value={dateOfBirth}
+                                                        onChange={this.handleDOB} minDate={new Date('01/01/' + new Date().getFullYear())}
                                                         maxDate={addDays(addMonths(new Date('01/01/' + new Date().getFullYear()), 12), -1)}
-                                                        placeholderText="DD/MM" dateFormat="dd/MM" selected={dateOfBirth} onChange={this.handleDOB} />
+                                                        onClear={(value) => { this.setState({ dateOfBirth: value }) }}
+                                                    />
                                                 </div>
                                             </div>
                                         </div>
                                         <div className="col-12 p-0 m-0 row mt-3">
                                             <div className="col-6 p-0">
-                                                <div className="col-12 p-0">Mobile number</div>
                                                 <div className="col-12 p-0">
-                                                    <input value={mobile} onChange={(e) => { this.setState({ mobile: e.target.value }) }} type="text" />
+                                                    <Input label="Mobile number" value={mobile} onChange={(e) => { this.setState({ mobile: e.target.value }) }}
+                                                        onClear={(value) => { this.setState({ mobile: value }) }} />
                                                 </div>
                                             </div>
                                             <div className="col-6 p-0">
-                                                <div className="col-12 p-0">Home Phone</div>
                                                 <div className="col-12 p-0">
-                                                    <input value={phone} onChange={(e) => { this.setState({ phone: e.target.value }) }} type="text" />
+                                                    <Input label="Home Phone" value={phone} onChange={(e) => { this.setState({ phone: e.target.value }) }}
+                                                        onClear={(value) => { this.setState({ phone: value }) }} />
                                                 </div>
                                             </div>
                                         </div>
                                         <div className="col-12 p-0 m-0 row mt-3">
                                             <div className="col-6 p-0">
-                                                <div className="col-12 p-0">Email address</div>
                                                 <div className="col-12 p-0">
-                                                    <input value={email} onChange={(e) => { this.setState({ email: e.target.value }) }} type="text" />
+                                                    <Input label="Email address" value={email} onChange={(e) => { this.setState({ email: e.target.value }) }}
+                                                        onClear={(value) => { this.setState({ email: value }) }} />
                                                 </div>
                                             </div>
                                             <div className="col-6 p-0">
-                                                <div className="col-12 p-0">Linkedin/Github link</div>
                                                 <div className="col-12 p-0 wrapperLink">
-                                                    <input className="inputLink" value={linkedinProfile} onChange={(e) => { this.setState({ linkedinProfile: e.target.value }) }} type="text" />
+                                                    <Input label="Linkedin/Github link" className="inputLink" value={linkedinProfile} onChange={(e) => { this.setState({ linkedinProfile: e.target.value }) }}
+                                                        onClear={(value) => { this.setState({ linkedinProfile: value }) }} />
                                                     <div className="iconLink"><a href={linkedinProfile.indexOf('https:') === 0 ? linkedinProfile : 'https://' + linkedinProfile} target="_blank">
-                                                        <i className="fa fa-external-link link-icon" aria-hidden="true"></i></a></div>
+                                                        <i className="fa fa-external-link link-icon" aria-hidden="true" style={{ "display": (this.state.linkedinProfile === '' ? "none" : "") }}></i></a></div>
                                                 </div>
                                             </div>
                                         </div>
@@ -261,7 +279,7 @@ export class EditEmployee extends Component {
                                 <div className="col-12 p-0 m-0 mt-4 mb-3 row">
                                     <hr className="rounded" />
                                 </div>
-                                <div className="col-12 p-0 fullInputWidth">
+                                <div className="col-12 p-0">
                                     <div className="col-12 p-0 m-0 row">
                                         <div className="col-12 p-0">
                                             <h6>Job Detail </h6>
@@ -271,12 +289,9 @@ export class EditEmployee extends Component {
                                         <div className="col-6 p-0">
                                             <div className="col-11 p-0">
                                                 <div className="col-12 p-0">
-                                                    BU/Department
-                                                </div>
-                                                <div className="col-12 p-0">
-                                                    <select value={departmentId} onChange={(e) => { this.setState({ departmentId: e.target.value }) }}>
-                                                        <option key="0" value="select">Select</option>{this.state.departmentOptions}
-                                                    </select>
+                                                    <Input type="select" value={departmentId} labelId="departmentId"
+                                                        labelText="BU/Department" options={departmentOptions} customClass="fullWidth"
+                                                        onChange={(e) => { this.setState({ departmentId: e.target.value }) }} />
                                                 </div>
                                             </div>
                                         </div>
@@ -285,10 +300,8 @@ export class EditEmployee extends Component {
                                         <div className="col-6 p-0">
                                             <div className="col-11 p-0">
                                                 <div className="col-12 p-0">
-                                                    Job Title
-                                                </div>
-                                                <div className="col-12 p-0">
-                                                    <input value={jobTitle} onChange={(e) => { this.setState({ jobTitle: e.target.value }) }} type="text"></input>
+                                                    <Input label="Job Title" value={jobTitle} onChange={(e) => { this.setState({ jobTitle: e.target.value }) }}
+                                                        onClear={(value) => { this.setState({ jobTitle: value }) }} customClass="fullWidth" />
                                                 </div>
                                             </div>
                                         </div>
@@ -297,12 +310,9 @@ export class EditEmployee extends Component {
                                         <div className="col-6 p-0">
                                             <div className="col-11 p-0">
                                                 <div className="col-12 p-0">
-                                                    Employment type
-                                                </div>
-                                                <div className="col-12 p-0">
-                                                    <select value={employmentType} onChange={(e) => { this.setState({ employmentType: e.target.value }) }}>
-                                                        <option key="0" value="select">Select</option>{EmploymentTypes}
-                                                    </select>
+                                                    <Input type="select" value={employmentType} labelId="employmentType"
+                                                        labelText="Employment type" options={EmploymentTypes} customClass="fullWidth"
+                                                        onChange={(e) => { this.setState({ employmentType: e.target.value }) }} />
                                                 </div>
                                             </div>
                                         </div>
@@ -311,11 +321,9 @@ export class EditEmployee extends Component {
                                         <div className="col-6 p-0">
                                             <div className="col-11 p-0">
                                                 <div className="col-12 p-0">
-                                                    Education Qualification
-                                                </div>
-                                                <div className="col-12 p-0">
-                                                    <input value={eduQualification} onChange={(e) => { this.setState({ eduQualification: e.target.value }) }}
-                                                        type="text"></input>
+                                                    <Input label="Education Qualification" value={eduQualification}
+                                                        onChange={(e) => { this.setState({ eduQualification: e.target.value }) }}
+                                                        onClear={(value) => { this.setState({ eduQualification: value }) }} customClass="fullWidth" />
                                                 </div>
                                             </div>
                                         </div>
@@ -324,11 +332,8 @@ export class EditEmployee extends Component {
                                         <div className="col-6 p-0">
                                             <div className="col-11 p-0">
                                                 <div className="col-12 p-0">
-                                                    Joining date
-                                                </div>
-                                                <div className="col-12 p-0">
-                                                    <DatePicker placeholderText="DD/MM/YYYY" dateFormat="dd/MM/yyyy" selected={joiningDate}
-                                                        onChange={this.handleJoiningDate} />
+                                                    <Input type="date" label="Joining date" value={joiningDate}
+                                                        onChange={this.handleJoiningDate} customClass="fullWidth customDate" />
                                                 </div>
                                             </div>
                                         </div>
@@ -337,11 +342,9 @@ export class EditEmployee extends Component {
                                         <div className="col-6 p-0">
                                             <div className="col-11 p-0">
                                                 <div className="col-12 p-0">
-                                                    Leaving date
-                                                </div>
-                                                <div className="col-12 p-0">
-                                                    <DatePicker placeholderText="DD/MM/YYYY" dateFormat="dd/MM/yyyy" selected={leavingDate}
-                                                        minDate={joiningDate !== '' ? joiningDate : new Date()} onChange={this.handleLeavingDate} />
+                                                    <Input type="date" label="Leaving date" value={leavingDate}
+                                                        onChange={this.handleLeavingDate} minDate={joiningDate !== '' ? joiningDate : new Date()}
+                                                        customClass="fullWidth customDate" />
                                                 </div>
                                             </div>
                                         </div>
@@ -350,12 +353,9 @@ export class EditEmployee extends Component {
                                         <div className="col-6 p-0">
                                             <div className="col-11 p-0">
                                                 <div className="col-12 p-0">
-                                                    Identification document
-                                                </div>
-                                                <div className="col-12 p-0">
-                                                    <select value={identificationDocument} onChange={(e) => { this.setState({ identificationDocument: e.target.value }) }}>
-                                                        <option key="0" value="select">Select</option>{IdentificationDocuments}
-                                                    </select>
+                                                    <Input type="select" value={identificationDocument} labelId="identificationDocument"
+                                                        labelText="Identification document" options={IdentificationDocuments} customClass="fullWidth"
+                                                        onChange={(e) => { this.setState({ identificationDocument: e.target.value }) }} />
                                                 </div>
                                             </div>
                                         </div>
@@ -364,11 +364,9 @@ export class EditEmployee extends Component {
                                         <div className="col-6 p-0">
                                             <div className="col-11 p-0">
                                                 <div className="col-12 p-0">
-                                                    Identification number
-                                                </div>
-                                                <div className="col-12 p-0">
-                                                    <input value={identificationNumber} onChange={(e) => { this.setState({ identificationNumber: e.target.value }) }}
-                                                        type="text"></input>
+                                                    <Input label="Identification number" value={identificationNumber}
+                                                        onChange={(e) => { this.setState({ identificationNumber: e.target.value }) }}
+                                                        onClear={(value) => { this.setState({ identificationNumber: value }) }} customClass="fullWidth" />
                                                 </div>
                                             </div>
                                         </div>
@@ -386,49 +384,40 @@ export class EditEmployee extends Component {
                                     <div className="col-12 p-0 m-0 mt-3 row">
                                         <div className="col-6 p-0 pr-3">
                                             <div className="col-12 p-0">
-                                                House/Unit number
-                                            </div>
-                                            <div className="col-12 p-0">
-                                                <input value={houseNumberResiAdd} onChange={(e) => { this.setState({ houseNumberResiAdd: e.target.value }) }}
-                                                    type="text"></input>
+                                                <Input label="House/Unit number" value={houseNumberResiAdd}
+                                                    onChange={(e) => { this.setState({ houseNumberResiAdd: e.target.value }) }}
+                                                    onClear={(value) => { this.setState({ houseNumberResiAdd: value }) }} customClass="fullWidth" />
                                             </div>
                                         </div>
                                         <div className="col-6 p-0">
                                             <div className="col-12 p-0">
-                                                Street address
-                                            </div>
-                                            <div className="col-12 p-0">
-                                                <input value={streetResiAdd} onChange={(e) => { this.setState({ streetResiAdd: e.target.value }) }}
-                                                    type="text"></input>
+                                                <Input label="Street address" value={streetResiAdd}
+                                                    onChange={(e) => { this.setState({ streetResiAdd: e.target.value }) }}
+                                                    onClear={(value) => { this.setState({ streetResiAdd: value }) }} customClass="fullWidth" />
                                             </div>
                                         </div>
                                     </div>
                                     <div className="col-12 p-0 m-0 mt-3 row">
                                         <div className="col-6 p-0 pr-3">
                                             <div className="col-12 p-0">
-                                                Suburb/City
-                                            </div>
-                                            <div className="col-12 p-0">
-                                                <input value={suburbCityResiAdd} onChange={(e) => { this.setState({ suburbCityResiAdd: e.target.value }) }}
-                                                    type="text"></input>
+                                                <Input label="Suburb/City" value={suburbCityResiAdd}
+                                                    onChange={(e) => { this.setState({ suburbCityResiAdd: e.target.value }) }}
+                                                    onClear={(value) => { this.setState({ suburbCityResiAdd: value }) }} customClass="fullWidth" />
                                             </div>
                                         </div>
                                         <div className="col-3 p-0">
                                             <div className="col-12 p-0">
-                                                State
-                                            </div>
-                                            <div className="col-12 p-0">
-                                                <input value={stateResiAdd} onChange={(e) => { this.setState({ stateResiAdd: e.target.value }) }}
-                                                    type="text"></input>
+                                                <Input label="State" value={stateResiAdd}
+                                                    onChange={(e) => { this.setState({ stateResiAdd: e.target.value }) }}
+                                                    onClear={(value) => { this.setState({ stateResiAdd: value }) }} customClass="fullWidth" />
                                             </div>
                                         </div>
                                         <div className="col-3 p-0 pl-3">
+
                                             <div className="col-12 p-0">
-                                                Postal code
-                                            </div>
-                                            <div className="col-12 p-0">
-                                                <input value={postalCodeResiAdd} onChange={(e) => { this.setState({ postalCodeResiAdd: e.target.value }) }}
-                                                    type="text"></input>
+                                                <Input label="Postal code" value={postalCodeResiAdd}
+                                                    onChange={(e) => { this.setState({ postalCodeResiAdd: e.target.value }) }}
+                                                    onClear={(value) => { this.setState({ postalCodeResiAdd: value }) }} customClass="fullWidth" />
                                             </div>
                                         </div>
                                     </div>
@@ -442,57 +431,49 @@ export class EditEmployee extends Component {
                                         </div>
                                     </div>
                                     <div className="col-12 p-0 m-0 mt-3 row">
-                                        <div className="col-6 p-0 m-0 row valignCenter">
-                                            Same as Residential Address
-                                            <input onChange={(e) => { this.setState({}) }} type="checkbox" />
+                                        <div className="col-12 p-0 m-0 row valignCenter">
+                                            <Input label="Same as Residential Address" checked={sameResidentialAddress} type="checkbox"
+                                                onChange={this.handleCheckboxSameResiAddress} />
                                         </div>
                                     </div>
                                     <div className="col-12 p-0 m-0 mt-3 row">
                                         <div className="col-6 p-0 pr-3">
                                             <div className="col-12 p-0">
-                                                House/Unit number
-                                            </div>
-                                            <div className="col-12 p-0">
-                                                <input value={houseNumberPostAdd} onChange={(e) => { this.setState({ houseNumberPostAdd: e.target.value }) }}
-                                                    type="text"></input>
+                                                <Input label="House/Unit number" value={houseNumberPostAdd}
+                                                    className={(readOnly === true ? "disabled-inputs" : "")}
+                                                    onChange={(e) => { this.setState({ houseNumberPostAdd: e.target.value }) }}
+                                                    onClear={(value) => { this.setState({ houseNumberPostAdd: value }) }} customClass="fullWidth" />
                                             </div>
                                         </div>
                                         <div className="col-6 p-0">
                                             <div className="col-12 p-0">
-                                                Street address
-                                            </div>
-                                            <div className="col-12 p-0">
-                                                <input value={streetPostAdd} onChange={(e) => { this.setState({ streetPostAdd: e.target.value }) }}
-                                                    type="text"></input> 
+                                                <Input label="Street address" value={streetPostAdd}
+                                                    onChange={(e) => { this.setState({ streetPostAdd: e.target.value }) }}
+                                                    className={(readOnly === true ? "disabled-inputs" : "")}
+                                                    onClear={(value) => { this.setState({ streetPostAdd: value }) }} customClass="fullWidth" />
                                             </div>
                                         </div>
                                     </div>
                                     <div className="col-12 p-0 m-0 mt-3 row">
                                         <div className="col-6 p-0 pr-3">
                                             <div className="col-12 p-0">
-                                                Suburb/City
-                                            </div>
-                                            <div className="col-12 p-0">
-                                                <input value={suburbCityPostAdd} onChange={(e) => { this.setState({ suburbCityPostAdd: e.target.value }) }}
-                                                    type="text"></input>
+                                                <Input label="Suburb/City" value={suburbCityPostAdd} className={(readOnly === true ? "disabled-inputs" : "")}
+                                                    onChange={(e) => { this.setState({ suburbCityPostAdd: e.target.value }) }}
+                                                    onClear={(value) => { this.setState({ suburbCityPostAdd: value }) }} customClass="fullWidth" />
                                             </div>
                                         </div>
                                         <div className="col-3 p-0">
                                             <div className="col-12 p-0">
-                                                State
-                                            </div>
-                                            <div className="col-12 p-0">
-                                                <input value={statePostAdd} onChange={(e) => { this.setState({ statePostAdd: e.target.value }) }}
-                                                    type="text"></input>
+                                                <Input label="State" value={statePostAdd} className={(readOnly === true ? "disabled-inputs" : "")}
+                                                    onChange={(e) => { this.setState({ statePostAdd: e.target.value }) }}
+                                                    onClear={(value) => { this.setState({ statePostAdd: value }) }} customClass="fullWidth" />
                                             </div>
                                         </div>
                                         <div className="col-3 p-0 pl-3">
                                             <div className="col-12 p-0">
-                                                Postal code
-                                            </div>
-                                            <div className="col-12 p-0">
-                                                <input value={postalCodePostAdd} onChange={(e) => { this.setState({ postalCodePostAdd: e.target.value }) }}
-                                                    type="text"></input>
+                                                <Input label="Postal code" value={postalCodePostAdd} className={(readOnly === true ? "disabled-inputs" : "")}
+                                                    onChange={(e) => { this.setState({ postalCodePostAdd: e.target.value }) }}
+                                                    onClear={(value) => { this.setState({ postalCodePostAdd: value }) }} customClass="fullWidth" />
                                             </div>
                                         </div>
                                     </div>

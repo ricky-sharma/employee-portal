@@ -1,0 +1,141 @@
+:focus-visible {
+    outline: -webkit-focus-ring-color auto 0px !important;
+}
+
+.MuiFormControl-root {
+    width: 100% !important;
+}
+
+.MuiFormControlLabel-root {
+    margin-left: 0px !important;
+}
+
+.MuiInputBase-input {
+    width: 100% !important;
+}
+
+.MuiIconButton-root {
+    padding: 0 !important;
+}
+
+    .MuiIconButton-root:hover {
+        background-color: #ffffff !important;
+    }
+
+.MuiPickersDay-daySelected:hover {
+    background-color: #3f51b5 !important;
+}
+
+.MuiSvgIcon-root {
+    font-size: 0.8rem !important;
+}
+
+.MuiPickersCalendarHeader-switchHeader .MuiSvgIcon-root, .customDate .MuiSvgIcon-root,
+.MuiSelect-icon.MuiSvgIcon-root, .MuiCheckbox-root .MuiSvgIcon-root {
+    font-size: 1.5rem !important;
+}
+
+.MuiOutlinedInput-input {
+    padding: 10px 15px !important;
+    padding-right: 18px !important;
+}
+
+.MuiInputLabel-outlined {
+    transform: translate(14px, 12px) scale(1) !important;
+}
+
+    .MuiInputLabel-outlined.MuiInputLabel-shrink {
+        transform: translate(14px, -6px) scale(0.75) !important;
+    }
+
+.MuiInputLabel-formControl {
+    transform: translate(14px, 12px) scale(1) !important;
+}
+
+.MuiInputLabel-shrink {
+    transform: translate(14px, -6px) scale(0.75) !important;
+}
+
+.MuiOutlinedInput-adornedEnd {
+    padding-right: 8px !important;
+}
+
+.inputLink .MuiOutlinedInput-adornedEnd {
+    padding-right: 32px !important;
+}
+
+.MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline {
+    border-color: #3f51b5 !important;
+    border-width: 1px !important;
+}
+
+.customInput {
+    width: 90% !important;
+}
+
+.fullWidth {
+    width: 100% !important;
+}
+
+@media (max-width: 415px) {
+    .inputLink .MuiOutlinedInput-adornedEnd {
+        padding-right: 19px !important;
+    }
+}
+
+@media (min-width: 416px) and (max-width: 600px) {
+    .inputLink .MuiOutlinedInput-adornedEnd {
+        padding-right: 23px !important;
+    }
+}
+
+@media (min-width: 601px) and (max-width: 800px) {
+    .inputLink .MuiOutlinedInput-adornedEnd {
+        padding-right: 26px !important;
+    }
+}
+
+@media (min-width: 801px) and (max-width: 1000px) {
+    .inputLink .MuiOutlinedInput-adornedEnd {
+        padding-right: 30px !important;
+    }
+}
+
+@media (max-width: 767px) {
+    .MuiSvgIcon-root {
+        top: calc(50% - 8px) !important;
+    }
+}
+
+@media (max-width: 600px) {
+
+    .MuiOutlinedInput-input {
+        padding: 5px 11px !important;
+        padding-right: 12px !important;
+    }
+
+    .MuiInputLabel-outlined {
+        transform: translate(11px, 5px) scale(1) !important;
+        max-width:90% !important;
+    }
+
+        .MuiInputLabel-outlined.MuiInputLabel-shrink {
+            transform: translate(11px, -2px) scale(0.75) !important;
+            max-width: 100% !important;
+        }
+
+    .MuiInputLabel-formControl {
+        transform: translate(11px, 5px) scale(1) !important;
+        max-width: 78% !important;
+        line-height: 0.9 !important;
+    }
+
+    .MuiInputLabel-shrink {
+        transform: translate(11px, -2px) scale(0.75) !important;
+        max-width: 100% !important;
+    }
+
+    .MuiOutlinedInput-adornedEnd {
+        padding-right: 3px !important;
+    }
+}
