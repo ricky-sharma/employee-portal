@@ -469,7 +469,7 @@ export class DataGrid extends Component {
                                     {this.state.pagerSelectOptions}
                                 </select>
                             </div>
-                            <div className="float-lt col-5 m-0 p-0 pr-2">
+                            <div className="float-lt col-5 m-0 p-0 pr-1">
                                 <div className="col-12 m-0 p-0">
                                     {EnablePaging === true ? (<ul className="pagination align-center">
                                         <li className={"page-item " + (activePage === 1 ? "disabled" : "")}>
