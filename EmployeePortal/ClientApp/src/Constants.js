@@ -4,3 +4,6 @@ export const ServiceURL = 'https://employee.service.com'
 export const DevServiceURL = 'http://employee.service.com'
 export const SupportText = 'Please share the following error code with the support team: '
 export const ErrorHeading = 'Something went wrong'
+export const PhoneNumberRegex = /^\d{10,11}$/
+export const Locale = ['en-AU']
+export const LocaleCode = 'AU'

@@ -161,19 +161,22 @@ input[type=checkbox] {
 
     .table-title h2 {
         margin: 8px 0 0;
-        font-size: 22px;
+        font-size: 24px;
     }
 
     .table-title .add-new {
         float: right;
         height: 30px;
         font-weight: bold;
-        font-size: 12px;
+        font-size: 14px;
         text-shadow: none;
         min-width: 100px;
         border-radius: 50px;
         line-height: 13px;
         margin-top: 5px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
 
         .table-title .add-new i {
@@ -295,7 +298,7 @@ hr.rounded {
     }
 
     input[type=text], select, input[type=button], input[type=submit], input[type=reset], label, div, span {
-        font-size: xx-small !important;
+        font-size: 7px !important;
         vertical-align: middle;
     }
 }
@@ -318,18 +321,26 @@ hr.rounded {
     }
 
     input[type=text], select, input[type=button], input[type=submit], input[type=reset], label, div, span {
-        font-size: 7px !important;
+        font-size: 8px !important;
         vertical-align: text-bottom;
     }
 
     div, input, select, label {
-        font-size: 7px !important;
+        font-size: 8px !important;
+    }
+
+    .table-title h2 {
+        font-size: 14px;
     }
 }
 
 @media (min-width: 361px) and (max-width: 415px) {
     div, input, select, label {
-        font-size: 8px !important;
+        font-size: 10px !important;
+    }
+
+    .table-title h2 {
+        font-size: 16px;
     }
 }
 
@@ -347,13 +358,26 @@ hr.rounded {
         font-size: x-small;
     }
 }
+
 @media (min-width: 480px) and (max-width: 600px) {
     input[type=text], select, input[type=button], input[type=submit], input[type=reset], label, div, span {
         font-size: smaller;
     }
 }
 
-@media (min-width: 480px) and (max-width: 768px) {
+@media (min-width: 601px) and (max-width: 767px) {
+    .table-title .add-new {
+        height: 22px;
+        min-width: 70px;
+        font-size: 10px;
+    }
+
+    .table-title h2 {
+        font-size: 19px;
+    }
+}
+
+@media (min-width: 480px) and (max-width: 767px) {
     /* Basically up to, but not including an iPad */
 
     input[type=text], select {
@@ -367,12 +391,22 @@ hr.rounded {
     input[type=button], input[type=submit], input[type=reset] {
         min-width: 70px;
         height: 30px;
-    } 
+    }
 }
 
 @media (min-width: 768px) and (max-width: 1000px) {
     input[type=text], select, input[type=button], input[type=submit], input[type=reset], label, div, span {
-        font-size: small !important;
+        font-size: 16px !important;
+    }
+
+    .table-title .add-new {
+        height: 25px;
+        min-width: 80px;
+        font-size: 11px;
+    }
+
+    .table-title h2 {
+        font-size: 21px;
     }
 }
 
@@ -400,8 +434,12 @@ hr.rounded {
 }
 
 @media (min-width: 416px) and (max-width: 600px) {
-    div, input, select, label {
-        font-size: 10px !important;
+    select, input, label, div, span {
+        font-size: 12px !important;
+    }
+
+    .table-title h2 {
+        font-size: 18px;
     }
 }
 
@@ -411,9 +449,9 @@ hr.rounded {
     }
 
     .table-title .add-new {
-        height: 22px;
-        min-width: 70px;
-        font-size: 10px;
+        height: 20px;
+        min-width: 60px;
+        font-size: 9px;
     }
 
     .link-icon {
@@ -440,6 +478,10 @@ hr.rounded {
 }
 
 @media (min-width: 600px) and (max-width: 767px) {
+    input[type=text], select, input[type=button], input[type=submit], input[type=reset], label, div, span {
+        font-size: 14px !important;
+    }
+
     .link-icon {
         font-size: 11px !important;
         margin-left: 3px !important;

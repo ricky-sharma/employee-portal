@@ -1,5 +1,5 @@
 ﻿import DateFnsUtils from '@date-io/date-fns';
-import { FormControl, IconButton, InputLabel, MenuItem, Select, TextField, Checkbox, FormControlLabel } from '@material-ui/core';
+import { FormControl, IconButton, InputLabel, MenuItem, Select, TextField, Checkbox, FormControlLabel, FormHelperText } from '@material-ui/core';
 import ClearIcon from "@material-ui/icons/Clear";
 import { DatePicker, KeyboardDatePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
 import React, { Component } from 'react';
@@ -26,7 +26,9 @@ export class Input extends Component {
             nextProps.checked !== this.props.checked ||
             nextProps.minDate !== this.props.minDate ||
             nextProps.maxDate !== this.props.maxDate ||
-            nextProps.className !== this.props.className) {
+            nextProps.className !== this.props.className ||
+            nextProps.error !== this.props.error ||
+            nextProps.helperText !== this.props.helperText) {
             return true;
         } else {
             return false;
@@ -57,8 +59,12 @@ export class Input extends Component {
                             label={this.props.label ?? ""}
                             variant={this.props.variant ?? "outlined"}
                             inputRef={this.inputRef}
+                            inputProps={this.props.inputProps}
                             value={this.state.value}
                             required={this.props.required ?? false}
+                            error={this.props.error ?? false}
+                            helperText={!IsNull(this.props.error) && this.props.error == true ?
+                                (!IsNull(this.props.helperText) ? this.props.helperText : (!IsNull(this.props.label) ? this.props.label + " is required!" : "Empty field!")) : ""}
                             onChange={(e) => {
                                 return !IsNull(this.props.onChange) ? this.setState({
                                     value: e.target.value
@@ -66,6 +72,7 @@ export class Input extends Component {
                                     this.props.onChange(e)
                                 }) : () => { };
                             }}
+                            type={this.props.dataType ?? "text"}
                             placeholder={this.props.placeholder}
                             className={this.props.className ?? ""}
                             InputProps={{
@@ -93,8 +100,9 @@ export class Input extends Component {
                                 inputVariant={this.props.inputVariant ?? "outlined"}
                                 label={this.props.label ?? ""}
                                 value={this.state.value}
-                                required={this.props.required ?? false}
-                                className={this.props.className ?? ""}
+                                error={this.props.error ?? false}
+                                helperText={!IsNull(this.props.error) && this.props.error == true ?
+                                    (!IsNull(this.props.helperText) ? this.props.helperText : (!IsNull(this.props.label) ? this.props.label + " is required!" : "Empty field!")) : ""}
                                 onChange={(date) => {
                                     return !IsNull(this.props.onChange) ? this.setState({
                                         value: date
@@ -123,8 +131,9 @@ export class Input extends Component {
                                 inputVariant={this.props.inputVariant ?? "outlined"}
                                 label={this.props.label ?? ""}
                                 value={this.state.value}
-                                required={this.props.required ?? false}
-                                className={this.props.className ?? ""}
+                                error={this.props.error ?? false}
+                                helperText={!IsNull(this.props.error) && this.props.error == true ?
+                                    (!IsNull(this.props.helperText) ? this.props.helperText : (!IsNull(this.props.label) ? this.props.label + " is required!" : "Empty field!")) : ""}
                                 onChange={(date) => {
                                     return !IsNull(this.props.onChange) ? this.setState({
                                         value: date
@@ -150,14 +159,13 @@ export class Input extends Component {
             case 'select':
                 return (
                     <div className={!IsNull(this.props.customClass) ? (this.props.customClass + " customInput") : "customInput"}>
-                        <FormControl style={{ m: 1, minWidth: "100%" }}>
-                            <InputLabel id={this.props.labelId ?? "simple-select-label"}>{this.props.labelText}</InputLabel>
+                        <FormControl style={{ m: 1, minWidth: "100%" }} error={(this.props.error ?? false)}>
+                            <InputLabel id={this.props.labelId ?? "simple-select-label"}>{this.props.label}</InputLabel>
                             <Select variant={this.props.variant ?? 'outlined'}
                                 fullWidth={this.props.fullWidth ?? true}
                                 labelId={this.props.labelId ?? "simple-select-label"}
                                 value={this.state.value}
-                                label={this.props.labelText ?? ""}
-                                className={this.props.className ?? ""}
+                                label={this.props.label ?? ""}
                                 id={this.props.id ?? "simple-select"}
                                 onChange={(e) => {
                                     return !IsNull(this.props.onChange) ? this.setState({
@@ -173,6 +181,8 @@ export class Input extends Component {
                                     return <MenuItem key={k} value={i.value}>{i.text}</MenuItem>
                                 })}
                             </Select>
+                            {(this.props.error ?? false) && <FormHelperText error={(this.props.error ?? false)}>{!IsNull(this.props.error) && this.props.error == true ?
+                                (!IsNull(this.props.helperText) ? this.props.helperText : (!IsNull(this.props.label) ? this.props.label + " is required!" : "Empty field!")) : ""}</FormHelperText>}
                         </FormControl>
                     </div>);
             case 'checkbox':

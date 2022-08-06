@@ -32,7 +32,8 @@
     "react-select": "^5.4.0",
     "react-side-nav": "^1.1.1",
     "reactstrap": "^9.1.1",
-    "rimraf": "^3.0.2"
+    "rimraf": "^3.0.2",
+    "validator": "^13.7.0"
   },
   "devDependencies": {
     "ajv": "^8.11.0",
