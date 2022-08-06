@@ -190,6 +190,21 @@ table {
     max-width: 125px !important;
 }
 
+.float-rt {
+    float: right;
+}
+
+.float-lt {
+    float: left;
+}
+
+option {
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    padding: 0px !important;
+}
+
 .changePassword.MuiButton-root:hover, .edit.MuiButton-root:hover {
     background-color: transparent !important;
 }
@@ -247,12 +262,15 @@ input.globalSearch {
 }
 
 .pagerSelect {
-    width: 25%;
+    max-width: 55px !important;
+    width: 30% !important;
     border-radius: 4px;
     height: 20px !important;
-    padding-left: 2px;
-    padding-right: 2px;
+    padding-left: 0px;
+    padding-right: 0px;
     text-align: center;
+    justify-content: center;
+    align-items: center;
 }
 
 input[type="text" i].globalSearch, input[type="text" i].searchInput {
@@ -425,7 +443,7 @@ table.table td a.delete, button.delete {
     }
 
     .pagination {
-        padding-right: 1px !important
+        padding-right: 0px !important
     }
 
         .pagination li a {
