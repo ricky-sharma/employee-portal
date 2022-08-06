@@ -83,10 +83,12 @@ export function WebApi(apiUrl: any, data: any, method = 'POST', auth = true) {
                         }
                         return null;
                     }
-                    catch (ex) {   
+                    catch (ex) {
                         if (!errorCatched) {
                             errorCatched = true;
-                            var errorData = { "Error": '"' + ex.toString() + '"', "ErrorInfo": JSON.stringify(ex) }
+                            let error = ex.toString()
+                            let errorInfo = (ex.stack ?? ex.stacktrace ?? '').replace(error, "")
+                            var errorData = { "Error": '"' + ex.toString() + '"', "ErrorInfo": JSON.stringify({ componentStack: errorInfo }) }
                             WebApi('/api/Error', JSON.stringify(errorData)).then(resp => {
                                 if (!IsNull(resp) && resp.Message === 'SUCCESS') {
                                     errorCatched = false
