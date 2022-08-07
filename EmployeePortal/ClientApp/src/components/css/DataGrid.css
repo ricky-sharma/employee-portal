@@ -116,7 +116,7 @@
             max-width: 200px !important;
             width: 200px;
             position: relative;
-            padding-left: 20px !important;
+            padding-left: 15px !important;
         }
 
 .gridRows:first-child {
@@ -154,7 +154,7 @@
         width: 200px;
         padding: 10px !important;
         padding-right: 0px !important;
-        padding-left: 25px !important;
+        padding-left: 18px !important;
     }
 
 table {
@@ -181,6 +181,7 @@ table {
 .col1width75 {
     width: 75px !important;
     max-width: 75px !important;
+    text-align: center !important;
 }
 
 .col1width125 {
@@ -369,6 +370,11 @@ i {
     font-family: FontAwesome !important;
 }
 
+    i.material-icons {
+        font-family: 'Material Icons' !important;
+        font-size: 16px !important;
+    }
+
 @media (max-width: 420px) {
 
     .customGrid table tbody {
@@ -405,6 +411,7 @@ i {
         .searchHeader th div {
             max-width: 75px !important;
             width: 75px;
+            padding-left: 10px !important;
         }
 
     .gridRows td {
@@ -463,6 +470,10 @@ i {
     .col1width50 {
         width: 50px !important;
         max-width: 50px !important;
+    }
+
+    i.material-icons {
+        font-size: 11px !important;
     }
 }
 
