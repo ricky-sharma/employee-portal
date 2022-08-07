@@ -2,6 +2,14 @@
     box-sizing: border-box;
 }
 
+* {
+    font-family: Georgia, serif !important;
+}
+
+i {
+    font-family: FontAwesome !important;
+}
+
 a:hover, a:active, a:focus {
     /* styling for any way a link is about to be used */
     outline: 0;
@@ -289,7 +297,19 @@ hr.rounded {
         height: 30px;
     }
 
-    input[type=text], select, input[type=button], input[type=submit], input[type=reset], label, div, span {
+    h1 {
+        font-size: 16px !important;
+    }
+
+    h2 {
+        font-size: 14px !important;
+    }
+
+    h5, h6 {
+        font-size: 10px !important;
+    }
+
+    input, select, label, div, span {
         font-size: 7px !important;
         vertical-align: middle;
     }
@@ -312,27 +332,39 @@ hr.rounded {
         flex-wrap: nowrap !important
     }
 
-    input[type=text], select, input[type=button], input[type=submit], input[type=reset], label, div, span {
-        font-size: 8px !important;
-        vertical-align: text-bottom;
+    h1 {
+        font-size: 18px !important;
     }
 
-    div, input, select, label {
-        font-size: 8px !important;
+    h2 {
+        font-size: 15px !important;
     }
 
-    .table-title h2 {
-        font-size: 14px;
+    h5, h6 {
+        font-size: 12px !important;
+    }
+
+    div, input, select, label, span {
+        font-size: 8px !important;
     }
 }
 
 @media (min-width: 361px) and (max-width: 415px) {
-    div, input, select, label {
-        font-size: 10px !important;
+
+    h1 {
+        font-size: 21px !important;
     }
 
-    .table-title h2 {
-        font-size: 16px;
+    h2 {
+        font-size: 17px !important;
+    }
+
+    h5, h6 {
+        font-size: 14px !important;
+    }
+
+    div, input, select, label, span {
+        font-size: 9px !important;
     }
 }
 
@@ -345,93 +377,30 @@ hr.rounded {
     .nowrap {
         flex-wrap: nowrap !important
     }
-
-    input[type=text], select, input[type=button], input[type=submit], input[type=reset], label, div, span {
-        font-size: x-small;
-    }
 }
 
-@media (min-width: 480px) and (max-width: 600px) {
-    input[type=text], select, input[type=button], input[type=submit], input[type=reset], label, div, span {
-        font-size: smaller;
-    }
-}
+@media (min-width: 416px) and (max-width: 600px) {
 
-@media (min-width: 601px) and (max-width: 767px) {
-    .table-title .add-new {
-        height: 22px;
-        min-width: 70px;
-        font-size: 10px;
+    h1 {
+        font-size: 23px !important;
     }
 
-    .table-title h2 {
-        font-size: 19px;
-    }
-}
-
-@media (min-width: 480px) and (max-width: 767px) {
-    /* Basically up to, but not including an iPad */
-
-    input[type=text], select {
-        width: 150px;
+    h2 {
+        font-size: 19px !important;
     }
 
-    .nowrap {
-        flex-wrap: nowrap !important
+    h5, h6 {
+        font-size: 15px !important;
     }
 
-    input[type=button], input[type=submit], input[type=reset] {
-        min-width: 70px;
-        height: 30px;
-    }
-}
-
-@media (min-width: 768px) and (max-width: 1000px) {
-    input[type=text], select, input[type=button], input[type=submit], input[type=reset], label, div, span {
-        font-size: 16px !important;
-    }
-
-    .table-title .add-new {
-        height: 25px;
-        min-width: 80px;
-        font-size: 11px;
-    }
-
-    .table-title h2 {
-        font-size: 21px;
-    }
-}
-
-@media (min-width: 768px) {
-    /* iPad and bigger */
-
-    input[type=text], select {
-        width: 300px;
-    }
-
-    .nowrap {
-        flex-wrap: nowrap !important
-    }
-
-    input[type=button], input[type=submit], input[type=reset] {
-        min-width: 102px;
-        height: 30px;
+    select, input, label, div, span {
+        font-size: 10px !important;
     }
 }
 
 @media (max-width: 524px) {
     .loading-image {
         left: 37% !important;
-    }
-}
-
-@media (min-width: 416px) and (max-width: 600px) {
-    select, input, label, div, span {
-        font-size: 12px !important;
-    }
-
-    .table-title h2 {
-        font-size: 18px;
     }
 }
 
@@ -463,15 +432,44 @@ hr.rounded {
     }
 }
 
-@media (min-width: 600px) {
-    .container, .container-lg, .container-md, .container-sm, .container-xl {
-        max-width: 580px !important;
+@media (min-width: 480px) and (max-width: 767px) {
+    /* Basically up to, but not including an iPad */
+
+    input[type=text], select {
+        width: 150px;
+    }
+
+    .nowrap {
+        flex-wrap: nowrap !important
+    }
+
+    input[type=button], input[type=submit], input[type=reset] {
+        min-width: 70px;
+        height: 30px;
     }
 }
 
-@media (min-width: 600px) and (max-width: 767px) {
-    input[type=text], select, input[type=button], input[type=submit], input[type=reset], label, div, span {
-        font-size: 14px !important;
+@media (min-width: 601px) and (max-width: 767px) {
+    .table-title .add-new {
+        height: 22px;
+        min-width: 70px;
+        font-size: 10px;
+    }
+
+    h1 {
+        font-size: 26px !important;
+    }
+
+    h2 {
+        font-size: 20px !important;
+    }
+
+    h5, h6 {
+        font-size: 17px !important;
+    }
+
+    input, select, label, div, span {
+        font-size: 12px !important;
     }
 
     .link-icon {
@@ -482,6 +480,53 @@ hr.rounded {
     .iconLink {
         top: 52% !important;
         right: 15% !important;
+    }
+}
+
+@media (min-width: 768px) and (max-width: 1000px) {
+    h1 {
+        font-size: 32px !important;
+    }
+
+    h2 {
+        font-size: 22px !important;
+    }
+
+    h5, h6 {
+        font-size: 19px !important;
+    }
+
+    select, input, label, div, span {
+        font-size: 14px !important;
+    }
+
+    .table-title .add-new {
+        height: 25px;
+        min-width: 80px;
+        font-size: 11px;
+    }
+}
+
+@media (min-width: 768px) {
+    /* iPad and bigger */
+
+    input[type=text], select {
+        width: 300px;
+    }
+
+    .nowrap {
+        flex-wrap: nowrap !important
+    }
+
+    input[type=button], input[type=submit], input[type=reset] {
+        min-width: 102px;
+        height: 30px;
+    }
+}
+
+@media (min-width: 600px) {
+    .container, .container-lg, .container-md, .container-sm, .container-xl {
+        max-width: 580px !important;
     }
 }
 
@@ -497,7 +542,6 @@ hr.rounded {
     }
 }
 
-
 @media (min-width: 900px) {
     .container, .container-lg, .container-md, .container-sm, .container-xl {
         max-width: 880px !important;
@@ -508,8 +552,23 @@ hr.rounded {
     .container, .container-lg, .container-md, .container-sm, .container-xl {
         max-width: 980px !important;
     }
-}
 
+    h1 {
+        font-size: 40px !important;
+    }
+
+    h2 {
+        font-size: 26px !important;
+    }
+
+    h5, h6 {
+        font-size: 21px !important;
+    }
+
+    select, input, label, div, span {
+        font-size: 15px !important;
+    }
+}
 
 @media (max-width: 400px) {
     .tablemobile {

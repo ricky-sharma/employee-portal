@@ -14,15 +14,13 @@
     flex-direction: column;
     box-shadow: rgb(0 0 0 / 20%) 0px 3px 1px -2px, rgb(0 0 0 / 14%) 0px 2px 2px 0px, rgb(0 0 0 / 12%) 0px 1px 5px 0px;
     border: 2px solid rgb(224, 224, 224);
-    max-height: 500px !important;
-    height: 500px !important;
 }
 
     .customGrid table tbody {
         overflow-x: hidden !important;
         overflow-y: auto !important;
-        max-height: 350px !important;
-        height: 350px !important;
+        max-height: 400px !important;
+        height: 400px !important;
         width: 100%;
         max-width: 100%;
     }
@@ -259,13 +257,14 @@ input.globalSearch {
     border-radius: 4px;
     border-width: 1px;
     float: right !important;
+    height: unset !important;
 }
 
 .pagerSelect {
     max-width: 55px !important;
     width: 30% !important;
     border-radius: 4px;
-    height: 20px !important;
+    height: 24px !important;
     padding-left: 0px;
     padding-right: 0px;
     text-align: center;
@@ -366,16 +365,16 @@ table.table td a.delete, button.delete {
         box-shadow: 0 0 0 0rem rgb(0 123 255 / 25%);
     }
 
-@media (max-width: 420px) {
-    .customGrid {
-        max-height: 470px !important;
-        height: 470px !important;
-    }
+i {
+    font-family: FontAwesome !important;
+}
 
-        .customGrid table tbody {
-            max-height: 345px !important;
-            height: 345px !important;
-        }
+@media (max-width: 420px) {
+
+    .customGrid table tbody {
+        max-height: 345px !important;
+        height: 345px !important;
+    }
 
     .gridHeader th {
         padding-top: 15px !important;

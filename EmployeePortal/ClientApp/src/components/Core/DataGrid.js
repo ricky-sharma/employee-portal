@@ -456,7 +456,7 @@ export class DataGrid extends Component {
                 </div> : <></>}
                 <div className={this.state.gridCssClass !== undefined && this.state.gridCssClass !== null ? "col-12 m-0 p-0 " + this.state.gridCssClass : "col-12 m-0 p-0 customGrid"}>
                     <div className="row col-12 m-0 p-0" >
-                        <table className="table table-striped table-hover table-bordered border-0 border-bottom m-0 mx-0 px-0">
+                        <table className="table table-striped table-hover border-bottom border-top-0 border-right-0 border-left-0 m-0 mx-0 px-0">
                             {this.renderTableHeader()}
                             <tbody>
                                 {this.renderTableData(firstRow, currentPageRows)}

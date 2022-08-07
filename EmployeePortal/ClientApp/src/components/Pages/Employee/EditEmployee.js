@@ -319,7 +319,7 @@ export class EditEmployee extends Component {
                                             </div>
                                         </div>
                                         <div className="col-12 p-0">
-                                            <div className="col-5 p-0 alignCenter">
+                                            <div className="col-5 p-0 alignCenter txt-center">
                                                 <h5 className="mt-4 mb-4">
                                                     {fName} {lName}
                                                 </h5>
