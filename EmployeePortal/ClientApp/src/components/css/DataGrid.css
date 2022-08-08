@@ -26,8 +26,8 @@
     }
 
         .customGrid table::-webkit-scrollbar, .customGrid table tbody::-webkit-scrollbar {
-            height: 4px !important;
-            width: 4px !important;
+            height: 8px !important;
+            width: 8px !important;
             border: 1px solid #d5d5d5;
             border-start-end-radius: 2px;
         }

@@ -26,27 +26,24 @@ export class Employees extends Component {
                                 Name: val,
                                 SearchEnable: false,
                                 cssClass: 'col1width75'
-
-                            })
-                        else if (val.toUpperCase() === 'DEPARTMENTNAME')
-                            cols.push({
-                                Name: val,
-                                Alias: 'Department'
-                            })
-                        else if (val.toUpperCase() === 'DEPARTMENTLOCATION')
-                            cols.push({
-                                Name: val,
-                                Alias: 'Location',
-                                cssClass: 'col1width125'
                             })
                         else if (val.toUpperCase() === 'JOININGDATE')
                             cols.push({
                                 Name: val,
                                 Alias: 'Joining Date',
-                                cssClass: 'col1width125',
                                 Formatting: {
                                     Type: 'Date', Format: 'dd MMM yyyy'
                                 }
+                            })
+                        else if (val.toUpperCase() === 'EMPLOYMENTTYPE')
+                            cols.push({
+                                Name: val,
+                                Alias: 'Employment Type',
+                            })
+                        else if (val.toUpperCase() === 'JOBTITLE')
+                            cols.push({
+                                Name: val,
+                                Alias: 'Job Title',
                             })
                         else if (val.toUpperCase() === 'FIRSTNAME')
                             cols.push({
@@ -56,8 +53,7 @@ export class Employees extends Component {
                                     Columns: ['FIRSTNAME', 'LASTNAME']
                                 }
                             })
-                        else if (val.toUpperCase() === 'DEPARTMENTID' || val.toUpperCase() === 'LEAVINGDATE'
-                            || val.toUpperCase() === 'INSERVICE' || val.toUpperCase() === 'GENDER' || val.toUpperCase() === 'LASTNAME')
+                        else if (val.toUpperCase() === 'LASTNAME')
                             cols.push({
                                 Name: val,
                                 Hidden: true

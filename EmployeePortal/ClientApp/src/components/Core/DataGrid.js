@@ -354,27 +354,27 @@ export class DataGrid extends Component {
                         (c.format.formatType.toUpperCase() === 'DATE' || c.format.formatType.toUpperCase() === 'DATETIME') && c.format.keyFormat !== '') {
                         if (!IsNull(c.ConcatColumns) && !IsNull(c.ConcatColumns.Columns)) {
                             colObjSearchData =
-                                data.filter(obj => Object.keys(obj).some(key => c.ConcatColumns.Columns.some(x => x.toString().toLowerCase()
-                                    === key.toString().toLowerCase()) && hidden === false && format(new Date(obj[key]), c.format.keyFormat)
+                                data.filter(obj => Object.keys(obj).some(key => c.ConcatColumns.Columns.some(x => !IsNull(x) && x.toString().toLowerCase()
+                                    === key.toString().toLowerCase()) && hidden === false && !IsNull(obj[key]) && format(new Date(obj[key]), c.format.keyFormat)
                                         .toString().toLowerCase().includes(col.searchQuery.toString().toLowerCase())))
                         }
                         else {
                             colObjSearchData =
-                                data.filter(obj => Object.keys(obj).some(key => key.toString().toLowerCase() === c.Name.toString().toLowerCase() &&
-                                    hidden === false && format(new Date(obj[key]), c.format.keyFormat).toString().toLowerCase().includes(
+                                data.filter(obj => Object.keys(obj).some(key => !IsNull(key) && key.toString().toLowerCase() === c.Name.toString().toLowerCase() &&
+                                    hidden === false && !IsNull(obj[key]) && format(new Date(obj[key]), c.format.keyFormat).toString().toLowerCase().includes(
                                         col.searchQuery.toString().toLowerCase())))
                         }
                     }
                     else {
                         if (!IsNull(c.ConcatColumns) && !IsNull(c.ConcatColumns.Columns)) {
                             colObjSearchData =
-                                data.filter(obj => Object.keys(obj).some(key => c.ConcatColumns.Columns.some(x => x.toString().toLowerCase() === key.toString()
-                                    .toLowerCase()) && hidden === false && obj[key].toString().toLowerCase().includes(col.searchQuery.toString().toLowerCase())))
+                                data.filter(obj => Object.keys(obj).some(key => c.ConcatColumns.Columns.some(x => !IsNull(x) && x.toString().toLowerCase() === key.toString()
+                                    .toLowerCase()) && hidden === false && !IsNull(obj[key]) && obj[key].toString().toLowerCase().includes(col.searchQuery.toString().toLowerCase())))
                         }
                         else {
                             colObjSearchData =
-                                data.filter(obj => Object.keys(obj).some(key => key.toString().toLowerCase() === c.Name.toString().toLowerCase() && hidden === false
-                                    && obj[key].toString().toLowerCase().includes(col.searchQuery.toString().toLowerCase())))
+                                data.filter(obj => Object.keys(obj).some(key => !IsNull(key) && key.toString().toLowerCase() === c.Name.toString().toLowerCase() && hidden === false
+                                    && !IsNull(obj[key]) && obj[key].toString().toLowerCase().includes(col.searchQuery.toString().toLowerCase())))
                         }
                     }
                     if (globalSearchData.length > 0) {
@@ -390,22 +390,22 @@ export class DataGrid extends Component {
             else {
                 if ((col.format.formatType.toUpperCase() === 'DATE' || col.format.formatType.toUpperCase() === 'DATETIME') && col.format.keyFormat !== '') {
                     if (!IsNull(col.colObj)) {
-                        data = data.filter(obj => Object.keys(obj).some(key => col.colObj.some(x => x.toString().toLowerCase() === key.toString().toLowerCase())
-                            && format(new Date(obj[key]), col.format.keyFormat).toString().toLowerCase().includes(col.searchQuery.toString().toLowerCase())));
+                        data = data.filter(obj => Object.keys(obj).some(key => col.colObj.some(x => !IsNull(x) && x.toString().toLowerCase() === key.toString().toLowerCase())
+                            && !IsNull(obj[key]) && format(new Date(obj[key]), col.format.keyFormat).toString().toLowerCase().includes(col.searchQuery.toString().toLowerCase())));
                     }
                     else {
-                        data = data.filter(obj => Object.keys(obj).some(key => key.toString().toLowerCase() === col.colName.toString().toLowerCase()
-                            && format(new Date(obj[key]), col.format.keyFormat).toString().toLowerCase().includes(col.searchQuery.toString().toLowerCase())));
+                        data = data.filter(obj => Object.keys(obj).some(key => !IsNull(key) && key.toString().toLowerCase() === col.colName.toString().toLowerCase()
+                            && !IsNull(obj[key]) && format(new Date(obj[key]), col.format.keyFormat).toString().toLowerCase().includes(col.searchQuery.toString().toLowerCase())));
                     }
                 }
                 else {
                     if (!IsNull(col.colObj)) {
-                        data = data.filter(obj => Object.keys(obj).some(key => col.colObj.some(x => x.toString().toLowerCase() === key.toString().toLowerCase())
-                            && obj[key].toString().toLowerCase().includes(col.searchQuery.toString().toLowerCase())));
+                        data = data.filter(obj => Object.keys(obj).some(key => col.colObj.some(x => !IsNull(x) && x.toString().toLowerCase() === key.toString().toLowerCase())
+                            && !IsNull(obj[key]) && obj[key].toString().toLowerCase().includes(col.searchQuery.toString().toLowerCase())));
                     }
                     else {
-                        data = data.filter(obj => Object.keys(obj).some(key => key.toString().toLowerCase() === col.colName.toString().toLowerCase() && obj[key]
-                            .toString().toLowerCase().includes(col.searchQuery.toString().toLowerCase())));
+                        data = data.filter(obj => Object.keys(obj).some(key => !IsNull(key) && key.toString().toLowerCase() === col.colName.toString().toLowerCase() &&
+                            !IsNull(obj[key]) && obj[key].toString().toLowerCase().includes(col.searchQuery.toString().toLowerCase())));
                     }
                 }
             }

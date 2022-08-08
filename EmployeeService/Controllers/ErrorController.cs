@@ -99,7 +99,7 @@ namespace EmployeeService.Controllers
         }
 
         // POST: api/Error
-        public async Task<IHttpActionResult> PosttblError(ErrorModel errorModel)
+        public IHttpActionResult PosttblError(ErrorModel errorModel)
         {
             if (!ModelState.IsValid)
             {
@@ -108,32 +108,31 @@ namespace EmployeeService.Controllers
             var tblError = new tblError();
             lock (lockTransaction)
             {
-                var errorCode = db.tblErrors.Any() ? (db.tblErrors.ToList().Select(x => int.Parse(x.ErrorCode)).ToList().Max() + 1) : 100001;
-                tblError.ID = Guid.NewGuid();
-                tblError.CreatedOn = DateTime.Now;
-                tblError.Error = errorModel.Error;
-                tblError.ErrorInfo = errorModel.ErrorInfo;
-                tblError.ErrorCode = errorCode.ToString();
-                tblError.UserId = User.Identity.GetUserId();
-                db.tblErrors.Add(tblError);
-            }
-            try
-            {
-                await db.SaveChangesAsync();
-            }
-            catch (DbUpdateException)
-            {
-                if (tblErrorExists(errorModel.ID))
+                try
                 {
-                    return Conflict();
+                    var errorCode = db.tblErrors.Any() ? (db.tblErrors.ToList().Select(x => int.Parse(x.ErrorCode)).ToList().Max() + 1) : 100001;
+                    tblError.ID = Guid.NewGuid();
+                    tblError.CreatedOn = DateTime.Now;
+                    tblError.Error = errorModel.Error;
+                    tblError.ErrorInfo = errorModel.ErrorInfo;
+                    tblError.ErrorCode = errorCode.ToString();
+                    tblError.UserId = User.Identity.GetUserId();
+                    db.tblErrors.Add(tblError);
+                    db.SaveChanges();
+                    return Ok(new { Message = "SUCCESS", ErrorCode = tblError.ErrorCode });
                 }
-                else
+                catch (DbUpdateException)
                 {
-                    throw;
+                    if (tblErrorExists(errorModel.ID))
+                    {
+                        return Conflict();
+                    }
+                    else
+                    {
+                        throw;
+                    }
                 }
             }
-
-            return Ok(new { Message = "SUCCESS", ErrorCode = tblError.ErrorCode });
         }
 
         // DELETE: api/Error/5
@@ -146,7 +145,7 @@ namespace EmployeeService.Controllers
                 return NotFound();
             }
 
-            db.tblErrors.Remove(tblError);
+            //db.tblErrors.Remove(tblError);
             await db.SaveChangesAsync();
 
             return Ok(tblError);

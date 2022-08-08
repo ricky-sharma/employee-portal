@@ -19,12 +19,32 @@ namespace SQLDataEntity
         public string LastName { get; set; }
         public string Gender { get; set; }
         public int Salary { get; set; }
-        public int DepartmentId { get; set; }
+        public int Department { get; set; }
         public string JobTitle { get; set; }
         public System.DateTime JoiningDate { get; set; }
-        public bool InService { get; set; }
         public Nullable<System.DateTime> LeavingDate { get; set; }
+        public string DateofBirth { get; set; }
+        public string Mobile { get; set; }
+        public string HomePhone { get; set; }
+        public string Email { get; set; }
+        public string ProfessionalProfile { get; set; }
+        public string EmploymentType { get; set; }
+        public string EducationQualification { get; set; }
+        public string IdentificationDocument { get; set; }
+        public string IdentificationNumber { get; set; }
+        public Nullable<bool> IsActive { get; set; }
+        public Nullable<bool> InService { get; set; }
+        public Nullable<System.DateTime> CreatedOn { get; set; }
+        public string CreatedBy { get; set; }
+        public Nullable<System.DateTime> UpdatedOn { get; set; }
+        public string UpdatedBy { get; set; }
+        public Nullable<System.Guid> ResidentialAddress { get; set; }
+        public Nullable<System.Guid> PostalAddress { get; set; }
     
+        public virtual AspNetUser AspNetUser { get; set; }
+        public virtual AspNetUser AspNetUser1 { get; set; }
+        public virtual tblAddress tblAddress { get; set; }
+        public virtual tblAddress tblAddress1 { get; set; }
         public virtual tblDepartment tblDepartment { get; set; }
     }
 }

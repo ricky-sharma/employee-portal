@@ -16,7 +16,7 @@
 }
 
 .navbar-nav > li > a {
-    line-height: 10px !important;
+    line-height: 5px !important;
 }
 
 @media (min-width: 768px) {

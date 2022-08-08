@@ -76,7 +76,9 @@ export class EditEmployee extends Component {
             id: 0,
             readOnly: false
         }
-        this.id = 0
+        this.id = ''
+        this.resiAddressId = ''
+        this.postAddressId = ''
     }
 
     componentDidMount = () => {
@@ -95,11 +97,67 @@ export class EditEmployee extends Component {
             WebApi(url, '', 'GET')
                 .then(response => {
                     if (response) {
+                        this.resiAddressId = response.ResidentialAddress
+                        this.postAddressId = response.PostalAddress
                         this.setState({
-                            fName: response.FirstName, lName: response.LastName, gender: response.Gender, salary: response.Salary,
-                            departmentId: response.DepartmentId, jobTitle: response.JobTitle,
-                            joiningDate: !IsNull(response.JoiningDate) ? new Date(response.JoiningDate) : null
+                            fName: response.FirstName ?? '',
+                            lName: response.LastName ?? '',
+                            gender: response.Gender ?? '',
+                            departmentId: response.Department ?? '',
+                            jobTitle: response.JobTitle ?? '',
+                            joiningDate: !IsNull(response.JoiningDate) ? new Date(response.JoiningDate) : null,
+                            dateOfBirth: response.DateofBirth != null ? new Date(response.DateofBirth + "-" + new Date().getFullYear()) : null,
+                            mobile: response.Mobile ?? '',
+                            phone: response.HomePhone ?? '',
+                            linkedinProfile: response.ProfessionalProfile ?? '',
+                            email: response.Email ?? '',
+                            employmentType: response.EmploymentType ?? '',
+                            eduQualification: response.EducationQualification ?? '',
+                            identificationDocument: response.IdentificationDocument ?? '',
+                            identificationNumber: response.IdentificationNumber ?? '',
                         })
+                        if (this.resiAddressId !== '00000000-0000-0000-0000-000000000000') {
+                            url = `/api/Address/` + this.resiAddressId
+                            WebApi(url, '', 'GET')
+                                .then(response => {
+                                    if (response) {
+                                        this.setState({
+                                            houseNumberResiAdd: response.HouseNumber ?? '',
+                                            streetResiAdd: response.StreetAddress ?? '',
+                                            suburbCityResiAdd: response.SuburbCity ?? '',
+                                            stateResiAdd: response.State ?? '',
+                                            postalCodeResiAdd: response.PostalCode ?? '',
+                                        }, () => {
+                                            if (this.postAddressId !== '00000000-0000-0000-0000-000000000000') {
+                                                url = `/api/Address/` + this.postAddressId
+                                                WebApi(url, '', 'GET')
+                                                    .then(response => {
+                                                        if (response) {
+                                                            this.setState({
+                                                                houseNumberPostAdd: response.HouseNumber ?? '',
+                                                                streetPostAdd: response.StreetAddress ?? '',
+                                                                suburbCityPostAdd: response.SuburbCity ?? '',
+                                                                statePostAdd: response.State ?? '',
+                                                                postalCodePostAdd: response.PostalCode ?? '',
+                                                            }, () => {
+                                                                if (this.state.houseNumberResiAdd === this.state.houseNumberPostAdd &&
+                                                                    this.state.streetResiAdd === this.state.streetPostAdd &&
+                                                                    this.state.suburbCityResiAdd === this.state.suburbCityPostAdd &&
+                                                                    this.state.stateResiAdd === this.state.statePostAdd &&
+                                                                    this.state.postalCodeResiAdd === this.state.postalCodePostAdd) {
+                                                                    this.setState({
+                                                                        sameResidentialAddress: true,
+                                                                        readOnly: true
+                                                                    })
+                                                                }
+                                                            })
+                                                        }
+                                                    });
+                                            }
+                                        })
+                                    }
+                                });
+                        }
                     }
                 });
         }
@@ -107,26 +165,86 @@ export class EditEmployee extends Component {
 
     handleSubmit = () => {
         if (this.validate() === true) {
-            let url = `/api/Employees/` + this.id
-            let data = JSON.stringify({
-                "ID": this.id,
-                "DepartmentId": this.state.departmentId,
-                "FirstName": this.state.fName,
-                "LastName": this.state.lName,
-                "Gender": this.state.gender,
-                "Salary": this.state.salary,
-                "JobTitle": this.state.jobTitle,
-                "JoiningDate": this.state.joiningDate
+            let url = ''
+            let data = ''
+            url = !IsNull(this.resiAddressId) && this.resiAddressId !== '00000000-0000-0000-0000-000000000000' ? `/api/Address/` + this.resiAddressId : `/api/Address/`
+            data = JSON.stringify({
+                "AddressId": !IsNull(this.postAddressId) ? this.resiAddressId : '{00000000-0000-0000-0000-000000000000}',
+                "HouseNumber": this.state.houseNumberResiAdd,
+                "StreetAddress": this.state.streetResiAdd,
+                "SuburbCity": this.state.suburbCityResiAdd,
+                "State": this.state.stateResiAdd,
+                "PostalCode": this.state.postalCodeResiAdd,
+                "IsPostalAddress": false,
             })
-            WebApi(url, data, 'PUT')
+            WebApi(url, data, !IsNull(this.resiAddressId) && this.resiAddressId !== '00000000-0000-0000-0000-000000000000' ? 'PUT' : 'POST')
                 .then(response => {
                     if (response) {
-                        if (response.Message && response.Message.toUpperCase() === "SUCCESS") {
-                            AlertDialog('Employee data saved successfully.')
+                        if (!IsNull(response.Message) && response.Message.toUpperCase() === "SUCCESS") {
+                            if (!IsNull(response.id)) {
+                                this.resiAddressId = response.id
+                            }
+                            url = !IsNull(this.postAddressId) && this.postAddressId !== '00000000-0000-0000-0000-000000000000' ? `/api/Address/` + this.postAddressId : `/api/Address/`
+                            data = JSON.stringify({
+                                "AddressId": !IsNull(this.postAddressId) && this.postAddressId !== '00000000-0000-0000-0000-000000000000' ? this.postAddressId : '{00000000-0000-0000-0000-000000000000}',
+                                "HouseNumber": this.state.houseNumberPostAdd,
+                                "StreetAddress": this.state.streetPostAdd,
+                                "SuburbCity": this.state.suburbCityPostAdd,
+                                "State": this.state.statePostAdd,
+                                "PostalCode": this.state.postalCodePostAdd,
+                                "IsPostalAddress": true,
+                            })
+                            WebApi(url, data, !IsNull(this.postAddressId) && this.postAddressId !== '00000000-0000-0000-0000-000000000000' ? 'PUT' : 'POST')
+                                .then(response => {
+                                    if (response) {
+                                        if (!IsNull(response.Message) && response.Message.toUpperCase() === "SUCCESS") {
+                                            if (!IsNull(response.id)) {
+                                                this.postAddressId = response.id
+                                            }
+                                            url = !IsNull(this.id) ? `/api/Employees/` + this.id : `/api/Employees/`
+                                            data = JSON.stringify({
+                                                "ID": !IsNull(this.id) ? this.id : '{00000000-0000-0000-0000-000000000000}',
+                                                "FirstName": this.state.fName,
+                                                "LastName": this.state.lName,
+                                                "Gender": this.state.gender,
+                                                "Department": this.state.departmentId,
+                                                "JobTitle": this.state.jobTitle,
+                                                "JoiningDate": this.state.joiningDate,
+                                                "LeavingDate": this.state.leavingDate,
+                                                "DateofBirth": this.getDOBInt(this.state.dateOfBirth),
+                                                "Mobile": this.state.mobile,
+                                                "HomePhone": this.state.phone,
+                                                "Email": this.state.email,
+                                                "ProfessionalProfile": this.state.linkedinProfile,
+                                                "EmploymentType": this.state.employmentType,
+                                                "EducationQualification": this.state.eduQualification,
+                                                "IdentificationDocument": this.state.identificationDocument,
+                                                "IdentificationNumber": this.state.identificationNumber,
+                                                "ResidentialAddress": this.resiAddressId,
+                                                "PostalAddress": this.postAddressId
+                                            })
+                                            WebApi(url, data, 'PUT')
+                                                .then(response => {
+                                                    if (response) {
+                                                        if (!IsNull(response.Message) && response.Message.toUpperCase() === "SUCCESS") {
+                                                            AlertDialog('Employee data saved successfully.')
+                                                        }
+                                                    }
+                                                })
+                                        }
+                                    }
+                                })
                         }
                     }
                 })
         }
+    }
+
+    getDOBInt = (dob) => {
+        dob = dob.toString().replace("st", "").replace("nd", "").replace("rd", "").replace("th", "");
+        const d = new Date(dob + ' ' + new Date().getFullYear())
+        return (d.getMonth() + 1).toLocaleString(Locale, { minimumIntegerDigits: 2, useGrouping: false }) + '-' +
+            d.getDate().toLocaleString(Locale, { minimumIntegerDigits: 2, useGrouping: false });
     }
 
     validate = () => {
@@ -315,16 +433,12 @@ export class EditEmployee extends Component {
                                             <div className="col-6 p-0">
                                                 <img className="profileImage" src={profileImage} ></img>
                                             </div>
-                                            <div className="col-6 p-0">
-                                            </div>
                                         </div>
                                         <div className="col-12 p-0">
-                                            <div className="col-5 p-0 alignCenter txt-center">
-                                                <h5 className="mt-4 mb-4">
+                                            <div className="col-6 p-0 alignCenter txt-center">
+                                                <h5 className="mt-4 mb-1">
                                                     {fName} {lName}
                                                 </h5>
-                                            </div>
-                                            <div className="col-7 p-0">
                                             </div>
                                         </div>
                                     </div>
@@ -388,7 +502,7 @@ export class EditEmployee extends Component {
                                                 <div className="col-12 p-0 wrapperLink">
                                                     <Input label="Linkedin/Github link" className="inputLink" value={linkedinProfile} onChange={(e) => { this.setState({ linkedinProfile: e.target.value }) }}
                                                         onClear={(value) => { this.setState({ linkedinProfile: value }) }} />
-                                                    <div className="iconLink"><a href={linkedinProfile.indexOf('https:') === 0 ? linkedinProfile : 'https://' + linkedinProfile} target="_blank">
+                                                    <div className="iconLink"><a href={!IsNull(linkedinProfile) && linkedinProfile.indexOf('https:') === 0 ? linkedinProfile : 'https://' + linkedinProfile} target="_blank">
                                                         <i className="fa fa-external-link link-icon" aria-hidden="true" style={{ "display": (this.state.linkedinProfile === '' ? "none" : "") }}></i></a></div>
                                                 </div>
                                             </div>
