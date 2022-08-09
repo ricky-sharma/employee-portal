@@ -120,7 +120,7 @@ export class EditUserProfile extends Component {
             "LastName": this.state.LastName,
             "Gender": this.state.Gender,
             "DOB": this.state.DOB != null ? moment(this.state.DOB).format('DD-MMM-YYYY') : '',
-            "UsersId": this.state.UserId,
+            "UserId": this.state.UserId,
             "userInfoViewModel": userInforViewModel
         })
         WebApi(url, data, 'PUT')
