@@ -1,9 +1,9 @@
 ﻿import React from 'react';
 import { Container } from 'reactstrap';
-import IsNull from '../../Common/Common';
+import IsNull, { ReplaceSpecialChars } from '../../Common/Common';
+import AlertDialog from '../../Core/AlertDialog';
 import { DataGrid } from '../../Core/DataGrid';
 import { GetData } from '../../Helpers/WebApi.ts';
-import AlertDialog from '../../Core/AlertDialog';
 
 export function ApplicationErrors() {
     let userLogs = GetData('/api/Error')
@@ -50,9 +50,9 @@ export function ApplicationErrors() {
         }
 
         const rowClicked = (e, row) => {
-            let error = !IsNull(row.Error) ? JSON.parse(row.Error) : ''
-            let errorInfo = (!IsNull(row.ErrorInfo) && !IsNull(JSON.parse(row.ErrorInfo).componentStack)
-                ? JSON.parse(row.ErrorInfo).componentStack : (!IsNull(row.ErrorInfo) ? row.ErrorInfo : '')).replace(error, "")
+            let error = !IsNull(row.Error) ? JSON.parse(ReplaceSpecialChars(row.Error)) : ''
+            let errorInfo = (!IsNull(row.ErrorInfo) && !IsNull(JSON.parse(ReplaceSpecialChars(row.ErrorInfo)).componentStack)
+                ? JSON.parse(ReplaceSpecialChars(row.ErrorInfo)).componentStack : (!IsNull(row.ErrorInfo) ? row.ErrorInfo : '')).replace(error, "")
             AlertDialog(() => { return ErrorDetail(error, errorInfo) }, null, "Error Detail", { maxWidth: true })
         }
 

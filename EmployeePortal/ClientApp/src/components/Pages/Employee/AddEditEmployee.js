@@ -9,6 +9,8 @@ import IsNull from '../../Common/Common';
 import AlertDialog from '../../Core/AlertDialog';
 import Input from '../../Core/Input';
 import { WebApi } from '../../Helpers/WebApi.ts';
+import { Avatar, IconButton } from '@material-ui/core';
+import PhotoCamera from "@material-ui/icons/PhotoCamera";
 
 export class AddEditEmployee extends Component {
     constructor(props) {
@@ -74,11 +76,14 @@ export class AddEditEmployee extends Component {
             postalCodePostAddErrorText: false,
             sameResidentialAddress: false,
             id: 0,
-            readOnly: false
+            readOnly: false,
+            employeeImage: ''
         }
         this.id = ''
         this.resiAddressId = ''
         this.postAddressId = ''
+        this.employeeImageRef = React.createRef();
+        this.employeeImageInputRef = React.createRef();
     }
 
     componentDidMount = () => {
@@ -220,7 +225,8 @@ export class AddEditEmployee extends Component {
                                                 "IdentificationDocument": this.state.identificationDocument,
                                                 "IdentificationNumber": this.state.identificationNumber,
                                                 "ResidentialAddress": this.resiAddressId,
-                                                "PostalAddress": this.postAddressId
+                                                "PostalAddress": this.postAddressId,
+                                                "EmployeeImage": this.state.employeeImage!= '' ? this.state.employeeImage:''
                                             })
                                             WebApi(url, data, !IsNull(this.id) ? 'PUT' : 'POST')
                                                 .then(response => {
@@ -395,6 +401,23 @@ export class AddEditEmployee extends Component {
         })
     }
 
+    handleEmployeeImageUpload = (e) => {
+        if (!IsNull(this.employeeImageInputRef.current.files)) {
+            let _this = this
+            let imagefileType = this.employeeImageInputRef.current.files[0].type;
+            let match = ["image/jpeg", "image/png", "image/jpg"];
+            if (!match.some(x => x === imagefileType)) {
+                AlertDialog("Invalid File Extension")
+            } else {
+                let fReader = new FileReader();
+                fReader.readAsDataURL(this.employeeImageInputRef.current.files[0]);
+                fReader.onloadend = function (event) {
+                    _this.setState({ employeeImage: event.target.result })
+                }
+            }
+        }
+    }
+
     render() {
         if (this.props.location && this.props.location.state)
             this.id = this.props.location.state
@@ -410,7 +433,7 @@ export class AddEditEmployee extends Component {
             phoneError, emailError, jobTitleError, eduQualificationError, employmentTypeError, identificationDocumentError, houseNumberResiAddError,
             suburbCityResiAddError, stateResiAddError, postalCodeResiAddError, houseNumberPostAddError, suburbCityPostAddError, statePostAddError,
             postalCodePostAddError, leavingDateError, phoneErrorText, mobileErrorText, emailErrorText, joiningDateErrorText, leavingDateErrorText,
-            postalCodeResiAddErrorText, postalCodePostAddErrorText } = this.state
+            postalCodeResiAddErrorText, postalCodePostAddErrorText, employeeImage } = this.state
 
         return (
             <Container className="mx-0 px-0">
@@ -428,21 +451,25 @@ export class AddEditEmployee extends Component {
                         <div className="border p-4 pb-5">
                             <form>
                                 <div className="col-12 p-0 m-0 row">
-                                    <div className="col-4 p-0">
+                                    <div className="col-3 p-0">
                                         <div className="col-12 p-0">
-                                            <div className="col-6 p-0">
-                                                <img className="profileImage" src={profileImage} ></img>
+                                            <div className="col-8 p-0">
+                                                <IconButton className="uploadPicture" aria-label="upload picture" component="label">
+                                                    <input hidden accept="image/*" type="file" ref={this.employeeImageInputRef} onChange={this.handleEmployeeImageUpload} />
+                                                    <Avatar className="profileImage" alt={fName + ' ' + lName} ref={this.employeeImageRef} onChange={this.handleImageSrcChange} src={!IsNull(employeeImage) ? employeeImage : profileImage} variant="rounded" />
+                                                    <PhotoCamera />
+                                                </IconButton>
                                             </div>
                                         </div>
                                         <div className="col-12 p-0">
-                                            <div className="col-6 p-0 alignCenter txt-center">
+                                            <div className="col-8 p-0 alignCenter txt-center">
                                                 <h5 className="mt-4 mb-1">
                                                     {fName} {lName}
                                                 </h5>
                                             </div>
                                         </div>
                                     </div>
-                                    <div className="col-8 p-0">
+                                    <div className="col-9 p-0">
                                         <div className="col-12 p-0 m-0 row">
                                             <div className="col-6 p-0">
                                                 <div className="col-12 p-0">

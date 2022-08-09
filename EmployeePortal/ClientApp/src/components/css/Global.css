@@ -269,9 +269,10 @@ body {
 
 .profileImage {
     vertical-align: middle;
-    border: 1px solid;
-    max-width: 100%;
-    height: auto;
+    border: 2px solid #dee2e6 !important;
+    max-width: 90% !important;
+    height: 90% !important;
+    width: 90% !important;
 }
 
 hr.rounded {
@@ -285,10 +286,19 @@ hr.rounded {
     z-index: 10 !important;
 }
 
+label.uploadPicture .MuiSvgIcon-root {
+    width: 20% !important;
+    height: 20% !important;
+    position: absolute;
+    color: rgba(0, 0, 0, 0.54) !important;
+    top: 5% !important;
+    left: 10%;
+}
+
 @media (max-width: 240px) {
     /* really tiny screens */
 
-    input[type=text], select {
+    input [type=text], select {
         width: 100px;
     }
 

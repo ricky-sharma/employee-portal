@@ -34,6 +34,7 @@ namespace EmployeeService.Models
         public Guid UpdatedBy { get; set; }
         public Guid ResidentialAddress { get; set; }
         public Guid PostalAddress { get; set; }
+        public string EmployeeImage { get; set; }
 
     }
 }
