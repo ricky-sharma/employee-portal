@@ -10,7 +10,7 @@ import AlertDialog from '../../Core/AlertDialog';
 import Input from '../../Core/Input';
 import { WebApi } from '../../Helpers/WebApi.ts';
 
-export class EditEmployee extends Component {
+export class AddEditEmployee extends Component {
     constructor(props) {
         super(props)
         this.state = {
@@ -87,12 +87,11 @@ export class EditEmployee extends Component {
             .then(response => {
                 if (response) {
                     const departments = response.map((dep, index) => { return { value: dep.ID, text: dep.Name + ' (' + dep.Location + ')' } })
-                    this.setState({ departmentOptions: departments }, () => {
-                    });
+                    this.setState({ departmentOptions: departments });
                 }
             });
 
-        if (this.id !== 0) {
+        if (this.id !== '') {
             url = `/api/Employees/` + this.id
             WebApi(url, '', 'GET')
                 .then(response => {
@@ -203,7 +202,7 @@ export class EditEmployee extends Component {
                                             }
                                             url = !IsNull(this.id) ? `/api/Employees/` + this.id : `/api/Employees/`
                                             data = JSON.stringify({
-                                                "ID": !IsNull(this.id) ? this.id : '{00000000-0000-0000-0000-000000000000}',
+                                                "ID": !IsNull(this.id) ? this.id : 0,
                                                 "FirstName": this.state.fName,
                                                 "LastName": this.state.lName,
                                                 "Gender": this.state.gender,
@@ -223,7 +222,7 @@ export class EditEmployee extends Component {
                                                 "ResidentialAddress": this.resiAddressId,
                                                 "PostalAddress": this.postAddressId
                                             })
-                                            WebApi(url, data, 'PUT')
+                                            WebApi(url, data, !IsNull(this.id) ? 'PUT' : 'POST')
                                                 .then(response => {
                                                     if (response) {
                                                         if (!IsNull(response.Message) && response.Message.toUpperCase() === "SUCCESS") {
@@ -412,6 +411,7 @@ export class EditEmployee extends Component {
             suburbCityResiAddError, stateResiAddError, postalCodeResiAddError, houseNumberPostAddError, suburbCityPostAddError, statePostAddError,
             postalCodePostAddError, leavingDateError, phoneErrorText, mobileErrorText, emailErrorText, joiningDateErrorText, leavingDateErrorText,
             postalCodeResiAddErrorText, postalCodePostAddErrorText } = this.state
+
         return (
             <Container className="mx-0 px-0">
                 <div className="table-wrapper">
@@ -761,4 +761,4 @@ export class EditEmployee extends Component {
     }
 }
 
-export default EditEmployee
+export default AddEditEmployee

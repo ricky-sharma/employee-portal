@@ -28,7 +28,8 @@ export class Input extends Component {
             nextProps.maxDate !== this.props.maxDate ||
             nextProps.className !== this.props.className ||
             nextProps.error !== this.props.error ||
-            nextProps.helperText !== this.props.helperText) {
+            nextProps.helperText !== this.props.helperText ||
+            nextProps.options !== this.props.options) {
             return true;
         } else {
             return false;

@@ -76,7 +76,7 @@ export class Home extends Component {
     render() {
         const isLoggedIn = localStorage.getItem("myToken");
         if (isLoggedIn)
-            return (<div className="row justify-content-md-center">Welcome to the Employee portal.</div>)
+            return (<div className="row justify-content-md-center m-0 p-0">Welcome to the Employee portal.</div>)
         return (
             <div className="container">
                 <div className="row">

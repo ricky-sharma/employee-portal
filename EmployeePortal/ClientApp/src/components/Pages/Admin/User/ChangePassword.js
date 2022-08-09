@@ -98,29 +98,38 @@ export class ChangePassword extends Component {
                             <div className="col-4">
                                 <label>Username</label>
                             </div>
-                            <label className="mt-1 ml-2">{this.state.UserName}</label>
+                            <div className="col-4">
+                                <label className="mt-1 ml-2">{this.state.UserName}</label>
+                            </div>
                         </div>
                         <div className={"row p-2 " + (this.id === 0 ? "" : "d-none")}>
                             <div className="col-4">
                                 <label>Old Password</label>
                             </div>
-                            <input value={oldPassword} onChange={(e) => this.setState({ oldPassword: e.target.value, alertType: '', showAlert: false })} type="password"></input>
+                            <div className="col-4">
+                                <input value={oldPassword} onChange={(e) => this.setState({ oldPassword: e.target.value, alertType: '', showAlert: false })} type="password"></input>
+                            </div>
                         </div>
                         <div className="row p-2">
                             <div className="col-4">
                                 <label>New Password</label>
                             </div>
-                            <input value={newPassword} onChange={(e) => this.setState({ newPassword: e.target.value, alertType: '', showAlert: false })} type="password"></input>
+                            <div className="col-4">
+                                <input value={newPassword} onChange={(e) => this.setState({ newPassword: e.target.value, alertType: '', showAlert: false })} type="password"></input>
+                            </div>
                         </div>
-                        <div className="row p-2"><div className="col-4">
-                            <label>Confirm New Password</label>
-                        </div>
-                            <input value={confirmPassword} onChange={(e) => this.setState({ confirmPassword: e.target.value, alertType: '', showAlert: false })} type="password"></input>
+                        <div className="row p-2">
+                            <div className="col-4">
+                                <label>Confirm New Password</label>
+                            </div>
+                            <div className="col-4">
+                                <input value={confirmPassword} onChange={(e) => this.setState({ confirmPassword: e.target.value, alertType: '', showAlert: false })} type="password"></input>
+                            </div>
                         </div>
                         <div className="row p-2">
                             <div className="col-4"></div>
-                            <input className="btn btn-success mr-2" value="Submit" onClick={this.handleSubmit} type="button" />
-                            <input className="mr-lg-1 btn bg-dark text-white btn-md" onClick={this.handleBack} type="button" value="Back" />
+                            <div className="col-4"><button className="btn btn-success mr-2" onClick={this.handleSubmit}>Submit</button>
+                                <button className="mr-lg-1 btn bg-dark text-white btn-md" onClick={this.handleBack}>Back</button></div>
                         </div>
                     </form>
                 </div>

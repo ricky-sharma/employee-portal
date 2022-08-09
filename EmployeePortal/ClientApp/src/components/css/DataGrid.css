@@ -27,7 +27,7 @@
 
         .customGrid table::-webkit-scrollbar, .customGrid table tbody::-webkit-scrollbar {
             height: 8px !important;
-            width: 8px !important;
+            width: 4px !important;
             border: 1px solid #d5d5d5;
             border-start-end-radius: 2px;
         }
@@ -329,7 +329,7 @@ table.table td a.delete, button.delete {
 
     .pagination li a {
         border: 0;
-        font-size: 70%;
+        font-size: 75%;
         width: 20px;
         height: 20px;
         color: #999;
@@ -357,7 +357,8 @@ table.table td a.delete, button.delete {
     }
 
     .pagination li i {
-        font-size: 16px;
+        font-size: 19px;
+        line-height: 14px;
         padding-top: 6px
     }
 
@@ -375,7 +376,14 @@ i {
         font-size: 16px !important;
     }
 
-@media (max-width: 420px) {
+.icon-align-center {
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    height: 70% !important;
+}
+
+@media (max-width: 480px) {
 
     .customGrid table tbody {
         max-height: 345px !important;
@@ -459,7 +467,7 @@ i {
         }
 
         .pagination li i {
-            font-size: 11px !important;
+            font-size: 14px !important;
             padding-top: 2px !important;
         }
 
@@ -474,6 +482,11 @@ i {
 
     i.material-icons {
         font-size: 11px !important;
+    }
+
+    .customGrid table::-webkit-scrollbar, .customGrid table tbody::-webkit-scrollbar {
+        height: 3px !important;
+        width: 3px !important;
     }
 }
 
