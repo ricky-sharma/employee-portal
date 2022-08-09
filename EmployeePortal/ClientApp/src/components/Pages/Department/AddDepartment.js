@@ -55,18 +55,24 @@ export class AddDepartment extends Component {
                             <div className="col-4">
                                 <label>Department name</label>
                             </div>
-                            <input value={Name} onChange={(e) => { this.setState({ Name: e.target.value, successAlert: false, errorAlert: false }) }} className="mt-1" type="text"></input>
+                            <div className="col-4">
+                                <input value={Name} onChange={(e) => { this.setState({ Name: e.target.value, successAlert: false, errorAlert: false }) }} className="mt-1" type="text"></input>
+                            </div>
                         </div>
                         <div className="row  p-2">
                             <div className="col-4">
                                 <label>Location</label>
                             </div>
-                            <input value={Location} onChange={(e) => { this.setState({ Location: e.target.value, successAlert: false, errorAlert: false }) }} className="mt-1" type="text"></input>
+                            <div className="col-4">
+                                <input value={Location} onChange={(e) => { this.setState({ Location: e.target.value, successAlert: false, errorAlert: false }) }} className="mt-1" type="text"></input>
+                            </div>
                         </div>
                         <div className="row p-2">
                             <div className="col-4"></div>
-                            <input className="btn btn-success mr-1" onClick={this.handleSubmit} type="button" value="Save" />
-                            <input className="mr-lg-1 btn bg-dark text-white btn-md" onClick={this.handleBack} type="button" value="Back" />
+                            <div className="col-4">
+                                <button className="btn btn-success mr-1" onClick={this.handleSubmit} type="button" value="Save">Save</button>
+                                <button className="mr-lg-1 btn bg-dark text-white btn-md" onClick={this.handleBack} type="button" value="Back">Back</button>
+                            </div>
                         </div>
                     </form>
                 </div>

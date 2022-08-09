@@ -87,6 +87,9 @@
       <DependentUpon>DBFirstEntity.edmx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="tblAddress.cs">
+      <DependentUpon>DBFirstEntity.tt</DependentUpon>
+    </Compile>
     <Compile Include="tblDepartment.cs">
       <DependentUpon>DBFirstEntity.tt</DependentUpon>
     </Compile>
@@ -101,32 +104,30 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <None Include="App.Config" />
     <EntityDeploy Include="DBFirstEntity.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>DBFirstEntity.Designer.cs</LastGenOutput>
     </EntityDeploy>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="App.Config" />
     <None Include="DBFirstEntity.edmx.diagram">
       <DependentUpon>DBFirstEntity.edmx</DependentUpon>
     </None>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
     <Content Include="DBFirstEntity.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>DBFirstEntity.Context.cs</LastGenOutput>
       <DependentUpon>DBFirstEntity.edmx</DependentUpon>
+      <LastGenOutput>DBFirstEntity.Context.cs</LastGenOutput>
     </Content>
     <Content Include="DBFirstEntity.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>DBFirstEntity.edmx</DependentUpon>
       <LastGenOutput>DBFirstEntity.cs</LastGenOutput>
     </Content>
-  </ItemGroup>
-  <ItemGroup>
-    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

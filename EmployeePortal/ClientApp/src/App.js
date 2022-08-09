@@ -13,8 +13,7 @@ import { Users } from './components/Pages/Admin/User/Users';
 import { AddDepartment } from './components/Pages/Department/AddDepartment';
 import { Departments } from './components/Pages/Department/Departments';
 import { EditDepartment } from './components/Pages/Department/EditDepartment';
-import { AddEmployee } from './components/Pages/Employee/AddEmployee';
-import { EditEmployee } from './components/Pages/Employee/EditEmployee';
+import { AddEditEmployee } from './components/Pages/Employee/AddEditEmployee';
 import { Employees } from './components/Pages/Employee/Employees';
 import { ErrorPage } from './components/Pages/ErrorPage';
 import { Home } from './components/Pages/Home';
@@ -32,8 +31,8 @@ export default class App extends Component {
                     <Route exact={true} path='/Departments' component={RequireAuth(Departments)} />
                     <Route exact={true} path='/AddDepartment' component={RequireAuth(AddDepartment)} />
                     <Route exact={true} path='/EditDepartment' component={RequireAuth(EditDepartment)} />
-                    <Route exact={true} path='/AddEmployee' component={RequireAuth(AddEmployee)} />
-                    <Route exact={true} path='/EditEmployee' component={RequireAuth(EditEmployee)} />
+                    <Route exact={true} path='/AddEmployee' component={RequireAuth(AddEditEmployee)} />
+                    <Route exact={true} path='/EditEmployee' component={RequireAuth(AddEditEmployee)} />
                     <Route exact={true} path='/UserProfile' component={RequireAuth(UserProfile)} />
                     <Route exact={true} path='/ChangePassword' component={RequireAuth(ChangePassword)} />
                     <Route exact={true} path='/ResetPassword' component={RequireAuth(ChangePassword)} />

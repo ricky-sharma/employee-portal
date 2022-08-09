@@ -1,15 +1,14 @@
-﻿using System;
+﻿using EmployeeService.Models;
+using Microsoft.AspNet.Identity;
+using SQLDataEntity;
+using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
-using System.Data.SqlTypes;
 using System.Linq;
-using System.Net;
-using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.Description;
-using EmployeeService.Models;
-using SQLDataEntity;
 
 namespace EmployeeService.Controllers
 {
@@ -17,9 +16,10 @@ namespace EmployeeService.Controllers
     public class EmployeesController : ApiController
     {
         private readonly EmployeeDBEntities db = new EmployeeDBEntities();
+        private string lockTransaction = "lockTransaction";
 
         // GET: api/Employees
-        public IQueryable<EmployeeModel> GettblEmployees()
+        public IEnumerable<object> GettblEmployees()
         {
             return GetEmployees();
         }
@@ -28,47 +28,76 @@ namespace EmployeeService.Controllers
         [ResponseType(typeof(EmployeeModel))]
         public IHttpActionResult GettblEmployee(int id)
         {
-            EmployeeModel employee = GetEmployees().FirstOrDefault(i => i.ID == id);
-            if (employee == null)
+            tblEmployee tblEmployee = db.tblEmployees.Find(id);
+            if (tblEmployee == null)
             {
                 return NotFound();
             }
+            var employee = new EmployeeModel
+            {
+                Department = tblEmployee.Department,
+                ID = tblEmployee.ID,
+                FirstName = tblEmployee.FirstName,
+                LastName = tblEmployee.LastName,
+                Gender = tblEmployee.Gender,
+                Salary = tblEmployee.Salary,
+                JobTitle = tblEmployee.JobTitle,
+                JoiningDate = tblEmployee.JoiningDate,
+                LeavingDate = tblEmployee.LeavingDate,
+                DateofBirth = tblEmployee.DateofBirth,
+                Mobile = tblEmployee.Mobile,
+                HomePhone = tblEmployee.HomePhone,
+                Email = tblEmployee.Email,
+                ProfessionalProfile = tblEmployee.ProfessionalProfile,
+                EmploymentType = tblEmployee.EmploymentType,
+                EducationQualification = tblEmployee.EducationQualification,
+                IdentificationDocument = tblEmployee.IdentificationDocument,
+                IdentificationNumber = tblEmployee.IdentificationNumber,
+                ResidentialAddress = tblEmployee.ResidentialAddress != null ? (Guid)tblEmployee.ResidentialAddress : Guid.Empty,
+                PostalAddress = tblEmployee.PostalAddress != null ? (Guid)tblEmployee.PostalAddress : Guid.Empty
+            };
 
             return Ok(employee);
         }
 
         // PUT: api/Employees/5
-        [ResponseType(typeof(void))]
         public IHttpActionResult PuttblEmployee(int id, EmployeeModel employee)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            if (id != employee.ID)
-            {
-                return BadRequest();
-            }
-
-            tblEmployee tblEmployee = new tblEmployee()
-            {
-                ID = employee.ID,
-                DepartmentId = employee.DepartmentId,
-                FirstName = employee.FirstName,
-                LastName = employee.LastName,
-                Gender = employee.Gender,
-                Salary = employee.Salary,
-                JobTitle = employee.JobTitle,
-                JoiningDate= employee.JoiningDate == DateTime.MinValue ? (DateTime)SqlDateTime.Null : (DateTime)employee.JoiningDate,
-                InService= employee.InService,
-                LeavingDate= employee.LeavingDate == null ? (DateTime)SqlDateTime.Null : employee.LeavingDate
-            };
-
-            db.Entry(tblEmployee).State = EntityState.Modified;
-
             try
             {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
+
+                if (id != employee.ID)
+                {
+                    return BadRequest();
+                }
+
+                var tEmployee = db.tblEmployees.Find(id);
+                tEmployee.FirstName = employee.FirstName;
+                tEmployee.LastName = employee.LastName;
+                tEmployee.Gender = employee.Gender;
+                tEmployee.Department = employee.Department;
+                tEmployee.JobTitle = employee.JobTitle;
+                tEmployee.JoiningDate = employee.JoiningDate ?? default;
+                tEmployee.LeavingDate = employee.LeavingDate ?? null;
+                tEmployee.DateofBirth = employee.DateofBirth;
+                tEmployee.Mobile = employee.Mobile;
+                tEmployee.HomePhone = employee.HomePhone;
+                tEmployee.Email = employee.Email;
+                tEmployee.ProfessionalProfile = employee.ProfessionalProfile;
+                tEmployee.EmploymentType = employee.EmploymentType;
+                tEmployee.EducationQualification = employee.EducationQualification;
+                tEmployee.IdentificationDocument = employee.IdentificationDocument;
+                tEmployee.IdentificationNumber = employee.IdentificationNumber;
+                tEmployee.IsActive = true;
+                tEmployee.UpdatedOn = DateTime.Now;
+                tEmployee.UpdatedBy = User.Identity.GetUserId();
+                tEmployee.ResidentialAddress = employee.ResidentialAddress;
+                tEmployee.PostalAddress = employee.PostalAddress;
+                db.Entry(tEmployee).State = EntityState.Modified;
                 db.SaveChanges();
                 return Ok(new { Message = "SUCCESS" });
             }
@@ -82,47 +111,64 @@ namespace EmployeeService.Controllers
                 {
                     throw;
                 }
-            } 
+            }
         }
 
         // POST: api/Employees
-        [ResponseType(typeof(EmployeeModel))]
         public IHttpActionResult PosttblEmployee(EmployeeModel employee)
         {
-            if (!ModelState.IsValid)
+            tblEmployee tblEmployee = new tblEmployee();
+            try
             {
-                return BadRequest(ModelState);
-            }
-
-            object Lock = new object();
-            int empId = 0;
-            lock (Lock)
-            {
-                empId = db.tblEmployees.Select(i => i.ID).DefaultIfEmpty(0).Max();
-                employee.ID = empId;
-                tblEmployee tblEmployee = new tblEmployee()
+                if (!ModelState.IsValid)
                 {
-                    ID = employee.ID,
-                    DepartmentId = employee.DepartmentId,
-                    FirstName = employee.FirstName,
-                    LastName = employee.LastName,
-                    Gender = employee.Gender,
-                    Salary = employee.Salary,
-                    JobTitle = employee.JobTitle,
-                    JoiningDate = employee.JoiningDate == DateTime.MinValue ? DateTime.Now : employee.JoiningDate == null? DateTime.Now : (DateTime)employee.JoiningDate,
-                    InService = true,
-                    //LeavingDate = employee.LeavingDate == null ? (DateTime)SqlDateTime.Null : employee.LeavingDate
-                };
-
-                db.tblEmployees.Add(tblEmployee);
-                int save = db.SaveChanges();
-
+                    return BadRequest(ModelState);
+                }
+                int empId = 0;
+                lock (lockTransaction)
+                {
+                    empId = db.tblEmployees.Select(i => i.ID).DefaultIfEmpty(0).Max();
+                    tblEmployee.ID = empId;
+                    tblEmployee.FirstName = employee.FirstName;
+                    tblEmployee.LastName = employee.LastName;
+                    tblEmployee.Gender = employee.Gender;
+                    tblEmployee.Department = employee.Department;
+                    tblEmployee.JobTitle = employee.JobTitle;
+                    tblEmployee.JoiningDate = employee.JoiningDate ?? default;
+                    tblEmployee.LeavingDate = employee.LeavingDate ?? (DateTime?)null;
+                    tblEmployee.DateofBirth = employee.DateofBirth;
+                    tblEmployee.Mobile = employee.Mobile;
+                    tblEmployee.HomePhone = employee.HomePhone;
+                    tblEmployee.Email = employee.Email;
+                    tblEmployee.ProfessionalProfile = employee.ProfessionalProfile;
+                    tblEmployee.EmploymentType = employee.EmploymentType;
+                    tblEmployee.EducationQualification = employee.EducationQualification;
+                    tblEmployee.IdentificationDocument = employee.IdentificationDocument;
+                    tblEmployee.IdentificationNumber = employee.IdentificationNumber;
+                    tblEmployee.IsActive = true;
+                    tblEmployee.CreatedOn = DateTime.Now;
+                    tblEmployee.CreatedBy = User.Identity.GetUserId();
+                    tblEmployee.ResidentialAddress = employee.ResidentialAddress;
+                    tblEmployee.PostalAddress = employee.PostalAddress;
+                    db.tblEmployees.Add(tblEmployee);
+                    int save = db.SaveChanges();
+                }
+                return Ok(new { Message = "SUCCESS", id = empId });
             }
-            return CreatedAtRoute("DefaultApi", new { id = empId }, employee);
+            catch (DbUpdateException)
+            {
+                if (TblEmployeeExists(tblEmployee.ID))
+                {
+                    return Conflict();
+                }
+                else
+                {
+                    throw;
+                }
+            }
         }
 
         // DELETE: api/Employees/5
-        [ResponseType(typeof(tblEmployee))]
         public IHttpActionResult DeletetblEmployee(int id)
         {
             tblEmployee tblEmployee = db.tblEmployees.Find(id);
@@ -131,10 +177,10 @@ namespace EmployeeService.Controllers
                 return NotFound();
             }
 
-            db.tblEmployees.Remove(tblEmployee);
+            //db.tblEmployees.Remove(tblEmployee);
             db.SaveChanges();
 
-            return Ok(tblEmployee);
+            return Ok(new { Message = "SUCCESS" });
         }
 
         protected override void Dispose(bool disposing)
@@ -151,23 +197,19 @@ namespace EmployeeService.Controllers
             return db.tblEmployees.Count(e => e.ID == id) > 0;
         }
 
-        private IQueryable<EmployeeModel> GetEmployees()
+        private IEnumerable<object> GetEmployees()
         {
-            return db.tblEmployees.Select(i => new EmployeeModel()
+            return db.tblEmployees.Select(i => new
             {
-                DepartmentName = db.tblDepartments.FirstOrDefault(d => d.ID == i.DepartmentId).Name,
-                DepartmentLocation = db.tblDepartments.FirstOrDefault(d => d.ID == i.DepartmentId).Location,
-                DepartmentId = i.DepartmentId,
-                ID = i.ID,
-                FirstName = i.FirstName,
-                LastName = i.LastName,
-                Gender = i.Gender,
-                Salary = i.Salary,
-                JobTitle = i.JobTitle,
-                InService = i.InService,
-                JoiningDate = i.JoiningDate,
-                LeavingDate = i.LeavingDate
-
+                i.ID,
+                i.FirstName,
+                i.LastName,
+                i.Email,
+                Department = i.tblDepartment.Name,
+                Location = i.tblDepartment.Location,
+                i.JobTitle,
+                i.JoiningDate,               
+                i.EmploymentType
             });
         }
     }

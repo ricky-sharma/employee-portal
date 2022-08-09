@@ -140,18 +140,24 @@ export class EditDepartment extends Component {
                             <div className="col-4">
                                 <label>Department name</label>
                             </div>
-                            <input value={Name} onChange={(e) => { this.setState({ Name: e.target.value, isBlocking: true }, () => this.saveStateToLocalStorage()) }} className={"mb-1 " + (readOnly === true ? "disabled-inputs" : "")} type="text"></input>
+                            <div className="col-4">
+                                <input value={Name} onChange={(e) => { this.setState({ Name: e.target.value, isBlocking: true }, () => this.saveStateToLocalStorage()) }} className={"mb-1 " + (readOnly === true ? "disabled-inputs" : "")} type="text"></input>
+                            </div>
                         </div>
                         <div className="row  p-2">
                             <div className="col-4">
                                 <label>Location</label>
                             </div>
-                            <input value={Location} onChange={(e) => { this.setState({ Location: e.target.value, isBlocking: true }, () => this.saveStateToLocalStorage()) }} className={"mb-1 " + (readOnly === true ? "disabled-inputs" : "")} type="text"></input>
+                            <div className="col-4">
+                                <input value={Location} onChange={(e) => { this.setState({ Location: e.target.value, isBlocking: true }, () => this.saveStateToLocalStorage()) }} className={"mb-1 " + (readOnly === true ? "disabled-inputs" : "")} type="text"></input>
+                            </div>
                         </div>
                         <div className="row p-2">
                             <div className="col-4"></div>
-                            <input className="btn btn-success mr-1" onClick={this.handleSubmit} type="button" value={(readOnly === true ? "Edit" : "Update")} />
-                            <input className="mr-lg-1 btn bg-dark text-white btn-md" onClick={this.handleBack} type="button" value="Back" />
+                            <div className="col-4">
+                                <button className="btn btn-success mr-1" onClick={this.handleSubmit} type="button">{(readOnly === true ? "Edit" : "Update")}</button>
+                                <button className="mr-lg-1 btn bg-dark text-white btn-md" onClick={this.handleBack} type="button">Back</button>
+                            </div>
                         </div>
                     </form>
                 </Container>

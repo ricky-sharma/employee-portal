@@ -6,13 +6,13 @@ import IsNull from '../Common/Common';
 
 const node = document.createElement("div");
 
-function AlertDialog(message, callback = () => { }, heading = '') {
+function AlertDialog(message, callback = () => { }, heading = '', maxWidth = false) {
     document.getElementById('alertDialogDiv').appendChild(node);
     const AlertDialogContent = () => {
         return (
             <div className="alertDialog">
-                <div id="myModal" role="dialog">
-                    <div className="modal-dialog">
+                <div role="dialog">
+                    <div className={"modal-dialog " + (maxWidth ? "modal-dialog-width" : "")}>
                         <div className="modal-content">
                             <div className="modal-header">
                                 <h4 className="modal-title">{heading !== '' ? heading : 'ALERT'}</h4>

@@ -14,21 +14,19 @@
     flex-direction: column;
     box-shadow: rgb(0 0 0 / 20%) 0px 3px 1px -2px, rgb(0 0 0 / 14%) 0px 2px 2px 0px, rgb(0 0 0 / 12%) 0px 1px 5px 0px;
     border: 2px solid rgb(224, 224, 224);
-    max-height: 500px !important;
-    height: 500px !important;
 }
 
     .customGrid table tbody {
         overflow-x: hidden !important;
         overflow-y: auto !important;
-        max-height: 350px !important;
-        height: 350px !important;
+        max-height: 400px !important;
+        height: 400px !important;
         width: 100%;
         max-width: 100%;
     }
 
         .customGrid table::-webkit-scrollbar, .customGrid table tbody::-webkit-scrollbar {
-            height: 4px !important;
+            height: 8px !important;
             width: 4px !important;
             border: 1px solid #d5d5d5;
             border-start-end-radius: 2px;
@@ -118,7 +116,7 @@
             max-width: 200px !important;
             width: 200px;
             position: relative;
-            padding-left: 20px !important;
+            padding-left: 15px !important;
         }
 
 .gridRows:first-child {
@@ -156,7 +154,7 @@
         width: 200px;
         padding: 10px !important;
         padding-right: 0px !important;
-        padding-left: 25px !important;
+        padding-left: 18px !important;
     }
 
 table {
@@ -183,11 +181,27 @@ table {
 .col1width75 {
     width: 75px !important;
     max-width: 75px !important;
+    text-align: center !important;
 }
 
 .col1width125 {
     width: 125px !important;
     max-width: 125px !important;
+}
+
+.float-rt {
+    float: right;
+}
+
+.float-lt {
+    float: left;
+}
+
+option {
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    padding: 0px !important;
 }
 
 .changePassword.MuiButton-root:hover, .edit.MuiButton-root:hover {
@@ -244,15 +258,19 @@ input.globalSearch {
     border-radius: 4px;
     border-width: 1px;
     float: right !important;
+    height: unset !important;
 }
 
 .pagerSelect {
-    width: 25%;
+    max-width: 55px !important;
+    width: 30% !important;
     border-radius: 4px;
-    height: 20px !important;
-    padding-left: 2px;
-    padding-right: 2px;
+    height: 24px !important;
+    padding-left: 0px;
+    padding-right: 0px;
     text-align: center;
+    justify-content: center;
+    align-items: center;
 }
 
 input[type="text" i].globalSearch, input[type="text" i].searchInput {
@@ -311,7 +329,7 @@ table.table td a.delete, button.delete {
 
     .pagination li a {
         border: 0;
-        font-size: 70%;
+        font-size: 75%;
         width: 20px;
         height: 20px;
         color: #999;
@@ -339,7 +357,8 @@ table.table td a.delete, button.delete {
     }
 
     .pagination li i {
-        font-size: 16px;
+        font-size: 19px;
+        line-height: 14px;
         padding-top: 6px
     }
 
@@ -348,16 +367,28 @@ table.table td a.delete, button.delete {
         box-shadow: 0 0 0 0rem rgb(0 123 255 / 25%);
     }
 
-@media (max-width: 420px) {
-    .customGrid {
-        max-height: 470px !important;
-        height: 470px !important;
+i {
+    font-family: FontAwesome !important;
+}
+
+    i.material-icons {
+        font-family: 'Material Icons' !important;
+        font-size: 16px !important;
     }
 
-        .customGrid table tbody {
-            max-height: 345px !important;
-            height: 345px !important;
-        }
+.icon-align-center {
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    height: 70% !important;
+}
+
+@media (max-width: 480px) {
+
+    .customGrid table tbody {
+        max-height: 345px !important;
+        height: 345px !important;
+    }
 
     .gridHeader th {
         padding-top: 15px !important;
@@ -388,6 +419,7 @@ table.table td a.delete, button.delete {
         .searchHeader th div {
             max-width: 75px !important;
             width: 75px;
+            padding-left: 10px !important;
         }
 
     .gridRows td {
@@ -425,7 +457,7 @@ table.table td a.delete, button.delete {
     }
 
     .pagination {
-        padding-right: 1px !important
+        padding-right: 0px !important
     }
 
         .pagination li a {
@@ -435,7 +467,7 @@ table.table td a.delete, button.delete {
         }
 
         .pagination li i {
-            font-size: 11px !important;
+            font-size: 14px !important;
             padding-top: 2px !important;
         }
 
@@ -446,6 +478,15 @@ table.table td a.delete, button.delete {
     .col1width50 {
         width: 50px !important;
         max-width: 50px !important;
+    }
+
+    i.material-icons {
+        font-size: 11px !important;
+    }
+
+    .customGrid table::-webkit-scrollbar, .customGrid table tbody::-webkit-scrollbar {
+        height: 3px !important;
+        width: 3px !important;
     }
 }
 

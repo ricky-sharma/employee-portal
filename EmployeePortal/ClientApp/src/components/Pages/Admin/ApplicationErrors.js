@@ -43,7 +43,7 @@ export function ApplicationErrors() {
         const ErrorDetail = (error, errorInfo) => {
             return (
                 <div>
-                    <p>{error}</p>
+                    <b><p>{error}</p></b>
                     <p>{errorInfo}</p>
                 </div>
             )
@@ -51,9 +51,9 @@ export function ApplicationErrors() {
 
         const rowClicked = (e, row) => {
             let error = !IsNull(row.Error) ? JSON.parse(row.Error) : ''
-            let errorInfo = !IsNull(row.ErrorInfo) && !IsNull(JSON.parse(row.ErrorInfo).componentStack)
-                ? JSON.parse(row.ErrorInfo).componentStack : ''
-            AlertDialog(() => { return ErrorDetail(error, errorInfo) }, null, "Error Detail")
+            let errorInfo = (!IsNull(row.ErrorInfo) && !IsNull(JSON.parse(row.ErrorInfo).componentStack)
+                ? JSON.parse(row.ErrorInfo).componentStack : (!IsNull(row.ErrorInfo) ? row.ErrorInfo : '')).replace(error, "")
+            AlertDialog(() => { return ErrorDetail(error, errorInfo) }, null, "Error Detail", { maxWidth: true })
         }
 
         let options = { EnableColumnSearch: true, EnableGlobalSearch: true }

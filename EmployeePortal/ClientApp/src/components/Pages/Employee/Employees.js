@@ -26,27 +26,24 @@ export class Employees extends Component {
                                 Name: val,
                                 SearchEnable: false,
                                 cssClass: 'col1width75'
-
-                            })
-                        else if (val.toUpperCase() === 'DEPARTMENTNAME')
-                            cols.push({
-                                Name: val,
-                                Alias: 'Department'
-                            })
-                        else if (val.toUpperCase() === 'DEPARTMENTLOCATION')
-                            cols.push({
-                                Name: val,
-                                Alias: 'Location',
-                                cssClass: 'col1width125'
                             })
                         else if (val.toUpperCase() === 'JOININGDATE')
                             cols.push({
                                 Name: val,
                                 Alias: 'Joining Date',
-                                cssClass: 'col1width125',
                                 Formatting: {
                                     Type: 'Date', Format: 'dd MMM yyyy'
                                 }
+                            })
+                        else if (val.toUpperCase() === 'EMPLOYMENTTYPE')
+                            cols.push({
+                                Name: val,
+                                Alias: 'Employment Type',
+                            })
+                        else if (val.toUpperCase() === 'JOBTITLE')
+                            cols.push({
+                                Name: val,
+                                Alias: 'Job Title',
                             })
                         else if (val.toUpperCase() === 'FIRSTNAME')
                             cols.push({
@@ -56,8 +53,7 @@ export class Employees extends Component {
                                     Columns: ['FIRSTNAME', 'LASTNAME']
                                 }
                             })
-                        else if (val.toUpperCase() === 'DEPARTMENTID' || val.toUpperCase() === 'LEAVINGDATE'
-                            || val.toUpperCase() === 'INSERVICE' || val.toUpperCase() === 'GENDER' || val.toUpperCase() === 'LASTNAME')
+                        else if (val.toUpperCase() === 'LASTNAME')
                             cols.push({
                                 Name: val,
                                 Hidden: true
@@ -90,7 +86,7 @@ export class Employees extends Component {
             <div className="table-wrapper">
                 <div className="table-title">
                     <div className="row nowrap m-0 p-0">
-                        <div className="col-sm-8"><h2>Employee <b>Details</b></h2></div>
+                        <div className="col-sm-8 p-0"><h2>Manage <b>Employees</b></h2></div>
                         <div className="col-sm-4">
                             <button type="button" onClick={this.handleAddEmployee} className="btn btn-success add-new">Add New</button>
                         </div>

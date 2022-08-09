@@ -208,7 +208,7 @@ export class DataGrid extends Component {
             if (length !== key + 1) {
                 thInnerHtml = <span></span>
             }
-            let classNames = '', hideClass = ''
+            let hideClass = ''
             if (hiddenCols.some(x => x === key))
                 hideClass = 'd-none';
             inputProps = {
@@ -235,7 +235,7 @@ export class DataGrid extends Component {
         })
         let thSearchHeaders = headers.map((header, key) => {
             let conCols = null;
-            let classNames = '', hideClass = ''
+            let hideClass = ''
             let formatting = null
             if (!IsNull(concatCols[key]) && !IsNull(concatCols[key].cols)) {
                 conCols = concatCols[key].cols
@@ -354,27 +354,27 @@ export class DataGrid extends Component {
                         (c.format.formatType.toUpperCase() === 'DATE' || c.format.formatType.toUpperCase() === 'DATETIME') && c.format.keyFormat !== '') {
                         if (!IsNull(c.ConcatColumns) && !IsNull(c.ConcatColumns.Columns)) {
                             colObjSearchData =
-                                data.filter(obj => Object.keys(obj).some(key => c.ConcatColumns.Columns.some(x => x.toString().toLowerCase()
-                                    === key.toString().toLowerCase()) && hidden === false && format(new Date(obj[key]), c.format.keyFormat)
+                                data.filter(obj => Object.keys(obj).some(key => c.ConcatColumns.Columns.some(x => !IsNull(x) && x.toString().toLowerCase()
+                                    === key.toString().toLowerCase()) && hidden === false && !IsNull(obj[key]) && format(new Date(obj[key]), c.format.keyFormat)
                                         .toString().toLowerCase().includes(col.searchQuery.toString().toLowerCase())))
                         }
                         else {
                             colObjSearchData =
-                                data.filter(obj => Object.keys(obj).some(key => key.toString().toLowerCase() === c.Name.toString().toLowerCase() &&
-                                    hidden === false && format(new Date(obj[key]), c.format.keyFormat).toString().toLowerCase().includes(
+                                data.filter(obj => Object.keys(obj).some(key => !IsNull(key) && key.toString().toLowerCase() === c.Name.toString().toLowerCase() &&
+                                    hidden === false && !IsNull(obj[key]) && format(new Date(obj[key]), c.format.keyFormat).toString().toLowerCase().includes(
                                         col.searchQuery.toString().toLowerCase())))
                         }
                     }
                     else {
                         if (!IsNull(c.ConcatColumns) && !IsNull(c.ConcatColumns.Columns)) {
                             colObjSearchData =
-                                data.filter(obj => Object.keys(obj).some(key => c.ConcatColumns.Columns.some(x => x.toString().toLowerCase() === key.toString()
-                                    .toLowerCase()) && hidden === false && obj[key].toString().toLowerCase().includes(col.searchQuery.toString().toLowerCase())))
+                                data.filter(obj => Object.keys(obj).some(key => c.ConcatColumns.Columns.some(x => !IsNull(x) && x.toString().toLowerCase() === key.toString()
+                                    .toLowerCase()) && hidden === false && !IsNull(obj[key]) && obj[key].toString().toLowerCase().includes(col.searchQuery.toString().toLowerCase())))
                         }
                         else {
                             colObjSearchData =
-                                data.filter(obj => Object.keys(obj).some(key => key.toString().toLowerCase() === c.Name.toString().toLowerCase() && hidden === false
-                                    && obj[key].toString().toLowerCase().includes(col.searchQuery.toString().toLowerCase())))
+                                data.filter(obj => Object.keys(obj).some(key => !IsNull(key) && key.toString().toLowerCase() === c.Name.toString().toLowerCase() && hidden === false
+                                    && !IsNull(obj[key]) && obj[key].toString().toLowerCase().includes(col.searchQuery.toString().toLowerCase())))
                         }
                     }
                     if (globalSearchData.length > 0) {
@@ -390,22 +390,22 @@ export class DataGrid extends Component {
             else {
                 if ((col.format.formatType.toUpperCase() === 'DATE' || col.format.formatType.toUpperCase() === 'DATETIME') && col.format.keyFormat !== '') {
                     if (!IsNull(col.colObj)) {
-                        data = data.filter(obj => Object.keys(obj).some(key => col.colObj.some(x => x.toString().toLowerCase() === key.toString().toLowerCase())
-                            && format(new Date(obj[key]), col.format.keyFormat).toString().toLowerCase().includes(col.searchQuery.toString().toLowerCase())));
+                        data = data.filter(obj => Object.keys(obj).some(key => col.colObj.some(x => !IsNull(x) && x.toString().toLowerCase() === key.toString().toLowerCase())
+                            && !IsNull(obj[key]) && format(new Date(obj[key]), col.format.keyFormat).toString().toLowerCase().includes(col.searchQuery.toString().toLowerCase())));
                     }
                     else {
-                        data = data.filter(obj => Object.keys(obj).some(key => key.toString().toLowerCase() === col.colName.toString().toLowerCase()
-                            && format(new Date(obj[key]), col.format.keyFormat).toString().toLowerCase().includes(col.searchQuery.toString().toLowerCase())));
+                        data = data.filter(obj => Object.keys(obj).some(key => !IsNull(key) && key.toString().toLowerCase() === col.colName.toString().toLowerCase()
+                            && !IsNull(obj[key]) && format(new Date(obj[key]), col.format.keyFormat).toString().toLowerCase().includes(col.searchQuery.toString().toLowerCase())));
                     }
                 }
                 else {
                     if (!IsNull(col.colObj)) {
-                        data = data.filter(obj => Object.keys(obj).some(key => col.colObj.some(x => x.toString().toLowerCase() === key.toString().toLowerCase())
-                            && obj[key].toString().toLowerCase().includes(col.searchQuery.toString().toLowerCase())));
+                        data = data.filter(obj => Object.keys(obj).some(key => col.colObj.some(x => !IsNull(x) && x.toString().toLowerCase() === key.toString().toLowerCase())
+                            && !IsNull(obj[key]) && obj[key].toString().toLowerCase().includes(col.searchQuery.toString().toLowerCase())));
                     }
                     else {
-                        data = data.filter(obj => Object.keys(obj).some(key => key.toString().toLowerCase() === col.colName.toString().toLowerCase() && obj[key]
-                            .toString().toLowerCase().includes(col.searchQuery.toString().toLowerCase())));
+                        data = data.filter(obj => Object.keys(obj).some(key => !IsNull(key) && key.toString().toLowerCase() === col.colName.toString().toLowerCase() &&
+                            !IsNull(obj[key]) && obj[key].toString().toLowerCase().includes(col.searchQuery.toString().toLowerCase())));
                     }
                 }
             }
@@ -456,7 +456,7 @@ export class DataGrid extends Component {
                 </div> : <></>}
                 <div className={this.state.gridCssClass !== undefined && this.state.gridCssClass !== null ? "col-12 m-0 p-0 " + this.state.gridCssClass : "col-12 m-0 p-0 customGrid"}>
                     <div className="row col-12 m-0 p-0" >
-                        <table className="table table-striped table-hover table-bordered border-0 border-bottom m-0 mx-0 px-0">
+                        <table className="table table-striped table-hover border-bottom border-top-0 border-right-0 border-left-0 m-0 mx-0 px-0">
                             {this.renderTableHeader()}
                             <tbody>
                                 {this.renderTableData(firstRow, currentPageRows)}
@@ -469,7 +469,7 @@ export class DataGrid extends Component {
                                     {this.state.pagerSelectOptions}
                                 </select>
                             </div>
-                            <div className="float-lt col-5 m-0 p-0 pr-2">
+                            <div className="float-lt col-5 m-0 p-0 pr-1">
                                 <div className="col-12 m-0 p-0">
                                     {EnablePaging === true ? (<ul className="pagination align-center">
                                         <li className={"page-item " + (activePage === 1 ? "disabled" : "")}>

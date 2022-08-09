@@ -120,7 +120,7 @@ export class EditUserProfile extends Component {
             "LastName": this.state.LastName,
             "Gender": this.state.Gender,
             "DOB": this.state.DOB != null ? moment(this.state.DOB).format('DD-MMM-YYYY') : '',
-            "UsersId": this.state.UserId,
+            "UserId": this.state.UserId,
             "userInfoViewModel": userInforViewModel
         })
         WebApi(url, data, 'PUT')
@@ -251,8 +251,8 @@ export class EditUserProfile extends Component {
                             <div className="col-4">
                             </div>
                             <div className="col-4">
-                                <input className="btn btn-success mr-1" value="Save" onClick={() => this.handleSubmit()} type="button" />
-                                <input className="mr-lg-1 btn bg-dark text-white btn-md" onClick={this.handleBack} type="button" value="Back" />
+                                <button className="btn btn-success mr-1" onClick={() => this.handleSubmit()} type="button">Save</button>
+                                <button className="mr-lg-1 btn bg-dark text-white btn-md" onClick={this.handleBack} type="button">Back</button>
                             </div>
                         </div>
                     </form>

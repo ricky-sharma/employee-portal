@@ -4,25 +4,31 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="2fbaffeb7aa1433d883d02a4aba86cdf" Name="Diagram1">
-        <EntityTypeShape EntityType="EmployeeDBModel.tblDepartment" Width="1.5" PointX="2.25" PointY="1.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="EmployeeDBModel.tblEmployee" Width="1.5" PointX="5" PointY="1.25" IsExpanded="true" />
-        <AssociationConnector Association="EmployeeDBModel.FK_dbo_tblEmployees_dbo_tblDepartments_DepartmentId" ManuallyRouted="false" />
-        <EntityTypeShape EntityType="EmployeeDBModel.AspNetRole" Width="1.5" PointX="8.375" PointY="0.5" />
-        <EntityTypeShape EntityType="EmployeeDBModel.AspNetUserClaim" Width="1.5" PointX="10.875" PointY="0.5" />
-        <EntityTypeShape EntityType="EmployeeDBModel.AspNetUserLogin" Width="1.5" PointX="12.75" PointY="3.375" />
-        <EntityTypeShape EntityType="EmployeeDBModel.AspNetUser" Width="1.5" PointX="8.375" PointY="2.75" />
-        <AssociationConnector Association="EmployeeDBModel.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" ManuallyRouted="false" >
-        </AssociationConnector>
-        <AssociationConnector Association="EmployeeDBModel.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" />
-        <AssociationConnector Association="EmployeeDBModel.AspNetUserRoles" />
-        <EntityTypeShape EntityType="EmployeeDBModel.AspNetUserInfo" Width="1.5" PointX="10.75" PointY="4.625" />
-        <AssociationConnector Association="EmployeeDBModel.FK_AspNetUserInfo_AspNetUsers" />
-        <EntityTypeShape EntityType="EmployeeDBModel.C__MigrationHistory" Width="1.5" PointX="0.75" PointY="4.75" />
-        <EntityTypeShape EntityType="EmployeeDBModel.tblLog" Width="1.5" PointX="3.375" PointY="5.75" />
-        <EntityTypeShape EntityType="EmployeeDBModel.tblError" Width="1.5" PointX="10.625" PointY="8.75" />
-        <AssociationConnector Association="EmployeeDBModel.FK_tblErrors_AspNetUsers" />
-        <AssociationConnector Association="EmployeeDBModel.FK_tblLogs_AspNetUsers" />
+      <Diagram DiagramId="d0ec089182694c78ac5894ab14e46bae" Name="Diagram1">
+        <EntityTypeShape EntityType="EmployeeDBModel.AspNetRole" Width="1.5" PointX="0.75" PointY="11.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="EmployeeDBModel.AspNetUserClaim" Width="1.5" PointX="5.25" PointY="3.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="EmployeeDBModel.AspNetUserInfo" Width="1.5" PointX="5.25" PointY="6.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="EmployeeDBModel.AspNetUserLogin" Width="1.5" PointX="5.25" PointY="9.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="EmployeeDBModel.AspNetUser" Width="1.5" PointX="3" PointY="10" IsExpanded="true" />
+        <EntityTypeShape EntityType="EmployeeDBModel.C__MigrationHistory" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="EmployeeDBModel.tblAddress" Width="1.5" PointX="5.25" PointY="11.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="EmployeeDBModel.tblDepartment" Width="1.5" PointX="5.25" PointY="23" IsExpanded="true" />
+        <EntityTypeShape EntityType="EmployeeDBModel.tblError" Width="1.5" PointX="5.25" PointY="16.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="EmployeeDBModel.tblLog" Width="1.5" PointX="5.25" PointY="19.625" IsExpanded="true" />
+        <AssociationConnector Association="EmployeeDBModel.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" ManuallyRouted="false" />
+        <AssociationConnector Association="EmployeeDBModel.FK_AspNetUserInfo_AspNetUsers" ManuallyRouted="false" />
+        <AssociationConnector Association="EmployeeDBModel.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" ManuallyRouted="false" />
+        <AssociationConnector Association="EmployeeDBModel.FK_tblAddress_AspNetUsers" ManuallyRouted="false" />
+        <AssociationConnector Association="EmployeeDBModel.FK_tblAddress_AspNetUsers1" ManuallyRouted="false" />
+        <AssociationConnector Association="EmployeeDBModel.FK_tblErrors_AspNetUsers" ManuallyRouted="false" />
+        <AssociationConnector Association="EmployeeDBModel.FK_tblLogs_AspNetUsers" ManuallyRouted="false" />
+        <AssociationConnector Association="EmployeeDBModel.AspNetUserRoles" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="EmployeeDBModel.tblEmployee" Width="1.5" PointX="7.5" PointY="13.875" />
+        <AssociationConnector Association="EmployeeDBModel.FK_tblEmployees_AspNetUsers" />
+        <AssociationConnector Association="EmployeeDBModel.FK_tblEmployees_AspNetUsers1" />
+        <AssociationConnector Association="EmployeeDBModel.FK_tblEmployees_tblAddress" />
+        <AssociationConnector Association="EmployeeDBModel.FK_tblEmployees_tblAddress1" />
+        <AssociationConnector Association="EmployeeDBModel.FK_tblEmployees_tblDepartments" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
