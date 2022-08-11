@@ -63,8 +63,14 @@
     width: 75% !important;
 }
 
+.dropdown-item {
+    padding: 0.25rem 0.75rem !important;
+}
+
 .container-fluid {
     justify-content: normal !important;
+    margin-right: 0 !important;
+    padding-right: 0 !important;
 }
 
 .display-inline-table {

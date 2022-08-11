@@ -2,7 +2,6 @@
 import { format } from "date-fns";
 import React, { Component } from 'react';
 import { usePromiseTracker } from "react-promise-tracker";
-import { Container } from 'reactstrap';
 import IsNull from '../Common/Common';
 import { DynamicSort } from "../Common/Sort";
 import '../css/DataGrid.css';
@@ -15,8 +14,9 @@ const LoadingIndicator = () => {
 export class DataGrid extends Component {
     constructor(props) {
         super(props)
-        const { Columns, RowsData, PageRows, GridEvents, Options } = props
+        const { Columns, RowsData, PageRows, GridEvents, Options, Width } = props
         this.state = {
+            width: !IsNull(Width) ? Width : '100%',
             gridID: Math.floor(Math.random() * 10000),
             columns: !IsNull(Columns) ? Columns : null,
             rowsData: RowsData,
@@ -450,7 +450,7 @@ export class DataGrid extends Component {
     render() {
         const { totalRows, currentPageRows, firstRow, activePage, noOfPages, pageRows, EnablePaging } = this.state
         return (
-            <Container className="mx-0 px-0">
+            <div className="mx-0 px-0" style={{width: this.state.width} }>
                 {this.state.enableGlobalSearch ? <div className="row col-12 globalSearchDiv">
                     <input className="globalSearch" placeholder="Global Search" onChange={(e) => this.handleColSearch(e, '##globalSearch##', this.state.columns)} type="text" />
                 </div> : <></>}
@@ -490,7 +490,7 @@ export class DataGrid extends Component {
                     </div>
 
                 </div>
-            </Container>
+            </div>
         )
     }
 }

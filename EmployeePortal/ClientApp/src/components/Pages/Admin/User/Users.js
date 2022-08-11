@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Container } from 'reactstrap';
 import { DataGrid } from '../../../Core/DataGrid';
 import { WebApi } from '../../../Helpers/WebApi.ts';
 
@@ -70,7 +69,7 @@ export class Users extends Component {
     render() {
         let gridEvents = { OnRowClick: this.rowClicked }
         let options = { Type1Button: { Event: this.Type1ButtonClicked }, EnableColumnSearch: true, EnableGlobalSearch: true }
-        return (<Container className="mx-0 px-0">
+        return (<div className="mx-0 px-0">
             <div className="table-wrapper">
                 <div className="table-title">
                     <div className="row nowrap m-0 p-0">
@@ -85,7 +84,7 @@ export class Users extends Component {
                         GridEvents={gridEvents} Options={options} />
                 </div>
             </div>
-        </Container>)
+        </div>)
     }
 }
 

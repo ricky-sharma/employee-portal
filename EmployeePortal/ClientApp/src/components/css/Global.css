@@ -267,14 +267,6 @@ body {
     z-index: 101
 }
 
-.profileImage {
-    vertical-align: middle;
-    border: 2px solid #dee2e6 !important;
-    max-width: 90% !important;
-    height: 90% !important;
-    width: 90% !important;
-}
-
 hr.rounded {
     border-top: 1px solid #bbb;
     border-radius: 1px;
@@ -286,45 +278,77 @@ hr.rounded {
     z-index: 10 !important;
 }
 
+.profileImageDiv {
+    display: flex !important;
+    align-items: center !important;
+    height: 75% !important;
+    width: 100% !important;
+}
+
+.profileImage {
+    vertical-align: middle;
+    width: 90% !important;
+    height: 90% !important;
+}
+
+.iconButtonProfileDiv {
+    border: 1px solid #dee2e6 !important;
+    height: 100% !important;
+    width: 100% !important;
+}
+
+.uploadPicture {
+    height: 100% !important;
+    width: 100% !important;
+}
+
 label.uploadPicture .MuiSvgIcon-root {
-    width: 20% !important;
-    height: 20% !important;
+    width: 12% !important;
+    height: 12% !important;
     position: absolute;
     color: rgba(0, 0, 0, 0.54) !important;
-    top: 5% !important;
-    left: 10%;
+    top: 0% !important;
+    left: 0%;
+}
+
+label.uploadPicture .MuiIconButton-label {
+    width: 100% !important;
+    height: 100% !important;
+}
+
+label.uploadPicture .MuiAvatar-img {
+    object-fit: contain !important;
+}
+
+.nowrap {
+    flex-wrap: nowrap !important
 }
 
 @media (max-width: 240px) {
     /* really tiny screens */
 
-    input [type=text], select {
-        width: 100px;
+    * {
+        font-size: 7px !important;
     }
 
-    input[type=button], input[type=submit], input[type=reset] {
-        min-width: 51px;
-        height: 30px;
-    }
-
-    h1 {
+    h1, h1 * {
         font-size: 16px !important;
     }
 
-    h2 {
+    h2, h2 * {
         font-size: 14px !important;
     }
 
-    h5, h6 {
+    h5, h5 *, h6, h6 * {
         font-size: 10px !important;
     }
 
-    input, select, label, div, span {
+    select, input, label, div, span {
         font-size: 7px !important;
         vertical-align: middle;
     }
 
-    li > a.nav-link {
+    li > a.nav-link, li > a.nav-link * {
         font-size: 10px !important;
     }
 }
@@ -332,86 +356,72 @@ label.uploadPicture .MuiSvgIcon-root {
 @media (min-width: 241px) and (max-width: 360px) {
     /* a little bit bigger screens */
 
-    input[type=text], select {
-        width: 125px;
-        height: 25px;
+    * {
+        font-size: 7px !important;
     }
 
-    input[type=button], input[type=submit], input[type=reset] {
-        min-width: 51px;
-        height: 30px;
-    }
-
-    .nowrap {
-        flex-wrap: nowrap !important
-    }
-
-    h1 {
+    h1, h1 * {
         font-size: 17px !important;
     }
 
-    h2 {
+    h2, h2 * {
         font-size: 14px !important;
     }
 
-    h5, h6 {
+    h5, h5 *, h6, h6 * {
         font-size: 11px !important;
     }
 
-    div, input, select, label, span {
+    select, input, label, div, span {
         font-size: 8px !important;
     }
 
-    li > a.nav-link {
+    li > a.nav-link, li > a.nav-link * {
         font-size: 10px !important;
     }
 }
 
 @media (min-width: 361px) and (max-width: 480px) {
 
-    h1 {
+    * {
+        font-size: 8px !important;
+    }
+
+    h1, h1 * {
         font-size: 19px !important;
     }
 
-    h2 {
+    h2, h2 * {
         font-size: 16px !important;
     }
 
-    h5, h6 {
+    h5, h5 *, h6, h6 * {
         font-size: 12px !important;
     }
 
-    div, input, select, label, span {
+    select, input, label, div, span {
         font-size: 9px !important;
     }
 
-    li > a.nav-link {
+    li > a.nav-link, li > a.nav-link * {
         font-size: 11px !important;
     }
 }
 
-@media (min-width: 361px) and (max-width: 480px) {
-    input[type=text], select {
-        width: 175px;
-        height: 25px;
-    }
-
-    .nowrap {
-        flex-wrap: nowrap !important
-    }
-}
-
 @media (min-width: 481px) and (max-width: 600px) {
+    * {
+        font-size: 9px !important;
+    }
 
-    h1 {
+    h1, h1 * {
         font-size: 22px !important;
     }
 
-    h2 {
+    h2, h2 * {
         font-size: 18px !important;
     }
 
-    h5, h6 {
+    h5, h5 *, h6, h6 * {
         font-size: 15px !important;
     }
 
@@ -419,7 +429,7 @@ label.uploadPicture .MuiSvgIcon-root {
         font-size: 10px !important;
     }
 
-    li > a.nav-link {
+    li > a.nav-link, li > a.nav-link * {
         font-size: 12px !important;
     }
 }
@@ -458,47 +468,33 @@ label.uploadPicture .MuiSvgIcon-root {
     }
 }
 
-@media (min-width: 480px) and (max-width: 767px) {
-    /* Basically up to, but not including an iPad */
-
-    input[type=text], select {
-        width: 150px;
-    }
-
-    .nowrap {
-        flex-wrap: nowrap !important
-    }
-
-    input[type=button], input[type=submit], input[type=reset] {
-        min-width: 70px;
-        height: 30px;
-    }
-}
-
 @media (min-width: 601px) and (max-width: 767px) {
     .table-title .add-new {
         height: 22px;
         min-width: 70px;
-        font-size: 10px;
     }
 
-    h1 {
+    * {
+        font-size: 10px !important;
+    }
+
+    h1, h1 * {
         font-size: 25px !important;
     }
 
-    h2 {
-        font-size: 20px !important;
+    h2, h2 * {
+        font-size: 19px !important;
     }
 
-    h5, h6 {
-        font-size: 17px !important;
+    h5, h5 *, h6, h6 * {
+        font-size: 16px !important;
     }
 
-    input, select, label, div, span {
+    select, input, label, div, span {
         font-size: 12px !important;
     }
 
-    li > a.nav-link {
+    li > a.nav-link, li > a.nav-link * {
         font-size: 14px !important;
     }
 
@@ -514,160 +510,103 @@ label.uploadPicture .MuiSvgIcon-root {
 }
 
 @media (min-width: 768px) and (max-width: 1000px) {
-    h1 {
-        font-size: 30px !important;
+
+    * {
+        font-size: 11px !important;
     }
 
-    h2 {
-        font-size: 21px !important;
+    h1, h1 * {
+        font-size: 28px !important;
     }
 
-    h5, h6 {
-        font-size: 18px !important;
+    h2, h2 * {
+        font-size: 20px !important;
+    }
+
+    h5, h5 *, h6, h6 * {
+        font-size: 17px !important;
     }
 
     select, input, label, div, span {
         font-size: 14px !important;
     }
 
-    li > a.nav-link {
+    li > a.nav-link, li > a.nav-link * {
         font-size: 15px !important;
     }
 
     .table-title .add-new {
         height: 25px;
         min-width: 80px;
-        font-size: 11px;
-    }
-}
-
-@media (min-width: 768px) {
-    /* iPad and bigger */
-
-    input[type=text], select {
-        width: 300px;
-    }
-
-    .nowrap {
-        flex-wrap: nowrap !important
-    }
-
-    input[type=button], input[type=submit], input[type=reset] {
-        min-width: 102px;
-        height: 30px;
-    }
-}
-
-@media (min-width: 600px) {
-    .container, .container-lg, .container-md, .container-sm, .container-xl {
-        max-width: 580px !important;
-    }
-}
-
-@media (min-width: 700px) {
-    .container, .container-lg, .container-md, .container-sm, .container-xl {
-        max-width: 680px !important;
-    }
-}
-
-@media (min-width: 800px) {
-    .container, .container-lg, .container-md, .container-sm, .container-xl {
-        max-width: 780px !important;
-    }
-}
-
-@media (min-width: 900px) {
-    .container, .container-lg, .container-md, .container-sm, .container-xl {
-        max-width: 880px !important;
     }
 }
 
 @media (min-width: 1000px) {
-    .container, .container-lg, .container-md, .container-sm, .container-xl {
-        max-width: 980px !important;
+
+    * {
+        font-size: 12px !important;
     }
 
-    h1 {
-        font-size: 34px !important;
+    h1, h1 * {
+        font-size: 30px !important;
     }
 
-    h2 {
-        font-size: 24px !important;
+    h2, h2 * {
+        font-size: 22px !important;
     }
 
-    h5, h6 {
-        font-size: 21px !important;
+    h5, h5 *, h6, h6 * {
+        font-size: 19px !important;
     }
 
     select, input, label, div, span {
         font-size: 14px !important;
     }
 
-    li > a.nav-link {
+    li > a.nav-link, li > a.nav-link * {
         font-size: 16px !important;
     }
 }
 
-@media (max-width: 400px) {
-    .tablemobile {
-        display: inline-grid;
+@media (min-width: 1440px) {
+
+    * {
+        font-size: 14px !important;
+    }
+
+    h1, h1 * {
+        font-size: 34px !important;
+    }
+
+    h2, h2 * {
+        font-size: 24px !important;
+    }
+
+    h5, h5 *, h6, h6 * {
+        font-size: 21px !important;
+    }
+
+    select, input, label, div, span {
+        font-size: 16px !important;
+    }
+
+    li > a.nav-link, li > a.nav-link * {
+        font-size: 16px !important;
+    }
+
+    li.dropdown > a.nav-link * {
+        font-size: 18px !important;
     }
 }
 
-@media (min-width: 401px) and (max-width: 950px) {
-    .tablemobile {
-        display: inline-grid;
-    }
-}
-
-@media (max-width: 950px) {
-    .tablemobile {
-        overflow-x: auto;
-        -ms-overflow-style: none; /* Internet Explorer 10+ */
-        scrollbar-width: none; /* Firefox */
-    }
-
-        .tablemobile::-webkit-scrollbar {
-            display: none; /* Safari and Chrome */
-        }
-
-    .tablemobileoverflowx {
-        overflow-x: auto;
-    }
-}
-
-@media (min-width: 1100px) {
+@media (max-width: 1700px) {
     .container, .container-lg, .container-md, .container-sm, .container-xl {
-        max-width: 1080px !important;
+        max-width: 85% !important;
     }
 }
 
-@media (min-width: 1200px) {
+@media (min-width: 1701px) {
     .container, .container-lg, .container-md, .container-sm, .container-xl {
-        max-width: 1180px !important;
-    }
-}
-
-@media (min-width: 1350px) {
-    .container, .container-lg, .container-md, .container-sm, .container-xl {
-        max-width: 1250px !important;
-    }
-}
-
-@media (min-width: 1450px) {
-    .container, .container-lg, .container-md, .container-sm, .container-xl {
-        max-width: 1400px !important;
-    }
-}
-
-@media (min-width: 1600px) {
-    .container, .container-lg, .container-md, .container-sm, .container-xl {
-        max-width: 1550px !important;
-    }
-}
-
-@media (min-width: 1700px) {
-    .container, .container-lg, .container-md, .container-sm, .container-xl {
-        max-width: 98% !important;
+        max-width: 1490px !important;
     }
 }

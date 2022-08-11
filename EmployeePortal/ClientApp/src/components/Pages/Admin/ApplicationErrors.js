@@ -59,7 +59,7 @@ export function ApplicationErrors() {
         let options = { EnableColumnSearch: true, EnableGlobalSearch: true }
         let gridEvents = { OnRowClick: rowClicked }
         return (
-            <Container className="mx-0 px-0">
+            <div className="mx-0 px-0">
                 <div className="table-wrapper">
                     <div className="table-title">
                         <div className="row nowrap m-0 p-0">
@@ -72,7 +72,7 @@ export function ApplicationErrors() {
                         <DataGrid Columns={columns} RowsData={data} Options={options} PageRows={10} GridEvents={gridEvents} />
                     </div>
                 </div>
-            </Container>)
+            </div>)
     }
     return (<></>)
 }

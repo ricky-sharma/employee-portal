@@ -1,5 +1,4 @@
 ﻿import React from 'react';
-import { Container } from 'reactstrap';
 import IsNull from '../../Common/Common';
 import { DataGrid } from '../../Core/DataGrid';
 import { useLogService } from './../../Helpers/Logger.ts';
@@ -38,7 +37,7 @@ export function ApplicationLogs() {
         })
         let options = { EnableColumnSearch: true, EnableGlobalSearch: true }
         return (
-            <Container className="mx-0 px-0">
+            <div className="mx-0 px-0">
                 <div className="table-wrapper">
                     <div className="table-title">
                         <div className="row nowrap m-0 p-0">
@@ -51,7 +50,7 @@ export function ApplicationLogs() {
                         <DataGrid Columns={columns} RowsData={data} Options={options} PageRows={10} />
                     </div>
                 </div>
-            </Container>)
+            </div>)
     }
     return (<></>)
 }

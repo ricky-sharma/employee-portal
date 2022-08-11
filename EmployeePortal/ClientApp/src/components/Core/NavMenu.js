@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Tooltip from '@material-ui/core/Tooltip';
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import { Collapse, Container, DropdownItem, DropdownMenu, DropdownToggle, Navbar, NavbarBrand, NavbarToggler, NavItem, NavLink, UncontrolledDropdown } from 'reactstrap';
+import { Collapse, DropdownItem, DropdownMenu, DropdownToggle, Navbar, NavbarBrand, NavbarToggler, NavItem, NavLink, UncontrolledDropdown } from 'reactstrap';
 import '../css/NavMenu.css';
 
 export class NavMenu extends Component {
@@ -55,7 +55,7 @@ export class NavMenu extends Component {
             <header className="row p-0 m-0">
                 <div className={(!isLoggedIn ? "col-sm-12 col-12 p-0" : "col-sm-11 col-12 p-0")}>
                     <Navbar className="theme1 navbar-expand-sm navbar-toggleable-sm ng-white border-bottom box-shadow mb-3" light>
-                        <Container className="justifycontent-normal container-width row ml-0 mr-0">
+                        <div className="justifycontent-normal container-width row ml-0 mr-0">
                             <NavbarBrand className="text-gainsboro display-inline-table mt-3 mb-0 wrdbreak col-10 m-0 p-0" tag={Link} to="/">
                                 <h1>
                                     <b>Employee Portal</b>
@@ -127,7 +127,7 @@ export class NavMenu extends Component {
                                     </NavItem>
                                 </ul>
                             </Collapse>
-                        </Container>
+                        </div>
                     </Navbar>
                 </div>
                 <div className="col-sm-1 mb-3 p-0 d-none d-sm-block d-md-block d-lg-block d-xl-block">

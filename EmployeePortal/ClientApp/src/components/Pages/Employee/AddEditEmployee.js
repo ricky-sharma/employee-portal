@@ -226,7 +226,7 @@ export class AddEditEmployee extends Component {
                                                 "IdentificationNumber": this.state.identificationNumber,
                                                 "ResidentialAddress": this.resiAddressId,
                                                 "PostalAddress": this.postAddressId,
-                                                "EmployeeImage": this.state.employeeImage!= '' ? this.state.employeeImage:''
+                                                "EmployeeImage": this.state.employeeImage != '' ? this.state.employeeImage : ''
                                             })
                                             WebApi(url, data, !IsNull(this.id) ? 'PUT' : 'POST')
                                                 .then(response => {
@@ -436,7 +436,7 @@ export class AddEditEmployee extends Component {
             postalCodeResiAddErrorText, postalCodePostAddErrorText, employeeImage } = this.state
 
         return (
-            <Container className="mx-0 px-0">
+            <div className="mx-0 px-0">
                 <div className="table-wrapper">
                     <div className="table-title">
                         <div className="row nowrap m-0 p-0">
@@ -452,9 +452,9 @@ export class AddEditEmployee extends Component {
                             <form>
                                 <div className="col-12 p-0 m-0 row">
                                     <div className="col-3 p-0">
-                                        <div className="col-12 p-0">
-                                            <div className="col-8 p-0">
-                                                <IconButton className="uploadPicture" aria-label="upload picture" component="label">
+                                        <div className="col-12 p-0 profileImageDiv">
+                                            <div className="col-8 p-0 alignCenter iconButtonProfileDiv">
+                                                <IconButton className="uploadPicture" aria-label="upload picture" component="label" disableRipple={true}>
                                                     <input hidden accept="image/*" type="file" ref={this.employeeImageInputRef} onChange={this.handleEmployeeImageUpload} />
                                                     <Avatar className="profileImage" alt={fName + ' ' + lName} ref={this.employeeImageRef} onChange={this.handleImageSrcChange} src={!IsNull(employeeImage) ? employeeImage : profileImage} variant="rounded" />
                                                     <PhotoCamera />
@@ -783,7 +783,7 @@ export class AddEditEmployee extends Component {
                         </div>
                     </div>
                 </div>
-            </Container>
+            </div>
         )
     }
 }

@@ -91,7 +91,7 @@ export class ChangePassword extends Component {
 
         return (
             <div>
-                <div className="container border">
+                <div className="border">
                     <h5 className="mt-2 mb-5"><b>{title}</b></h5>
                     <form>
                         <div className="row  p-2">
