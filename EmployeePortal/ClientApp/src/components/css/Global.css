@@ -303,11 +303,11 @@ hr.rounded {
 }
 
 label.uploadPicture .MuiSvgIcon-root {
-    width: 12% !important;
-    height: 12% !important;
+    width: 10% !important;
+    height: 10% !important;
     position: absolute;
     color: rgba(0, 0, 0, 0.54) !important;
-    top: 0% !important;
+    top: 90% !important;
     left: 0%;
 }
 
