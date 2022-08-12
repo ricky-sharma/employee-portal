@@ -128,8 +128,10 @@ export class ChangePassword extends Component {
                         </div>
                         <div className="row p-2">
                             <div className="col-4"></div>
-                            <div className="col-4"><button className="btn btn-success mr-2" onClick={this.handleSubmit}>Submit</button>
-                                <button className="mr-lg-1 btn bg-dark text-white btn-md" onClick={this.handleBack}>Back</button></div>
+                            <div className="col-4">
+                                <button className="btn btn-success mr-2" onClick={this.handleSubmit}>Submit</button>
+                                <button className="mr-lg-1 btn bg-dark text-white btn-md" onClick={this.handleBack}>Back</button>
+                            </div>
                         </div>
                     </form>
                 </div>

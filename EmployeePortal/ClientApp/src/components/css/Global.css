@@ -307,8 +307,8 @@ label.uploadPicture .MuiSvgIcon-root {
     height: 10% !important;
     position: absolute;
     color: rgba(0, 0, 0, 0.54) !important;
-    top: 90% !important;
-    left: 0%;
+    top: 91% !important;
+    left: 91%;
 }
 
 label.uploadPicture .MuiIconButton-label {

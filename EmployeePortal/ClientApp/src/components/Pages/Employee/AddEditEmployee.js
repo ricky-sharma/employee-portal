@@ -77,7 +77,9 @@ export class AddEditEmployee extends Component {
             sameResidentialAddress: false,
             id: 0,
             readOnly: false,
-            employeeImage: ''
+            employeeImage: '',
+            employeeImageType: '',
+            employeeImageName:''
         }
         this.id = ''
         this.resiAddressId = ''
@@ -226,7 +228,9 @@ export class AddEditEmployee extends Component {
                                                 "IdentificationNumber": this.state.identificationNumber,
                                                 "ResidentialAddress": this.resiAddressId,
                                                 "PostalAddress": this.postAddressId,
-                                                "EmployeeImage": this.state.employeeImage != '' ? this.state.employeeImage : ''
+                                                "EmployeeImage": this.state.employeeImage != '' ? this.state.employeeImage : '',
+                                                "EmployeeImageType": this.state.employeeImageType != '' ? this.state.employeeImageType : '',
+                                                "EmployeeImageName": this.state.employeeImageName != '' ? this.state.employeeImageName : ''
                                             })
                                             WebApi(url, data, !IsNull(this.id) ? 'PUT' : 'POST')
                                                 .then(response => {
@@ -405,6 +409,7 @@ export class AddEditEmployee extends Component {
         if (!IsNull(this.employeeImageInputRef.current.files)) {
             let _this = this
             let imagefileType = this.employeeImageInputRef.current.files[0].type;
+            let imagefileName = this.employeeImageInputRef.current.files[0].name;
             let match = ["image/jpeg", "image/png", "image/jpg"];
             if (!match.some(x => x === imagefileType)) {
                 AlertDialog("Invalid File Extension")
@@ -412,7 +417,11 @@ export class AddEditEmployee extends Component {
                 let fReader = new FileReader();
                 fReader.readAsDataURL(this.employeeImageInputRef.current.files[0]);
                 fReader.onloadend = function (event) {
-                    _this.setState({ employeeImage: event.target.result })
+                    _this.setState({
+                        employeeImage: event.target.result,
+                        employeeImageType: imagefileType,
+                        employeeImageName: imagefileName
+                    })
                 }
             }
         }

@@ -1,4 +1,5 @@
-﻿using EmployeeService.Models;
+﻿using Common.Library;
+using EmployeeService.Models;
 using Microsoft.AspNet.Identity;
 using SQLDataEntity;
 using System;
@@ -6,7 +7,11 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
+using System.Drawing;
+using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
+using System.Web.Hosting;
 using System.Web.Http;
 using System.Web.Http.Description;
 
@@ -16,7 +21,8 @@ namespace EmployeeService.Controllers
     public class EmployeesController : ApiController
     {
         private readonly EmployeeDBEntities db = new EmployeeDBEntities();
-        private string lockTransaction = "lockTransaction";
+        private readonly string ImagePath = Path.GetFullPath(Path.Combine(HostingEnvironment.MapPath("~"), "../EmployeePortal/files/employeeImages/"));
+        private string LockTransaction = "lockTransaction";
 
         // GET: api/Employees
         public IEnumerable<object> GettblEmployees()
@@ -74,32 +80,51 @@ namespace EmployeeService.Controllers
                 {
                     return BadRequest();
                 }
+                using (var txn = db.Database.BeginTransaction())
+                {
+                    try
+                    {
+                        //SaveProfileImage(employee.EmployeeImage, employee.EmployeeImageName, employee.EmployeeImageType);
 
-                var tEmployee = db.tblEmployees.Find(id);
-                tEmployee.FirstName = employee.FirstName;
-                tEmployee.LastName = employee.LastName;
-                tEmployee.Gender = employee.Gender;
-                tEmployee.Department = employee.Department;
-                tEmployee.JobTitle = employee.JobTitle;
-                tEmployee.JoiningDate = employee.JoiningDate ?? default;
-                tEmployee.LeavingDate = employee.LeavingDate ?? null;
-                tEmployee.DateofBirth = employee.DateofBirth;
-                tEmployee.Mobile = employee.Mobile;
-                tEmployee.HomePhone = employee.HomePhone;
-                tEmployee.Email = employee.Email;
-                tEmployee.ProfessionalProfile = employee.ProfessionalProfile;
-                tEmployee.EmploymentType = employee.EmploymentType;
-                tEmployee.EducationQualification = employee.EducationQualification;
-                tEmployee.IdentificationDocument = employee.IdentificationDocument;
-                tEmployee.IdentificationNumber = employee.IdentificationNumber;
-                tEmployee.IsActive = true;
-                tEmployee.UpdatedOn = DateTime.Now;
-                tEmployee.UpdatedBy = User.Identity.GetUserId();
-                tEmployee.ResidentialAddress = employee.ResidentialAddress;
-                tEmployee.PostalAddress = employee.PostalAddress;
-                db.Entry(tEmployee).State = EntityState.Modified;
-                db.SaveChanges();
-                return Ok(new { Message = "SUCCESS" });
+                        if (!string.IsNullOrEmpty(employee.EmployeeImage) &&
+                            (!BaseHelper.ValidateImage(employee.EmployeeImage) ||
+                            !BaseHelper.SaveImage(employee.EmployeeImage, ImagePath + employee.EmployeeImageName)))
+                        {
+                            return BadRequest("Invalid Image!");
+                        }
+
+                        var tEmployee = db.tblEmployees.Find(id);
+                        tEmployee.FirstName = employee.FirstName;
+                        tEmployee.LastName = employee.LastName;
+                        tEmployee.Gender = employee.Gender;
+                        tEmployee.Department = employee.Department;
+                        tEmployee.JobTitle = employee.JobTitle;
+                        tEmployee.JoiningDate = employee.JoiningDate ?? default;
+                        tEmployee.LeavingDate = employee.LeavingDate ?? null;
+                        tEmployee.DateofBirth = employee.DateofBirth;
+                        tEmployee.Mobile = employee.Mobile;
+                        tEmployee.HomePhone = employee.HomePhone;
+                        tEmployee.Email = employee.Email;
+                        tEmployee.ProfessionalProfile = employee.ProfessionalProfile;
+                        tEmployee.EmploymentType = employee.EmploymentType;
+                        tEmployee.EducationQualification = employee.EducationQualification;
+                        tEmployee.IdentificationDocument = employee.IdentificationDocument;
+                        tEmployee.IdentificationNumber = employee.IdentificationNumber;
+                        tEmployee.IsActive = true;
+                        tEmployee.UpdatedOn = DateTime.Now;
+                        tEmployee.UpdatedBy = User.Identity.GetUserId();
+                        tEmployee.ResidentialAddress = employee.ResidentialAddress;
+                        tEmployee.PostalAddress = employee.PostalAddress;
+                        db.Entry(tEmployee).State = EntityState.Modified;
+                        db.SaveChanges();
+                        return Ok(new { Message = "SUCCESS" });
+                    }
+                    catch
+                    {
+                        txn.Rollback();
+                        return BadRequest("Data transaction failed!");
+                    }
+                }
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -124,36 +149,55 @@ namespace EmployeeService.Controllers
                 {
                     return BadRequest(ModelState);
                 }
-                int empId = 0;
-                lock (lockTransaction)
+
+                using (var txn = db.Database.BeginTransaction())
                 {
-                    empId = db.tblEmployees.Select(i => i.ID).DefaultIfEmpty(0).Max();
-                    tblEmployee.ID = empId;
-                    tblEmployee.FirstName = employee.FirstName;
-                    tblEmployee.LastName = employee.LastName;
-                    tblEmployee.Gender = employee.Gender;
-                    tblEmployee.Department = employee.Department;
-                    tblEmployee.JobTitle = employee.JobTitle;
-                    tblEmployee.JoiningDate = employee.JoiningDate ?? default;
-                    tblEmployee.LeavingDate = employee.LeavingDate ?? (DateTime?)null;
-                    tblEmployee.DateofBirth = employee.DateofBirth;
-                    tblEmployee.Mobile = employee.Mobile;
-                    tblEmployee.HomePhone = employee.HomePhone;
-                    tblEmployee.Email = employee.Email;
-                    tblEmployee.ProfessionalProfile = employee.ProfessionalProfile;
-                    tblEmployee.EmploymentType = employee.EmploymentType;
-                    tblEmployee.EducationQualification = employee.EducationQualification;
-                    tblEmployee.IdentificationDocument = employee.IdentificationDocument;
-                    tblEmployee.IdentificationNumber = employee.IdentificationNumber;
-                    tblEmployee.IsActive = true;
-                    tblEmployee.CreatedOn = DateTime.Now;
-                    tblEmployee.CreatedBy = User.Identity.GetUserId();
-                    tblEmployee.ResidentialAddress = employee.ResidentialAddress;
-                    tblEmployee.PostalAddress = employee.PostalAddress;
-                    db.tblEmployees.Add(tblEmployee);
-                    int save = db.SaveChanges();
+                    try
+                    {
+                        if (!string.IsNullOrEmpty(employee.EmployeeImage) &&
+                            (!BaseHelper.ValidateImage(employee.EmployeeImage) ||
+                            !BaseHelper.SaveImage(employee.EmployeeImage, ImagePath + employee.EmployeeImageName)))
+                        {
+                            return BadRequest("Invalid Image!");
+                        }
+
+                        int empId = 0;
+                        lock (LockTransaction)
+                        {
+                            empId = db.tblEmployees.Select(i => i.ID).DefaultIfEmpty(0).Max();
+                            tblEmployee.ID = empId;
+                            tblEmployee.FirstName = employee.FirstName;
+                            tblEmployee.LastName = employee.LastName;
+                            tblEmployee.Gender = employee.Gender;
+                            tblEmployee.Department = employee.Department;
+                            tblEmployee.JobTitle = employee.JobTitle;
+                            tblEmployee.JoiningDate = employee.JoiningDate ?? default;
+                            tblEmployee.LeavingDate = employee.LeavingDate ?? (DateTime?)null;
+                            tblEmployee.DateofBirth = employee.DateofBirth;
+                            tblEmployee.Mobile = employee.Mobile;
+                            tblEmployee.HomePhone = employee.HomePhone;
+                            tblEmployee.Email = employee.Email;
+                            tblEmployee.ProfessionalProfile = employee.ProfessionalProfile;
+                            tblEmployee.EmploymentType = employee.EmploymentType;
+                            tblEmployee.EducationQualification = employee.EducationQualification;
+                            tblEmployee.IdentificationDocument = employee.IdentificationDocument;
+                            tblEmployee.IdentificationNumber = employee.IdentificationNumber;
+                            tblEmployee.IsActive = true;
+                            tblEmployee.CreatedOn = DateTime.Now;
+                            tblEmployee.CreatedBy = User.Identity.GetUserId();
+                            tblEmployee.ResidentialAddress = employee.ResidentialAddress;
+                            tblEmployee.PostalAddress = employee.PostalAddress;
+                            db.tblEmployees.Add(tblEmployee);
+                            int save = db.SaveChanges();
+                        }
+                        return Ok(new { Message = "SUCCESS", id = empId });
+                    }
+                    catch
+                    {
+                        txn.Rollback();
+                        return BadRequest("Data transaction failed!");
+                    }
                 }
-                return Ok(new { Message = "SUCCESS", id = empId });
             }
             catch (DbUpdateException)
             {
@@ -208,7 +252,7 @@ namespace EmployeeService.Controllers
                 Department = i.tblDepartment.Name,
                 Location = i.tblDepartment.Location,
                 i.JobTitle,
-                i.JoiningDate,               
+                i.JoiningDate,
                 i.EmploymentType
             });
         }

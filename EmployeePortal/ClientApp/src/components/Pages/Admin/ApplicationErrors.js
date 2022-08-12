@@ -11,10 +11,12 @@ export function ApplicationErrors() {
         let cols = Object.keys(userLogs.payload[0])
         let columns = []
         cols.map((val) => {
-            if (val === 'UserId')
-                columns.push({ Name: val, Alias: 'User' })
+            if (val === 'User')
+                columns.push({ Name: val })
             else if (val === 'ErrorCode')
                 columns.push({ Name: val, Alias: 'Error Code' })
+            else if (val === 'Error')
+                columns.push({ Name: val, cssClass: 'col1width400' })
             else if (val === 'CreatedOn')
                 columns.push({
                     Name: val, Alias: 'Date',
