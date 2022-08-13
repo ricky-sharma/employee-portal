@@ -48,6 +48,19 @@ namespace Common.Library
             }
         }
 
+        public static string ImageToBase64String(this string imagePath, string imageType)
+        {
+            try
+            {
+                byte[] imageArray = File.ReadAllBytes(imagePath);
+                return $"data:{imageType};base64,{Convert.ToBase64String(imageArray)}";
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
         public static bool ValidateImage(string imageStream)
         {
             try

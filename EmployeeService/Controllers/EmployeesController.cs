@@ -7,10 +7,8 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
-using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Text.RegularExpressions;
 using System.Web.Hosting;
 using System.Web.Http;
 using System.Web.Http.Description;
@@ -27,43 +25,63 @@ namespace EmployeeService.Controllers
         // GET: api/Employees
         public IEnumerable<object> GettblEmployees()
         {
-            return GetEmployees();
+            try
+            {
+                return GetEmployees();
+            }
+            catch
+            {
+                throw;
+            }
         }
 
         // GET: api/Employees/5
         [ResponseType(typeof(EmployeeModel))]
         public IHttpActionResult GettblEmployee(int id)
         {
-            tblEmployee tblEmployee = db.tblEmployees.Find(id);
-            if (tblEmployee == null)
+            try
             {
-                return NotFound();
-            }
-            var employee = new EmployeeModel
-            {
-                Department = tblEmployee.Department,
-                ID = tblEmployee.ID,
-                FirstName = tblEmployee.FirstName,
-                LastName = tblEmployee.LastName,
-                Gender = tblEmployee.Gender,
-                Salary = tblEmployee.Salary,
-                JobTitle = tblEmployee.JobTitle,
-                JoiningDate = tblEmployee.JoiningDate,
-                LeavingDate = tblEmployee.LeavingDate,
-                DateofBirth = tblEmployee.DateofBirth,
-                Mobile = tblEmployee.Mobile,
-                HomePhone = tblEmployee.HomePhone,
-                Email = tblEmployee.Email,
-                ProfessionalProfile = tblEmployee.ProfessionalProfile,
-                EmploymentType = tblEmployee.EmploymentType,
-                EducationQualification = tblEmployee.EducationQualification,
-                IdentificationDocument = tblEmployee.IdentificationDocument,
-                IdentificationNumber = tblEmployee.IdentificationNumber,
-                ResidentialAddress = tblEmployee.ResidentialAddress != null ? (Guid)tblEmployee.ResidentialAddress : Guid.Empty,
-                PostalAddress = tblEmployee.PostalAddress != null ? (Guid)tblEmployee.PostalAddress : Guid.Empty
-            };
+                tblEmployee tblEmployee = db.tblEmployees.Find(id);
+                if (tblEmployee == null)
+                {
+                    return NotFound();
+                }
 
-            return Ok(employee);
+                var empImageMap = db.tblEmployeeImageMaps.Where(x => x.EmployeeId == id && x.Active).FirstOrDefault();
+                var employeeImage = empImageMap != null && db.tblImages.Find(empImageMap.ImageId) != null ?
+                    db.tblImages.Find(empImageMap.ImageId).Name : string.Empty;
+
+                var employee = new
+                {
+                    tblEmployee.Department,
+                    tblEmployee.ID,
+                    tblEmployee.FirstName,
+                    tblEmployee.LastName,
+                    tblEmployee.Gender,
+                    tblEmployee.Salary,
+                    tblEmployee.JobTitle,
+                    tblEmployee.JoiningDate,
+                    tblEmployee.LeavingDate,
+                    tblEmployee.DateofBirth,
+                    tblEmployee.Mobile,
+                    tblEmployee.HomePhone,
+                    tblEmployee.Email,
+                    tblEmployee.ProfessionalProfile,
+                    tblEmployee.EmploymentType,
+                    tblEmployee.EducationQualification,
+                    tblEmployee.IdentificationDocument,
+                    tblEmployee.IdentificationNumber,
+                    ResidentialAddress = tblEmployee.ResidentialAddress != null ? (Guid)tblEmployee.ResidentialAddress : Guid.Empty,
+                    PostalAddress = tblEmployee.PostalAddress != null ? (Guid)tblEmployee.PostalAddress : Guid.Empty,
+                    EmployeeImage = !string.IsNullOrEmpty(employeeImage) ? employeeImage : null
+                };
+
+                return Ok(employee);
+            }
+            catch
+            {
+                throw;
+            }
         }
 
         // PUT: api/Employees/5
@@ -84,15 +102,6 @@ namespace EmployeeService.Controllers
                 {
                     try
                     {
-                        //SaveProfileImage(employee.EmployeeImage, employee.EmployeeImageName, employee.EmployeeImageType);
-
-                        if (!string.IsNullOrEmpty(employee.EmployeeImage) &&
-                            (!BaseHelper.ValidateImage(employee.EmployeeImage) ||
-                            !BaseHelper.SaveImage(employee.EmployeeImage, ImagePath + employee.EmployeeImageName)))
-                        {
-                            return BadRequest("Invalid Image!");
-                        }
-
                         var tEmployee = db.tblEmployees.Find(id);
                         tEmployee.FirstName = employee.FirstName;
                         tEmployee.LastName = employee.LastName;
@@ -117,6 +126,13 @@ namespace EmployeeService.Controllers
                         tEmployee.PostalAddress = employee.PostalAddress;
                         db.Entry(tEmployee).State = EntityState.Modified;
                         db.SaveChanges();
+
+                        if (!SaveImage(id, employee.EmployeeImage))
+                        {
+                            return BadRequest("Invalid Image!");
+                        }
+
+                        txn.Commit();
                         return Ok(new { Message = "SUCCESS" });
                     }
                     catch
@@ -139,6 +155,7 @@ namespace EmployeeService.Controllers
             }
         }
 
+
         // POST: api/Employees
         public IHttpActionResult PosttblEmployee(EmployeeModel employee)
         {
@@ -154,13 +171,6 @@ namespace EmployeeService.Controllers
                 {
                     try
                     {
-                        if (!string.IsNullOrEmpty(employee.EmployeeImage) &&
-                            (!BaseHelper.ValidateImage(employee.EmployeeImage) ||
-                            !BaseHelper.SaveImage(employee.EmployeeImage, ImagePath + employee.EmployeeImageName)))
-                        {
-                            return BadRequest("Invalid Image!");
-                        }
-
                         int empId = 0;
                         lock (LockTransaction)
                         {
@@ -189,7 +199,13 @@ namespace EmployeeService.Controllers
                             tblEmployee.PostalAddress = employee.PostalAddress;
                             db.tblEmployees.Add(tblEmployee);
                             int save = db.SaveChanges();
+
+                            if (!SaveImage(empId, employee.EmployeeImage))
+                            {
+                                return BadRequest("Invalid Image!");
+                            }
                         }
+                        txn.Commit();
                         return Ok(new { Message = "SUCCESS", id = empId });
                     }
                     catch
@@ -243,18 +259,76 @@ namespace EmployeeService.Controllers
 
         private IEnumerable<object> GetEmployees()
         {
-            return db.tblEmployees.Select(i => new
-            {
-                i.ID,
-                i.FirstName,
-                i.LastName,
-                i.Email,
-                Department = i.tblDepartment.Name,
-                Location = i.tblDepartment.Location,
-                i.JobTitle,
-                i.JoiningDate,
-                i.EmploymentType
+            return db.tblEmployees.AsEnumerable().Select(i => {
+                var empImageMap = db.tblEmployeeImageMaps.Where(x => x.EmployeeId == i.ID && x.Active).FirstOrDefault();
+                var employeeImage = empImageMap != null && db.tblImages.Find(empImageMap.ImageId) != null ?
+                   db.tblImages.Find(empImageMap.ImageId).Name : string.Empty;
+                return new
+                {
+                    i.ID,
+                    i.FirstName,
+                    i.LastName,
+                    i.Email,
+                    Department = i.tblDepartment.Name,
+                    i.tblDepartment.Location,
+                    i.JobTitle,
+                    i.JoiningDate,
+                    i.EmploymentType,
+                    EmployeeImage = !string.IsNullOrEmpty(employeeImage) ? employeeImage : null
+                };
             });
+        }
+
+        private bool SaveImage(int id, ImageModel imageModel)
+        {
+            if (imageModel.IsChanged && !string.IsNullOrEmpty(imageModel.Src)
+                                        && !string.IsNullOrEmpty(imageModel.UploadedName)
+                                        && !string.IsNullOrEmpty(imageModel.Type))
+            {
+                var imageId = Guid.NewGuid();
+                var imageName = $"{imageId}-{imageModel.UploadedName}";
+                var imagePath = $"{ImagePath}{imageName}";
+                if (!BaseHelper.ValidateImage(imageModel.Src) ||
+                            !BaseHelper.SaveImage(imageModel.Src, imagePath))
+                {
+                    return false;
+                }
+
+                tblImage image = new tblImage
+                {
+                    ID = imageId,
+                    Name = imageName,
+                    Type = imageModel.Type,
+                    Path = imagePath,
+                    UploadedName = imageModel.UploadedName,
+                    CreatedOn = DateTime.Now,
+                    CreatedBy = User.Identity.GetUserId()
+                };
+                db.tblImages.Add(image);
+                db.SaveChanges();
+
+                var tImage = db.tblEmployeeImageMaps.Where(x => x.EmployeeId == id && x.Active);
+                if (tImage.Any())
+                {
+                    foreach (var imgMap in tImage)
+                    {
+                        imgMap.Active = false;
+                        db.Entry(imgMap).State = EntityState.Modified;
+                        db.SaveChanges();
+                    }
+                }
+
+                tblEmployeeImageMap employeeImageMap = new tblEmployeeImageMap
+                {
+                    Active = true,
+                    EmployeeId = id,
+                    ImageId = imageId,
+                    ID = Guid.NewGuid()
+                };
+                db.tblEmployeeImageMaps.Add(employeeImageMap);
+                db.SaveChanges();
+            }
+            return true;
         }
     }
 }

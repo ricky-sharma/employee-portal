@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { DataGrid } from '../../Core/DataGrid';
 import { WebApi } from '../../Helpers/WebApi.ts';
+import IsNull from '../../Common/Common';
 
 export class Employees extends Component {
     constructor(props) {
@@ -48,11 +49,12 @@ export class Employees extends Component {
                             cols.push({
                                 Name: val,
                                 Alias: 'Name',
+                                cssClass: 'nameColumn',
                                 ConcatColumns: {
                                     Columns: ['FIRSTNAME', 'LASTNAME']
                                 }
                             })
-                        else if (val.toUpperCase() === 'LASTNAME')
+                        else if (val.toUpperCase() === 'LASTNAME' || val.toUpperCase() === 'EMPLOYEEIMAGE')
                             cols.push({
                                 Name: val,
                                 Hidden: true
@@ -78,8 +80,25 @@ export class Employees extends Component {
         this.props.history.push({ pathname: '/EditEmployee', state: row.ID })
     }
 
+    rowHover = (e, row) => {
+        if (!IsNull(row.EmployeeImage) && e.target.classList.contains('nameColumn')) {
+            let overlayDiv = document.createElement('div')
+            overlayDiv.classList.add("overlayRowDiv")
+            overlayDiv.style.cssText += "padding: 4px !important;"
+            overlayDiv.innerHTML = "<img class='overlayRowDivImage'  src=" + require('../../../../../files/employeeImages/' + row.EmployeeImage) + " />"
+            e.target.appendChild(overlayDiv)
+        }
+    }
+
+    rowOut = (e, row) => {
+        document.querySelectorAll('.overlayRowDiv').forEach(i => {
+            if (i.parentNode === e.target)
+                i.remove();
+        });
+    }
+
     render() {
-        let gridEvents = { OnRowClick: this.rowClicked }
+        let gridEvents = { OnRowClick: this.rowClicked, OnRowHover: this.rowHover, OnRowOut: this.rowOut }
         let options = { EnableColumnSearch: true, EnableGlobalSearch: true }
         return (<div className="mx-0 px-0">
             <div className="table-wrapper">

@@ -174,13 +174,12 @@ input[type=checkbox] {
 
     .table-title .add-new {
         float: right;
-        height: 30px;
+        height: 25px;
         font-weight: bold;
         font-size: 14px;
         text-shadow: none;
-        min-width: 100px;
-        border-radius: 50px;
-        line-height: 13px;
+        min-width: 80px;
+        border-radius: 6px;
         margin-top: 5px;
         display: flex;
         justify-content: center;
@@ -205,16 +204,33 @@ input[type=checkbox] {
     text-align: center;
 }
 
+.pageHeaderFixed {
+    overflow: auto;
+    height: 100vh;
+}
+
+    .pageHeaderFixed header {
+        position: sticky;
+        top: 0;
+        z-index: 5;
+    }
+
 body {
-    /*overflow: hidden !important;*/ /* Hide scrollbars */
     overflow-x: hidden !important;
-    -ms-overflow-style: none; /* Internet Explorer 10+ */
-    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /*Internet Explorer 10+ */
+    scrollbar-width: none; /*Firefox*/
 }
 
     body::-webkit-scrollbar {
-        display: none; /* Safari and Chrome */
+        display: none; /*Safari and Chrome */
     }
+
+.pageHeaderFixed::-webkit-scrollbar {
+    height: 0px !important;
+    width: 0px !important;
+    border: 0px solid #d5d5d5;
+    border-start-end-radius: 0px;
+}
 
 .overflow-Y {
     overflow-y: auto !important;
@@ -324,6 +340,22 @@ label.uploadPicture .MuiAvatar-img {
     flex-wrap: nowrap !important
 }
 
+.overlayRowDiv {
+    width: 12% !important;
+    height: 25%;
+    border: 1px solid #f0f0f0;
+    background: #ffffff;
+    position: absolute;
+    display: inline-block;
+    box-sizing: border-box;
+    z-index: 100;
+}
+
+.overlayRowDivImage {
+    width: 100% !important;
+    height: 100% !important;
+}
+
 @media (max-width: 240px) {
     /* really tiny screens */
 
@@ -332,11 +364,11 @@ label.uploadPicture .MuiAvatar-img {
     }
 
     h1, h1 * {
-        font-size: 16px !important;
+        font-size: 14px !important;
     }
 
     h2, h2 * {
-        font-size: 14px !important;
+        font-size: 11px !important;
     }
 
     h5, h5 *, h6, h6 * {
@@ -351,6 +383,11 @@ label.uploadPicture .MuiAvatar-img {
     li > a.nav-link, li > a.nav-link * {
         font-size: 10px !important;
     }
+
+    .table-title .add-new {
+        height: 10px;
+        min-width: 30px;
+    }
 }
 
 @media (min-width: 241px) and (max-width: 360px) {
@@ -361,15 +398,15 @@ label.uploadPicture .MuiAvatar-img {
     }
 
     h1, h1 * {
-        font-size: 17px !important;
+        font-size: 16px !important;
     }
 
     h2, h2 * {
-        font-size: 14px !important;
+        font-size: 12.5px !important;
     }
 
     h5, h5 *, h6, h6 * {
-        font-size: 11px !important;
+        font-size: 10.5px !important;
     }
 
     select, input, label, div, span {
@@ -378,6 +415,11 @@ label.uploadPicture .MuiAvatar-img {
 
     li > a.nav-link, li > a.nav-link * {
         font-size: 10px !important;
+    }
+
+    .table-title .add-new {
+        height: 12px;
+        min-width: 35px;
     }
 }
 
@@ -406,6 +448,11 @@ label.uploadPicture .MuiAvatar-img {
     li > a.nav-link, li > a.nav-link * {
         font-size: 11px !important;
     }
+
+    .table-title .add-new {
+        height: 14px;
+        min-width: 40px;
+    }
 }
 
 @media (min-width: 481px) and (max-width: 600px) {
@@ -432,6 +479,11 @@ label.uploadPicture .MuiAvatar-img {
     li > a.nav-link, li > a.nav-link * {
         font-size: 12px !important;
     }
+
+    .table-title .add-new {
+        height: 16px;
+        min-width: 50px;
+    }
 }
 
 @media (max-width: 524px) {
@@ -443,12 +495,6 @@ label.uploadPicture .MuiAvatar-img {
 @media (max-width: 600px) {
     .hidesidenav {
         display: none;
-    }
-
-    .table-title .add-new {
-        height: 20px;
-        min-width: 60px;
-        font-size: 9px;
     }
 
     .link-icon {
@@ -470,8 +516,8 @@ label.uploadPicture .MuiAvatar-img {
 
 @media (min-width: 601px) and (max-width: 767px) {
     .table-title .add-new {
-        height: 22px;
-        min-width: 70px;
+        height: 20px;
+        min-width: 60px;
     }
 
     * {
@@ -536,8 +582,8 @@ label.uploadPicture .MuiAvatar-img {
     }
 
     .table-title .add-new {
-        height: 25px;
-        min-width: 80px;
+        height: 22px;
+        min-width: 70px;
     }
 }
 

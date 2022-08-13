@@ -19,8 +19,8 @@
     .customGrid table tbody {
         overflow-x: auto !important;
         overflow-y: auto !important;
-        max-height: 400px !important;
-        height: 400px !important;
+        max-height: 380px !important;
+        height: 380px !important;
         width: 100%;
         max-width: 100%;
     }
@@ -86,7 +86,7 @@
         right: -3px;
         top: 8px;
         bottom: 8px;
-        z-index: 10;
+        z-index: 1;
         padding: 0 !important
     }
 
@@ -244,14 +244,18 @@ option {
 }
 
 .searchInput {
-    width: 70% !important;
+    width: 80% !important;
     height: 100% !important;
     color: rgba(0, 0, 0);
     font-weight: 400;
-    border-color: #dee2e6 !important;
     border-radius: 4px;
-    border-width: 1px;
+    box-shadow: rgb(224, 224, 224) 0px 0px 0px 2px;
+    border: 0px;
 }
+
+    .searchInput::placeholder {
+        text-align: center;
+    }
 
 .globalSearchDiv {
     display: block !important;
@@ -261,15 +265,19 @@ option {
 }
 
 input.globalSearch {
-    width: 25% !important;
+    width: 33% !important;
     color: rgba(0, 0, 0);
     font-weight: 400;
-    border-color: #dee2e6 !important;
     border-radius: 4px;
-    border-width: 1px;
     float: right !important;
     height: unset !important;
+    box-shadow: rgb(224, 224, 224) 0px 0px 0px 2px;
+    border: 0px;
 }
+
+    input.globalSearch::placeholder {
+        text-align: center;
+    }
 
 .pagerSelect {
     max-width: 55px !important;

@@ -27,6 +27,7 @@ namespace SQLDataEntity
             this.AspNetRoles = new HashSet<AspNetRole>();
             this.tblEmployees = new HashSet<tblEmployee>();
             this.tblEmployees1 = new HashSet<tblEmployee>();
+            this.tblImages = new HashSet<tblImage>();
         }
     
         public string Id { get; set; }
@@ -62,5 +63,7 @@ namespace SQLDataEntity
         public virtual ICollection<tblEmployee> tblEmployees { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tblEmployee> tblEmployees1 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<tblImage> tblImages { get; set; }
     }
 }

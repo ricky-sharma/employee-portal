@@ -96,7 +96,13 @@
     <Compile Include="tblEmployee.cs">
       <DependentUpon>DBFirstEntity.tt</DependentUpon>
     </Compile>
+    <Compile Include="tblEmployeeImageMap.cs">
+      <DependentUpon>DBFirstEntity.tt</DependentUpon>
+    </Compile>
     <Compile Include="tblError.cs">
+      <DependentUpon>DBFirstEntity.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tblImage.cs">
       <DependentUpon>DBFirstEntity.tt</DependentUpon>
     </Compile>
     <Compile Include="tblLog.cs">
