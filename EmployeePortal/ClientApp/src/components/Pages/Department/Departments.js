@@ -8,8 +8,7 @@ export class Departments extends Component {
 
         this.state = {
             departmentData: [],
-            departmentColumns: [],
-            key: 0
+            departmentColumns: []
         }
     }
 
@@ -31,8 +30,7 @@ export class Departments extends Component {
 
                         this.setState({
                             departmentData: response,
-                            departmentColumns: cols,
-                            key: Math.random()
+                            departmentColumns: cols
                         })
                     })
                 }
@@ -61,7 +59,7 @@ export class Departments extends Component {
                     </div>
                 </div>
                 <div>
-                    <DataGrid key={this.state.key} Columns={this.state.departmentColumns} RowsData={this.state.departmentData}
+                    <DataGrid Columns={this.state.departmentColumns} RowsData={this.state.departmentData}
                         Options={options} PageRows={15} GridEvents={gridEvents} />
                 </div>
             </div>
