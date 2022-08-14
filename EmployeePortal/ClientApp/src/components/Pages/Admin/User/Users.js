@@ -9,9 +9,7 @@ export class Users extends Component {
 
         this.state = {
             userData: [],
-            userColumns: [],
-            key: 0
-
+            userColumns: []
         }
     }
 
@@ -46,8 +44,7 @@ export class Users extends Component {
                     })
                     this.setState({
                         userData: response,
-                        userColumns: cols,
-                        key: Math.random()
+                        userColumns: cols
                     })
 
                 }
@@ -80,7 +77,7 @@ export class Users extends Component {
                     </div>
                 </div>
                 <div>
-                    <DataGrid key={this.state.key} Columns={this.state.userColumns} RowsData={this.state.userData} PageRows={15}
+                    <DataGrid Columns={this.state.userColumns} RowsData={this.state.userData} PageRows={15}
                         GridEvents={gridEvents} Options={options} />
                 </div>
             </div>

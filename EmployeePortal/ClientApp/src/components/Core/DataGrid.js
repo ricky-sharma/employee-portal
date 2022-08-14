@@ -73,6 +73,64 @@ export class DataGrid extends Component {
         this.searchCols = []
     }
 
+    shouldComponentUpdate(nextProps, nextStats) {
+        if (nextProps.Columns !== this.props.Columns ||
+            nextProps.RowsData !== this.props.RowsData ||
+            !this.objectsEqual(this.props.Columns, nextProps.Columns) ||
+            !this.objectsEqual(this.props.RowsData, nextProps.RowsData) ||
+            !this.objectsEqual(this.state.Columns, nextStats.Columns) ||
+            !this.objectsEqual(this.state.RowsData, nextStats.RowsData)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    objectsEqual = (o1, o2) =>
+        !IsNull(o1) && !IsNull(o2) &&
+        Object.keys(o1).length === Object.keys(o2).length
+        && Object.keys(o1).every(p => o1[p] === o2[p]);
+
+
+    componentWillReceiveProps = (nextProps) => {
+        const { Columns, RowsData, PageRows } = nextProps
+        this.setState({
+            columns: !IsNull(Columns) ? Columns : null,
+            rowsData: RowsData,
+            totalRows: RowsData.length,
+            pageRows: !IsNull(PageRows) ? PageRows : RowsData.length,
+            currentPageRows: !IsNull(PageRows) ? PageRows : RowsData.length,
+            hiddenColIndex: !IsNull(Columns) ? Columns.map((col, key) => {
+                if (!IsNull(col.Hidden) && col.Hidden)
+                    return key;
+                else
+                    return null;
+            }) : null,
+            concatColumns: !IsNull(Columns) ? Columns.map((col) => {
+                let separator = ' '
+                if (!IsNull(col.ConcatColumns) && !IsNull(col.ConcatColumns.Columns)) {
+                    if (!IsNull(col.ConcatColumns.Separator))
+                        separator = col.ConcatColumns.Separator
+                    return { cols: col.ConcatColumns.Columns, sep: separator };
+                }
+            }) : null,
+            columnFormatting: !IsNull(Columns) ? Columns.map((col) => {
+                if (!IsNull(col.Formatting) && !IsNull(col.Formatting.Type) && !IsNull(col.Formatting.Format)) {
+                    return { type: col.Formatting.Type, format: col.Formatting.Format };
+                }
+            }) : null,
+            cssClassColumns: !IsNull(Columns) ? Columns.map((col, key) => {
+                if (!IsNull(col.cssClass))
+                    return col.cssClass;
+                else
+                    return null;
+            }) : null
+        }, () => {
+            this.dataRecieved = this.state.rowsData
+            this.setPagingVariables()
+        })
+    }
+
     componentWillMount = () => {
         this.setPagingVariables()
     }

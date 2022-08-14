@@ -8,8 +8,7 @@ export class Employees extends Component {
         super(props)
         this.state = {
             employeeData: [],
-            employeeColumns: [],
-            key: 0
+            employeeColumns: []
         }
     }
 
@@ -65,8 +64,7 @@ export class Employees extends Component {
 
                         this.setState({
                             employeeData: response,
-                            employeeColumns: cols,
-                            key: Math.random()
+                            employeeColumns: cols
                         })
                     })
                 }
@@ -112,7 +110,7 @@ export class Employees extends Component {
                     </div>
                 </div>
                 <div>
-                    <DataGrid key={this.state.key} Columns={this.state.employeeColumns} RowsData={this.state.employeeData}
+                    <DataGrid Columns={this.state.employeeColumns} RowsData={this.state.employeeData}
                         Options={options} PageRows={10} GridEvents={gridEvents} />
                 </div>
             </div>
