@@ -1,9 +1,9 @@
 ﻿import React from 'react';
 import { Container } from 'reactstrap';
-import IsNull from '../../Common/Common';
+import IsNull, { ReplaceSpecialChars } from '../../Common/Common';
+import AlertDialog from '../../Core/AlertDialog';
 import { DataGrid } from '../../Core/DataGrid';
 import { GetData } from '../../Helpers/WebApi.ts';
-import AlertDialog from '../../Core/AlertDialog';
 
 export function ApplicationErrors() {
     let userLogs = GetData('/api/Error')
@@ -11,10 +11,12 @@ export function ApplicationErrors() {
         let cols = Object.keys(userLogs.payload[0])
         let columns = []
         cols.map((val) => {
-            if (val === 'UserId')
-                columns.push({ Name: val, Alias: 'User' })
+            if (val === 'User')
+                columns.push({ Name: val })
             else if (val === 'ErrorCode')
                 columns.push({ Name: val, Alias: 'Error Code' })
+            else if (val === 'Error')
+                columns.push({ Name: val, cssClass: 'col1width400' })
             else if (val === 'CreatedOn')
                 columns.push({
                     Name: val, Alias: 'Date',
@@ -50,16 +52,16 @@ export function ApplicationErrors() {
         }
 
         const rowClicked = (e, row) => {
-            let error = !IsNull(row.Error) ? JSON.parse(row.Error) : ''
-            let errorInfo = (!IsNull(row.ErrorInfo) && !IsNull(JSON.parse(row.ErrorInfo).componentStack)
-                ? JSON.parse(row.ErrorInfo).componentStack : (!IsNull(row.ErrorInfo) ? row.ErrorInfo : '')).replace(error, "")
+            let error = !IsNull(row.Error) ? JSON.parse(ReplaceSpecialChars(row.Error)) : ''
+            let errorInfo = (!IsNull(row.ErrorInfo) && !IsNull(JSON.parse(ReplaceSpecialChars(row.ErrorInfo)).componentStack)
+                ? JSON.parse(ReplaceSpecialChars(row.ErrorInfo)).componentStack : (!IsNull(row.ErrorInfo) ? row.ErrorInfo : '')).replace(error, "")
             AlertDialog(() => { return ErrorDetail(error, errorInfo) }, null, "Error Detail", { maxWidth: true })
         }
 
         let options = { EnableColumnSearch: true, EnableGlobalSearch: true }
         let gridEvents = { OnRowClick: rowClicked }
         return (
-            <Container className="mx-0 px-0">
+            <div className="mx-0 px-0">
                 <div className="table-wrapper">
                     <div className="table-title">
                         <div className="row nowrap m-0 p-0">
@@ -72,7 +74,7 @@ export function ApplicationErrors() {
                         <DataGrid Columns={columns} RowsData={data} Options={options} PageRows={10} GridEvents={gridEvents} />
                     </div>
                 </div>
-            </Container>)
+            </div>)
     }
     return (<></>)
 }

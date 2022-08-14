@@ -37,7 +37,7 @@
 
 .MuiOutlinedInput-input {
     padding: 10px 15px !important;
-    padding-right: 18px !important;
+    padding-right: 6px !important;
 }
 
 .MuiInputLabel-outlined {
@@ -116,7 +116,7 @@
 
     .MuiOutlinedInput-input {
         padding: 3px 11px !important;
-        padding-right: 12px !important;
+        padding-right: 3px !important;
         padding-top: 8px !important;
     }
 

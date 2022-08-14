@@ -7,7 +7,7 @@ export class Layout extends Component {
 
     render() {
         return (
-            <div>
+            <div className="pageHeaderFixed">
                 <NavMenu />
                 <Container className="container-width px-0">
                     {this.props.children}

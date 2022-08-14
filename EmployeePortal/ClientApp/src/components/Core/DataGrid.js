@@ -2,7 +2,6 @@
 import { format } from "date-fns";
 import React, { Component } from 'react';
 import { usePromiseTracker } from "react-promise-tracker";
-import { Container } from 'reactstrap';
 import IsNull from '../Common/Common';
 import { DynamicSort } from "../Common/Sort";
 import '../css/DataGrid.css';
@@ -15,8 +14,9 @@ const LoadingIndicator = () => {
 export class DataGrid extends Component {
     constructor(props) {
         super(props)
-        const { Columns, RowsData, PageRows, GridEvents, Options } = props
+        const { Columns, RowsData, PageRows, GridEvents, Options, Width } = props
         this.state = {
+            width: !IsNull(Width) ? Width : '100%',
             gridID: Math.floor(Math.random() * 10000),
             columns: !IsNull(Columns) ? Columns : null,
             rowsData: RowsData,
@@ -61,6 +61,8 @@ export class DataGrid extends Component {
             }) : null,
             rowClickEnabled: !IsNull(GridEvents) && !IsNull(GridEvents.OnRowClick),
             onRowClick: !IsNull(GridEvents) && !IsNull(GridEvents.OnRowClick) ? GridEvents.OnRowClick : () => { },
+            onRowHover: !IsNull(GridEvents) && !IsNull(GridEvents.OnRowHover) ? GridEvents.OnRowHover : () => { },
+            onRowOut: !IsNull(GridEvents) && !IsNull(GridEvents.OnRowOut) ? GridEvents.OnRowOut : () => { },
             editButtonEnabled: !IsNull(Options) && !IsNull(Options.EditButton),
             editButtonEvent: !IsNull(Options) && !IsNull(Options.EditButton) && !IsNull(Options.EditButton.Event) ? Options.EditButton.Event : () => { },
             type1ButtonEnabled: !IsNull(Options) && !IsNull(Options.Type1Button),
@@ -177,6 +179,7 @@ export class DataGrid extends Component {
                             "col1width125 m-0 p-0" : "col1width75 m-0 p-0"}>{editButton}{type1Button}</div></td >)
                 return (
                     <tr key={index} style={this.state.rowClickEnabled ? { cursor: 'pointer' } : {}} onClick={(e) => this.state.onRowClick(e, row)}
+                        onMouseOver={(e) => this.state.onRowHover(e, row)} onMouseOut={(e) => this.state.onRowOut(e, row)}
                         className={this.state.rowCssClass !== undefined && this.state.rowCssClass !== null ? this.state.rowCssClass : "gridRows"}>
                         {cols}
                     </tr>
@@ -212,7 +215,7 @@ export class DataGrid extends Component {
             if (hiddenCols.some(x => x === key))
                 hideClass = 'd-none';
             inputProps = {
-                className: !IsNull(header.cssClass) ? header.cssClass + ' row p-0 m-0' : 'row p-0 m-0'
+                className: !IsNull(header.cssClass) ? (header.cssClass + ' row p-0 m-0') : 'row p-0 m-0'
             };
             let thHtml = ''
             if (header === '') {
@@ -224,12 +227,14 @@ export class DataGrid extends Component {
             else if (IsNull(header.Alias) || header.Name === header.Alias) {
                 thHtml = <th key={key} className={hideClass + (!IsNull(header.cssClass) ? (' ' + header.cssClass) : '')}>
                     <div {...inputProps}><div onClick={(e) => { this.tableHeaderClicked(e, header.Name) }}
-                        className="p-0 pointer inline-display">{header.Name}{this.sortIconHtml}</div></div>{thInnerHtml}</th>
+                        className={"p-0 pointer inline-display" + (!IsNull(header.cssClass) ? (' ' + header.cssClass) : '')}>
+                        {header.Name}{this.sortIconHtml}</div></div>{thInnerHtml}</th>
             }
             else if (!IsNull(header.Alias) && header.Name !== header.Alias) {
                 thHtml = <th key={key} className={hideClass + (!IsNull(header.cssClass) ? (' ' + header.cssClass) : '')}>
                     <div {...inputProps}><div onClick={(e) => { this.tableHeaderClicked(e, header.Name) }}
-                        className="p-0 pointer inline-display">{header.Alias}{this.sortIconHtml}</div></div>{thInnerHtml}</th>
+                        className={"p-0 pointer inline-display" + (!IsNull(header.cssClass) ? (' ' + header.cssClass) : '')}>
+                        {header.Alias}{this.sortIconHtml}</div></div>{thInnerHtml}</th>
             }
             return thHtml
         })
@@ -450,7 +455,7 @@ export class DataGrid extends Component {
     render() {
         const { totalRows, currentPageRows, firstRow, activePage, noOfPages, pageRows, EnablePaging } = this.state
         return (
-            <Container className="mx-0 px-0">
+            <div className="mx-0 px-0" style={{ width: this.state.width }}>
                 {this.state.enableGlobalSearch ? <div className="row col-12 globalSearchDiv">
                     <input className="globalSearch" placeholder="Global Search" onChange={(e) => this.handleColSearch(e, '##globalSearch##', this.state.columns)} type="text" />
                 </div> : <></>}
@@ -490,7 +495,7 @@ export class DataGrid extends Component {
                     </div>
 
                 </div>
-            </Container>
+            </div>
         )
     }
 }

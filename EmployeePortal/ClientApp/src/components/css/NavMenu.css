@@ -1,6 +1,7 @@
 ﻿a.navbar-brand {
     white-space: normal;
-    word-break: break-all;
+    word-break: break-all !important;
+    height: 35px !important;
 }
 
 .navbar-light .navbar-nav .nav-link {
@@ -27,12 +28,16 @@
     box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
 }
 
+nav.border-bottom {
+    border-bottom: 1px solid #ffffff !important;
+}
+
 .button-signout {
     font-weight: bold !important;
-    font-size: 12px !important;
+    font-size: 16px !important;
     text-shadow: none !important;
-    border-radius: 50px !important;
-    line-height: 12px !important;
+    border-radius: 30px !important;
+    line-height: 0px !important;
     margin-top: 5px !important;
     padding: 10px !important;
 }
@@ -63,8 +68,14 @@
     width: 75% !important;
 }
 
+.dropdown-item {
+    padding: 0.25rem 0.75rem !important;
+}
+
 .container-fluid {
     justify-content: normal !important;
+    margin-right: 0 !important;
+    padding-right: 0 !important;
 }
 
 .display-inline-table {

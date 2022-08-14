@@ -78,7 +78,7 @@ export class Home extends Component {
         if (isLoggedIn)
             return (<div className="row justify-content-md-center m-0 p-0">Welcome to the Employee portal.</div>)
         return (
-            <div className="container">
+            <div>
                 <div className="row">
                     <div className="col-sm-8 col-md-6 col-lg-4 mx-auto">
                         <div className="card card-signin my-5">

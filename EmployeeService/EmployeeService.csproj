@@ -227,6 +227,7 @@
     <Compile Include="Models\EmployeeModel.cs" />
     <Compile Include="Models\ErrorModel.cs" />
     <Compile Include="Models\IdentityModels.cs" />
+    <Compile Include="Models\ImageModel.cs" />
     <Compile Include="Models\LogModel.cs" />
     <Compile Include="Models\UserInfoModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

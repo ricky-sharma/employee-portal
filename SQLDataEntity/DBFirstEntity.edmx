@@ -102,6 +102,15 @@
           <Property Name="Name" Type="nvarchar(max)" />
           <Property Name="Location" Type="nvarchar(max)" />
         </EntityType>
+        <EntityType Name="tblEmployeeImageMap">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="EmployeeId" Type="int" Nullable="false" />
+          <Property Name="ImageId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Active" Type="bit" Nullable="false" />
+          <Property Name="ID" Type="uniqueidentifier" Nullable="false" />
+        </EntityType>
         <EntityType Name="tblEmployees">
           <Key>
             <PropertyRef Name="ID" />
@@ -132,6 +141,7 @@
           <Property Name="UpdatedBy" Type="nvarchar" MaxLength="128" />
           <Property Name="ResidentialAddress" Type="uniqueidentifier" />
           <Property Name="PostalAddress" Type="uniqueidentifier" />
+          <Property Name="EmployeeID" Type="nvarchar(max)" Nullable="false" />
         </EntityType>
         <EntityType Name="tblErrors">
           <Key>
@@ -143,6 +153,18 @@
           <Property Name="CreatedOn" Type="datetime" />
           <Property Name="UserId" Type="nvarchar" MaxLength="128" />
           <Property Name="ErrorCode" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="tblImages">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Name" Type="nvarchar(max)" />
+          <Property Name="Path" Type="nvarchar(max)" />
+          <Property Name="Type" Type="nvarchar(max)" />
+          <Property Name="CreatedOn" Type="datetime" />
+          <Property Name="CreatedBy" Type="nvarchar" MaxLength="128" />
+          <Property Name="UploadedName" Type="nvarchar(max)" />
         </EntityType>
         <EntityType Name="tblLogs">
           <Key>
@@ -242,6 +264,30 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_tblEmployeeImageMap_tblEmployees">
+          <End Role="tblEmployees" Type="Self.tblEmployees" Multiplicity="1" />
+          <End Role="tblEmployeeImageMap" Type="Self.tblEmployeeImageMap" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblEmployees">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="tblEmployeeImageMap">
+              <PropertyRef Name="EmployeeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblEmployeeImageMap_tblImages">
+          <End Role="tblImages" Type="Self.tblImages" Multiplicity="1" />
+          <End Role="tblEmployeeImageMap" Type="Self.tblEmployeeImageMap" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblImages">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="tblEmployeeImageMap">
+              <PropertyRef Name="ImageId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_tblEmployees_AspNetUsers">
           <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="0..1" />
           <End Role="tblEmployees" Type="Self.tblEmployees" Multiplicity="*" />
@@ -314,6 +360,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_tblImages_AspNetUsers">
+          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="0..1" />
+          <End Role="tblImages" Type="Self.tblImages" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="tblImages">
+              <PropertyRef Name="CreatedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_tblLogs_AspNetUsers">
           <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="0..1" />
           <End Role="tblLogs" Type="Self.tblLogs" Multiplicity="*" />
@@ -340,8 +398,10 @@
           <EntitySet Name="C__MigrationHistory" EntityType="Self.C__MigrationHistory" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblAddress" EntityType="Self.tblAddress" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblDepartments" EntityType="Self.tblDepartments" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblEmployeeImageMap" EntityType="Self.tblEmployeeImageMap" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblEmployees" EntityType="Self.tblEmployees" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblErrors" EntityType="Self.tblErrors" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblImages" EntityType="Self.tblImages" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblLogs" EntityType="Self.tblLogs" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK_AspNetUserInfo_AspNetUsers" Association="Self.FK_AspNetUserInfo_AspNetUsers">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
@@ -371,6 +431,14 @@
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="tblAddress" EntitySet="tblAddress" />
           </AssociationSet>
+          <AssociationSet Name="FK_tblEmployeeImageMap_tblEmployees" Association="Self.FK_tblEmployeeImageMap_tblEmployees">
+            <End Role="tblEmployees" EntitySet="tblEmployees" />
+            <End Role="tblEmployeeImageMap" EntitySet="tblEmployeeImageMap" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblEmployeeImageMap_tblImages" Association="Self.FK_tblEmployeeImageMap_tblImages">
+            <End Role="tblImages" EntitySet="tblImages" />
+            <End Role="tblEmployeeImageMap" EntitySet="tblEmployeeImageMap" />
+          </AssociationSet>
           <AssociationSet Name="FK_tblEmployees_AspNetUsers" Association="Self.FK_tblEmployees_AspNetUsers">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="tblEmployees" EntitySet="tblEmployees" />
@@ -394,6 +462,10 @@
           <AssociationSet Name="FK_tblErrors_AspNetUsers" Association="Self.FK_tblErrors_AspNetUsers">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="tblErrors" EntitySet="tblErrors" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblImages_AspNetUsers" Association="Self.FK_tblImages_AspNetUsers">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="tblImages" EntitySet="tblImages" />
           </AssociationSet>
           <AssociationSet Name="FK_tblLogs_AspNetUsers" Association="Self.FK_tblLogs_AspNetUsers">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
@@ -469,6 +541,7 @@
           <NavigationProperty Name="tblErrors" Relationship="Self.FK_tblErrors_AspNetUsers" FromRole="AspNetUsers" ToRole="tblErrors" />
           <NavigationProperty Name="tblLogs" Relationship="Self.FK_tblLogs_AspNetUsers" FromRole="AspNetUsers" ToRole="tblLogs" />
           <NavigationProperty Name="AspNetRoles" Relationship="Self.AspNetUserRoles" FromRole="AspNetUsers" ToRole="AspNetRoles" />
+          <NavigationProperty Name="tblImages" Relationship="EmployeeDBModel.FK_tblImages_AspNetUsers" FromRole="AspNetUser" ToRole="tblImage" />
           <NavigationProperty Name="tblEmployees" Relationship="EmployeeDBModel.FK_tblEmployees_AspNetUsers" FromRole="AspNetUser" ToRole="tblEmployee" />
           <NavigationProperty Name="tblEmployees1" Relationship="EmployeeDBModel.FK_tblEmployees_AspNetUsers1" FromRole="AspNetUser" ToRole="tblEmployee" />
         </EntityType>
@@ -670,6 +743,16 @@
             <End Role="AspNetRoles" EntitySet="AspNetRoles" />
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
           </AssociationSet>
+          <EntitySet Name="tblEmployeeImageMaps" EntityType="EmployeeDBModel.tblEmployeeImageMap" />
+          <EntitySet Name="tblImages" EntityType="EmployeeDBModel.tblImage" />
+          <AssociationSet Name="FK_tblImages_AspNetUsers" Association="EmployeeDBModel.FK_tblImages_AspNetUsers">
+            <End Role="AspNetUser" EntitySet="AspNetUsers" />
+            <End Role="tblImage" EntitySet="tblImages" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblEmployeeImageMap_tblImages" Association="EmployeeDBModel.FK_tblEmployeeImageMap_tblImages">
+            <End Role="tblImage" EntitySet="tblImages" />
+            <End Role="tblEmployeeImageMap" EntitySet="tblEmployeeImageMaps" />
+          </AssociationSet>
           <EntitySet Name="tblEmployees" EntityType="EmployeeDBModel.tblEmployee" />
           <AssociationSet Name="FK_tblEmployees_AspNetUsers" Association="EmployeeDBModel.FK_tblEmployees_AspNetUsers">
             <End Role="AspNetUser" EntitySet="AspNetUsers" />
@@ -691,7 +774,60 @@
             <End Role="tblDepartment" EntitySet="tblDepartments" />
             <End Role="tblEmployee" EntitySet="tblEmployees" />
           </AssociationSet>
-        </EntityContainer>
+          <AssociationSet Name="FK_tblEmployeeImageMap_tblEmployees" Association="EmployeeDBModel.FK_tblEmployeeImageMap_tblEmployees">
+            <End Role="tblEmployee" EntitySet="tblEmployees" />
+            <End Role="tblEmployeeImageMap" EntitySet="tblEmployeeImageMaps" />
+          </AssociationSet>
+          </EntityContainer>
+        <EntityType Name="tblEmployeeImageMap">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="EmployeeId" Type="Int32" Nullable="false" />
+          <Property Name="ImageId" Type="Guid" Nullable="false" />
+          <Property Name="Active" Type="Boolean" Nullable="false" />
+          <Property Name="ID" Type="Guid" Nullable="false" />
+          <NavigationProperty Name="tblImage" Relationship="EmployeeDBModel.FK_tblEmployeeImageMap_tblImages" FromRole="tblEmployeeImageMap" ToRole="tblImage" />
+          <NavigationProperty Name="tblEmployee" Relationship="EmployeeDBModel.FK_tblEmployeeImageMap_tblEmployees" FromRole="tblEmployeeImageMap" ToRole="tblEmployee" />
+        </EntityType>
+        <EntityType Name="tblImage">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Guid" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Path" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Type" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedOn" Type="DateTime" Precision="3" />
+          <Property Name="CreatedBy" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="UploadedName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="AspNetUser" Relationship="EmployeeDBModel.FK_tblImages_AspNetUsers" FromRole="tblImage" ToRole="AspNetUser" />
+          <NavigationProperty Name="tblEmployeeImageMaps" Relationship="EmployeeDBModel.FK_tblEmployeeImageMap_tblImages" FromRole="tblImage" ToRole="tblEmployeeImageMap" />
+        </EntityType>
+        <Association Name="FK_tblImages_AspNetUsers">
+          <End Type="EmployeeDBModel.AspNetUser" Role="AspNetUser" Multiplicity="0..1" />
+          <End Type="EmployeeDBModel.tblImage" Role="tblImage" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUser">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="tblImage">
+              <PropertyRef Name="CreatedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblEmployeeImageMap_tblImages">
+          <End Type="EmployeeDBModel.tblImage" Role="tblImage" Multiplicity="1" />
+          <End Type="EmployeeDBModel.tblEmployeeImageMap" Role="tblEmployeeImageMap" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblImage">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="tblEmployeeImageMap">
+              <PropertyRef Name="ImageId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityType Name="tblEmployee">
           <Key>
             <PropertyRef Name="ID" />
@@ -722,11 +858,13 @@
           <Property Name="UpdatedBy" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
           <Property Name="ResidentialAddress" Type="Guid" />
           <Property Name="PostalAddress" Type="Guid" />
+          <Property Name="EmployeeID" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="AspNetUser" Relationship="EmployeeDBModel.FK_tblEmployees_AspNetUsers" FromRole="tblEmployee" ToRole="AspNetUser" />
           <NavigationProperty Name="AspNetUser1" Relationship="EmployeeDBModel.FK_tblEmployees_AspNetUsers1" FromRole="tblEmployee" ToRole="AspNetUser" />
           <NavigationProperty Name="tblAddress" Relationship="EmployeeDBModel.FK_tblEmployees_tblAddress" FromRole="tblEmployee" ToRole="tblAddress" />
           <NavigationProperty Name="tblAddress1" Relationship="EmployeeDBModel.FK_tblEmployees_tblAddress1" FromRole="tblEmployee" ToRole="tblAddress" />
           <NavigationProperty Name="tblDepartment" Relationship="EmployeeDBModel.FK_tblEmployees_tblDepartments" FromRole="tblEmployee" ToRole="tblDepartment" />
+          <NavigationProperty Name="tblEmployeeImageMaps" Relationship="EmployeeDBModel.FK_tblEmployeeImageMap_tblEmployees" FromRole="tblEmployee" ToRole="tblEmployeeImageMap" />
         </EntityType>
         <Association Name="FK_tblEmployees_AspNetUsers">
           <End Type="EmployeeDBModel.AspNetUser" Role="AspNetUser" Multiplicity="0..1" />
@@ -788,7 +926,19 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-      </Schema>
+        <Association Name="FK_tblEmployeeImageMap_tblEmployees">
+          <End Type="EmployeeDBModel.tblEmployee" Role="tblEmployee" Multiplicity="1" />
+          <End Type="EmployeeDBModel.tblEmployeeImageMap" Role="tblEmployeeImageMap" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblEmployee">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="tblEmployeeImageMap">
+              <PropertyRef Name="EmployeeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
@@ -919,9 +1069,33 @@
               <ScalarProperty Name="Id" ColumnName="UserId" />
             </EndProperty>
           </AssociationSetMapping>
+          <EntitySetMapping Name="tblEmployeeImageMaps">
+            <EntityTypeMapping TypeName="EmployeeDBModel.tblEmployeeImageMap">
+              <MappingFragment StoreEntitySet="tblEmployeeImageMap">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="ImageId" ColumnName="ImageId" />
+                <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblImages">
+            <EntityTypeMapping TypeName="EmployeeDBModel.tblImage">
+              <MappingFragment StoreEntitySet="tblImages">
+                <ScalarProperty Name="UploadedName" ColumnName="UploadedName" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="Path" ColumnName="Path" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="tblEmployees">
             <EntityTypeMapping TypeName="EmployeeDBModel.tblEmployee">
               <MappingFragment StoreEntitySet="tblEmployees">
+                <ScalarProperty Name="EmployeeID" ColumnName="EmployeeID" />
                 <ScalarProperty Name="PostalAddress" ColumnName="PostalAddress" />
                 <ScalarProperty Name="ResidentialAddress" ColumnName="ResidentialAddress" />
                 <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />

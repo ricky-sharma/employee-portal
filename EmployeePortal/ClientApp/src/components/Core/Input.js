@@ -16,8 +16,7 @@ export class Input extends Component {
     }
 
     componentWillReceiveProps = () => {
-        this.setState((state, props) => ({ value: props.value }), () => {
-        })
+        this.setState((state, props) => ({ value: props.value }))
     }
 
     shouldComponentUpdate(nextProps, nextStats) {

@@ -14,6 +14,12 @@ namespace SQLDataEntity
     
     public partial class tblEmployee
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public tblEmployee()
+        {
+            this.tblEmployeeImageMaps = new HashSet<tblEmployeeImageMap>();
+        }
+    
         public int ID { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
@@ -40,11 +46,14 @@ namespace SQLDataEntity
         public string UpdatedBy { get; set; }
         public Nullable<System.Guid> ResidentialAddress { get; set; }
         public Nullable<System.Guid> PostalAddress { get; set; }
+        public string EmployeeID { get; set; }
     
         public virtual AspNetUser AspNetUser { get; set; }
         public virtual AspNetUser AspNetUser1 { get; set; }
         public virtual tblAddress tblAddress { get; set; }
         public virtual tblAddress tblAddress1 { get; set; }
         public virtual tblDepartment tblDepartment { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<tblEmployeeImageMap> tblEmployeeImageMaps { get; set; }
     }
 }

@@ -46,7 +46,7 @@ export class AddDepartment extends Component {
 
         return (
             <div>
-                <div className="container border">
+                <div className="border">
                     <h4 className="mt-2 mb-5">
                         <b>Add - Department</b>
                     </h4>

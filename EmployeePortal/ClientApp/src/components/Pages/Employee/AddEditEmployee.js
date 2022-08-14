@@ -1,7 +1,8 @@
 import addMonths from '@jsbits/add-months';
+import { Avatar, IconButton } from '@material-ui/core';
+import { PhotoCamera, RemoveCircle } from '@material-ui/icons';
 import addDays from 'add-days';
 import React, { Component } from 'react';
-import { Container } from 'reactstrap';
 import validator from 'validator';
 import { Locale, LocaleCode, PhoneNumberRegex } from '../../../Constants';
 import profileImage from '../../../images/blue-person-icon.png';
@@ -74,11 +75,18 @@ export class AddEditEmployee extends Component {
             postalCodePostAddErrorText: false,
             sameResidentialAddress: false,
             id: 0,
-            readOnly: false
+            readOnly: false,
+            employeeImage: '',
+            employeeImageType: '',
+            employeeImageName: '',
+            isEmployeeImageChanged: false,
+            employeeID: ''
         }
         this.id = ''
         this.resiAddressId = ''
         this.postAddressId = ''
+        this.employeeImageRef = React.createRef();
+        this.employeeImageInputRef = React.createRef();
     }
 
     componentDidMount = () => {
@@ -93,72 +101,71 @@ export class AddEditEmployee extends Component {
 
         if (this.id !== '') {
             url = `/api/Employees/` + this.id
-            WebApi(url, '', 'GET')
-                .then(response => {
-                    if (response) {
-                        this.resiAddressId = response.ResidentialAddress
-                        this.postAddressId = response.PostalAddress
-                        this.setState({
-                            fName: response.FirstName ?? '',
-                            lName: response.LastName ?? '',
-                            gender: response.Gender ?? '',
-                            departmentId: response.Department ?? '',
-                            jobTitle: response.JobTitle ?? '',
-                            joiningDate: !IsNull(response.JoiningDate) ? new Date(response.JoiningDate) : null,
-                            dateOfBirth: response.DateofBirth != null ? new Date(response.DateofBirth + "-" + new Date().getFullYear()) : null,
-                            mobile: response.Mobile ?? '',
-                            phone: response.HomePhone ?? '',
-                            linkedinProfile: response.ProfessionalProfile ?? '',
-                            email: response.Email ?? '',
-                            employmentType: response.EmploymentType ?? '',
-                            eduQualification: response.EducationQualification ?? '',
-                            identificationDocument: response.IdentificationDocument ?? '',
-                            identificationNumber: response.IdentificationNumber ?? '',
-                        })
-                        if (this.resiAddressId !== '00000000-0000-0000-0000-000000000000') {
-                            url = `/api/Address/` + this.resiAddressId
-                            WebApi(url, '', 'GET')
-                                .then(response => {
-                                    if (response) {
-                                        this.setState({
-                                            houseNumberResiAdd: response.HouseNumber ?? '',
-                                            streetResiAdd: response.StreetAddress ?? '',
-                                            suburbCityResiAdd: response.SuburbCity ?? '',
-                                            stateResiAdd: response.State ?? '',
-                                            postalCodeResiAdd: response.PostalCode ?? '',
-                                        }, () => {
-                                            if (this.postAddressId !== '00000000-0000-0000-0000-000000000000') {
-                                                url = `/api/Address/` + this.postAddressId
-                                                WebApi(url, '', 'GET')
-                                                    .then(response => {
-                                                        if (response) {
-                                                            this.setState({
-                                                                houseNumberPostAdd: response.HouseNumber ?? '',
-                                                                streetPostAdd: response.StreetAddress ?? '',
-                                                                suburbCityPostAdd: response.SuburbCity ?? '',
-                                                                statePostAdd: response.State ?? '',
-                                                                postalCodePostAdd: response.PostalCode ?? '',
-                                                            }, () => {
-                                                                if (this.state.houseNumberResiAdd === this.state.houseNumberPostAdd &&
-                                                                    this.state.streetResiAdd === this.state.streetPostAdd &&
-                                                                    this.state.suburbCityResiAdd === this.state.suburbCityPostAdd &&
-                                                                    this.state.stateResiAdd === this.state.statePostAdd &&
-                                                                    this.state.postalCodeResiAdd === this.state.postalCodePostAdd) {
-                                                                    this.setState({
-                                                                        sameResidentialAddress: true,
-                                                                        readOnly: true
-                                                                    })
-                                                                }
-                                                            })
-                                                        }
-                                                    });
+            WebApi(url, '', 'GET').then(response => {
+                if (response) {
+                    this.resiAddressId = response.ResidentialAddress
+                    this.postAddressId = response.PostalAddress
+                    this.setState({
+                        fName: response.FirstName ?? '',
+                        lName: response.LastName ?? '',
+                        gender: response.Gender ?? '',
+                        departmentId: response.Department ?? '',
+                        jobTitle: response.JobTitle ?? '',
+                        joiningDate: !IsNull(response.JoiningDate) ? new Date(response.JoiningDate) : null,
+                        dateOfBirth: response.DateofBirth != null ? new Date(response.DateofBirth + "-" + new Date().getFullYear()) : null,
+                        mobile: response.Mobile ?? '',
+                        phone: response.HomePhone ?? '',
+                        linkedinProfile: response.ProfessionalProfile ?? '',
+                        email: response.Email ?? '',
+                        employmentType: response.EmploymentType ?? '',
+                        eduQualification: response.EducationQualification ?? '',
+                        identificationDocument: response.IdentificationDocument ?? '',
+                        identificationNumber: response.IdentificationNumber ?? '',
+                        employeeImage: response.EmployeeImage ?? '',
+                        employeeID: response.EmployeeID ?? ''
+                    })
+                    if (this.resiAddressId !== '00000000-0000-0000-0000-000000000000') {
+                        url = `/api/Address/` + this.resiAddressId
+                        WebApi(url, '', 'GET').then(response => {
+                            if (response) {
+                                this.setState({
+                                    houseNumberResiAdd: response.HouseNumber ?? '',
+                                    streetResiAdd: response.StreetAddress ?? '',
+                                    suburbCityResiAdd: response.SuburbCity ?? '',
+                                    stateResiAdd: response.State ?? '',
+                                    postalCodeResiAdd: response.PostalCode ?? '',
+                                }, () => {
+                                    if (this.postAddressId !== '00000000-0000-0000-0000-000000000000') {
+                                        url = `/api/Address/` + this.postAddressId
+                                        WebApi(url, '', 'GET').then(response => {
+                                            if (response) {
+                                                this.setState({
+                                                    houseNumberPostAdd: response.HouseNumber ?? '',
+                                                    streetPostAdd: response.StreetAddress ?? '',
+                                                    suburbCityPostAdd: response.SuburbCity ?? '',
+                                                    statePostAdd: response.State ?? '',
+                                                    postalCodePostAdd: response.PostalCode ?? '',
+                                                }, () => {
+                                                    if (this.state.houseNumberResiAdd === this.state.houseNumberPostAdd &&
+                                                        this.state.streetResiAdd === this.state.streetPostAdd &&
+                                                        this.state.suburbCityResiAdd === this.state.suburbCityPostAdd &&
+                                                        this.state.stateResiAdd === this.state.statePostAdd &&
+                                                        this.state.postalCodeResiAdd === this.state.postalCodePostAdd) {
+                                                        this.setState({
+                                                            sameResidentialAddress: true,
+                                                            readOnly: true
+                                                        })
+                                                    }
+                                                })
                                             }
-                                        })
+                                        });
                                     }
-                                });
-                        }
+                                })
+                            }
+                        });
                     }
-                });
+                }
+            });
         }
     }
 
@@ -220,12 +227,19 @@ export class AddEditEmployee extends Component {
                                                 "IdentificationDocument": this.state.identificationDocument,
                                                 "IdentificationNumber": this.state.identificationNumber,
                                                 "ResidentialAddress": this.resiAddressId,
-                                                "PostalAddress": this.postAddressId
+                                                "PostalAddress": this.postAddressId,
+                                                "EmployeeImage": {
+                                                    "Src": this.state.employeeImage != '' ? this.state.employeeImage : '',
+                                                    "Type": this.state.employeeImageType != '' ? this.state.employeeImageType : '',
+                                                    "UploadedName": this.state.employeeImageName != '' ? this.state.employeeImageName : '',
+                                                    "IsChanged": this.state.isEmployeeImageChanged
+                                                }
                                             })
                                             WebApi(url, data, !IsNull(this.id) ? 'PUT' : 'POST')
                                                 .then(response => {
                                                     if (response) {
                                                         if (!IsNull(response.Message) && response.Message.toUpperCase() === "SUCCESS") {
+                                                            this.setState({ isEmployeeImageChanged: false })
                                                             AlertDialog('Employee data saved successfully.')
                                                         }
                                                     }
@@ -395,6 +409,38 @@ export class AddEditEmployee extends Component {
         })
     }
 
+    handleEmployeeImageUpload = (e) => {
+        if (!IsNull(this.employeeImageInputRef.current.files)) {
+            let _this = this
+            let imagefileType = this.employeeImageInputRef.current.files[0].type;
+            let imagefileName = this.employeeImageInputRef.current.files[0].name;
+            let match = ["image/jpeg", "image/png", "image/jpg"];
+            if (!match.some(x => x === imagefileType)) {
+                AlertDialog("Invalid File Extension")
+            } else {
+                let fReader = new FileReader();
+                fReader.readAsDataURL(this.employeeImageInputRef.current.files[0]);
+                fReader.onloadend = function (event) {
+                    _this.setState({
+                        employeeImage: event.target.result,
+                        employeeImageType: imagefileType,
+                        employeeImageName: imagefileName,
+                        isEmployeeImageChanged: true
+                    })
+                }
+            }
+        }
+    }
+
+    handleEmployeeImageClear = (e) => {
+        if (e.target && e.target.parentNode && e.target.parentNode.classList.contains('removeEmployeeImage')) {
+            this.setState({
+                employeeImage: '',
+                isEmployeeImageChanged: true
+            })
+        }
+    }
+
     render() {
         if (this.props.location && this.props.location.state)
             this.id = this.props.location.state
@@ -403,24 +449,24 @@ export class AddEditEmployee extends Component {
         { value: "TEMPORARY", text: "Temporary" }]
         const IdentificationDocuments = [{ value: "Driver's Licence", text: "Driver's Licence" }, { value: "Passport", text: "Passport" },
         { value: "Birth Certificate", text: "Birth Certificate" }];
-        const { fName, lName, gender, salary, departmentId, jobTitle, employmentType, identificationNumber, identificationDocument, readOnly, dateOfBirth,
+        const { fName, lName, gender, departmentId, jobTitle, employmentType, identificationNumber, identificationDocument, readOnly, dateOfBirth,
             phone, mobile, email, linkedinProfile, joiningDate, leavingDate, eduQualification, houseNumberResiAdd, streetResiAdd, suburbCityResiAdd,
             stateResiAdd, postalCodeResiAdd, houseNumberPostAdd, streetPostAdd, suburbCityPostAdd, statePostAdd, postalCodePostAdd, departmentOptions,
             sameResidentialAddress, fNameError, lNameError, departmentError, genderError, dateOfBirthError, joiningDateError, mobileError, identificationNumberError,
             phoneError, emailError, jobTitleError, eduQualificationError, employmentTypeError, identificationDocumentError, houseNumberResiAddError,
             suburbCityResiAddError, stateResiAddError, postalCodeResiAddError, houseNumberPostAddError, suburbCityPostAddError, statePostAddError,
             postalCodePostAddError, leavingDateError, phoneErrorText, mobileErrorText, emailErrorText, joiningDateErrorText, leavingDateErrorText,
-            postalCodeResiAddErrorText, postalCodePostAddErrorText } = this.state
-
+            postalCodeResiAddErrorText, postalCodePostAddErrorText, employeeImage, employeeID } = this.state
         return (
-            <Container className="mx-0 px-0">
+            <div className="mx-0 px-0">
                 <div className="table-wrapper">
                     <div className="table-title">
                         <div className="row nowrap m-0 p-0">
-                            <div className="col-sm-9 p-0"><h2>Employee<b> Details</b></h2></div>
-                            <div className="col-sm-3 p-0">
-                                <button type="button" onClick={() => this.handleSubmit()} className="btn btn-success add-new ml-1">Save</button>
-                                <button type="button" onClick={this.handleBack} className="btn bg-dark add-new text-white">Back</button>
+                            <div className="col-sm-6 m-0 p-0"><h2 className="p-0 m-0">Employee<b> Details</b></h2></div>
+                            <div className="col-sm-6 m-0 p-0">
+                                {this.id !== '' ? <button type="button" onClick={this.handleBack} className="btn bg-danger add-new text-white p-0 m-0 my-1 ml-1">Delete</button> : ''}
+                                <button type="button" onClick={() => this.handleSubmit()} className="btn btn-success add-new p-0 m-0 my-1 ml-1">Save</button>
+                                <button type="button" onClick={this.handleBack} className="btn bg-dark add-new text-white p-0 m-0 my-1">Back</button>
                             </div>
                         </div>
                     </div>
@@ -428,21 +474,39 @@ export class AddEditEmployee extends Component {
                         <div className="border p-4 pb-5">
                             <form>
                                 <div className="col-12 p-0 m-0 row">
-                                    <div className="col-4 p-0">
-                                        <div className="col-12 p-0">
-                                            <div className="col-6 p-0">
-                                                <img className="profileImage" src={profileImage} ></img>
+                                    <div className="col-3 p-0  m-0">
+                                        <div className="col-12 p-0  m-0">
+                                            <div className="col-9 p-0  m-0">
+                                                <IconButton className="removeEmployeeImageIconButton" onClick={this.handleEmployeeImageClear} disableRipple={true}>
+                                                    {!IsNull(employeeImage) ? <i title="Remove Image">
+                                                        <RemoveCircle className="removeEmployeeImage" />
+                                                    </i> : null}
+                                                    <div className="col-12 p-0  m-0 profileImageDiv">
+                                                        <div className="col-12 p-0 m-0 alignCenter iconButtonProfileDiv">
+                                                            <IconButton className="uploadPicture" aria-label="upload picture" component="label" disableRipple={true}>
+                                                                <input hidden accept="image/*" type="file" ref={this.employeeImageInputRef} onChange={this.handleEmployeeImageUpload} />
+                                                                <Avatar className="profileImage" alt={fName + ' ' + lName} ref={this.employeeImageRef} onChange={this.handleImageSrcChange}
+                                                                    src={!IsNull(employeeImage) ? (employeeImage.startsWith('data:') ? employeeImage :
+                                                                        require('../../../../../files/employeeImages/' + employeeImage)) : profileImage} variant="rounded" />
+                                                                <PhotoCamera />
+                                                            </IconButton>
+                                                        </div>
+                                                    </div>
+                                                </IconButton>
                                             </div>
                                         </div>
                                         <div className="col-12 p-0">
-                                            <div className="col-6 p-0 alignCenter txt-center">
-                                                <h5 className="mt-4 mb-1">
+                                            <div className="col-9 p-0 mt-4 m-0 alignCenter txt-center">
+                                                <label style={{ fontWeight: 600 }} className="p-0 m-0">
                                                     {fName} {lName}
-                                                </h5>
+                                                </label>
+                                            </div>
+                                            <div className="col-9 p-0 mb-1 m-0 alignCenter txt-center">
+                                                <p>{employeeID !== '' ? '(ID: ' + employeeID + ')' : ''}</p>
                                             </div>
                                         </div>
                                     </div>
-                                    <div className="col-8 p-0">
+                                    <div className="col-9 p-0">
                                         <div className="col-12 p-0 m-0 row">
                                             <div className="col-6 p-0">
                                                 <div className="col-12 p-0">
@@ -756,7 +820,7 @@ export class AddEditEmployee extends Component {
                         </div>
                     </div>
                 </div>
-            </Container>
+            </div>
         )
     }
 }

@@ -35,6 +35,8 @@ namespace SQLDataEntity
         public virtual DbSet<tblDepartment> tblDepartments { get; set; }
         public virtual DbSet<tblError> tblErrors { get; set; }
         public virtual DbSet<tblLog> tblLogs { get; set; }
+        public virtual DbSet<tblEmployeeImageMap> tblEmployeeImageMaps { get; set; }
+        public virtual DbSet<tblImage> tblImages { get; set; }
         public virtual DbSet<tblEmployee> tblEmployees { get; set; }
     }
 }
