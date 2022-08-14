@@ -73,7 +73,8 @@ namespace EmployeeService.Controllers
                     tblEmployee.IdentificationNumber,
                     ResidentialAddress = tblEmployee.ResidentialAddress != null ? (Guid)tblEmployee.ResidentialAddress : Guid.Empty,
                     PostalAddress = tblEmployee.PostalAddress != null ? (Guid)tblEmployee.PostalAddress : Guid.Empty,
-                    EmployeeImage = !string.IsNullOrEmpty(employeeImage) ? employeeImage : null
+                    EmployeeImage = !string.IsNullOrEmpty(employeeImage) ? employeeImage : null,
+                    tblEmployee.EmployeeID
                 };
 
                 return Ok(employee);
@@ -171,11 +172,8 @@ namespace EmployeeService.Controllers
                 {
                     try
                     {
-                        int empId = 0;
                         lock (LockTransaction)
                         {
-                            empId = db.tblEmployees.Select(i => i.ID).DefaultIfEmpty(0).Max();
-                            tblEmployee.ID = empId;
                             tblEmployee.FirstName = employee.FirstName;
                             tblEmployee.LastName = employee.LastName;
                             tblEmployee.Gender = employee.Gender;
@@ -197,16 +195,20 @@ namespace EmployeeService.Controllers
                             tblEmployee.CreatedBy = User.Identity.GetUserId();
                             tblEmployee.ResidentialAddress = employee.ResidentialAddress;
                             tblEmployee.PostalAddress = employee.PostalAddress;
+                            tblEmployee.EmployeeID = "0";
                             db.tblEmployees.Add(tblEmployee);
-                            int save = db.SaveChanges();
+                            db.SaveChanges();
+                            tblEmployee.EmployeeID = $"E{tblEmployee.ID:000000}";
+                            db.Entry(tblEmployee).State = EntityState.Modified;
+                            db.SaveChanges();
 
-                            if (!SaveImage(empId, employee.EmployeeImage))
+                            if (!SaveImage(tblEmployee.ID, employee.EmployeeImage))
                             {
                                 return BadRequest("Invalid Image!");
                             }
                         }
                         txn.Commit();
-                        return Ok(new { Message = "SUCCESS", id = empId });
+                        return Ok(new { Message = "SUCCESS", id = tblEmployee.ID });
                     }
                     catch
                     {
@@ -267,6 +269,7 @@ namespace EmployeeService.Controllers
                 return new
                 {
                     i.ID,
+                    i.EmployeeID,
                     i.FirstName,
                     i.LastName,
                     i.Email,
@@ -275,7 +278,7 @@ namespace EmployeeService.Controllers
                     i.JobTitle,
                     i.JoiningDate,
                     i.EmploymentType,
-                    EmployeeImage = !string.IsNullOrEmpty(employeeImage) ? employeeImage : null
+                    EmployeeImage = !string.IsNullOrEmpty(employeeImage) ? employeeImage : null,
                 };
             });
         }

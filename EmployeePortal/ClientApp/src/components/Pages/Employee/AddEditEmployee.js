@@ -79,7 +79,8 @@ export class AddEditEmployee extends Component {
             employeeImage: '',
             employeeImageType: '',
             employeeImageName: '',
-            isEmployeeImageChanged: false
+            isEmployeeImageChanged: false,
+            employeeID: ''
         }
         this.id = ''
         this.resiAddressId = ''
@@ -120,7 +121,8 @@ export class AddEditEmployee extends Component {
                         eduQualification: response.EducationQualification ?? '',
                         identificationDocument: response.IdentificationDocument ?? '',
                         identificationNumber: response.IdentificationNumber ?? '',
-                        employeeImage: response.EmployeeImage ?? ''
+                        employeeImage: response.EmployeeImage ?? '',
+                        employeeID: response.EmployeeID ?? ''
                     })
                     if (this.resiAddressId !== '00000000-0000-0000-0000-000000000000') {
                         url = `/api/Address/` + this.resiAddressId
@@ -454,7 +456,7 @@ export class AddEditEmployee extends Component {
             phoneError, emailError, jobTitleError, eduQualificationError, employmentTypeError, identificationDocumentError, houseNumberResiAddError,
             suburbCityResiAddError, stateResiAddError, postalCodeResiAddError, houseNumberPostAddError, suburbCityPostAddError, statePostAddError,
             postalCodePostAddError, leavingDateError, phoneErrorText, mobileErrorText, emailErrorText, joiningDateErrorText, leavingDateErrorText,
-            postalCodeResiAddErrorText, postalCodePostAddErrorText, employeeImage } = this.state
+            postalCodeResiAddErrorText, postalCodePostAddErrorText, employeeImage, employeeID } = this.state
         return (
             <div className="mx-0 px-0">
                 <div className="table-wrapper">
@@ -494,10 +496,13 @@ export class AddEditEmployee extends Component {
                                             </div>
                                         </div>
                                         <div className="col-12 p-0">
-                                            <div className="col-8 p-0 alignCenter txt-center">
-                                                <b className="mt-4 mb-1">
+                                            <div className="col-9 p-0 mt-4 m-0 alignCenter txt-center">
+                                                <label style={{ fontWeight: 600 }} className="p-0 m-0">
                                                     {fName} {lName}
-                                                </b>
+                                                </label>
+                                            </div>
+                                            <div className="col-9 p-0 mb-1 m-0 alignCenter txt-center">
+                                                <p>{employeeID !== '' ? '(ID: ' + employeeID + ')' : ''}</p>
                                             </div>
                                         </div>
                                     </div>

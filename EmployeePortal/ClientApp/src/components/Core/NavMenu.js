@@ -64,8 +64,7 @@ export class NavMenu extends Component {
                             <NavbarToggler onClick={this.toggleNavbar} className={(!isLoggedIn ? "d-none mb-4 mt-2" : "mb-4 mt-2")} />
                             <Collapse className={"d-sm-inline-flex flex-sm-row-reverse boxshadow " + (!isLoggedIn ? "d-none" : "")} isOpen={!this.state.collapsed} navbar>
                                 <ul className={"navbar-nav flex-grow ml-1 " + (!isLoggedIn ? "d-none" : "")}>
-
-                                    <NavItem className="text-black padding-5">
+                                    <NavItem className="text-black padding-5 dropdown">
                                         <NavLink tag={Link} className="text-black d-none d-md-block d-lg-block d-xl-block" to="/"><b>Home</b></NavLink>
                                         <NavLink tag={Link} className="text-black d-md-none" onClick={this.toggleNavbar} to="/"><b>Home</b></NavLink>
                                     </NavItem>

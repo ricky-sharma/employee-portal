@@ -23,17 +23,17 @@
         <AssociationConnector Association="EmployeeDBModel.FK_tblErrors_AspNetUsers" ManuallyRouted="false" />
         <AssociationConnector Association="EmployeeDBModel.FK_tblLogs_AspNetUsers" ManuallyRouted="false" />
         <AssociationConnector Association="EmployeeDBModel.AspNetUserRoles" ManuallyRouted="false" />
-        <EntityTypeShape EntityType="EmployeeDBModel.tblEmployee" Width="1.5" PointX="7.5" PointY="13.875" />
+        <EntityTypeShape EntityType="EmployeeDBModel.tblEmployeeImageMap" Width="1.5" PointX="9.75" PointY="9.75" />
+        <EntityTypeShape EntityType="EmployeeDBModel.tblImage" Width="1.5" PointX="5.25" PointY="0.75" />
+        <AssociationConnector Association="EmployeeDBModel.FK_tblImages_AspNetUsers" />
+        <AssociationConnector Association="EmployeeDBModel.FK_tblEmployeeImageMap_tblImages" />
+        <EntityTypeShape EntityType="EmployeeDBModel.tblEmployee" Width="1.5" PointX="7.5" PointY="13.75" />
         <AssociationConnector Association="EmployeeDBModel.FK_tblEmployees_AspNetUsers" />
         <AssociationConnector Association="EmployeeDBModel.FK_tblEmployees_AspNetUsers1" />
         <AssociationConnector Association="EmployeeDBModel.FK_tblEmployees_tblAddress" />
         <AssociationConnector Association="EmployeeDBModel.FK_tblEmployees_tblAddress1" />
         <AssociationConnector Association="EmployeeDBModel.FK_tblEmployees_tblDepartments" />
-        <EntityTypeShape EntityType="EmployeeDBModel.tblEmployeeImageMap" Width="1.5" PointX="9.75" PointY="9.75" />
         <AssociationConnector Association="EmployeeDBModel.FK_tblEmployeeImageMap_tblEmployees" />
-        <EntityTypeShape EntityType="EmployeeDBModel.tblImage" Width="1.5" PointX="5.25" PointY="0.75" />
-        <AssociationConnector Association="EmployeeDBModel.FK_tblImages_AspNetUsers" />
-        <AssociationConnector Association="EmployeeDBModel.FK_tblEmployeeImageMap_tblImages" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

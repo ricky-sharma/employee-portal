@@ -46,6 +46,7 @@ namespace SQLDataEntity
         public string UpdatedBy { get; set; }
         public Nullable<System.Guid> ResidentialAddress { get; set; }
         public Nullable<System.Guid> PostalAddress { get; set; }
+        public string EmployeeID { get; set; }
     
         public virtual AspNetUser AspNetUser { get; set; }
         public virtual AspNetUser AspNetUser1 { get; set; }

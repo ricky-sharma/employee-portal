@@ -265,7 +265,7 @@ option {
 }
 
 input.globalSearch {
-    width: 33% !important;
+    width: 30% !important;
     color: rgba(0, 0, 0);
     font-weight: 400;
     border-radius: 4px;

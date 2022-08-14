@@ -21,11 +21,12 @@ export class Employees extends Component {
                     let Columns = Object.keys(response[0])
                     let cols = []
                     Columns.map((val) => {
-                        if (val.toUpperCase() === 'ID')
+                        if (val.toUpperCase() === 'EMPLOYEEID')
                             cols.push({
                                 Name: val,
-                                SearchEnable: false,
-                                cssClass: 'col1width75'
+                                Alias: 'ID',
+                                SearchEnable: true,
+                                cssClass: 'col1width125'
                             })
                         else if (val.toUpperCase() === 'JOININGDATE')
                             cols.push({
@@ -54,7 +55,7 @@ export class Employees extends Component {
                                     Columns: ['FIRSTNAME', 'LASTNAME']
                                 }
                             })
-                        else if (val.toUpperCase() === 'LASTNAME' || val.toUpperCase() === 'EMPLOYEEIMAGE')
+                        else if (val.toUpperCase() === 'LASTNAME' || val.toUpperCase() === 'EMPLOYEEIMAGE' || val.toUpperCase() === 'ID')
                             cols.push({
                                 Name: val,
                                 Hidden: true
@@ -104,8 +105,8 @@ export class Employees extends Component {
             <div className="table-wrapper">
                 <div className="table-title">
                     <div className="row nowrap m-0 p-0">
-                        <div className="col-sm-8 p-0"><h2>Manage <b>Employees</b></h2></div>
-                        <div className="col-sm-4">
+                        <div className="col-sm-8 p-0 m-0"><h2 className="p-0 m-0">Manage <b>Employees</b></h2></div>
+                        <div className="col-sm-4 p-0 m-0">
                             <button type="button" onClick={this.handleAddEmployee} className="btn btn-success add-new">Add New</button>
                         </div>
                     </div>

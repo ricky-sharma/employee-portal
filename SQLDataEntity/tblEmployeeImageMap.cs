@@ -19,7 +19,7 @@ namespace SQLDataEntity
         public bool Active { get; set; }
         public System.Guid ID { get; set; }
     
-        public virtual tblEmployee tblEmployee { get; set; }
         public virtual tblImage tblImage { get; set; }
+        public virtual tblEmployee tblEmployee { get; set; }
     }
 }
