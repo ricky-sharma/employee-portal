@@ -2,13 +2,11 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import React from 'react';
 import ReactDOM from 'react-dom';
 import '../css/Alert.css';
-import IsNull from '../Common/Common';
-
-const node = document.createElement("div");
 
 function AlertDialog(message, callback = () => { }, heading = '', maxWidth = false) {
+    let node = document.createElement("div");
     document.getElementById('alertDialogDiv').appendChild(node);
-    const AlertDialogContent = () => {
+    let AlertDialogContent = () => {
         return (
             <div className="alertDialog">
                 <div role="dialog">
@@ -30,10 +28,10 @@ function AlertDialog(message, callback = () => { }, heading = '', maxWidth = fal
             </div>
         );
     };
-    const onHide = () => {
+    let onHide = () => {
         ReactDOM.unmountComponentAtNode(node);
         node.remove();
-        if (!IsNull(callback)) {
+        if (callback !== null && callback !== undefined) {
             callback();
         }
     }
