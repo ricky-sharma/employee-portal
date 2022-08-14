@@ -212,7 +212,7 @@ input[type=checkbox] {
     .pageHeaderFixed header {
         position: sticky;
         top: 0;
-        z-index: 5;
+        z-index: 50;
     }
 
 body {
@@ -297,18 +297,17 @@ hr.rounded {
 .profileImageDiv {
     display: flex !important;
     align-items: center !important;
-    height: 75% !important;
+    height: 100% !important;
     width: 100% !important;
 }
 
 .profileImage {
     vertical-align: middle;
-    width: 90% !important;
-    height: 90% !important;
+    width: 100% !important;
+    height: 100% !important;
 }
 
 .iconButtonProfileDiv {
-    border: 1px solid #dee2e6 !important;
     height: 100% !important;
     width: 100% !important;
 }
@@ -323,8 +322,9 @@ label.uploadPicture .MuiSvgIcon-root {
     height: 10% !important;
     position: absolute;
     color: rgba(0, 0, 0, 0.54) !important;
-    top: 91% !important;
-    left: 91%;
+    top: 90% !important;
+    left: 90%;
+    z-index: 10;
 }
 
 label.uploadPicture .MuiIconButton-label {
@@ -334,6 +334,9 @@ label.uploadPicture .MuiIconButton-label {
 
 label.uploadPicture .MuiAvatar-img {
     object-fit: contain !important;
+    padding: 7%;
+    border: 1px solid #dee2e6 !important;
+    border-radius:5px;
 }
 
 .nowrap {
@@ -348,12 +351,25 @@ label.uploadPicture .MuiAvatar-img {
     position: absolute;
     display: inline-block;
     box-sizing: border-box;
-    z-index: 100;
+    z-index: 40;
 }
 
 .overlayRowDivImage {
     width: 100% !important;
     height: 100% !important;
+}
+
+.MuiSvgIcon-root.removeEmployeeImage {
+    width: 10% !important;
+    height: 10% !important;
+    position: absolute;
+    top: 1% !important;
+    left: 90% !important;
+    z-index: 9;
+}
+
+.removeEmployeeImageIconButton {
+    z-index: 9;
 }
 
 @media (max-width: 240px) {

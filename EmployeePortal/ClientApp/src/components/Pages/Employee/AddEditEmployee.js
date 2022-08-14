@@ -1,6 +1,6 @@
 import addMonths from '@jsbits/add-months';
 import { Avatar, IconButton } from '@material-ui/core';
-import { PhotoCamera, ClearIcon } from '@material-ui/icons';
+import { PhotoCamera, RemoveCircle } from '@material-ui/icons';
 import addDays from 'add-days';
 import React, { Component } from 'react';
 import validator from 'validator';
@@ -430,6 +430,15 @@ export class AddEditEmployee extends Component {
         }
     }
 
+    handleEmployeeImageClear = (e) => {
+        if (e.target && e.target.parentNode && e.target.parentNode.classList.contains('removeEmployeeImage')) {
+            this.setState({
+                employeeImage: '',
+                isEmployeeImageChanged: true
+            })
+        }
+    }
+
     render() {
         if (this.props.location && this.props.location.state)
             this.id = this.props.location.state
@@ -438,7 +447,7 @@ export class AddEditEmployee extends Component {
         { value: "TEMPORARY", text: "Temporary" }]
         const IdentificationDocuments = [{ value: "Driver's Licence", text: "Driver's Licence" }, { value: "Passport", text: "Passport" },
         { value: "Birth Certificate", text: "Birth Certificate" }];
-        const { fName, lName, gender, salary, departmentId, jobTitle, employmentType, identificationNumber, identificationDocument, readOnly, dateOfBirth,
+        const { fName, lName, gender, departmentId, jobTitle, employmentType, identificationNumber, identificationDocument, readOnly, dateOfBirth,
             phone, mobile, email, linkedinProfile, joiningDate, leavingDate, eduQualification, houseNumberResiAdd, streetResiAdd, suburbCityResiAdd,
             stateResiAdd, postalCodeResiAdd, houseNumberPostAdd, streetPostAdd, suburbCityPostAdd, statePostAdd, postalCodePostAdd, departmentOptions,
             sameResidentialAddress, fNameError, lNameError, departmentError, genderError, dateOfBirthError, joiningDateError, mobileError, identificationNumberError,
@@ -463,22 +472,32 @@ export class AddEditEmployee extends Component {
                         <div className="border p-4 pb-5">
                             <form>
                                 <div className="col-12 p-0 m-0 row">
-                                    <div className="col-3 p-0">
-                                        <div className="col-12 p-0 profileImageDiv">
-                                            <div className="col-8 p-0 alignCenter iconButtonProfileDiv">
-                                                <IconButton className="uploadPicture" aria-label="upload picture" component="label" disableRipple={true}>
-                                                    <input hidden accept="image/*" type="file" ref={this.employeeImageInputRef} onChange={this.handleEmployeeImageUpload} />
-                                                    <Avatar className="profileImage" alt={fName + ' ' + lName} ref={this.employeeImageRef} onChange={this.handleImageSrcChange}
-                                                        src={!IsNull(employeeImage) ? require('../../../../../files/employeeImages/' + employeeImage) : profileImage} variant="rounded" />
-                                                    <PhotoCamera />
+                                    <div className="col-3 p-0  m-0">
+                                        <div className="col-12 p-0  m-0">
+                                            <div className="col-9 p-0  m-0">
+                                                <IconButton className="removeEmployeeImageIconButton" onClick={this.handleEmployeeImageClear} disableRipple={true}>
+                                                    {!IsNull(employeeImage) ? <i title="Remove Image">
+                                                        <RemoveCircle className="removeEmployeeImage" />
+                                                    </i> : null}
+                                                    <div className="col-12 p-0  m-0 profileImageDiv">
+                                                        <div className="col-12 p-0 m-0 alignCenter iconButtonProfileDiv">
+                                                            <IconButton className="uploadPicture" aria-label="upload picture" component="label" disableRipple={true}>
+                                                                <input hidden accept="image/*" type="file" ref={this.employeeImageInputRef} onChange={this.handleEmployeeImageUpload} />
+                                                                <Avatar className="profileImage" alt={fName + ' ' + lName} ref={this.employeeImageRef} onChange={this.handleImageSrcChange}
+                                                                    src={!IsNull(employeeImage) ? (employeeImage.startsWith('data:') ? employeeImage :
+                                                                        require('../../../../../files/employeeImages/' + employeeImage)) : profileImage} variant="rounded" />
+                                                                <PhotoCamera />
+                                                            </IconButton>
+                                                        </div>
+                                                    </div>
                                                 </IconButton>
                                             </div>
                                         </div>
                                         <div className="col-12 p-0">
                                             <div className="col-8 p-0 alignCenter txt-center">
-                                                <h5 className="mt-4 mb-1">
+                                                <b className="mt-4 mb-1">
                                                     {fName} {lName}
-                                                </h5>
+                                                </b>
                                             </div>
                                         </div>
                                     </div>

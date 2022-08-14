@@ -259,7 +259,8 @@ namespace EmployeeService.Controllers
 
         private IEnumerable<object> GetEmployees()
         {
-            return db.tblEmployees.AsEnumerable().Select(i => {
+            return db.tblEmployees.AsEnumerable().Select(i =>
+            {
                 var empImageMap = db.tblEmployeeImageMaps.Where(x => x.EmployeeId == i.ID && x.Active).FirstOrDefault();
                 var employeeImage = empImageMap != null && db.tblImages.Find(empImageMap.ImageId) != null ?
                    db.tblImages.Find(empImageMap.ImageId).Name : string.Empty;
@@ -281,32 +282,8 @@ namespace EmployeeService.Controllers
 
         private bool SaveImage(int id, ImageModel imageModel)
         {
-            if (imageModel.IsChanged && !string.IsNullOrEmpty(imageModel.Src)
-                                        && !string.IsNullOrEmpty(imageModel.UploadedName)
-                                        && !string.IsNullOrEmpty(imageModel.Type))
+            if (imageModel.IsChanged)
             {
-                var imageId = Guid.NewGuid();
-                var imageName = $"{imageId}-{imageModel.UploadedName}";
-                var imagePath = $"{ImagePath}{imageName}";
-                if (!BaseHelper.ValidateImage(imageModel.Src) ||
-                            !BaseHelper.SaveImage(imageModel.Src, imagePath))
-                {
-                    return false;
-                }
-
-                tblImage image = new tblImage
-                {
-                    ID = imageId,
-                    Name = imageName,
-                    Type = imageModel.Type,
-                    Path = imagePath,
-                    UploadedName = imageModel.UploadedName,
-                    CreatedOn = DateTime.Now,
-                    CreatedBy = User.Identity.GetUserId()
-                };
-                db.tblImages.Add(image);
-                db.SaveChanges();
-
                 var tImage = db.tblEmployeeImageMaps.Where(x => x.EmployeeId == id && x.Active);
                 if (tImage.Any())
                 {
@@ -317,16 +294,40 @@ namespace EmployeeService.Controllers
                         db.SaveChanges();
                     }
                 }
-
-                tblEmployeeImageMap employeeImageMap = new tblEmployeeImageMap
+                if (!string.IsNullOrEmpty(imageModel.Src) && !string.IsNullOrEmpty(imageModel.UploadedName)
+                                        && !string.IsNullOrEmpty(imageModel.Type))
                 {
-                    Active = true,
-                    EmployeeId = id,
-                    ImageId = imageId,
-                    ID = Guid.NewGuid()
-                };
-                db.tblEmployeeImageMaps.Add(employeeImageMap);
-                db.SaveChanges();
+                    var imageId = Guid.NewGuid();
+                    var imageName = $"{imageId}-{imageModel.UploadedName}";
+                    var imagePath = $"{ImagePath}{imageName}";
+                    if (!BaseHelper.ValidateImage(imageModel.Src) ||
+                                !BaseHelper.SaveImage(imageModel.Src, imagePath))
+                    {
+                        return false;
+                    }
+
+                    tblImage image = new tblImage
+                    {
+                        ID = imageId,
+                        Name = imageName,
+                        Type = imageModel.Type,
+                        Path = imagePath,
+                        UploadedName = imageModel.UploadedName,
+                        CreatedOn = DateTime.Now,
+                        CreatedBy = User.Identity.GetUserId()
+                    };
+                    db.tblImages.Add(image);
+                    db.SaveChanges();
+                    tblEmployeeImageMap employeeImageMap = new tblEmployeeImageMap
+                    {
+                        Active = true,
+                        EmployeeId = id,
+                        ImageId = imageId,
+                        ID = Guid.NewGuid()
+                    };
+                    db.tblEmployeeImageMaps.Add(employeeImageMap);
+                    db.SaveChanges();
+                }
             }
             return true;
         }
