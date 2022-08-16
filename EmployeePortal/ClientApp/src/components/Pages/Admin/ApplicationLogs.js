@@ -47,7 +47,7 @@ export function ApplicationLogs() {
                         </div>
                     </div>
                     <div>
-                        <DataGrid Columns={columns} RowsData={data} Options={options} PageRows={10} />
+                        <DataGrid Columns={columns} RowsData={data} Options={options} PageRows={20} />
                     </div>
                 </div>
             </div>)

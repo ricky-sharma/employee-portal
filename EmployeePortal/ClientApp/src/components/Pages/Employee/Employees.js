@@ -111,7 +111,7 @@ export class Employees extends Component {
                 </div>
                 <div>
                     <DataGrid Columns={this.state.employeeColumns} RowsData={this.state.employeeData}
-                        Options={options} PageRows={10} GridEvents={gridEvents} />
+                        Options={options} PageRows={15} GridEvents={gridEvents} Height={"500px"} />
                 </div>
             </div>
         </div>)

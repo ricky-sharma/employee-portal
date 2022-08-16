@@ -71,7 +71,7 @@ export function ApplicationErrors() {
                         </div>
                     </div>
                     <div>
-                        <DataGrid Columns={columns} RowsData={data} Options={options} PageRows={10} GridEvents={gridEvents} />
+                        <DataGrid Columns={columns} RowsData={data} Options={options} PageRows={20} GridEvents={gridEvents} />
                     </div>
                 </div>
             </div>)
