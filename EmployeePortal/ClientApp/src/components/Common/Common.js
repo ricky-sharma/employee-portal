@@ -40,4 +40,6 @@ export function ReplaceSpecialChars(str) {
         .replace(/[\u0000-\u0019]+/g, "");
 }
 
-export const IsDev = () => { return !process.env.NODE_ENV || process.env.NODE_ENV === 'development'; }
+export const IsDev = () => {
+    return !process.env.NODE_ENV || process.env.NODE_ENV === 'development';
+}

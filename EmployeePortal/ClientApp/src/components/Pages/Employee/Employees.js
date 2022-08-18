@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
+import { EmployeeFolder } from '../../../Constants';
 import IsNull, { IsDev } from '../../Common/Common';
 import { DataGrid } from '../../Core/DataGrid';
+import { LoadImage } from '../../Helpers/ImageHelper';
 import { WebApi } from '../../Helpers/WebApi.ts';
 
 export class Employees extends Component {
@@ -84,8 +86,8 @@ export class Employees extends Component {
             let overlayDiv = document.createElement('div')
             overlayDiv.classList.add("overlayRowDiv")
             overlayDiv.style.cssText += "padding: 4px !important;"
-            overlayDiv.innerHTML = "<img class='overlayRowDivImage'  src=" + (IsDev() ? require('../../../../../files/employeeImages/' + row.EmployeeImage)
-                : '../files/employeeImages/' + row.EmployeeImage) + " />"
+            overlayDiv.innerHTML = "<img class='overlayRowDivImage'  src=" + (IsDev() ? LoadImage(row.EmployeeImage)
+                : EmployeeFolder + row.EmployeeImage) + " />"
             e.target.appendChild(overlayDiv)
         }
     }

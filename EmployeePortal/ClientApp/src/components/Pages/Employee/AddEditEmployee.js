@@ -4,11 +4,12 @@ import { PhotoCamera, RemoveCircle } from '@material-ui/icons';
 import addDays from 'add-days';
 import React, { Component } from 'react';
 import validator from 'validator';
-import { Locale, LocaleCode, PhoneNumberRegex } from '../../../Constants';
+import { EmployeeFolder, Locale, LocaleCode, PhoneNumberRegex } from '../../../Constants';
 import profileImage from '../../../images/blue-person-icon.png';
 import IsNull, { IsDev } from '../../Common/Common';
 import AlertDialog from '../../Core/AlertDialog';
 import Input from '../../Core/Input';
+import { LoadImage } from '../../Helpers/ImageHelper';
 import { WebApi } from '../../Helpers/WebApi.ts';
 
 export class AddEditEmployee extends Component {
@@ -487,8 +488,8 @@ export class AddEditEmployee extends Component {
                                                                 <input hidden accept="image/*" type="file" ref={this.employeeImageInputRef} onChange={this.handleEmployeeImageUpload} />
                                                                 <Avatar className="profileImage" alt={fName + ' ' + lName} ref={this.employeeImageRef} onChange={this.handleImageSrcChange}
                                                                     src={!IsNull(employeeImage) ? (employeeImage.startsWith('data:') ? employeeImage :
-                                                                        (IsDev() ? require('../../../../../files/employeeImages/' + employeeImage)
-                                                                            : '../files/employeeImages/' + employeeImage)) : profileImage} variant="rounded" />
+                                                                        (IsDev() ? LoadImage(employeeImage)
+                                                                            : EmployeeFolder + employeeImage)) : profileImage} variant="rounded" />
                                                                 <PhotoCamera />
                                                             </IconButton>
                                                         </div>
@@ -567,7 +568,7 @@ export class AddEditEmployee extends Component {
                                                 <div className="col-12 p-0 wrapperLink">
                                                     <Input label="Linkedin/Github link" className="inputLink" value={linkedinProfile} onChange={(e) => { this.setState({ linkedinProfile: e.target.value }) }}
                                                         onClear={(value) => { this.setState({ linkedinProfile: value }) }} />
-                                                    <div className="iconLink"><a href={!IsNull(linkedinProfile) && linkedinProfile.indexOf('https:') === 0 ? linkedinProfile : 'https://' + linkedinProfile} target="_blank">
+                                                    <div className="iconLink"><a href={!IsNull(linkedinProfile) && linkedinProfile.indexOf('https:') === 0 ? linkedinProfile : 'https://' + linkedinProfile} target="_blank" rel="noreferrer" >
                                                         <i className="fa fa-external-link link-icon" aria-hidden="true" style={{ "display": (this.state.linkedinProfile === '' ? "none" : "") }}></i></a></div>
                                                 </div>
                                             </div>
