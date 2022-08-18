@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
+import IsNull, { IsDev } from '../../Common/Common';
 import { DataGrid } from '../../Core/DataGrid';
 import { WebApi } from '../../Helpers/WebApi.ts';
-import IsNull from '../../Common/Common';
 
 export class Employees extends Component {
     constructor(props) {
@@ -84,7 +84,8 @@ export class Employees extends Component {
             let overlayDiv = document.createElement('div')
             overlayDiv.classList.add("overlayRowDiv")
             overlayDiv.style.cssText += "padding: 4px !important;"
-            overlayDiv.innerHTML = "<img class='overlayRowDivImage'  src=" + require('../../../../../files/employeeImages/' + row.EmployeeImage) + " />"
+            overlayDiv.innerHTML = "<img class='overlayRowDivImage'  src=" + (IsDev() ? require('../../../../../files/employeeImages/' + row.EmployeeImage)
+                : '../files/employeeImages/' + row.EmployeeImage) + " />"
             e.target.appendChild(overlayDiv)
         }
     }

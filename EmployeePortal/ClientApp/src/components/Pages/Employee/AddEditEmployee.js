@@ -6,7 +6,7 @@ import React, { Component } from 'react';
 import validator from 'validator';
 import { Locale, LocaleCode, PhoneNumberRegex } from '../../../Constants';
 import profileImage from '../../../images/blue-person-icon.png';
-import IsNull from '../../Common/Common';
+import IsNull, { IsDev } from '../../Common/Common';
 import AlertDialog from '../../Core/AlertDialog';
 import Input from '../../Core/Input';
 import { WebApi } from '../../Helpers/WebApi.ts';
@@ -112,7 +112,7 @@ export class AddEditEmployee extends Component {
                         departmentId: response.Department ?? '',
                         jobTitle: response.JobTitle ?? '',
                         joiningDate: !IsNull(response.JoiningDate) ? new Date(response.JoiningDate) : null,
-                        dateOfBirth: response.DateofBirth != null ? new Date(response.DateofBirth + "-" + new Date().getFullYear()) : null,
+                        dateOfBirth: response.DateofBirth !== null ? new Date(response.DateofBirth + "-" + new Date().getFullYear()) : null,
                         mobile: response.Mobile ?? '',
                         phone: response.HomePhone ?? '',
                         linkedinProfile: response.ProfessionalProfile ?? '',
@@ -229,9 +229,9 @@ export class AddEditEmployee extends Component {
                                                 "ResidentialAddress": this.resiAddressId,
                                                 "PostalAddress": this.postAddressId,
                                                 "EmployeeImage": {
-                                                    "Src": this.state.employeeImage != '' ? this.state.employeeImage : '',
-                                                    "Type": this.state.employeeImageType != '' ? this.state.employeeImageType : '',
-                                                    "UploadedName": this.state.employeeImageName != '' ? this.state.employeeImageName : '',
+                                                    "Src": this.state.employeeImage !== '' ? this.state.employeeImage : '',
+                                                    "Type": this.state.employeeImageType !== '' ? this.state.employeeImageType : '',
+                                                    "UploadedName": this.state.employeeImageName !== '' ? this.state.employeeImageName : '',
                                                     "IsChanged": this.state.isEmployeeImageChanged
                                                 }
                                             })
@@ -487,7 +487,8 @@ export class AddEditEmployee extends Component {
                                                                 <input hidden accept="image/*" type="file" ref={this.employeeImageInputRef} onChange={this.handleEmployeeImageUpload} />
                                                                 <Avatar className="profileImage" alt={fName + ' ' + lName} ref={this.employeeImageRef} onChange={this.handleImageSrcChange}
                                                                     src={!IsNull(employeeImage) ? (employeeImage.startsWith('data:') ? employeeImage :
-                                                                        require('../../../../../files/employeeImages/' + employeeImage)) : profileImage} variant="rounded" />
+                                                                        (IsDev() ? require('../../../../../files/employeeImages/' + employeeImage)
+                                                                            : '../files/employeeImages/' + employeeImage)) : profileImage} variant="rounded" />
                                                                 <PhotoCamera />
                                                             </IconButton>
                                                         </div>

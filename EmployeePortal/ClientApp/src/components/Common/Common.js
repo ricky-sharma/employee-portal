@@ -39,3 +39,5 @@ export function ReplaceSpecialChars(str) {
         .replace(/\\f/g, "\\f")
         .replace(/[\u0000-\u0019]+/g, "");
 }
+
+export const IsDev = () => { return !process.env.NODE_ENV || process.env.NODE_ENV === 'development'; }
