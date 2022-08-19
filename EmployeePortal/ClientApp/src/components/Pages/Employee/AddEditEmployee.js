@@ -7,7 +7,7 @@ import validator from 'validator';
 import { EmployeeFolder, Locale, LocaleCode, PhoneNumberRegex } from '../../../Constants';
 import profileImage from '../../../images/blue-person-icon.png';
 import IsNull, { IsDev } from '../../Common/Common';
-import AlertDialog from '../../Core/AlertDialog';
+import AlertDialog, { ConfirmDialog } from '../../Core/ModalDialogs';
 import Input from '../../Core/Input';
 import { LoadImage } from '../../Helpers/ImageHelper';
 import { WebApi } from '../../Helpers/WebApi.ts';
@@ -81,7 +81,8 @@ export class AddEditEmployee extends Component {
             employeeImageType: '',
             employeeImageName: '',
             isEmployeeImageChanged: false,
-            employeeID: ''
+            employeeID: '',
+            isActive: true
         }
         this.id = ''
         this.resiAddressId = ''
@@ -123,7 +124,8 @@ export class AddEditEmployee extends Component {
                         identificationDocument: response.IdentificationDocument ?? '',
                         identificationNumber: response.IdentificationNumber ?? '',
                         employeeImage: response.EmployeeImage ?? '',
-                        employeeID: response.EmployeeID ?? ''
+                        employeeID: response.EmployeeID ?? '',
+                        isActive: response.IsActive ?? true
                     })
                     if (this.resiAddressId !== '00000000-0000-0000-0000-000000000000') {
                         url = `/api/Address/` + this.resiAddressId
@@ -367,6 +369,28 @@ export class AddEditEmployee extends Component {
         return this.props.history.goBack()
     }
 
+    handleActivateDelete = (action) => {
+        let message = action ? 'Please confirm to activate the employee record?' :
+            'Please confirm to delete the employee record?'
+        let heading = action ? 'Confirm Activate' : 'Confirm Delete'
+        let successMessage = action ? 'Employee record has been activated.' :
+            'Employee record has been deleted.'
+        ConfirmDialog(message, heading, () => {
+            let url = `/api/Employees/` + this.id + '?action=' + action
+            WebApi(url, '', 'DELETE')
+                .then(response => {
+                    if (response) {
+                        if (!IsNull(response.Message) && response.Message.toUpperCase() === "SUCCESS") {
+                            this.setState({ isEmployeeImageChanged: false })
+                            AlertDialog(successMessage, () => {
+                                this.setState({ isActive: action })
+                            })
+                        }
+                    }
+                })
+        }, null);
+    }
+
     handleDOB = date => {
         this.setState({
             dateOfBirth: date
@@ -457,7 +481,7 @@ export class AddEditEmployee extends Component {
             phoneError, emailError, jobTitleError, eduQualificationError, employmentTypeError, identificationDocumentError, houseNumberResiAddError,
             suburbCityResiAddError, stateResiAddError, postalCodeResiAddError, houseNumberPostAddError, suburbCityPostAddError, statePostAddError,
             postalCodePostAddError, leavingDateError, phoneErrorText, mobileErrorText, emailErrorText, joiningDateErrorText, leavingDateErrorText,
-            postalCodeResiAddErrorText, postalCodePostAddErrorText, employeeImage, employeeID } = this.state
+            postalCodeResiAddErrorText, postalCodePostAddErrorText, employeeImage, employeeID, isActive } = this.state
         return (
             <div className="mx-0 px-0">
                 <div className="table-wrapper">
@@ -465,14 +489,15 @@ export class AddEditEmployee extends Component {
                         <div className="row nowrap m-0 p-0">
                             <div className="col-sm-6 m-0 p-0"><h2 className="p-0 m-0">Employee<b> Details</b></h2></div>
                             <div className="col-sm-6 m-0 p-0">
-                                {this.id !== '' ? <button type="button" onClick={this.handleBack} className="btn bg-danger add-new text-white p-0 m-0 my-1 ml-1">Delete</button> : ''}
-                                <button type="button" onClick={() => this.handleSubmit()} className="btn btn-success add-new p-0 m-0 my-1 ml-1">Save</button>
+                                {this.id !== '' && isActive ? <button type="button" onClick={() => this.handleActivateDelete(false)} className="btn bg-danger add-new text-white p-0 m-0 my-1 ml-1">Delete</button> : ''}
+                                {this.id !== '' && !isActive ? <button type="button" onClick={() => this.handleActivateDelete(true)} className="btn bg-danger add-new text-white p-0 m-0 my-1 ml-1">Activate</button> : ''}
+                                {isActive ? <button type="button" onClick={() => this.handleSubmit()} className="btn btn-success add-new p-0 m-0 my-1 ml-1">Save</button> : ''}
                                 <button type="button" onClick={this.handleBack} className="btn bg-dark add-new text-white p-0 m-0 my-1">Back</button>
                             </div>
                         </div>
                     </div>
                     <div>
-                        <div className="border p-4 pb-5">
+                        <div className={"border p-4 pb-5" + (isActive ? "" : " disabled-inputs")}>
                             <form>
                                 <div className="col-12 p-0 m-0 row">
                                     <div className="col-3 p-0  m-0">

@@ -1,7 +1,7 @@
 ﻿import React from 'react';
 import { Container } from 'reactstrap';
 import IsNull, { ReplaceSpecialChars } from '../../Common/Common';
-import AlertDialog from '../../Core/AlertDialog';
+import AlertDialog from '../../Core/ModalDialogs';
 import { DataGrid } from '../../Core/DataGrid';
 import { GetData } from '../../Helpers/WebApi.ts';
 
@@ -55,7 +55,7 @@ export function ApplicationErrors() {
             let error = !IsNull(row.Error) ? JSON.parse(ReplaceSpecialChars(row.Error)) : ''
             let errorInfo = (!IsNull(row.ErrorInfo) && !IsNull(JSON.parse(ReplaceSpecialChars(row.ErrorInfo)).componentStack)
                 ? JSON.parse(ReplaceSpecialChars(row.ErrorInfo)).componentStack : (!IsNull(row.ErrorInfo) ? row.ErrorInfo : '')).replace(error, "")
-            AlertDialog(() => { return ErrorDetail(error, errorInfo) }, null, "Error Detail", { maxWidth: true })
+            AlertDialog(() => { return ErrorDetail(error, errorInfo) }, null, "Error Detail", true)
         }
 
         let options = { EnableColumnSearch: true, EnableGlobalSearch: true }

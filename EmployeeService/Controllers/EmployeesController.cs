@@ -74,7 +74,8 @@ namespace EmployeeService.Controllers
                     ResidentialAddress = tblEmployee.ResidentialAddress != null ? (Guid)tblEmployee.ResidentialAddress : Guid.Empty,
                     PostalAddress = tblEmployee.PostalAddress != null ? (Guid)tblEmployee.PostalAddress : Guid.Empty,
                     EmployeeImage = !string.IsNullOrEmpty(employeeImage) ? employeeImage : null,
-                    tblEmployee.EmployeeID
+                    tblEmployee.EmployeeID,
+                    tblEmployee.IsActive
                 };
 
                 return Ok(employee);
@@ -231,7 +232,7 @@ namespace EmployeeService.Controllers
         }
 
         // DELETE: api/Employees/5
-        public IHttpActionResult DeletetblEmployee(int id)
+        public IHttpActionResult DeletetblEmployee(int id, bool action)
         {
             tblEmployee tblEmployee = db.tblEmployees.Find(id);
             if (tblEmployee == null)
@@ -239,9 +240,9 @@ namespace EmployeeService.Controllers
                 return NotFound();
             }
 
-            //db.tblEmployees.Remove(tblEmployee);
+            tblEmployee.IsActive = action;
+            db.Entry(tblEmployee).State = EntityState.Modified;
             db.SaveChanges();
-
             return Ok(new { Message = "SUCCESS" });
         }
 
@@ -278,7 +279,7 @@ namespace EmployeeService.Controllers
                     i.JobTitle,
                     i.JoiningDate,
                     i.EmploymentType,
-                    EmployeeImage = !string.IsNullOrEmpty(employeeImage) ? employeeImage : null,
+                    EmployeeImage = !string.IsNullOrEmpty(employeeImage) ? employeeImage : null
                 };
             });
         }

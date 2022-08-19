@@ -3,6 +3,17 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import '../css/Alert.css';
 
+let IsConfirmDialog = false
+let YesCallback = undefined
+let NoCallback = undefined
+
+export function ConfirmDialog(message, heading = '', yesCallback = () => { }, noCallback = () => { }, maxWidth = false) {
+    IsConfirmDialog = true
+    YesCallback = yesCallback
+    NoCallback = noCallback
+    AlertDialog(message, null, heading, maxWidth)
+}
+
 function AlertDialog(message, callback = () => { }, heading = '', maxWidth = false) {
     if (document.getElementsByClassName('alertDialog').length === 0) {
         let node = document.createElement("div");
@@ -21,7 +32,14 @@ function AlertDialog(message, callback = () => { }, heading = '', maxWidth = fal
                                     {typeof (message) === 'function' ? message() : <p>{message}</p>}
                                 </div>
                                 <div className="modal-footer">
-                                    <button onClick={onHide} type="button" className="btn btn-default btn-secondary" data-dismiss="modal">Close</button>
+                                    {
+                                        IsConfirmDialog === false ?
+                                            (<button onClick={onHide} type="button" className="btn btn-default btn-secondary" data-dismiss="modal">Close</button>) :
+                                            (<>
+                                                <button onClick={onNo} type="button" className="btn btn-default btn-secondary px-4" data-dismiss="modal">No</button>
+                                                <button onClick={onYes} type="button" className="btn btn-default mb-1 btn-success px-4" data-dismiss="modal">Yes</button>
+                                            </>)
+                                    }
                                 </div>
                             </div>
                         </div>
@@ -29,6 +47,31 @@ function AlertDialog(message, callback = () => { }, heading = '', maxWidth = fal
                 </div>
             );
         };
+
+        let onNo = () => {
+            
+            if (NoCallback !== null && NoCallback !== undefined) {
+                NoCallback();
+            }
+            onHide()
+            resetConfirmDialog()
+        }
+
+        let onYes = () => {
+            onHide()
+            if (YesCallback !== null && YesCallback !== undefined) {
+                YesCallback();
+            }
+            onHide()
+            resetConfirmDialog()
+        }
+
+        let resetConfirmDialog = () => {
+            IsConfirmDialog = false
+            YesCallback = undefined
+            NoCallback = undefined
+        }
+
         let onHide = () => {
             ReactDOM.unmountComponentAtNode(node);
             node.remove();

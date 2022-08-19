@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { trackPromise } from 'react-promise-tracker';
 import * as Constants from '../../Constants';
 import IsNull from '../Common/Common';
-import AlertDialog from '../Core/AlertDialog';
+import AlertDialog from '../Core/ModalDialogs';
 import { Dictionary } from './Dictionary';
 import { Service } from './Service';
 
