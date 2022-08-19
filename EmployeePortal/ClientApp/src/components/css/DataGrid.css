@@ -492,7 +492,6 @@ i {
 
     input.globalSearch {
         width: 30% !important;
-        height: 100% !important;
         padding-left: 2px;
         padding-right: 2px;
     }
@@ -549,10 +548,6 @@ i {
 @media (max-width: 900px) {
     .searchHeader th {
         border-bottom: 2px solid rgb(224, 224, 224) !important;
-    }
-
-    input.globalSearch {
-        height: 100% !important;
     }
 
     .page-padding {
