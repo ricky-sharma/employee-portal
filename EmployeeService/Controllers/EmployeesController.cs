@@ -35,6 +35,33 @@ namespace EmployeeService.Controllers
             }
         }
 
+        // GET: api/Employees/SupervisorList/{id?}
+        [HttpGet]
+        [Route("api/Employees/SupervisorList/{id?}")]
+        public IEnumerable<object> SupervisorList(string id = null)
+        {
+            try
+            {
+                if (id == null) id = "-1";
+                if (int.TryParse(id, out int value))
+                {
+                    return db.tblEmployees.Where(i => i.ID != value && i.InService == true).AsEnumerable().Select(i =>
+                    {
+                        return new
+                        {
+                            i.ID,
+                            Name = $"{i.FirstName} {i.LastName} ({i.JobTitle})"
+                        };
+                    });
+                }
+                throw new Exception("Incorrect employee id!");
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
         // GET: api/Employees/5
         [ResponseType(typeof(EmployeeModel))]
         public IHttpActionResult GettblEmployee(int id)
@@ -75,7 +102,8 @@ namespace EmployeeService.Controllers
                     PostalAddress = tblEmployee.PostalAddress != null ? (Guid)tblEmployee.PostalAddress : Guid.Empty,
                     EmployeeImage = !string.IsNullOrEmpty(employeeImage) ? employeeImage : null,
                     tblEmployee.EmployeeID,
-                    tblEmployee.IsActive
+                    tblEmployee.IsActive,
+                    tblEmployee.SupervisorID
                 };
 
                 return Ok(employee);
@@ -126,6 +154,7 @@ namespace EmployeeService.Controllers
                         tEmployee.UpdatedBy = User.Identity.GetUserId();
                         tEmployee.ResidentialAddress = employee.ResidentialAddress;
                         tEmployee.PostalAddress = employee.PostalAddress;
+                        tEmployee.SupervisorID = employee.SupervisorID;
                         db.Entry(tEmployee).State = EntityState.Modified;
                         db.SaveChanges();
 
@@ -197,6 +226,7 @@ namespace EmployeeService.Controllers
                             tblEmployee.ResidentialAddress = employee.ResidentialAddress;
                             tblEmployee.PostalAddress = employee.PostalAddress;
                             tblEmployee.EmployeeID = "0";
+                            tblEmployee.SupervisorID = employee.SupervisorID;
                             db.tblEmployees.Add(tblEmployee);
                             db.SaveChanges();
                             tblEmployee.EmployeeID = $"E{tblEmployee.ID:000000}";

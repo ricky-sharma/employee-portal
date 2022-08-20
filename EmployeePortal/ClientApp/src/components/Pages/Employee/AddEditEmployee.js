@@ -82,7 +82,10 @@ export class AddEditEmployee extends Component {
             employeeImageName: '',
             isEmployeeImageChanged: false,
             employeeID: '',
-            isActive: true
+            isActive: true,
+            employeeOptions: [],
+            employeeSupervisor: '',
+            employeeSupervisorError: false
         }
         this.id = ''
         this.resiAddressId = ''
@@ -98,6 +101,15 @@ export class AddEditEmployee extends Component {
                 if (response) {
                     const departments = response.map((dep, index) => { return { value: dep.ID, text: dep.Name + ' (' + dep.Location + ')' } })
                     this.setState({ departmentOptions: departments });
+                }
+            });
+
+        url = `/api/Employees/SupervisorList/` + this.id
+        WebApi(url, '', 'GET')
+            .then(response => {
+                if (response) {
+                    const employees = response.map((emp, index) => { return { value: emp.ID, text: emp.Name } })
+                    this.setState({ employeeOptions: employees });
                 }
             });
 
@@ -125,7 +137,8 @@ export class AddEditEmployee extends Component {
                         identificationNumber: response.IdentificationNumber ?? '',
                         employeeImage: response.EmployeeImage ?? '',
                         employeeID: response.EmployeeID ?? '',
-                        isActive: response.IsActive ?? true
+                        isActive: response.IsActive ?? true,
+                        employeeSupervisor: response.SupervisorID ?? ''
                     })
                     if (this.resiAddressId !== '00000000-0000-0000-0000-000000000000') {
                         url = `/api/Address/` + this.resiAddressId
@@ -236,7 +249,8 @@ export class AddEditEmployee extends Component {
                                                     "Type": this.state.employeeImageType !== '' ? this.state.employeeImageType : '',
                                                     "UploadedName": this.state.employeeImageName !== '' ? this.state.employeeImageName : '',
                                                     "IsChanged": this.state.isEmployeeImageChanged
-                                                }
+                                                },
+                                                "SupervisorID": this.state.employeeSupervisor
                                             })
                                             WebApi(url, data, !IsNull(this.id) ? 'PUT' : 'POST')
                                                 .then(response => {
@@ -276,7 +290,7 @@ export class AddEditEmployee extends Component {
             { value: this.state.stateResiAdd, errorType: 'stateResiAddError' }, { value: this.state.postalCodeResiAdd, errorType: 'postalCodeResiAddError' },
             { value: this.state.houseNumberPostAdd, errorType: 'houseNumberPostAddError' }, { value: this.state.suburbCityPostAdd, errorType: 'suburbCityPostAddError' },
             { value: this.state.statePostAdd, errorType: 'statePostAddError' }, { value: this.state.postalCodePostAdd, errorType: 'postalCodePostAddError' },
-            { value: this.state.leavingDate, errorType: 'leavingDateError' }
+            { value: this.state.leavingDate, errorType: 'leavingDateError' }, { value: this.state.employeeSupervisor, errorType: 'employeeSupervisorError' }
         ]
 
         let isValid = fieldValuesToValidate.map((i, k) => {
@@ -481,7 +495,7 @@ export class AddEditEmployee extends Component {
             phoneError, emailError, jobTitleError, eduQualificationError, employmentTypeError, identificationDocumentError, houseNumberResiAddError,
             suburbCityResiAddError, stateResiAddError, postalCodeResiAddError, houseNumberPostAddError, suburbCityPostAddError, statePostAddError,
             postalCodePostAddError, leavingDateError, phoneErrorText, mobileErrorText, emailErrorText, joiningDateErrorText, leavingDateErrorText,
-            postalCodeResiAddErrorText, postalCodePostAddErrorText, employeeImage, employeeID, isActive } = this.state
+            postalCodeResiAddErrorText, postalCodePostAddErrorText, employeeImage, employeeID, isActive, employeeOptions, employeeSupervisor, employeeSupervisorError } = this.state
         return (
             <div className="mx-0 px-0">
                 <div className="table-wrapper">
@@ -620,8 +634,6 @@ export class AddEditEmployee extends Component {
                                                 </div>
                                             </div>
                                         </div>
-                                        <div className="col-0 p-0">
-                                        </div>
                                         <div className="col-6 p-0">
                                             <div className="col-11 p-0">
                                                 <div className="col-12 p-0">
@@ -641,8 +653,6 @@ export class AddEditEmployee extends Component {
                                                 </div>
                                             </div>
                                         </div>
-                                        <div className="col-0 p-0">
-                                        </div>
                                         <div className="col-6 p-0">
                                             <div className="col-11 p-0">
                                                 <div className="col-12 p-0">
@@ -661,8 +671,6 @@ export class AddEditEmployee extends Component {
                                                         helperText={joiningDateErrorText} onChange={this.handleJoiningDate} customClass="fullWidth customDate" />
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div className="col-0 p-0">
                                         </div>
                                         <div className="col-6 p-0">
                                             <div className="col-11 p-0">
@@ -684,14 +692,23 @@ export class AddEditEmployee extends Component {
                                                 </div>
                                             </div>
                                         </div>
-                                        <div className="col-0 p-0">
-                                        </div>
                                         <div className="col-6 p-0">
                                             <div className="col-11 p-0">
                                                 <div className="col-12 p-0">
                                                     <Input label="Identification number" error={identificationNumberError} value={identificationNumber}
                                                         onChange={(e) => { this.setState({ identificationNumber: e.target.value }) }}
                                                         onClear={(value) => { this.setState({ identificationNumber: value }) }} customClass="fullWidth" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="col-12 p-0 m-0 mt-3 row">
+                                        <div className="col-6 p-0">
+                                            <div className="col-11 p-0">
+                                                <div className="col-12 p-0">
+                                                    <Input type="select" error={employeeSupervisorError} value={employeeSupervisor} labelId="employeeSupervisor"
+                                                        label="Supervisor" options={employeeOptions} customClass="fullWidth"
+                                                        onChange={(e) => { this.setState({ employeeSupervisor: e.target.value }) }} />
                                                 </div>
                                             </div>
                                         </div>
