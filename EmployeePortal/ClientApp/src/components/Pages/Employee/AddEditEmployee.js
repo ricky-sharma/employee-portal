@@ -369,7 +369,7 @@ export class AddEditEmployee extends Component {
         return this.props.history.goBack()
     }
 
-    handleActivateDelete = (action) => {
+    handleActivateDeactivate = (action) => {
         let message = action ? 'Please confirm to activate the employee record?' :
             'Please confirm to delete the employee record?'
         let heading = action ? 'Confirm Activate' : 'Confirm Delete'
@@ -489,13 +489,14 @@ export class AddEditEmployee extends Component {
                         <div className="row nowrap m-0 p-0">
                             <div className="col-sm-6 m-0 p-0"><h2 className="p-0 m-0">Employee<b> Details</b></h2></div>
                             <div className="col-sm-6 m-0 p-0">
-                                {this.id !== '' && isActive ? <button type="button" onClick={() => this.handleActivateDelete(false)} className="btn bg-danger add-new text-white p-0 m-0 my-1 ml-1">Delete</button> : ''}
-                                {this.id !== '' && !isActive ? <button type="button" onClick={() => this.handleActivateDelete(true)} className="btn bg-danger add-new text-white p-0 m-0 my-1 ml-1">Activate</button> : ''}
+                                {this.id !== '' && isActive ? <button type="button" onClick={() => this.handleActivateDeactivate(false)} className="btn bg-danger add-new text-white px-3 p-0 m-0 my-1 ml-1">Deactivate</button> : ''}
+                                {this.id !== '' && !isActive ? <button type="button" onClick={() => this.handleActivateDeactivate(true)} className="btn bg-warning add-new text-white px-3 p-0 m-0 my-1 ml-1">Reactivate</button> : ''}
                                 {isActive ? <button type="button" onClick={() => this.handleSubmit()} className="btn btn-success add-new p-0 m-0 my-1 ml-1">Save</button> : ''}
                                 <button type="button" onClick={this.handleBack} className="btn bg-dark add-new text-white p-0 m-0 my-1">Back</button>
                             </div>
                         </div>
                     </div>
+                    {!isActive ? <div className="col-12 mb-4 alignCenter text-danger"><b>The employee has been de-activated.</b></div> : null}
                     <div>
                         <div className={"border p-4 pb-5" + (isActive ? "" : " disabled-inputs")}>
                             <form>
