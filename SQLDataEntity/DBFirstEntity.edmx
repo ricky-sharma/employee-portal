@@ -142,6 +142,7 @@
           <Property Name="ResidentialAddress" Type="uniqueidentifier" />
           <Property Name="PostalAddress" Type="uniqueidentifier" />
           <Property Name="EmployeeID" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="SupervisorID" Type="int" />
         </EntityType>
         <EntityType Name="tblErrors">
           <Key>
@@ -348,6 +349,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_tblEmployees_tblEmployees">
+          <End Role="tblEmployees" Type="Self.tblEmployees" Multiplicity="0..1" />
+          <End Role="tblEmployees1" Type="Self.tblEmployees" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblEmployees">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="tblEmployees1">
+              <PropertyRef Name="SupervisorID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_tblErrors_AspNetUsers">
           <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="0..1" />
           <End Role="tblErrors" Type="Self.tblErrors" Multiplicity="*" />
@@ -459,6 +472,10 @@
             <End Role="tblDepartments" EntitySet="tblDepartments" />
             <End Role="tblEmployees" EntitySet="tblEmployees" />
           </AssociationSet>
+          <AssociationSet Name="FK_tblEmployees_tblEmployees" Association="Self.FK_tblEmployees_tblEmployees">
+            <End Role="tblEmployees" EntitySet="tblEmployees" />
+            <End Role="tblEmployees1" EntitySet="tblEmployees" />
+          </AssociationSet>
           <AssociationSet Name="FK_tblErrors_AspNetUsers" Association="Self.FK_tblErrors_AspNetUsers">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="tblErrors" EntitySet="tblErrors" />
@@ -544,7 +561,7 @@
           <NavigationProperty Name="tblImages" Relationship="EmployeeDBModel.FK_tblImages_AspNetUsers" FromRole="AspNetUser" ToRole="tblImage" />
           <NavigationProperty Name="tblEmployees" Relationship="EmployeeDBModel.FK_tblEmployees_AspNetUsers" FromRole="AspNetUser" ToRole="tblEmployee" />
           <NavigationProperty Name="tblEmployees1" Relationship="EmployeeDBModel.FK_tblEmployees_AspNetUsers1" FromRole="AspNetUser" ToRole="tblEmployee" />
-        </EntityType>
+          </EntityType>
         <EntityType Name="C__MigrationHistory">
           <Key>
             <PropertyRef Name="MigrationId" />
@@ -778,6 +795,10 @@
             <End Role="tblEmployee" EntitySet="tblEmployees" />
             <End Role="tblEmployeeImageMap" EntitySet="tblEmployeeImageMaps" />
           </AssociationSet>
+          <AssociationSet Name="FK_tblEmployees_tblEmployees" Association="EmployeeDBModel.FK_tblEmployees_tblEmployees">
+            <End Role="tblEmployee" EntitySet="tblEmployees" />
+            <End Role="tblEmployee1" EntitySet="tblEmployees" />
+          </AssociationSet>
           </EntityContainer>
         <EntityType Name="tblEmployeeImageMap">
           <Key>
@@ -859,12 +880,15 @@
           <Property Name="ResidentialAddress" Type="Guid" />
           <Property Name="PostalAddress" Type="Guid" />
           <Property Name="EmployeeID" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="SupervisorID" Type="Int32" />
           <NavigationProperty Name="AspNetUser" Relationship="EmployeeDBModel.FK_tblEmployees_AspNetUsers" FromRole="tblEmployee" ToRole="AspNetUser" />
           <NavigationProperty Name="AspNetUser1" Relationship="EmployeeDBModel.FK_tblEmployees_AspNetUsers1" FromRole="tblEmployee" ToRole="AspNetUser" />
           <NavigationProperty Name="tblAddress" Relationship="EmployeeDBModel.FK_tblEmployees_tblAddress" FromRole="tblEmployee" ToRole="tblAddress" />
           <NavigationProperty Name="tblAddress1" Relationship="EmployeeDBModel.FK_tblEmployees_tblAddress1" FromRole="tblEmployee" ToRole="tblAddress" />
           <NavigationProperty Name="tblDepartment" Relationship="EmployeeDBModel.FK_tblEmployees_tblDepartments" FromRole="tblEmployee" ToRole="tblDepartment" />
           <NavigationProperty Name="tblEmployeeImageMaps" Relationship="EmployeeDBModel.FK_tblEmployeeImageMap_tblEmployees" FromRole="tblEmployee" ToRole="tblEmployeeImageMap" />
+          <NavigationProperty Name="tblEmployees1" Relationship="EmployeeDBModel.FK_tblEmployees_tblEmployees" FromRole="tblEmployee" ToRole="tblEmployee1" />
+          <NavigationProperty Name="tblEmployee1" Relationship="EmployeeDBModel.FK_tblEmployees_tblEmployees" FromRole="tblEmployee1" ToRole="tblEmployee" />
         </EntityType>
         <Association Name="FK_tblEmployees_AspNetUsers">
           <End Type="EmployeeDBModel.AspNetUser" Role="AspNetUser" Multiplicity="0..1" />
@@ -935,6 +959,18 @@
             </Principal>
             <Dependent Role="tblEmployeeImageMap">
               <PropertyRef Name="EmployeeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblEmployees_tblEmployees">
+          <End Type="EmployeeDBModel.tblEmployee" Role="tblEmployee" Multiplicity="0..1" />
+          <End Type="EmployeeDBModel.tblEmployee" Role="tblEmployee1" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblEmployee">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="tblEmployee1">
+              <PropertyRef Name="SupervisorID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1095,6 +1131,7 @@
           <EntitySetMapping Name="tblEmployees">
             <EntityTypeMapping TypeName="EmployeeDBModel.tblEmployee">
               <MappingFragment StoreEntitySet="tblEmployees">
+                <ScalarProperty Name="SupervisorID" ColumnName="SupervisorID" />
                 <ScalarProperty Name="EmployeeID" ColumnName="EmployeeID" />
                 <ScalarProperty Name="PostalAddress" ColumnName="PostalAddress" />
                 <ScalarProperty Name="ResidentialAddress" ColumnName="ResidentialAddress" />

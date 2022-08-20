@@ -4,11 +4,12 @@ import { PhotoCamera, RemoveCircle } from '@material-ui/icons';
 import addDays from 'add-days';
 import React, { Component } from 'react';
 import validator from 'validator';
-import { Locale, LocaleCode, PhoneNumberRegex } from '../../../Constants';
+import { EmployeeFolder, Locale, LocaleCode, PhoneNumberRegex } from '../../../Constants';
 import profileImage from '../../../images/blue-person-icon.png';
-import IsNull from '../../Common/Common';
-import AlertDialog from '../../Core/AlertDialog';
+import IsNull, { IsDev } from '../../Common/Common';
+import AlertDialog, { ConfirmDialog } from '../../Core/ModalDialogs';
 import Input from '../../Core/Input';
+import { LoadImage } from '../../Helpers/ImageHelper';
 import { WebApi } from '../../Helpers/WebApi.ts';
 
 export class AddEditEmployee extends Component {
@@ -80,7 +81,11 @@ export class AddEditEmployee extends Component {
             employeeImageType: '',
             employeeImageName: '',
             isEmployeeImageChanged: false,
-            employeeID: ''
+            employeeID: '',
+            isActive: true,
+            employeeOptions: [],
+            employeeSupervisor: '',
+            employeeSupervisorError: false
         }
         this.id = ''
         this.resiAddressId = ''
@@ -99,6 +104,15 @@ export class AddEditEmployee extends Component {
                 }
             });
 
+        url = `/api/Employees/SupervisorList/` + this.id
+        WebApi(url, '', 'GET')
+            .then(response => {
+                if (response) {
+                    const employees = response.map((emp, index) => { return { value: emp.ID, text: emp.Name } })
+                    this.setState({ employeeOptions: employees });
+                }
+            });
+
         if (this.id !== '') {
             url = `/api/Employees/` + this.id
             WebApi(url, '', 'GET').then(response => {
@@ -112,7 +126,7 @@ export class AddEditEmployee extends Component {
                         departmentId: response.Department ?? '',
                         jobTitle: response.JobTitle ?? '',
                         joiningDate: !IsNull(response.JoiningDate) ? new Date(response.JoiningDate) : null,
-                        dateOfBirth: response.DateofBirth != null ? new Date(response.DateofBirth + "-" + new Date().getFullYear()) : null,
+                        dateOfBirth: response.DateofBirth !== null ? new Date(response.DateofBirth + "-" + new Date().getFullYear()) : null,
                         mobile: response.Mobile ?? '',
                         phone: response.HomePhone ?? '',
                         linkedinProfile: response.ProfessionalProfile ?? '',
@@ -122,7 +136,9 @@ export class AddEditEmployee extends Component {
                         identificationDocument: response.IdentificationDocument ?? '',
                         identificationNumber: response.IdentificationNumber ?? '',
                         employeeImage: response.EmployeeImage ?? '',
-                        employeeID: response.EmployeeID ?? ''
+                        employeeID: response.EmployeeID ?? '',
+                        isActive: response.IsActive ?? true,
+                        employeeSupervisor: response.SupervisorID ?? ''
                     })
                     if (this.resiAddressId !== '00000000-0000-0000-0000-000000000000') {
                         url = `/api/Address/` + this.resiAddressId
@@ -229,11 +245,12 @@ export class AddEditEmployee extends Component {
                                                 "ResidentialAddress": this.resiAddressId,
                                                 "PostalAddress": this.postAddressId,
                                                 "EmployeeImage": {
-                                                    "Src": this.state.employeeImage != '' ? this.state.employeeImage : '',
-                                                    "Type": this.state.employeeImageType != '' ? this.state.employeeImageType : '',
-                                                    "UploadedName": this.state.employeeImageName != '' ? this.state.employeeImageName : '',
+                                                    "Src": this.state.employeeImage !== '' ? this.state.employeeImage : '',
+                                                    "Type": this.state.employeeImageType !== '' ? this.state.employeeImageType : '',
+                                                    "UploadedName": this.state.employeeImageName !== '' ? this.state.employeeImageName : '',
                                                     "IsChanged": this.state.isEmployeeImageChanged
-                                                }
+                                                },
+                                                "SupervisorID": this.state.employeeSupervisor
                                             })
                                             WebApi(url, data, !IsNull(this.id) ? 'PUT' : 'POST')
                                                 .then(response => {
@@ -273,7 +290,7 @@ export class AddEditEmployee extends Component {
             { value: this.state.stateResiAdd, errorType: 'stateResiAddError' }, { value: this.state.postalCodeResiAdd, errorType: 'postalCodeResiAddError' },
             { value: this.state.houseNumberPostAdd, errorType: 'houseNumberPostAddError' }, { value: this.state.suburbCityPostAdd, errorType: 'suburbCityPostAddError' },
             { value: this.state.statePostAdd, errorType: 'statePostAddError' }, { value: this.state.postalCodePostAdd, errorType: 'postalCodePostAddError' },
-            { value: this.state.leavingDate, errorType: 'leavingDateError' }
+            { value: this.state.leavingDate, errorType: 'leavingDateError' }, { value: this.state.employeeSupervisor, errorType: 'employeeSupervisorError' }
         ]
 
         let isValid = fieldValuesToValidate.map((i, k) => {
@@ -366,6 +383,28 @@ export class AddEditEmployee extends Component {
         return this.props.history.goBack()
     }
 
+    handleActivateDeactivate = (action) => {
+        let message = action ? 'Please confirm to activate the employee record?' :
+            'Please confirm to delete the employee record?'
+        let heading = action ? 'Confirm Activate' : 'Confirm Delete'
+        let successMessage = action ? 'Employee record has been activated.' :
+            'Employee record has been deleted.'
+        ConfirmDialog(message, heading, () => {
+            let url = `/api/Employees/` + this.id + '?action=' + action
+            WebApi(url, '', 'DELETE')
+                .then(response => {
+                    if (response) {
+                        if (!IsNull(response.Message) && response.Message.toUpperCase() === "SUCCESS") {
+                            this.setState({ isEmployeeImageChanged: false })
+                            AlertDialog(successMessage, () => {
+                                this.setState({ isActive: action })
+                            })
+                        }
+                    }
+                })
+        }, null);
+    }
+
     handleDOB = date => {
         this.setState({
             dateOfBirth: date
@@ -456,7 +495,7 @@ export class AddEditEmployee extends Component {
             phoneError, emailError, jobTitleError, eduQualificationError, employmentTypeError, identificationDocumentError, houseNumberResiAddError,
             suburbCityResiAddError, stateResiAddError, postalCodeResiAddError, houseNumberPostAddError, suburbCityPostAddError, statePostAddError,
             postalCodePostAddError, leavingDateError, phoneErrorText, mobileErrorText, emailErrorText, joiningDateErrorText, leavingDateErrorText,
-            postalCodeResiAddErrorText, postalCodePostAddErrorText, employeeImage, employeeID } = this.state
+            postalCodeResiAddErrorText, postalCodePostAddErrorText, employeeImage, employeeID, isActive, employeeOptions, employeeSupervisor, employeeSupervisorError } = this.state
         return (
             <div className="mx-0 px-0">
                 <div className="table-wrapper">
@@ -464,14 +503,16 @@ export class AddEditEmployee extends Component {
                         <div className="row nowrap m-0 p-0">
                             <div className="col-sm-6 m-0 p-0"><h2 className="p-0 m-0">Employee<b> Details</b></h2></div>
                             <div className="col-sm-6 m-0 p-0">
-                                {this.id !== '' ? <button type="button" onClick={this.handleBack} className="btn bg-danger add-new text-white p-0 m-0 my-1 ml-1">Delete</button> : ''}
-                                <button type="button" onClick={() => this.handleSubmit()} className="btn btn-success add-new p-0 m-0 my-1 ml-1">Save</button>
+                                {this.id !== '' && isActive ? <button type="button" onClick={() => this.handleActivateDeactivate(false)} className="btn bg-danger add-new text-white px-3 p-0 m-0 my-1 ml-1">Deactivate</button> : ''}
+                                {this.id !== '' && !isActive ? <button type="button" onClick={() => this.handleActivateDeactivate(true)} className="btn bg-warning add-new text-white px-3 p-0 m-0 my-1 ml-1">Reactivate</button> : ''}
+                                {isActive ? <button type="button" onClick={() => this.handleSubmit()} className="btn btn-success add-new p-0 m-0 my-1 ml-1">Save</button> : ''}
                                 <button type="button" onClick={this.handleBack} className="btn bg-dark add-new text-white p-0 m-0 my-1">Back</button>
                             </div>
                         </div>
                     </div>
+                    {!isActive ? <div className="col-12 mb-4 alignCenter text-danger"><b>The employee has been de-activated.</b></div> : null}
                     <div>
-                        <div className="border p-4 pb-5">
+                        <div className={"border p-4 pb-5" + (isActive ? "" : " disabled-inputs")}>
                             <form>
                                 <div className="col-12 p-0 m-0 row">
                                     <div className="col-3 p-0  m-0">
@@ -487,7 +528,8 @@ export class AddEditEmployee extends Component {
                                                                 <input hidden accept="image/*" type="file" ref={this.employeeImageInputRef} onChange={this.handleEmployeeImageUpload} />
                                                                 <Avatar className="profileImage" alt={fName + ' ' + lName} ref={this.employeeImageRef} onChange={this.handleImageSrcChange}
                                                                     src={!IsNull(employeeImage) ? (employeeImage.startsWith('data:') ? employeeImage :
-                                                                        require('../../../../../files/employeeImages/' + employeeImage)) : profileImage} variant="rounded" />
+                                                                        (IsDev() ? LoadImage(employeeImage)
+                                                                            : EmployeeFolder + employeeImage)) : profileImage} variant="rounded" />
                                                                 <PhotoCamera />
                                                             </IconButton>
                                                         </div>
@@ -566,7 +608,7 @@ export class AddEditEmployee extends Component {
                                                 <div className="col-12 p-0 wrapperLink">
                                                     <Input label="Linkedin/Github link" className="inputLink" value={linkedinProfile} onChange={(e) => { this.setState({ linkedinProfile: e.target.value }) }}
                                                         onClear={(value) => { this.setState({ linkedinProfile: value }) }} />
-                                                    <div className="iconLink"><a href={!IsNull(linkedinProfile) && linkedinProfile.indexOf('https:') === 0 ? linkedinProfile : 'https://' + linkedinProfile} target="_blank">
+                                                    <div className="iconLink"><a href={!IsNull(linkedinProfile) && linkedinProfile.indexOf('https:') === 0 ? linkedinProfile : 'https://' + linkedinProfile} target="_blank" rel="noreferrer" >
                                                         <i className="fa fa-external-link link-icon" aria-hidden="true" style={{ "display": (this.state.linkedinProfile === '' ? "none" : "") }}></i></a></div>
                                                 </div>
                                             </div>
@@ -592,8 +634,6 @@ export class AddEditEmployee extends Component {
                                                 </div>
                                             </div>
                                         </div>
-                                        <div className="col-0 p-0">
-                                        </div>
                                         <div className="col-6 p-0">
                                             <div className="col-11 p-0">
                                                 <div className="col-12 p-0">
@@ -613,8 +653,6 @@ export class AddEditEmployee extends Component {
                                                 </div>
                                             </div>
                                         </div>
-                                        <div className="col-0 p-0">
-                                        </div>
                                         <div className="col-6 p-0">
                                             <div className="col-11 p-0">
                                                 <div className="col-12 p-0">
@@ -633,8 +671,6 @@ export class AddEditEmployee extends Component {
                                                         helperText={joiningDateErrorText} onChange={this.handleJoiningDate} customClass="fullWidth customDate" />
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div className="col-0 p-0">
                                         </div>
                                         <div className="col-6 p-0">
                                             <div className="col-11 p-0">
@@ -656,14 +692,23 @@ export class AddEditEmployee extends Component {
                                                 </div>
                                             </div>
                                         </div>
-                                        <div className="col-0 p-0">
-                                        </div>
                                         <div className="col-6 p-0">
                                             <div className="col-11 p-0">
                                                 <div className="col-12 p-0">
                                                     <Input label="Identification number" error={identificationNumberError} value={identificationNumber}
                                                         onChange={(e) => { this.setState({ identificationNumber: e.target.value }) }}
                                                         onClear={(value) => { this.setState({ identificationNumber: value }) }} customClass="fullWidth" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="col-12 p-0 m-0 mt-3 row">
+                                        <div className="col-6 p-0">
+                                            <div className="col-11 p-0">
+                                                <div className="col-12 p-0">
+                                                    <Input type="select" error={employeeSupervisorError} value={employeeSupervisor} labelId="employeeSupervisor"
+                                                        label="Supervisor" options={employeeOptions} customClass="fullWidth"
+                                                        onChange={(e) => { this.setState({ employeeSupervisor: e.target.value }) }} />
                                                 </div>
                                             </div>
                                         </div>

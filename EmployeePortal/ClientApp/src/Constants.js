@@ -7,3 +7,6 @@ export const ErrorHeading = 'Something went wrong'
 export const PhoneNumberRegex = /^\d{10,11}$/
 export const Locale = ['en-AU']
 export const LocaleCode = 'AU'
+export const DevEmployeeFolder = '../../../../files/employeeImages/'
+export const EmployeeFolder = '../files/employeeImages/'
+export const ImageFolder = '../../images/' 

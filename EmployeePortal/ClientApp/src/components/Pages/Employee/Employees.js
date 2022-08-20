@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
+import { EmployeeFolder } from '../../../Constants';
+import IsNull, { IsDev } from '../../Common/Common';
 import { DataGrid } from '../../Core/DataGrid';
+import { LoadImage } from '../../Helpers/ImageHelper';
 import { WebApi } from '../../Helpers/WebApi.ts';
-import IsNull from '../../Common/Common';
 
 export class Employees extends Component {
     constructor(props) {
@@ -84,7 +86,8 @@ export class Employees extends Component {
             let overlayDiv = document.createElement('div')
             overlayDiv.classList.add("overlayRowDiv")
             overlayDiv.style.cssText += "padding: 4px !important;"
-            overlayDiv.innerHTML = "<img class='overlayRowDivImage'  src=" + require('../../../../../files/employeeImages/' + row.EmployeeImage) + " />"
+            overlayDiv.innerHTML = "<img class='overlayRowDivImage'  src=" + (IsDev() ? LoadImage(row.EmployeeImage)
+                : EmployeeFolder + row.EmployeeImage) + " />"
             e.target.appendChild(overlayDiv)
         }
     }
@@ -111,7 +114,7 @@ export class Employees extends Component {
                 </div>
                 <div>
                     <DataGrid Columns={this.state.employeeColumns} RowsData={this.state.employeeData}
-                        Options={options} PageRows={10} GridEvents={gridEvents} />
+                        Options={options} PageRows={15} GridEvents={gridEvents} Height={"500px"} />
                 </div>
             </div>
         </div>)

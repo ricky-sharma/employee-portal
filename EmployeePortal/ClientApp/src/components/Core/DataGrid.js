@@ -14,14 +14,15 @@ const LoadingIndicator = () => {
 export class DataGrid extends Component {
     constructor(props) {
         super(props)
-        const { Columns, RowsData, PageRows, GridEvents, Options, Width } = props
+        const { Columns, RowsData, PageRows, GridEvents, Options, Width, Height } = props
         this.state = {
             width: !IsNull(Width) ? Width : '100%',
+            height: !IsNull(Height) ? Height : '',
             gridID: Math.floor(Math.random() * 10000),
             columns: !IsNull(Columns) ? Columns : null,
             rowsData: RowsData,
             totalRows: RowsData.length,
-            EnablePaging: !IsNull(PageRows),
+            enablePaging: !IsNull(PageRows),
             pageRows: !IsNull(PageRows) ? PageRows : RowsData.length,
             noOfPages: 0,
             pagerSelectOptions: [],
@@ -511,9 +512,9 @@ export class DataGrid extends Component {
     }
 
     render() {
-        const { totalRows, currentPageRows, firstRow, activePage, noOfPages, pageRows, EnablePaging } = this.state
+        const { totalRows, currentPageRows, firstRow, activePage, noOfPages, pageRows, enablePaging, height, width } = this.state
         return (
-            <div className="mx-0 px-0" style={{ width: this.state.width }}>
+            <div className="mx-0 px-0" style={{ width: width }}>
                 {this.state.enableGlobalSearch ? <div className="row col-12 globalSearchDiv">
                     <input className="globalSearch" placeholder="Global Search" onChange={(e) => this.handleColSearch(e, '##globalSearch##', this.state.columns)} type="text" />
                 </div> : <></>}
@@ -521,7 +522,7 @@ export class DataGrid extends Component {
                     <div className="row col-12 m-0 p-0" >
                         <table className="table table-striped table-hover border-bottom border-top-0 border-right-0 border-left-0 m-0 mx-0 px-0">
                             {this.renderTableHeader()}
-                            <tbody>
+                            <tbody style={{ height: height, maxHeight: height }}>
                                 {this.renderTableData(firstRow, currentPageRows)}
                             </tbody>
                         </table>
@@ -534,7 +535,7 @@ export class DataGrid extends Component {
                             </div>
                             <div className="float-lt col-5 m-0 p-0 pr-1">
                                 <div className="col-12 m-0 p-0">
-                                    {EnablePaging === true ? (<ul className="pagination align-center">
+                                    {enablePaging === true ? (<ul className="pagination align-center">
                                         <li className={"page-item " + (activePage === 1 ? "disabled" : "")}>
                                             <a onClick={(e) => this.handleBackwardPage(e)} href="/" className="page-link remove-bg-color icon-align-center">
                                                 <b><i className="fa fa-angle-double-left"></i></b>

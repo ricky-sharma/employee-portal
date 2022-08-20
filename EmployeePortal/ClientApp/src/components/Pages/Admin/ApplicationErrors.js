@@ -1,7 +1,7 @@
 ﻿import React from 'react';
 import { Container } from 'reactstrap';
 import IsNull, { ReplaceSpecialChars } from '../../Common/Common';
-import AlertDialog from '../../Core/AlertDialog';
+import AlertDialog from '../../Core/ModalDialogs';
 import { DataGrid } from '../../Core/DataGrid';
 import { GetData } from '../../Helpers/WebApi.ts';
 
@@ -55,7 +55,7 @@ export function ApplicationErrors() {
             let error = !IsNull(row.Error) ? JSON.parse(ReplaceSpecialChars(row.Error)) : ''
             let errorInfo = (!IsNull(row.ErrorInfo) && !IsNull(JSON.parse(ReplaceSpecialChars(row.ErrorInfo)).componentStack)
                 ? JSON.parse(ReplaceSpecialChars(row.ErrorInfo)).componentStack : (!IsNull(row.ErrorInfo) ? row.ErrorInfo : '')).replace(error, "")
-            AlertDialog(() => { return ErrorDetail(error, errorInfo) }, null, "Error Detail", { maxWidth: true })
+            AlertDialog(() => { return ErrorDetail(error, errorInfo) }, null, "Error Detail", true)
         }
 
         let options = { EnableColumnSearch: true, EnableGlobalSearch: true }
@@ -65,13 +65,11 @@ export function ApplicationErrors() {
                 <div className="table-wrapper">
                     <div className="table-title">
                         <div className="row nowrap m-0 p-0">
-                            <div className="col-sm-8"><h2>Application <b>Errors</b></h2></div>
-                            <div className="col-sm-4">
-                            </div>
+                            <div className="col-sm-8 p-0 m-0"><h2 className="p-0 m-0">Application <b>Errors</b></h2></div>
                         </div>
                     </div>
                     <div>
-                        <DataGrid Columns={columns} RowsData={data} Options={options} PageRows={10} GridEvents={gridEvents} />
+                        <DataGrid Columns={columns} RowsData={data} Options={options} PageRows={20} GridEvents={gridEvents} Height={"500px"} />
                     </div>
                 </div>
             </div>)

@@ -3,7 +3,7 @@ import AlertMessage from '../../Core/AlertMessage';
 import { WebApi } from '../../Helpers/WebApi.ts';
 import { Container } from 'reactstrap';
 import { Prompt, Redirect } from "react-router-dom";
-import AlertDialog from '../../Core/AlertDialog';
+import AlertDialog from '../../Core/ModalDialogs';
 
 export class EditDepartment extends Component {
     constructor(props) {

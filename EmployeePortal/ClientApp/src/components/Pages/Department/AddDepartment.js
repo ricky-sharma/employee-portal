@@ -70,8 +70,8 @@ export class AddDepartment extends Component {
                         <div className="row p-2">
                             <div className="col-4"></div>
                             <div className="col-4">
-                                <button className="btn btn-success mr-1" onClick={this.handleSubmit} type="button" value="Save">Save</button>
-                                <button className="mr-lg-1 btn bg-dark text-white btn-md" onClick={this.handleBack} type="button" value="Back">Back</button>
+                                <button className="btn btn-success mr-1" onClick={this.handleSubmit} type="button">Save</button>
+                                <button className="mr-lg-1 btn bg-dark text-white btn-md" onClick={this.handleBack} type="button">Back</button>
                             </div>
                         </div>
                     </form>

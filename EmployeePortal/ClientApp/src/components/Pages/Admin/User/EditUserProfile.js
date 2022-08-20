@@ -5,7 +5,7 @@ import { Container } from 'reactstrap';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import AlertMessage from '../../../Core/AlertMessage';
-import AlertDialog from '../../../Core/AlertDialog';
+import AlertDialog from '../../../Core/ModalDialogs';
 import moment from 'moment';
 
 export class EditUserProfile extends Component {

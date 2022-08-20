@@ -27,13 +27,14 @@
         <EntityTypeShape EntityType="EmployeeDBModel.tblImage" Width="1.5" PointX="5.25" PointY="0.75" />
         <AssociationConnector Association="EmployeeDBModel.FK_tblImages_AspNetUsers" />
         <AssociationConnector Association="EmployeeDBModel.FK_tblEmployeeImageMap_tblImages" />
-        <EntityTypeShape EntityType="EmployeeDBModel.tblEmployee" Width="1.5" PointX="7.5" PointY="13.75" />
+        <EntityTypeShape EntityType="EmployeeDBModel.tblEmployee" Width="1.5" PointX="7.5" PointY="13.375" />
         <AssociationConnector Association="EmployeeDBModel.FK_tblEmployees_AspNetUsers" />
         <AssociationConnector Association="EmployeeDBModel.FK_tblEmployees_AspNetUsers1" />
         <AssociationConnector Association="EmployeeDBModel.FK_tblEmployees_tblAddress" />
         <AssociationConnector Association="EmployeeDBModel.FK_tblEmployees_tblAddress1" />
         <AssociationConnector Association="EmployeeDBModel.FK_tblEmployees_tblDepartments" />
         <AssociationConnector Association="EmployeeDBModel.FK_tblEmployeeImageMap_tblEmployees" />
+        <AssociationConnector Association="EmployeeDBModel.FK_tblEmployees_tblEmployees" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

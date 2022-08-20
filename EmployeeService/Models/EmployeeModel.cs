@@ -29,5 +29,6 @@ namespace EmployeeService.Models
         public Guid ResidentialAddress { get; set; }
         public Guid PostalAddress { get; set; }
         public ImageModel EmployeeImage { get; set; }
+        public int SupervisorID { get; set; }
     }
 }

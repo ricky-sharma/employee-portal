@@ -52,8 +52,8 @@ export class Departments extends Component {
             <div className="table-wrapper">
                 <div className="table-title">
                     <div className="row nowrap m-0 p-0">
-                        <div className="col-sm-8"><h2>Department <b>Details</b></h2></div>
-                        <div className="col-sm-4">
+                        <div className="col-sm-8 p-0 m-0"><h2 className="p-0 m-0">Department <b>Details</b></h2></div>
+                        <div className="col-sm-4 p-0 m-0">
                             <button type="button" onClick={this.handleAddDepartment} className="btn btn-success add-new">Add New</button>
                         </div>
                     </div>

@@ -78,4 +78,8 @@
     </ItemGroup>
   </Target>
 
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="call npm-build.bat" />
+  </Target>
+
 </Project>
