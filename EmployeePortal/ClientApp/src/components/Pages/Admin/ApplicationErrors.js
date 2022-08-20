@@ -65,9 +65,7 @@ export function ApplicationErrors() {
                 <div className="table-wrapper">
                     <div className="table-title">
                         <div className="row nowrap m-0 p-0">
-                            <div className="col-sm-8"><h2>Application <b>Errors</b></h2></div>
-                            <div className="col-sm-4">
-                            </div>
+                            <div className="col-sm-8 p-0 m-0"><h2 className="p-0 m-0">Application <b>Errors</b></h2></div>
                         </div>
                     </div>
                     <div>
