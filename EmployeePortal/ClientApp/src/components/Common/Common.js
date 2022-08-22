@@ -18,12 +18,13 @@ export function GetCookie(cname) {
     let ca = decodedCookie.split(';');
     let cookieVal = ''
     ca.map((c, i) => {
-        while (c.charAt(0) == ' ') {
+        while (c.charAt(0) === ' ') {
             c = c.substring(1);
         }
-        if (c.indexOf(name) == 0) {
+        if (c.indexOf(name) === 0) {
             cookieVal = c.substring(name.length, c.length);
         }
+        return null
     })
     return cookieVal;
 }

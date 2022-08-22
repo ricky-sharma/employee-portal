@@ -1,8 +1,7 @@
 ﻿import React from 'react';
-import { Container } from 'reactstrap';
 import IsNull, { ReplaceSpecialChars } from '../../Common/Common';
-import AlertDialog from '../../Core/ModalDialogs';
 import { DataGrid } from '../../Core/DataGrid';
+import AlertDialog from '../../Core/ModalDialogs';
 import { GetData } from '../../Helpers/WebApi.ts';
 
 export function ApplicationErrors() {

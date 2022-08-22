@@ -48,11 +48,13 @@ export class DataGrid extends Component {
                         separator = col.ConcatColumns.Separator
                     return { cols: col.ConcatColumns.Columns, sep: separator };
                 }
+                return null
             }) : null,
             columnFormatting: !IsNull(Columns) ? Columns.map((col) => {
                 if (!IsNull(col.Formatting) && !IsNull(col.Formatting.Type) && !IsNull(col.Formatting.Format)) {
                     return { type: col.Formatting.Type, format: col.Formatting.Format };
                 }
+                return null
             }) : null,
             cssClassColumns: !IsNull(Columns) ? Columns.map((col, key) => {
                 if (!IsNull(col.cssClass))
@@ -114,11 +116,13 @@ export class DataGrid extends Component {
                         separator = col.ConcatColumns.Separator
                     return { cols: col.ConcatColumns.Columns, sep: separator };
                 }
+                return null
             }) : null,
             columnFormatting: !IsNull(Columns) ? Columns.map((col) => {
                 if (!IsNull(col.Formatting) && !IsNull(col.Formatting.Type) && !IsNull(col.Formatting.Format)) {
                     return { type: col.Formatting.Type, format: col.Formatting.Format };
                 }
+                return null
             }) : null,
             cssClassColumns: !IsNull(Columns) ? Columns.map((col, key) => {
                 if (!IsNull(col.cssClass))
@@ -141,7 +145,7 @@ export class DataGrid extends Component {
         let lastPageRows = parseInt(this.state.totalRows % this.state.pageRows, 10)
         if (lastPageRows > 0)
             noOfPages++;
-        else if (lastPageRows == 0)
+        else if (lastPageRows === 0)
             lastPageRows = this.state.pageRows
         let pagerSelectOptions = [...Array(noOfPages).keys()].map(i => i + 1);
         this.setState({
@@ -199,6 +203,7 @@ export class DataGrid extends Component {
                         if (!IsNull(conCols) && !IsNull(c.Name) && conCols.some(x => x.toUpperCase() === c.Name.toUpperCase())) {
                             conValue = conValue + row[c.Name] + conSep
                         }
+                        return null
                     })
                     if (!IsNull(conSep) && !IsNull(conValue)) {
                         let sepLenth = conSep.length
@@ -312,7 +317,7 @@ export class DataGrid extends Component {
             inputProps = {
                 className: !IsNull(header.cssClass) ? header.cssClass + ' row searchDiv p-0 m-0' : 'row searchDiv p-0 m-0'
             };
-            columnSearchEnabled = (!IsNull(enableColSearch) ? enableColSearch : false) == true ?
+            columnSearchEnabled = (!IsNull(enableColSearch) ? enableColSearch : false) === true ?
                 (!IsNull(header.SearchEnable) ? header.SearchEnable : true) : (!IsNull(header.SearchEnable) ? header.SearchEnable : false)
             if (columnSearchEnabled) searchRowEnabled = true;
             if (header === '') {
@@ -335,9 +340,9 @@ export class DataGrid extends Component {
     }
 
     tableHeaderClicked = (e, name) => {
-        if (e.target.nodeName == "DIV" || e.target.nodeName == "I") {
+        if (e.target.nodeName === "DIV" || e.target.nodeName === "I") {
             let sortColumn = ''
-            let element = e.target.nodeName == "I" ? e.target : e.target.querySelector('i');
+            let element = e.target.nodeName === "I" ? e.target : e.target.querySelector('i');
             let i = document.createElement('i');
             i.classList.add("fa", "updown-icon");
             if (!IsNull(element)) {
@@ -362,10 +367,11 @@ export class DataGrid extends Component {
                         if (si.classList.contains("fa-sort-up")) si.classList.remove("fa-sort-up")
                         if (si.classList.contains("fa-sort-down")) si.classList.remove("fa-sort-down")
                         if (!si.classList.contains("fa-sort")) si.classList.add("fa-sort", "inactive")
+                        return null
                     })
                 }
             }
-            if (e.target.nodeName == "I") {
+            if (e.target.nodeName === "I") {
                 let parentElement = e.target.parentNode
                 if (!IsNull(element))
                     parentElement.removeChild(element);
@@ -448,6 +454,7 @@ export class DataGrid extends Component {
                     else {
                         globalSearchData = [...colObjSearchData];
                     }
+                    return null
                 })
                 data = [...globalSearchData]
             }
@@ -473,6 +480,7 @@ export class DataGrid extends Component {
                     }
                 }
             }
+            return null
         })
         let dataLength = data.length
         let pageRows = this.state.pageRows
@@ -492,7 +500,7 @@ export class DataGrid extends Component {
                 <a onClick={(e) => this.handleChangePage(e, (parseInt(this.state.activePage) - 2))} href='/' className="page-link"><b>{".."}</b></a> : null}
         </li>)
         pagination.push(<li key={"thirdLast"} className={"m-0 p-0 page-item"}>
-            {parseInt(this.state.activePage) == parseInt(this.state.noOfPages) && parseInt(this.state.noOfPages) >= 3 ?
+            {parseInt(this.state.activePage) === parseInt(this.state.noOfPages) && parseInt(this.state.noOfPages) >= 3 ?
                 <a onClick={(e) => this.handleChangePage(e, this.state.noOfPages - 2)} href='/' className="page-link">{this.state.noOfPages - 2}</a> : null}
         </li>)
         for (let j = 1; j <= this.state.noOfPages; j++)
