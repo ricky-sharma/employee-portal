@@ -19,28 +19,27 @@ export class Users extends Component {
             .then(response => {
                 if (response != null) {
                     let Columns = Object.keys(response[0])
-                    let cols = []
-                    Columns.map((val) => {
+                    let cols = Columns.map((val) => {
                         if (val.toUpperCase() === 'ID' || val.toUpperCase() === 'DOB' || val.toUpperCase() === 'GENDER'
                             || val.toUpperCase() === 'USERID' || val.toUpperCase() === 'USERINFOVIEWMODEL')
-                            cols.push({
+                            return {
                                 Hidden: true
-                            })
+                            }
                         else if (val.toUpperCase() === 'FIRSTNAME')
-                            cols.push({
+                            return {
                                 Name: val,
                                 Alias: 'Name',
                                 ConcatColumns: {
                                     Columns: ['FIRSTNAME', 'LASTNAME']
                                 }
-                            })
+                            }
                         else if (val.toUpperCase() === 'LASTNAME')
-                            cols.push({
+                            return {
                                 Name: val,
                                 Hidden: true
-                            })
+                            }
                         else
-                            cols.push({ Name: val })
+                            return { Name: val }
                     })
                     this.setState({
                         userData: response,

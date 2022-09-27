@@ -20,54 +20,52 @@ export class Employees extends Component {
             .then(response => {
                 if (response) {
                     let Columns = Object.keys(response[0])
-                    let cols = []
-                    Columns.map((val) => {
+                    let cols = Columns.map((val) => {
                         if (val.toUpperCase() === 'EMPLOYEEID')
-                            cols.push({
+                            return {
                                 Name: val,
                                 Alias: 'ID',
                                 SearchEnable: true,
                                 cssClass: 'col1width125'
-                            })
+                            }
                         else if (val.toUpperCase() === 'JOININGDATE')
-                            cols.push({
+                            return {
                                 Name: val,
                                 Alias: 'Joining Date',
                                 Formatting: {
                                     Type: 'Date', Format: 'dd MMM yyyy'
                                 }
-                            })
+                            }
                         else if (val.toUpperCase() === 'EMPLOYMENTTYPE')
-                            cols.push({
+                            return {
                                 Name: val,
                                 Alias: 'Employment Type',
-                            })
+                            }
                         else if (val.toUpperCase() === 'JOBTITLE')
-                            cols.push({
+                            return {
                                 Name: val,
                                 Alias: 'Job Title',
-                            })
+                            }
                         else if (val.toUpperCase() === 'FIRSTNAME')
-                            cols.push({
+                            return {
                                 Name: val,
                                 Alias: 'Name',
                                 cssClass: 'nameColumn',
                                 ConcatColumns: {
                                     Columns: ['FIRSTNAME', 'LASTNAME']
                                 }
-                            })
+                            }
                         else if (val.toUpperCase() === 'LASTNAME' || val.toUpperCase() === 'EMPLOYEEIMAGE' || val.toUpperCase() === 'ID')
-                            cols.push({
+                            return {
                                 Name: val,
                                 Hidden: true
-                            })
+                            }
                         else
-                            cols.push({ Name: val })
-
-                        this.setState({
-                            employeeData: response,
-                            employeeColumns: cols
-                        })
+                            return { Name: val }
+                    })
+                    this.setState({
+                        employeeData: response,
+                        employeeColumns: cols
                     })
                 }
             });
@@ -85,7 +83,7 @@ export class Employees extends Component {
         if (!IsNull(row.EmployeeImage) && e.target.classList.contains('nameColumn')) {
             let overlayDiv = document.createElement('div')
             overlayDiv.classList.add("overlayRowDiv")
-            overlayDiv.style.cssText += "padding: 4px !important;"
+            overlayDiv.style.cssText += "padding: 2px !important;"
             overlayDiv.innerHTML = "<img class='overlayRowDivImage'  src=" + (IsDev() ? LoadImage(row.EmployeeImage)
                 : EmployeeFolder + row.EmployeeImage) + " />"
             e.target.appendChild(overlayDiv)

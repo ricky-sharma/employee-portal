@@ -1,3 +1,3 @@
-﻿export function LoadImage(image) {
+export function LoadImage(image) {
     return require('../../../../files/employeeImages/' + image)
 }

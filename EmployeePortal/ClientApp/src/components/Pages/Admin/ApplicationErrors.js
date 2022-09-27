@@ -1,37 +1,34 @@
-﻿import React from 'react';
-import { Container } from 'reactstrap';
+import React from 'react';
 import IsNull, { ReplaceSpecialChars } from '../../Common/Common';
-import AlertDialog from '../../Core/ModalDialogs';
 import { DataGrid } from '../../Core/DataGrid';
+import AlertDialog from '../../Core/ModalDialogs';
 import { GetData } from '../../Helpers/WebApi.ts';
 
 export function ApplicationErrors() {
     let userLogs = GetData('/api/Error')
     if (userLogs.status === 'loaded' && !IsNull(userLogs.payload)) {
         let cols = Object.keys(userLogs.payload[0])
-        let columns = []
-        cols.map((val) => {
+        let columns = cols.map((val) => {
             if (val === 'User')
-                columns.push({ Name: val })
+                return { Name: val }
             else if (val === 'ErrorCode')
-                columns.push({ Name: val, Alias: 'Error Code' })
+                return { Name: val, Alias: 'Error Code' }
             else if (val === 'Error')
-                columns.push({ Name: val, cssClass: 'col1width400' })
+                return { Name: val, cssClass: 'col1width400' }
             else if (val === 'CreatedOn')
-                columns.push({
+                return {
                     Name: val, Alias: 'Date',
                     Formatting: {
                         Type: 'Date', Format: 'dd MMM yyyy h:mm:ss a'
                     }
-                })
+                }
             else if (val === 'ID' || val === 'ErrorInfo')
-                columns.push({ Name: val, Hidden: true })
+                return { Name: val, Hidden: true }
             else
-                columns.push({ Name: val })
+                return { Name: val }
         })
-        let data = []
-        userLogs.payload.map((resp, k) => {
-            data.push({
+        let data = userLogs.payload.map((resp, k) => {
+            return {
                 ID: !IsNull(resp.ID) ? resp.ID : '',
                 ErrorCode: !IsNull(resp.ErrorCode) ? resp.ErrorCode : '',
                 Error: !IsNull(resp.Error) ? resp.Error : '',
@@ -39,7 +36,7 @@ export function ApplicationErrors() {
                 CreatedOn: !IsNull(resp.CreatedOn) ? resp.CreatedOn : '',
                 User: ((!IsNull(resp.User) && !IsNull(resp.User.FirstName))
                     ? resp.User.FirstName : '') + ' ' + ((!IsNull(resp.User) && !IsNull(resp.User.LastName)) ? resp.User.LastName : '')
-            })
+            }
         })
 
         const ErrorDetail = (error, errorInfo) => {
@@ -52,6 +49,7 @@ export function ApplicationErrors() {
         }
 
         const rowClicked = (e, row) => {
+            console.log(ReplaceSpecialChars(row.Error))
             let error = !IsNull(row.Error) ? JSON.parse(ReplaceSpecialChars(row.Error)) : ''
             let errorInfo = (!IsNull(row.ErrorInfo) && !IsNull(JSON.parse(ReplaceSpecialChars(row.ErrorInfo)).componentStack)
                 ? JSON.parse(ReplaceSpecialChars(row.ErrorInfo)).componentStack : (!IsNull(row.ErrorInfo) ? row.ErrorInfo : '')).replace(error, "")

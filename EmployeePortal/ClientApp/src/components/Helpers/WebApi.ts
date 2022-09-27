@@ -1,4 +1,4 @@
-﻿import { createBrowserHistory } from 'history';
+import { createBrowserHistory } from 'history';
 import { useEffect, useState } from 'react';
 import { trackPromise } from 'react-promise-tracker';
 import * as Constants from '../../Constants';
@@ -19,7 +19,7 @@ export function GetData(apiUrl: any) {
             .then(response => response)
             .then(response => setResult({ status: 'loaded', payload: response }))
             .catch(error => setResult({ status: 'error', error }));
-    }, []);
+    }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
     return result;
 }
@@ -115,4 +115,5 @@ export function WebApi(apiUrl: any, data: any, method = 'POST', auth = true) {
             }))
 }
 
+// eslint-disable-next-line import/no-anonymous-default-export
 export default { GetData, WebApi };

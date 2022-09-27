@@ -1,4 +1,4 @@
-﻿import { Dictionary } from './Dictionary';
+import { Dictionary } from './Dictionary';
 // @ts-ignore
 import { GetData, WebApi } from './WebApi.ts';
 
@@ -10,4 +10,5 @@ export function useLogService() {
     return GetData('/api/Logger')
 }
 
+// eslint-disable-next-line import/no-anonymous-default-export
 export default { Logger, useLogService };

@@ -344,8 +344,8 @@ label.uploadPicture .MuiAvatar-img {
 }
 
 .overlayRowDiv {
-    width: 12% !important;
-    height: 25%;
+    width: 6% !important;
+    height: 12%;
     border: 1px solid #f0f0f0;
     background: #ffffff;
     position: absolute;

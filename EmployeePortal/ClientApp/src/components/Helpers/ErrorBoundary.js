@@ -1,4 +1,4 @@
-﻿import { Component } from 'react';
+import { Component } from 'react';
 import { withRouter } from "react-router";
 import IsNull from '../Common/Common';
 import { WebApi } from '../Helpers/WebApi.ts';
