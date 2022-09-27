@@ -1,4 +1,4 @@
-﻿import DateFnsUtils from '@date-io/date-fns';
+import DateFnsUtils from '@date-io/date-fns';
 import { FormControl, IconButton, InputLabel, MenuItem, Select, TextField, Checkbox, FormControlLabel, FormHelperText } from '@material-ui/core';
 import ClearIcon from "@material-ui/icons/Clear";
 import { DatePicker, KeyboardDatePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
@@ -63,7 +63,7 @@ export class Input extends Component {
                             value={this.state.value}
                             required={this.props.required ?? false}
                             error={this.props.error ?? false}
-                            helperText={!IsNull(this.props.error) && this.props.error == true ?
+                            helperText={!IsNull(this.props.error) && this.props.error === true ?
                                 (!IsNull(this.props.helperText) ? this.props.helperText : (!IsNull(this.props.label) ? this.props.label + " is required!" : "Empty field!")) : ""}
                             onChange={(e) => {
                                 return !IsNull(this.props.onChange) ? this.setState({
@@ -101,7 +101,7 @@ export class Input extends Component {
                                 label={this.props.label ?? ""}
                                 value={this.state.value}
                                 error={this.props.error ?? false}
-                                helperText={!IsNull(this.props.error) && this.props.error == true ?
+                                helperText={!IsNull(this.props.error) && this.props.error === true ?
                                     (!IsNull(this.props.helperText) ? this.props.helperText : (!IsNull(this.props.label) ? this.props.label + " is required!" : "Empty field!")) : ""}
                                 onChange={(date) => {
                                     return !IsNull(this.props.onChange) ? this.setState({
@@ -132,7 +132,7 @@ export class Input extends Component {
                                 label={this.props.label ?? ""}
                                 value={this.state.value}
                                 error={this.props.error ?? false}
-                                helperText={!IsNull(this.props.error) && this.props.error == true ?
+                                helperText={!IsNull(this.props.error) && this.props.error === true ?
                                     (!IsNull(this.props.helperText) ? this.props.helperText : (!IsNull(this.props.label) ? this.props.label + " is required!" : "Empty field!")) : ""}
                                 onChange={(date) => {
                                     return !IsNull(this.props.onChange) ? this.setState({
@@ -181,7 +181,7 @@ export class Input extends Component {
                                     return <MenuItem key={k} value={i.value}>{i.text}</MenuItem>
                                 })}
                             </Select>
-                            {(this.props.error ?? false) && <FormHelperText error={(this.props.error ?? false)}>{!IsNull(this.props.error) && this.props.error == true ?
+                            {(this.props.error ?? false) && <FormHelperText error={(this.props.error ?? false)}>{!IsNull(this.props.error) && this.props.error === true ?
                                 (!IsNull(this.props.helperText) ? this.props.helperText : (!IsNull(this.props.label) ? this.props.label + " is required!" : "Empty field!")) : ""}</FormHelperText>}
                         </FormControl>
                     </div>);

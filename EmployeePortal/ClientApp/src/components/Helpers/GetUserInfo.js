@@ -1,4 +1,4 @@
-﻿import { WebApi } from './WebApi.ts';
+import { WebApi } from './WebApi.ts';
 
 function GetUserInfo(id) {
     let url = id === 0 ? `/api/Account/UserInfo` : '/api/Account/UserInfo/' + id
@@ -24,7 +24,6 @@ function GetUserInfo(id) {
                             return jsonResponse
                         }
                     })
-                return jsonResponse
             }
             return null;
         });

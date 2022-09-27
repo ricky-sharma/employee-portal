@@ -1,4 +1,4 @@
-﻿import { Button } from "@material-ui/core";
+import { Button } from "@material-ui/core";
 import { format } from "date-fns";
 import React, { Component } from 'react';
 import { usePromiseTracker } from "react-promise-tracker";

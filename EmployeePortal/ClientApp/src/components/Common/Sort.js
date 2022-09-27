@@ -1,4 +1,4 @@
-﻿//      Usage Example
+//      Usage Example
 //
 //      var People = [
 //          { Name: "Name", Surname: "Surname" },

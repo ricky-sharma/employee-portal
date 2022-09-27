@@ -136,9 +136,9 @@ export class EditUserProfile extends Component {
                         return false
                     }
                 }
-            }).
-            then(response => {
-                if (response == true)
+            })
+            .then(response => {
+                if (response === true)
                     return this.props.history.goBack()
             });
     }

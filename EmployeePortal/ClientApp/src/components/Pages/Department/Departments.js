@@ -18,20 +18,19 @@ export class Departments extends Component {
             .then(response => {
                 if (response) {
                     let Columns = Object.keys(response[0])
-                    let cols = []
-                    Columns.map((val) => {
+                    let cols = Columns.map((val) => {
                         if (val.toUpperCase() === 'ID')
-                            cols.push({
+                            return {
                                 Name: val,
                                 SearchEnable: false
-                            })
+                            }
                         else
-                            cols.push({ Name: val })
+                            return { Name: val }
+                    })
 
-                        this.setState({
-                            departmentData: response,
-                            departmentColumns: cols
-                        })
+                    this.setState({
+                        departmentData: response,
+                        departmentColumns: cols
                     })
                 }
             });
