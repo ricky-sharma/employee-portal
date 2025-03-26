@@ -16,7 +16,7 @@ export class Departments extends Component {
         let url = `/api/Departments`
         WebApi(url, '', 'GET')
             .then(response => {
-                if (response) {
+                if (response && response.length > 0) {
                     let Columns = Object.keys(response[0])
                     let cols = Columns.map((val) => {
                         if (val.toUpperCase() === 'ID')

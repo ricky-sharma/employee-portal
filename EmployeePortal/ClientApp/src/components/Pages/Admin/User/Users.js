@@ -17,7 +17,7 @@ export class Users extends Component {
         let url = `/api/AspNetUserInfoes`
         WebApi(url, '', 'GET')
             .then(response => {
-                if (response != null) {
+                if (response != null && response.length > 0) {
                     let Columns = Object.keys(response[0])
                     let cols = Columns.map((val) => {
                         if (val.toUpperCase() === 'ID' || val.toUpperCase() === 'DOB' || val.toUpperCase() === 'GENDER'

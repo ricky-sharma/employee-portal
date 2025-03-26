@@ -18,7 +18,7 @@ export class Employees extends Component {
         let url = `/api/Employees`
         WebApi(url, '', 'GET')
             .then(response => {
-                if (response) {
+                if (response && response.length > 0) {
                     let Columns = Object.keys(response[0])
                     let cols = Columns.map((val) => {
                         if (val.toUpperCase() === 'EMPLOYEEID')

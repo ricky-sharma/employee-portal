@@ -100,7 +100,7 @@ export class DataGrid extends Component {
         this.setState({
             columns: !IsNull(Columns) ? Columns : null,
             rowsData: RowsData,
-            totalRows: RowsData.length,
+            totalRows: RowsData?.length ?? 0,
             pageRows: !IsNull(PageRows) ? PageRows : RowsData.length,
             currentPageRows: !IsNull(PageRows) ? PageRows : RowsData.length,
             hiddenColIndex: !IsNull(Columns) ? Columns.map((col, key) => {
