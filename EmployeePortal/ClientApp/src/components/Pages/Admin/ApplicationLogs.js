@@ -4,10 +4,11 @@ import { DataGrid } from '../../Core/DataGrid';
 import { useLogService } from './../../Helpers/Logger.ts';
 
 export function ApplicationLogs() {
+    let columns, data = []
     let userLogs = useLogService()
     if (userLogs.status === 'loaded' && !IsNull(userLogs.payload)) {
         let cols = Object.keys(userLogs.payload[0])
-        let columns = cols.map((val) => {
+        columns = cols.map((val) => {
             if (val === 'UserId')
                 return { Name: val, Alias: 'User' }
             else if (val === 'CreatedOn')
@@ -24,7 +25,7 @@ export function ApplicationLogs() {
             else
                 return { Name: val }
         })
-        let data = userLogs.payload.map((resp, k) => {
+        data = userLogs.payload.map((resp, k) => {
             return {
                 ID: !IsNull(resp.ID) ? resp.ID : '',
                 Type: !IsNull(resp.Type) ? resp.Type : '',
@@ -34,22 +35,21 @@ export function ApplicationLogs() {
                 LogMessage: !IsNull(resp.LogMessage) ? resp.LogMessage : ''
             }
         })
-        let options = { EnableColumnSearch: true, EnableGlobalSearch: true }
-        return (
-            <div className="mx-0 px-0">
-                <div className="table-wrapper">
-                    <div className="table-title">
-                        <div className="row nowrap m-0 p-0">
-                            <div className="col-sm-8 p-0 m-0"><h2 className="p-0 m-0">Application <b>Logs</b></h2></div>
-                        </div>
-                    </div>
-                    <div>
-                        <DataGrid Columns={columns} RowsData={data} Options={options} PageRows={20} Height={"500px"} />
+    }
+    let options = { EnableColumnSearch: true, EnableGlobalSearch: true }
+    return (
+        <div className="mx-0 px-0">
+            <div className="table-wrapper">
+                <div className="table-title">
+                    <div className="row nowrap m-0 p-0">
+                        <div className="col-sm-8 p-0 m-0"><h2 className="p-0 m-0">Application <b>Logs</b></h2></div>
                     </div>
                 </div>
-            </div>)
-    }
-    return (<></>)
+                <div>
+                    <DataGrid Columns={columns} RowsData={data} Options={options} PageRows={20} Height={"500px"} />
+                </div>
+            </div>
+        </div>)
 }
 
 export default ApplicationLogs
