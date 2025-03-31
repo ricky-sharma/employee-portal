@@ -362,28 +362,35 @@ namespace EmployeeService.Controllers
         [Route("Register")]
         public async Task<IHttpActionResult> Register(UserInfoViewModel model)
         {
-            if (!ModelState.IsValid)
+            try
             {
-                return BadRequest(ModelState);
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
+
+                var user = new ApplicationUser()
+                {
+                    UserName = model.UserName,
+                    Email = model.Email,
+                    EmailConfirmed = model.Email == model.ConfirmEmail ? true : false,
+                    PhoneNumber = model.Phone,
+                    PhoneNumberConfirmed = model.Phone == model.ConfirmPhone ? true : false
+                };
+
+                IdentityResult result = await UserManager.CreateAsync(user, model.Password);
+
+                if (!result.Succeeded)
+                {
+                    return GetErrorResult(result);
+                }
+
+                return Ok(new { Message = "SUCCESS" });
             }
-
-            var user = new ApplicationUser()
+            catch (Exception ex)
             {
-                UserName = model.UserName,
-                Email = model.Email,
-                EmailConfirmed = model.Email == model.ConfirmEmail ? true : false,
-                PhoneNumber = model.Phone,
-                PhoneNumberConfirmed = model.Phone == model.ConfirmPhone ? true : false
-            };
-
-            IdentityResult result = await UserManager.CreateAsync(user, model.Password);
-
-            if (!result.Succeeded)
-            {
-                return GetErrorResult(result);
+                throw ex;
             }
-
-            return Ok(new { Message = "SUCCESS" });
         }
 
         // POST api/Account/RegisterExternal
@@ -392,31 +399,37 @@ namespace EmployeeService.Controllers
         [Route("RegisterExternal")]
         public async Task<IHttpActionResult> RegisterExternal(RegisterExternalBindingModel model)
         {
-            if (!ModelState.IsValid)
+            try
             {
-                return BadRequest(ModelState);
-            }
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
 
-            var info = await Authentication.GetExternalLoginInfoAsync();
-            if (info == null)
-            {
-                return InternalServerError();
-            }
+                var info = await Authentication.GetExternalLoginInfoAsync();
+                if (info == null)
+                {
+                    return InternalServerError();
+                }
 
-            var user = new ApplicationUser() { UserName = model.Email, Email = model.Email };
+                var user = new ApplicationUser() { UserName = model.Email, Email = model.Email };
 
-            IdentityResult result = await UserManager.CreateAsync(user);
-            if (!result.Succeeded)
-            {
-                return GetErrorResult(result);
-            }
+                IdentityResult result = await UserManager.CreateAsync(user);
+                if (!result.Succeeded)
+                {
+                    return GetErrorResult(result);
+                }
 
-            result = await UserManager.AddLoginAsync(user.Id, info.Login);
-            if (!result.Succeeded)
-            {
-                return GetErrorResult(result);
+                result = await UserManager.AddLoginAsync(user.Id, info.Login);
+                if (!result.Succeeded)
+                {
+                    return GetErrorResult(result);
+                }
+                return Ok();
             }
-            return Ok();
+            catch (Exception ex) {
+                throw ex;
+            }
         }
 
         protected override void Dispose(bool disposing)

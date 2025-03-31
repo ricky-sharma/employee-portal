@@ -129,6 +129,7 @@
       <DependentUpon>DBFirstEntity.edmx</DependentUpon>
       <LastGenOutput>DBFirstEntity.Context.cs</LastGenOutput>
     </Content>
+    <Content Include="DBFirstEntity.edmx.sql" />
     <Content Include="DBFirstEntity.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>DBFirstEntity.edmx</DependentUpon>
