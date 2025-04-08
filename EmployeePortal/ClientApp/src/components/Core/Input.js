@@ -1,7 +1,9 @@
-import DateFnsUtils from '@date-io/date-fns';
-import { FormControl, IconButton, InputLabel, MenuItem, Select, TextField, Checkbox, FormControlLabel, FormHelperText } from '@material-ui/core';
-import ClearIcon from "@material-ui/icons/Clear";
-import { DatePicker, KeyboardDatePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
+import ClearIcon from "@mui/icons-material/Clear";
+import { Checkbox, FormControl, FormControlLabel, FormHelperText, IconButton, InputLabel, MenuItem, Select, TextField } from '@mui/material';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFnsV3';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import React, { Component } from 'react';
 import IsNull from '../Common/Common';
 import '../css/Input.css';
@@ -15,8 +17,8 @@ export class Input extends Component {
         this.inputRef = React.createRef(null);
     }
 
-    componentWillReceiveProps = () => {
-        this.setState((state, props) => ({ value: props.value }))
+    static getDerivedStateFromProps = (props, state) => {
+        return { value: props.value };
     }
 
     shouldComponentUpdate(nextProps, nextStats) {
@@ -59,7 +61,19 @@ export class Input extends Component {
                             label={this.props.label ?? ""}
                             variant={this.props.variant ?? "outlined"}
                             inputRef={this.inputRef}
-                            inputProps={this.props.inputProps}
+                            slotProps={{
+                                htmlInput: this.props.inputProps,
+                                input: {
+                                    endAdornment: (
+                                        <IconButton
+                                            style={{
+                                                "display": (this.state.value === '' ? "none" : "")
+                                            }}
+                                            onClick={this.handleClearClick}>
+                                            <ClearIcon />
+                                        </IconButton>)
+                                }
+                            }}
                             value={this.state.value}
                             required={this.props.required ?? false}
                             error={this.props.error ?? false}
@@ -75,16 +89,6 @@ export class Input extends Component {
                             type={this.props.dataType ?? "text"}
                             placeholder={this.props.placeholder}
                             className={this.props.className ?? ""}
-                            InputProps={{
-                                endAdornment: (
-                                    <IconButton
-                                        style={{
-                                            "display": (this.state.value === '' ? "none" : "")
-                                        }}
-                                        onClick={this.handleClearClick}>
-                                        <ClearIcon />
-                                    </IconButton>)
-                            }}
                             style={{ m: 2, "&.MuiFocused .MuiIconButtonRoot": { color: 'primary.main' } }}
                         />
                     </div>
@@ -92,8 +96,8 @@ export class Input extends Component {
             case 'date':
                 return (
                     <div className={!IsNull(this.props.customClass) ? (this.props.customClass + " customInput") : "customInput"}>
-                        <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                            <KeyboardDatePicker
+                        <LocalizationProvider dateAdapter={AdapterDateFns}>
+                            <DatePicker
                                 disableToolbar={this.props.disableToolbar ?? "false"}
                                 autoOk={this.props.autoOk ?? "true"}
                                 variant={this.props.variant ?? "inline"}
@@ -117,14 +121,16 @@ export class Input extends Component {
                                     'aria-label': 'change date',
                                 }}
                             />
-                        </MuiPickersUtilsProvider>
+                        </LocalizationProvider>
                     </div>
                 );
             case 'dateMonth':
                 return (
                     <div className={!IsNull(this.props.customClass) ? (this.props.customClass + " customInput") : "customInput"}>
-                        <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                            <DatePicker
+                        <LocalizationProvider dateAdapter={AdapterDateFns}>
+                            <DesktopDatePicker
+                                views={['month', 'day']}
+                                format='dd MMMM'
                                 disableToolbar={this.props.disableToolbar ?? "true"}
                                 autoOk={this.props.autoOk ?? "true"}
                                 variant={this.props.variant ?? "inline"}
@@ -154,7 +160,7 @@ export class Input extends Component {
                                         </IconButton>)
                                 }}
                             />
-                        </MuiPickersUtilsProvider>
+                        </LocalizationProvider>
                     </div>);
             case 'select':
                 return (
@@ -196,7 +202,9 @@ export class Input extends Component {
                                         this.props.onChange(e)
                                         : () => { };
                                 }}
-                                inputProps={{ 'aria-label': 'controlled' }}
+                                slotProps={{
+                                    htmlInput: { 'aria-label': 'controlled' }
+                                }}
                                 className={this.props.className ?? ""}
                                 color="default" />
                         }

@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import { DataGrid } from '../../Core/DataGrid';
 import { WebApi } from '../../Helpers/WebApi.ts';
+import { createBrowserHistory } from 'history'
+
+const history = createBrowserHistory();
 
 export class Departments extends Component {
     constructor(props) {
@@ -12,7 +15,7 @@ export class Departments extends Component {
         }
     }
 
-    componentWillMount = () => {
+    componentDidMount = () => {
         let url = `/api/Departments`
         WebApi(url, '', 'GET')
             .then(response => {
@@ -22,7 +25,8 @@ export class Departments extends Component {
                         if (val.toUpperCase() === 'ID')
                             return {
                                 Name: val,
-                                SearchEnable: false
+                                SearchEnable: false,
+                                Hidden: true
                             }
                         else
                             return { Name: val }
@@ -37,11 +41,13 @@ export class Departments extends Component {
     }
 
     handleAddDepartment = () => {
-        this.props.history.push('/AddDepartment')
+        history.push('/AddDepartment')
+        history.go(0)
     }
 
     rowClicked = (e, row) => {
-        this.props.history.push({ pathname: '/EditDepartment', state: row.ID })
+        history.push('/EditDepartment', row.ID )
+        history.go(0)
     }
 
     render() {

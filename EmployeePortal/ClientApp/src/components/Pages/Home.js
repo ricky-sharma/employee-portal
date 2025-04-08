@@ -5,7 +5,9 @@ import '../css/Home.css';
 import GetUserInfo from '../Helpers/GetUserInfo';
 import { WebApi } from '../Helpers/WebApi.ts';
 import { Logger } from './../Helpers/Logger.ts';
+import { createBrowserHistory } from 'history';
 
+const history = createBrowserHistory();
 export class Home extends Component {
     static displayName = Home.name;
     constructor(params) {
@@ -49,7 +51,8 @@ export class Home extends Component {
                                     localStorage.setItem('myUserName', response.Username ?? this.state.loggedInUser)
                                     localStorage.setItem('myFullUserName', response.FullName ?? null)
                                     Logger({ 'LogMessage': 'User LogIn', 'Type': 'UserActivity' });
-                                    this.props.history.push('/Employees')
+                                    history.push('/Employees')
+                                    history.go(0)
                                 }
                             })
                     });

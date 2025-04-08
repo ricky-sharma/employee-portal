@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import { Route, Switch } from 'react-router';
+import { Route, Routes } from 'react-router';
 import { Layout } from './components/Core/Layout';
 import './components/css/Global.css';
-import { RequireAuth } from './components/Helpers/RequireAuth';
+import { RequireAuth, AuthRoutes } from './components/Helpers/RequireAuth';
 import { ApplicationErrors } from './components/Pages/Admin/ApplicationErrors';
 import { ApplicationLogs } from './components/Pages/Admin/ApplicationLogs';
 import { ChangePassword } from './components/Pages/Admin/User/ChangePassword';
@@ -25,25 +25,27 @@ export default class App extends Component {
     render() {
         return (
             <Layout>
-                <Switch>
-                    <Route exact={true} path='/' component={Home} />
-                    <Route exact={true} path='/Employees' component={RequireAuth(Employees)} />
-                    <Route exact={true} path='/Departments' component={RequireAuth(Departments)} />
-                    <Route exact={true} path='/AddDepartment' component={RequireAuth(AddDepartment)} />
-                    <Route exact={true} path='/EditDepartment' component={RequireAuth(EditDepartment)} />
-                    <Route exact={true} path='/AddEmployee' component={RequireAuth(AddEditEmployee)} />
-                    <Route exact={true} path='/EditEmployee' component={RequireAuth(AddEditEmployee)} />
-                    <Route exact={true} path='/UserProfile' component={RequireAuth(UserProfile)} />
-                    <Route exact={true} path='/ChangePassword' component={RequireAuth(ChangePassword)} />
-                    <Route exact={true} path='/ResetPassword' component={RequireAuth(ChangePassword)} />
-                    <Route exact={true} path='/EditUserProfile' component={RequireAuth(EditUserProfile)} />
-                    <Route exact={true} path='/CreateUser' component={RequireAuth(CreateUser)} />
-                    <Route exact={true} path='/Users' component={RequireAuth(Users)} />
-                    <Route exact={true} path='/ApplicationLogs' component={RequireAuth(ApplicationLogs)} />
-                    <Route exact={true} path='/ApplicationErrors' component={RequireAuth(ApplicationErrors)} />
-                    <Route exact={true} path='/Error' component={RequireAuth(ErrorPage)} />
-                    <Route path='/*' component={NotFoundPage} />
-                </Switch>
+                <Routes>
+                    <Route exact={true} path='/' element={<Home />} />
+                    <Route element={<AuthRoutes />}>
+                        <Route exact={true} path='/Employees' element={<Employees />} />
+                        <Route exact={true} path='/Departments' element={<Departments />} />
+                        <Route exact={true} path='/AddDepartment' element={<AddDepartment />} />
+                        <Route exact={true} path='/EditDepartment' element={<EditDepartment />} />
+                        <Route exact={true} path='/AddEmployee' element={<AddEditEmployee />} />
+                        <Route exact={true} path='/EditEmployee' element={<AddEditEmployee />} />
+                        <Route exact={true} path='/UserProfile' element={<UserProfile />} />
+                        <Route exact={true} path='/ChangePassword' element={<ChangePassword />} />
+                        <Route exact={true} path='/ResetPassword' element={<ChangePassword />} />
+                        <Route exact={true} path='/EditUserProfile' element={<EditUserProfile />} />
+                        <Route exact={true} path='/CreateUser' element={<CreateUser />} />
+                        <Route exact={true} path='/Users' element={<Users />} />
+                        <Route exact={true} path='/ApplicationLogs' element={<ApplicationLogs />} />
+                        <Route exact={true} path='/ApplicationErrors' element={<ApplicationErrors />} />
+                        <Route exact={true} path='/Error' element={<ErrorPage />} />
+                    </Route>
+                    <Route path='/*' element={<NotFoundPage />} />
+                </Routes>
             </Layout>
         );
     }

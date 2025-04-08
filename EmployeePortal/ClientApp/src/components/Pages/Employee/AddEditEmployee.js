@@ -1,6 +1,6 @@
 import addMonths from '@jsbits/add-months';
-import { Avatar, IconButton } from '@material-ui/core';
-import { PhotoCamera, RemoveCircle } from '@material-ui/icons';
+import { Avatar, IconButton } from '@mui/material';
+import { PhotoCamera, RemoveCircle } from '@mui/icons-material';
 import addDays from 'add-days';
 import React, { Component } from 'react';
 import validator from 'validator';
@@ -11,6 +11,9 @@ import AlertDialog, { ConfirmDialog } from '../../Core/ModalDialogs';
 import Input from '../../Core/Input';
 import { LoadImage } from '../../Helpers/ImageHelper';
 import { WebApi } from '../../Helpers/WebApi.ts';
+import { createBrowserHistory } from 'history';
+
+const history = createBrowserHistory();
 
 export class AddEditEmployee extends Component {
     constructor(props) {
@@ -380,7 +383,7 @@ export class AddEditEmployee extends Component {
     }
 
     handleBack = () => {
-        return this.props.history.goBack()
+        return history.back()
     }
 
     handleActivateDeactivate = (action) => {
@@ -481,8 +484,8 @@ export class AddEditEmployee extends Component {
     }
 
     render() {
-        if (this.props.location && this.props.location.state)
-            this.id = this.props.location.state
+        if (history.location && history.location.state)
+            this.id = history.location.state
         const GenderOptions = [{ value: "Male", text: "Male" }, { value: "Female", text: "Female" }]
         const EmploymentTypes = [{ value: "FULL TIME", text: "Full Time" }, { value: "PART TIME", text: "Part Time" }, { value: "CASUAL", text: "Casual" },
         { value: "TEMPORARY", text: "Temporary" }]

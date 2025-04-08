@@ -138,7 +138,7 @@ namespace EmployeeService.Controllers
 
         private IQueryable<DepartmentModel> GetDepartments()
         {
-            return db.tblDepartments.Select(i => new DepartmentModel()
+            return db.tblDepartments.Where(i=> i.ID != 1).Select(i => new DepartmentModel()
             {
                 ID = i.ID,
                 Name = i.Name,

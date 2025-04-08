@@ -50,7 +50,7 @@ namespace EmployeeService.Controllers
                         return new
                         {
                             i.ID,
-                            Name = $"{i.FirstName} {i.LastName} ({i.JobTitle})"
+                            Name = i?.JobTitle != string.Empty  ?  $"{i.FirstName} {i.LastName} ({i.JobTitle})" : $"{i.FirstName} {i.LastName}"
                         };
                     });
                 }
@@ -292,7 +292,7 @@ namespace EmployeeService.Controllers
 
         private IEnumerable<object> GetEmployees()
         {
-            return db.tblEmployees.AsEnumerable().Select(i =>
+            return db.tblEmployees.AsEnumerable().Where(i=> i.ID != 1).Select(i =>
             {
                 var empImageMap = db.tblEmployeeImageMaps.Where(x => x.EmployeeId == i.ID && x.Active).FirstOrDefault();
                 var employeeImage = empImageMap != null && db.tblImages.Find(empImageMap.ImageId) != null ?
@@ -304,8 +304,8 @@ namespace EmployeeService.Controllers
                     i.FirstName,
                     i.LastName,
                     i.Email,
-                    Department = i.tblDepartment.Name,
-                    i.tblDepartment.Location,
+                    Department = i.tblDepartment?.Name,
+                    i.tblDepartment?.Location,
                     i.JobTitle,
                     i.JoiningDate,
                     i.EmploymentType,

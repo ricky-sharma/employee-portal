@@ -1,4 +1,4 @@
-import { Button } from "@material-ui/core";
+import { Button } from "@mui/material";
 import { format } from "date-fns";
 import React, { Component } from 'react';
 import { usePromiseTracker } from "react-promise-tracker";
@@ -77,12 +77,13 @@ export class DataGrid extends Component {
     }
 
     shouldComponentUpdate(nextProps, nextStats) {
-        if (nextProps.Columns !== this.props.Columns ||
-            nextProps.RowsData !== this.props.RowsData ||
-            !this.objectsEqual(this.props.Columns, nextProps.Columns) ||
+        if (!this.objectsEqual(this.props.Columns, nextProps.Columns) ||
             !this.objectsEqual(this.props.RowsData, nextProps.RowsData) ||
-            !this.objectsEqual(this.state.Columns, nextStats.Columns) ||
-            !this.objectsEqual(this.state.RowsData, nextStats.RowsData)) {
+            !this.objectsEqual(this.state.columns, nextStats.columns) ||
+            !this.objectsEqual(this.state.rowsData, nextStats.rowsData) ||
+            !this.state.noOfPages, nextStats.noOfPages ||
+            !this.state.lastPageRows, nextStats.lastPageRows ||
+            !this.objectsEqual(this.state.pagerSelectOptions, nextStats.pagerSelectOptions)) {
             return true;
         } else {
             return false;
@@ -90,14 +91,14 @@ export class DataGrid extends Component {
     }
 
     objectsEqual = (o1, o2) =>
-        !IsNull(o1) && !IsNull(o2) &&
+        (IsNull(o1) && IsNull(o2)) || (!IsNull(o1) && !IsNull(o2) &&
         Object.keys(o1).length === Object.keys(o2).length
-        && Object.keys(o1).every(p => o1[p] === o2[p]);
+        && Object.keys(o1).every(p => o1[p] === o2[p]));
 
 
-    componentWillReceiveProps = (nextProps) => {
+    static getDerivedStateFromProps = (nextProps) => {
         const { Columns, RowsData, PageRows } = nextProps
-        this.setState({
+        return {
             columns: !IsNull(Columns) ? Columns : null,
             rowsData: RowsData,
             totalRows: RowsData?.length ?? 0,
@@ -130,14 +131,19 @@ export class DataGrid extends Component {
                 else
                     return null;
             }) : null
-        }, () => {
-            this.dataRecieved = this.state.rowsData
-            this.setPagingVariables()
-        })
+        }
     }
 
-    componentWillMount = () => {
+    componentDidMount = () => {
+        this.dataRecieved = this.state.rowsData
         this.setPagingVariables()
+    }
+
+    componentDidUpdate(prevProps, prevState) {
+        if (!this.objectsEqual(this.props.RowsData, prevProps.RowsData) ||
+            !this.objectsEqual(this.state.rowsData, prevState.rowsData)) {
+            this.setPagingVariables()
+        }
     }
 
     setPagingVariables = () => {

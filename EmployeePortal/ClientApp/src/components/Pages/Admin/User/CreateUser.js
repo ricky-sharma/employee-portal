@@ -6,6 +6,9 @@ import "react-datepicker/dist/react-datepicker.css";
 import AlertMessage from '../../../Core/AlertMessage';
 import moment from 'moment';
 import "../../../css/User.css";
+import { createBrowserHistory } from 'history';
+
+const history = createBrowserHistory();
 
 export class CreateUser extends Component {
 
@@ -126,7 +129,10 @@ export class CreateUser extends Component {
                             .then(response => {
                                 if (response) {
                                     if (response.Message && response.Message === 'SUCCESS')
-                                        this.props.history.push('/Users')
+                                    {
+                                        history.push('/Users')
+                                        history.go(0)
+                                    }
                                     else
                                         this.setState({
                                             showAlert: true, alertType: 'danger', message: response
@@ -143,7 +149,7 @@ export class CreateUser extends Component {
     }
 
     handleBack = () => {
-        return this.props.history.goBack()
+        return history.back()
     }
 
     render() {

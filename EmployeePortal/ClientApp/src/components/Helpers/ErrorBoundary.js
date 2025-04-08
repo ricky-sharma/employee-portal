@@ -1,7 +1,9 @@
+import { createBrowserHistory } from 'history';
 import { Component } from 'react';
-import { withRouter } from "react-router";
 import IsNull from '../Common/Common';
 import { WebApi } from '../Helpers/WebApi.ts';
+
+const history = createBrowserHistory();
 
 export class ErrorBoundary extends Component {
     constructor(props) {
@@ -28,8 +30,8 @@ export class ErrorBoundary extends Component {
         var errorData = { "Error": '"' + error + '"', "ErrorInfo": JSON.stringify(errorInfo) }
         WebApi('/api/Error', JSON.stringify(errorData)).then(resp => {
             if (!IsNull(resp) && resp.Message === 'SUCCESS') {
-                this.props.history.push({ pathname: '/Error', state: resp.ErrorCode })
-                this.props.history.go()
+                history.push('/Error', resp.ErrorCode)
+                history.go(0)
             }
         });
     }
@@ -42,4 +44,4 @@ export class ErrorBoundary extends Component {
     }
 }
 
-export default withRouter(ErrorBoundary)
+export default ErrorBoundary
