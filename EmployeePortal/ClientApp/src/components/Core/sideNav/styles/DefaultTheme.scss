@@ -1,0 +1,66 @@
+﻿// Styling
+.side-nav.default-theme {
+    background-color: #2f4050;
+
+    .side-nav-item-title, .side-nav-item-link {
+        display: block;
+        font-size: 0.8125rem;
+        font-weight: 600;
+        color: #a7b1c2;
+        text-decoration: none;
+
+        &:active, &:focus, &:hover {
+            color: #a7b1c2;
+            text-decoration: none;
+        }
+
+        &:hover {
+            color: white;
+            background-color: #293846;
+        }
+    }
+
+    .side-nav-item {
+        position: relative;
+
+        &.active, &.expanded {
+            background-color: #293846;
+
+            &.level-0, &.level-1, &.level-2 {
+                > .side-nav-item-title, > .side-nav-item-link {
+                    color: white;
+                }
+            }
+        }
+    }
+
+    .side-nav-item.level-0 {
+        .side-nav-item-title, .side-nav-item-link {
+            padding: 0.9375rem 1.25rem 0.9375rem 1.5625rem;
+        }
+    }
+
+    .side-nav-item.level-1 {
+        .side-nav-item-title, .side-nav-item-link {
+            padding: 0.4375rem 0.625rem 0.4375rem 3.125rem;
+        }
+    }
+
+    .side-nav-item.level-2 {
+        .side-nav-item-title, .side-nav-item-link {
+            padding: 0.4375rem 0.625rem 0.4375rem 4.6875rem;
+        }
+    }
+
+    .side-nav-chevron {
+        font-size: 0.5625rem;
+        display: inline-block;
+        position: absolute;
+        right: 1.25rem;
+        top: 1.125rem;
+    }
+
+    .side-nav-icon {
+        margin-right: 0.625rem;
+    }
+}

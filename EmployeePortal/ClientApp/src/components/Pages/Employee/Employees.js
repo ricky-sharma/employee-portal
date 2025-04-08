@@ -4,6 +4,9 @@ import IsNull, { IsDev } from '../../Common/Common';
 import { DataGrid } from '../../Core/DataGrid';
 import { LoadImage } from '../../Helpers/ImageHelper';
 import { WebApi } from '../../Helpers/WebApi.ts';
+import { createBrowserHistory } from 'history';
+
+const history = createBrowserHistory();
 
 export class Employees extends Component {
     constructor(props) {
@@ -14,7 +17,7 @@ export class Employees extends Component {
         }
     }
 
-    componentWillMount = () => {
+    componentDidMount = () => {
         let url = `/api/Employees`
         WebApi(url, '', 'GET')
             .then(response => {
@@ -72,11 +75,13 @@ export class Employees extends Component {
     }
 
     handleAddEmployee = () => {
-        this.props.history.push('/AddEmployee')
+        history.push('/AddEmployee')
+        history.go(0)
     }
 
     rowClicked = (e, row) => {
-        this.props.history.push({ pathname: '/EditEmployee', state: row.ID })
+        history.push('/EditEmployee', row.ID)
+        history.go(0)
     }
 
     rowHover = (e, row) => {

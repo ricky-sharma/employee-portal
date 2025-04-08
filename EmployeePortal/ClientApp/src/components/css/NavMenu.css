@@ -1,5 +1,5 @@
 ﻿a.navbar-brand {
-    white-space: normal;
+    white-space: normal !important;
     word-break: break-all !important;
     height: 35px !important;
 }
@@ -25,7 +25,7 @@
 }
 
 .box-shadow {
-    box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
+    box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05) !important;
 }
 
 nav.border-bottom {
@@ -40,7 +40,16 @@ nav.border-bottom {
     line-height: 0px !important;
     margin-top: 5px !important;
     padding: 10px !important;
+    color: #fff !important;
+    background-color: #6c757d !important;
+    border-color: #51585e !important;
 }
+
+    .button-signout:hover {
+        color: #fff !important;
+        background-color: #565e64 !important;
+        border-color: #51585e !important;
+    }
 
 .margin-rt10 {
     margin-right: 10px;
@@ -56,7 +65,7 @@ nav.border-bottom {
 
 .theme1 {
     /*background-color: rgb(89, 171, 248);*/
-    background-image: linear-gradient(to left, rgb(89, 171, 248), rgb(84, 129, 160));
+    background-image: linear-gradient(to left, rgb(89, 171, 248), rgb(84, 129, 160)) !important;
 }
 
 .justifycontent-normal {
@@ -83,9 +92,9 @@ nav.border-bottom {
 }
 
 .alignCenter {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
 }
 
 @media (min-width: 241px) and (max-width: 360px) {

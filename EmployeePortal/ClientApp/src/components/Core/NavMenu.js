@@ -1,6 +1,6 @@
 import { faPowerOff } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import Tooltip from '@material-ui/core/Tooltip';
+import Tooltip from '@mui/material/Tooltip';
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { Collapse, DropdownItem, DropdownMenu, DropdownToggle, Navbar, NavbarBrand, NavbarToggler, NavItem, NavLink, UncontrolledDropdown } from 'reactstrap';
@@ -14,7 +14,8 @@ export class NavMenu extends Component {
         this.toggleNavbar = this.toggleNavbar.bind(this);
         this.state = {
             collapsed: true,
-            IsButtonClicked: false
+            IsButtonClicked: false,
+            loggedOut: false
         };
     }
 
@@ -27,6 +28,9 @@ export class NavMenu extends Component {
 
     handleSignOut = () => {
         localStorage.removeItem('myToken')
+        this.setState({
+            loggedOut: true
+        })
     }
 
     userProfileName = () => {
@@ -47,7 +51,6 @@ export class NavMenu extends Component {
     render() {
         let User, SignOut;
         const isLoggedIn = localStorage.getItem("myToken");
-
         SignOut = <NavLink tag={Link} type="button" onClick={this.handleSignOut} to="/" className="btn btn-secondary button-signout margin-rt10 float-rt m-0"><FontAwesomeIcon icon={faPowerOff} /></NavLink>
         User = <NavLink tag={Link} tooltip="Log Out" className="text-white m-0 p-0" to='/UserProfile'>{this.userProfileName()}</NavLink>
 
@@ -61,8 +64,8 @@ export class NavMenu extends Component {
                                     <b>Employee Portal</b>
                                 </h1>
                             </NavbarBrand>
-                            <NavbarToggler onClick={this.toggleNavbar} className={(!isLoggedIn ? "d-none mb-4 mt-2" : "mb-4 mt-2")} />
-                            <Collapse className={"d-sm-inline-flex flex-sm-row-reverse boxshadow " + (!isLoggedIn ? "d-none" : "")} isOpen={!this.state.collapsed} navbar>
+                            <NavbarToggler onClick={this.toggleNavbar} style={{ width: 'auto' }} className={(!isLoggedIn ? "d-none mb-4 mt-2" : "mb-4 mt-2")} />
+                            <Collapse style={{maxWidth:'95%'}} className={"d-sm-inline-flex flex-sm-row-reverse boxshadow " + (!isLoggedIn ? "d-none" : "")} isOpen={!this.state.collapsed} navbar>
                                 <ul className={"navbar-nav flex-grow ml-1 " + (!isLoggedIn ? "d-none" : "")}>
                                     <NavItem className="text-black padding-5 dropdown">
                                         <NavLink tag={Link} className="text-black d-none d-md-block d-lg-block d-xl-block" to="/"><b>Home</b></NavLink>
@@ -136,7 +139,7 @@ export class NavMenu extends Component {
                         </div>
                         <div className="row col-12 p-0 m-0 pt-2" style={{ height: "50%" }}>
                             <div className="col-lg-8 col-md-9 col-10 p-0 m-0"><small><Tooltip
-                                title="Logout" placement="bottom">{SignOut}</Tooltip></small></div>
+                                title="Logout" placement="left-start" ><div>{SignOut}</div></Tooltip></small></div>
                         </div>
                     </div>
                 </div>

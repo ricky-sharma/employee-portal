@@ -1,12 +1,19 @@
 import React from 'react'
-import { Redirect } from 'react-router-dom';
+import { Navigate, Outlet } from 'react-router-dom';
 
 const RequireAuth = (Component) => (props) => {
     const IsLoggedIn = localStorage.getItem('myToken');
     if (!IsLoggedIn) {
-        return <Redirect to='/' />
+        return <Navigate to='/' />
     }
     return <Component {...props} />
 }
 
 export { RequireAuth }
+
+export const AuthRoutes = () => {
+    let auth = { 'token': localStorage.getItem('myToken') }
+    return (
+        auth.token !== null ? <Outlet /> : <Navigate to='/' />
+    )
+}

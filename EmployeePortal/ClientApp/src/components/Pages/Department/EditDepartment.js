@@ -2,8 +2,12 @@ import React, { Component } from 'react';
 import AlertMessage from '../../Core/AlertMessage';
 import { WebApi } from '../../Helpers/WebApi.ts';
 import { Container } from 'reactstrap';
-import { Prompt, Redirect } from "react-router-dom";
+import { unstable_usePrompt, Navigate } from "react-router-dom";
 import AlertDialog from '../../Core/ModalDialogs';
+import { createBrowserHistory } from 'history';
+
+
+const history = createBrowserHistory();
 
 export class EditDepartment extends Component {
     constructor(props) {
@@ -88,7 +92,8 @@ export class EditDepartment extends Component {
     }
 
     handleBack = () => {
-        return this.props.history.push('/Departments')
+        history.push('/Departments')
+        history.go(0)
     }
 
     handlePrompt = () => {
@@ -108,12 +113,11 @@ export class EditDepartment extends Component {
     render() {
         const user = localStorage.getItem("myUserName")
         const { Name, Location, showAlert, alertType, message, readOnly } = this.state
-
-        if (this.props.location && this.props.location.state)
-            this.id = this.props.location.state
+        if (history.location && history.location.state)
+            this.id = history.location.state
 
         if ((!this.id || this.id === 0) && !localStorage.getItem("id" + user)) {
-            return <Redirect to='/Departments' />
+            return <Navigate to='/Departments' />
         }
 
         const SuccessMessage = "Department has been edited successfully."
@@ -130,7 +134,7 @@ export class EditDepartment extends Component {
 
         return (
             <div>
-                <Prompt when={this.state.isBlocking} message={this.handlePrompt} />
+                <unstable_usePrompt when={this.state.isBlocking} message={this.handlePrompt} />
                 <Container className="border">
                     <h4 className="mt-2 mb-5">
                         <b>Edit - Department</b>

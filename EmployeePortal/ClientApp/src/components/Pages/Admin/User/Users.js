@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import { DataGrid } from '../../../Core/DataGrid';
 import { WebApi } from '../../../Helpers/WebApi.ts';
+import { createBrowserHistory } from 'history';
+
+const history = createBrowserHistory();
 
 export class Users extends Component {
 
@@ -51,15 +54,18 @@ export class Users extends Component {
     }
 
     handleAddUser = () => {
-        this.props.history.push('/CreateUser')
+        history.push('/CreateUser')
+        history.go(0)
     }
 
     rowClicked = (e, row) => {
-        this.props.history.push({ pathname: '/EditUserProfile', state: row.UserId })
+        history.push('/EditUserProfile', row.UserId)
+        history.go(0)
     }
 
     Type1ButtonClicked = (e, row) => {
-        this.props.history.push({ pathname: '/ResetPassword', state: row.UserId })
+        history.push('/ResetPassword', row.UserId)
+        history.go(0)
     }
 
     render() {

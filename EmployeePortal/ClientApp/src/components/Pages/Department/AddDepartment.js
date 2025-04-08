@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import AlertMessage from '../../Core/AlertMessage';
 import { WebApi } from '../../Helpers/WebApi.ts';
+import { createBrowserHistory } from 'history';
+
+const history = createBrowserHistory();
 
 export class AddDepartment extends Component {
     constructor(props) {
@@ -31,7 +34,7 @@ export class AddDepartment extends Component {
     }
 
     handleBack = () => {
-        return this.props.history.goBack()
+        return history.back()
     }
 
     render() {

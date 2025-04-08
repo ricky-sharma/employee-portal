@@ -2,6 +2,9 @@ import React, { Component } from 'react'
 import { WebApi } from '../../../Helpers/WebApi.ts';
 import ParseError from '../../../Helpers/ParseError';
 import AlertMessage from '../../../Core/AlertMessage';
+import { createBrowserHistory } from 'history';
+
+const history = createBrowserHistory();
 
 export class ChangePassword extends Component {
     constructor(props) {
@@ -64,14 +67,14 @@ export class ChangePassword extends Component {
     }
 
     handleBack = () => {
-        return this.props.history.goBack()
+        return history.back()
     }
 
     render() {
         let title = "Change Password"
 
-        if (this.props.location && this.props.location.state)
-            this.id = this.props.location.state
+        if (history.location && history.location.state)
+            this.id = history.location.state
 
         if (this.id !== 0)
             title = "Reset Password"

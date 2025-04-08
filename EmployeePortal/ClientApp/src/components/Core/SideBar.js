@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import { SideNav } from 'react-side-nav';
+import SideNav from './sideNav/SideNav';
 import '../css/SideNavMenu.css';
 
 const NavLink = props => (<Link to={props.to} {...props}><i className={`fa ${props.icon}`} />{props.label}</Link>);

@@ -7,6 +7,9 @@ import "react-datepicker/dist/react-datepicker.css";
 import AlertMessage from '../../../Core/AlertMessage';
 import AlertDialog from '../../../Core/ModalDialogs';
 import moment from 'moment';
+import { createBrowserHistory } from 'history';
+
+const history = createBrowserHistory();
 
 export class EditUserProfile extends Component {
     constructor(props) {
@@ -139,20 +142,20 @@ export class EditUserProfile extends Component {
             })
             .then(response => {
                 if (response === true)
-                    return this.props.history.goBack()
+                    return history.back()
             });
     }
 
     handleBack = () => {
-        return this.props.history.goBack()
+        return history.back()
     }
 
     render() {
         const GenderOptions = [<option key="1" value="Male">Male</option>,
         <option key="2" value="Female">Female</option>];
 
-        if (this.props.location && this.props.location.state)
-            this.id = this.props.location.state
+        if (history.location && history.location.state)
+            this.id = history.location.state
 
         const { Email, FirstName, LastName, Gender, DOB, Phone, ConfirmPhone, ConfirmEmail, showAlert, alertType, message } = this.state
 

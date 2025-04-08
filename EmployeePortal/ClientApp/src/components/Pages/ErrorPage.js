@@ -1,12 +1,15 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import * as Constants from '../../Constants';
+import { createBrowserHistory } from 'history';
+
+const history = createBrowserHistory();
 
 export class ErrorPage extends Component {
 
     render() {
-        if (this.props.location && this.props.location.state)
-            this.id = this.props.location.state
+        if (history.location && history.location.state)
+            this.id = history.location.state
         return (
             <div>
                 <h4>{Constants.ErrorHeading}</h4>

@@ -188,8 +188,8 @@ CREATE TABLE [dbo].[C__MigrationHistory] (
 );
 GO
 
--- Creating table 'tblAddresses'
-CREATE TABLE [dbo].[tblAddresses] (
+-- Creating table 'tblAddress'
+CREATE TABLE [dbo].[tblAddress] (
     [AddressId] uniqueidentifier  NOT NULL,
     [HouseNumber] nvarchar(max)  NULL,
     [StreetAddress] nvarchar(max)  NULL,
@@ -234,8 +234,8 @@ CREATE TABLE [dbo].[tblLogs] (
 );
 GO
 
--- Creating table 'tblEmployeeImageMaps'
-CREATE TABLE [dbo].[tblEmployeeImageMaps] (
+-- Creating table 'tblEmployeeImageMap'
+CREATE TABLE [dbo].[tblEmployeeImageMap] (
     [EmployeeId] int  NOT NULL,
     [ImageId] uniqueidentifier  NOT NULL,
     [Active] bit  NOT NULL,
@@ -335,9 +335,9 @@ ADD CONSTRAINT [PK_C__MigrationHistory]
     PRIMARY KEY CLUSTERED ([MigrationId], [ContextKey] ASC);
 GO
 
--- Creating primary key on [AddressId] in table 'tblAddresses'
-ALTER TABLE [dbo].[tblAddresses]
-ADD CONSTRAINT [PK_tblAddresses]
+-- Creating primary key on [AddressId] in table 'tblAddress'
+ALTER TABLE [dbo].[tblAddress]
+ADD CONSTRAINT [PK_tblAddress]
     PRIMARY KEY CLUSTERED ([AddressId] ASC);
 GO
 
@@ -359,9 +359,9 @@ ADD CONSTRAINT [PK_tblLogs]
     PRIMARY KEY CLUSTERED ([ID] ASC);
 GO
 
--- Creating primary key on [ID] in table 'tblEmployeeImageMaps'
-ALTER TABLE [dbo].[tblEmployeeImageMaps]
-ADD CONSTRAINT [PK_tblEmployeeImageMaps]
+-- Creating primary key on [ID] in table 'tblEmployeeImageMap'
+ALTER TABLE [dbo].[tblEmployeeImageMap]
+ADD CONSTRAINT [PK_tblEmployeeImageMap]
     PRIMARY KEY CLUSTERED ([ID] ASC);
 GO
 
@@ -432,8 +432,8 @@ ON [dbo].[AspNetUserLogins]
     ([UserId]);
 GO
 
--- Creating foreign key on [CreatedBy] in table 'tblAddresses'
-ALTER TABLE [dbo].[tblAddresses]
+-- Creating foreign key on [CreatedBy] in table 'tblAddress'
+ALTER TABLE [dbo].[tblAddress]
 ADD CONSTRAINT [FK_tblAddress_AspNetUsers]
     FOREIGN KEY ([CreatedBy])
     REFERENCES [dbo].[AspNetUsers]
@@ -443,12 +443,12 @@ GO
 
 -- Creating non-clustered index for FOREIGN KEY 'FK_tblAddress_AspNetUsers'
 CREATE INDEX [IX_FK_tblAddress_AspNetUsers]
-ON [dbo].[tblAddresses]
+ON [dbo].[tblAddress]
     ([CreatedBy]);
 GO
 
--- Creating foreign key on [UpdateBy] in table 'tblAddresses'
-ALTER TABLE [dbo].[tblAddresses]
+-- Creating foreign key on [UpdateBy] in table 'tblAddress'
+ALTER TABLE [dbo].[tblAddress]
 ADD CONSTRAINT [FK_tblAddress_AspNetUsers1]
     FOREIGN KEY ([UpdateBy])
     REFERENCES [dbo].[AspNetUsers]
@@ -458,7 +458,7 @@ GO
 
 -- Creating non-clustered index for FOREIGN KEY 'FK_tblAddress_AspNetUsers1'
 CREATE INDEX [IX_FK_tblAddress_AspNetUsers1]
-ON [dbo].[tblAddresses]
+ON [dbo].[tblAddress]
     ([UpdateBy]);
 GO
 
@@ -531,8 +531,8 @@ ON [dbo].[tblImages]
     ([CreatedBy]);
 GO
 
--- Creating foreign key on [ImageId] in table 'tblEmployeeImageMaps'
-ALTER TABLE [dbo].[tblEmployeeImageMaps]
+-- Creating foreign key on [ImageId] in table 'tblEmployeeImageMap'
+ALTER TABLE [dbo].[tblEmployeeImageMap]
 ADD CONSTRAINT [FK_tblEmployeeImageMap_tblImages]
     FOREIGN KEY ([ImageId])
     REFERENCES [dbo].[tblImages]
@@ -542,7 +542,7 @@ GO
 
 -- Creating non-clustered index for FOREIGN KEY 'FK_tblEmployeeImageMap_tblImages'
 CREATE INDEX [IX_FK_tblEmployeeImageMap_tblImages]
-ON [dbo].[tblEmployeeImageMaps]
+ON [dbo].[tblEmployeeImageMap]
     ([ImageId]);
 GO
 
@@ -580,7 +580,7 @@ GO
 ALTER TABLE [dbo].[tblEmployees]
 ADD CONSTRAINT [FK_tblEmployees_tblAddress]
     FOREIGN KEY ([ResidentialAddress])
-    REFERENCES [dbo].[tblAddresses]
+    REFERENCES [dbo].[tblAddress]
         ([AddressId])
     ON DELETE NO ACTION ON UPDATE NO ACTION;
 GO
@@ -595,7 +595,7 @@ GO
 ALTER TABLE [dbo].[tblEmployees]
 ADD CONSTRAINT [FK_tblEmployees_tblAddress1]
     FOREIGN KEY ([PostalAddress])
-    REFERENCES [dbo].[tblAddresses]
+    REFERENCES [dbo].[tblAddress]
         ([AddressId])
     ON DELETE NO ACTION ON UPDATE NO ACTION;
 GO
@@ -621,8 +621,8 @@ ON [dbo].[tblEmployees]
     ([Department]);
 GO
 
--- Creating foreign key on [EmployeeId] in table 'tblEmployeeImageMaps'
-ALTER TABLE [dbo].[tblEmployeeImageMaps]
+-- Creating foreign key on [EmployeeId] in table 'tblEmployeeImageMap'
+ALTER TABLE [dbo].[tblEmployeeImageMap]
 ADD CONSTRAINT [FK_tblEmployeeImageMap_tblEmployees]
     FOREIGN KEY ([EmployeeId])
     REFERENCES [dbo].[tblEmployees]
@@ -632,7 +632,7 @@ GO
 
 -- Creating non-clustered index for FOREIGN KEY 'FK_tblEmployeeImageMap_tblEmployees'
 CREATE INDEX [IX_FK_tblEmployeeImageMap_tblEmployees]
-ON [dbo].[tblEmployeeImageMaps]
+ON [dbo].[tblEmployeeImageMap]
     ([EmployeeId]);
 GO
 
@@ -661,6 +661,14 @@ GO
 INSERT [dbo].[AspNetUsers] ([Id], [Email], [EmailConfirmed], [PasswordHash], [SecurityStamp], [PhoneNumber], [PhoneNumberConfirmed], [TwoFactorEnabled], [LockoutEndDateUtc], [LockoutEnabled], [AccessFailedCount], [UserName]) VALUES (N'fa556710-4ecd-4a9a-a3d0-6b91cedbce96', N'admin@admin.com', 1, N'ADUrlnCjHu8o/uhBbEmvLMW1JITwL9FgG+855qUAzyQ4yrAnPoWcKCrSbizJoC4pEA==', N'518d5e67-ad4a-4b01-81ce-72fd1f47d6e6', N'0000000000', 1, 0, NULL, 0, 0, N'admin')
 GO
 INSERT [dbo].[AspNetUserInfo] ([Id], [FirstName], [LastName], [Gender], [DOB], [UsersId]) VALUES (N'3282674d-98da-47d3-afb5-9d578bb827ad', N'Admin', N'User', N'Male', CAST(N'1970-01-01T00:00:00.000' AS DateTime), N'fa556710-4ecd-4a9a-a3d0-6b91cedbce96')
+GO
+
+-- Adding default Department
+INSERT INTO [dbo].[tblDepartments] ([Name], [Location]) VALUES ('None', 'Not Applicable')
+GO
+
+-- Adding default Employee
+INSERT INTO [dbo].[tblEmployees] ([FirstName], [LastName], [Gender], [Salary], [Department], [JobTitle], [JoiningDate], [LeavingDate], [DateofBirth], [Mobile], [HomePhone], [Email], [ProfessionalProfile], [EmploymentType], [EducationQualification], [IdentificationDocument], [IdentificationNumber], [IsActive], [InService], [CreatedOn], [CreatedBy], [UpdatedOn], [UpdatedBy], [ResidentialAddress], [PostalAddress], [EmployeeID], [SupervisorID]) VALUES ('None', '', 'Not Applicable', 0, 1, '', '01-01-1901', Null, Null, Null, Null, Null, Null, Null, Null, Null, Null, 1, 1, Null, Null, Null, Null, Null, Null, '0', Null)
 GO
 
 
