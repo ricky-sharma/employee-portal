@@ -48,7 +48,7 @@ export class UserProfile extends Component {
     }
 
     handleEditUser = () => {
-        history.push('/EditUserProfile')
+        history.push('/EditUser')
         history.go(0)
     }
 

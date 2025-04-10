@@ -10,6 +10,10 @@
     margin-left: 0px !important;
 }
 
+.MuiInputLabel-root {
+    line-height: 1.1em !important;
+}
+
 .MuiInputBase-input {
     width: 100% !important;
 }
@@ -27,7 +31,7 @@
 }
 
 .MuiSvgIcon-root {
-    font-size: 0.8rem !important;
+    font-size: 1.5rem !important;
 }
 
 .MuiPickersCalendarHeader-switchHeader .MuiSvgIcon-root, .customDate .MuiSvgIcon-root,

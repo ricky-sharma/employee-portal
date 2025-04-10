@@ -700,12 +700,12 @@ label.uploadPicture .MuiAvatar-img {
 
 @media (max-width: 1700px) {
     .container, .container-lg, .container-md, .container-sm, .container-xl {
-        max-width: 85% !important;
+        max-width: 75% !important;
     }
 }
 
 @media (min-width: 1701px) {
     .container, .container-lg, .container-md, .container-sm, .container-xl {
-        max-width: 1490px !important;
+        max-width: 1450px !important;
     }
 }

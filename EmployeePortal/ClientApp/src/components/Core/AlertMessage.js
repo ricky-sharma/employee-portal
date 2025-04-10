@@ -8,9 +8,8 @@ function AlertMessage(props) {
         className = "d-none"
 
     return (
-        <div className={className}>
-            <div className="col-lg-2"></div>
-            <div className="col-12 col-lg-8 margin-top-75">
+        <div className={'alignCenter ' + className}>
+            <div className="col-8">
                 <Alert className="txt-center opacity-100" color={type}> {message} </Alert>
             </div>
         </div>
