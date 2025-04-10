@@ -1,12 +1,11 @@
-import React, { Component } from 'react'
-import { WebApi } from '../../../Helpers/WebApi.ts';
-import { Container } from 'reactstrap';
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
-import AlertMessage from '../../../Core/AlertMessage';
-import moment from 'moment';
-import "../../../css/User.css";
 import { createBrowserHistory } from 'history';
+import moment from 'moment';
+import React, { Component } from 'react';
+import { Container } from 'reactstrap';
+import AlertMessage from '../../../Core/AlertMessage';
+import Input from '../../../Core/Input';
+import "../../../css/User.css";
+import { WebApi } from '../../../Helpers/WebApi.ts';
 
 const history = createBrowserHistory();
 
@@ -264,7 +263,7 @@ export class CreateUser extends Component {
                                 <label>Date of Birth</label>
                             </div>
                             <div className="col-4">
-                                <DatePicker placeholderText="dd/MM/yyyy" dateFormat="dd/MM/yyyy" selected={DOB} onChange={this.handleChangeDOB} />
+                                <Input type="date" maxDate={new Date()} value={DOB} onChange={this.handleChangeDOB} customClass="fullWidth customDate" />
                             </div>
                         </div>
                         <div className="row  p-2">

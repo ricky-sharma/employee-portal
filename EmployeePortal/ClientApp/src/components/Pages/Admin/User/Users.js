@@ -59,7 +59,7 @@ export class Users extends Component {
     }
 
     rowClicked = (e, row) => {
-        history.push('/EditUserProfile', row.UserId)
+        history.push('/EditUser', row.UserId)
         history.go(0)
     }
 

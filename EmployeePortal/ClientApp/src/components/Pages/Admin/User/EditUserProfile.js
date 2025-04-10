@@ -1,13 +1,12 @@
-import React, { Component } from 'react'
-import { WebApi } from '../../../Helpers/WebApi.ts';
-import GetUserInfo from '../../../Helpers/GetUserInfo';
-import { Container } from 'reactstrap';
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
-import AlertMessage from '../../../Core/AlertMessage';
-import AlertDialog from '../../../Core/ModalDialogs';
-import moment from 'moment';
 import { createBrowserHistory } from 'history';
+import moment from 'moment';
+import React, { Component, createRef } from 'react';
+import { Container } from 'reactstrap';
+import AlertMessage from '../../../Core/AlertMessage';
+import Input from '../../../Core/Input';
+import AlertDialog from '../../../Core/ModalDialogs';
+import GetUserInfo from '../../../Helpers/GetUserInfo';
+import { WebApi } from '../../../Helpers/WebApi.ts';
 
 const history = createBrowserHistory();
 
@@ -33,7 +32,7 @@ export class EditUserProfile extends Component {
             alertType: '',
             message: '',
         }
-
+        this.dateRef = createRef(null)
         this.prevEmail = ''
         this.prevPhone = ''
         this.id = 0;
@@ -47,7 +46,9 @@ export class EditUserProfile extends Component {
                         UserName: response.UserName ? response.UserName : "",
                         UserId: response.UserId ? response.UserId : "",
                         Email: response.Email ? response.Email : "",
+                        ConfirmEmail: response.Email ? response.Email : "",
                         Phone: response.Phone ? response.Phone : "",
+                        ConfirmPhone: response.Phone ? response.Phone : "",
                         Id: response.Id,
                         FirstName: response.FirstName,
                         LastName: response.LastName,
@@ -64,10 +65,10 @@ export class EditUserProfile extends Component {
     handleChangeEmail = (e) => {
         this.setState({ Email: e.target.value }, () => {
             if (this.state.Email && this.state.Email !== this.prevEmail) {
-                this.setState({ ShowConfirmEmail: true })
+                this.setState({ ShowConfirmEmail: true, ConfirmEmail: '' }, () => { })
             }
             else {
-                this.setState({ ShowConfirmEmail: false })
+                this.setState({ ShowConfirmEmail: false, ConfirmEmail: this.prevEmail }, () => { })
             }
         })
     }
@@ -75,10 +76,10 @@ export class EditUserProfile extends Component {
     handleChangePhone = (e) => {
         this.setState({ Phone: e.target.value }, () => {
             if (this.state.Phone && this.state.Phone !== this.prevPhone) {
-                this.setState({ ShowConfirmPhone: true })
+                this.setState({ ShowConfirmPhone: true, ConfirmPhone: '' }, () => { })
             }
             else {
-                this.setState({ ShowConfirmPhone: false })
+                this.setState({ ShowConfirmPhone: false, ConfirmPhone: this.prevPhone }, () => { })
             }
         })
     }
@@ -90,10 +91,29 @@ export class EditUserProfile extends Component {
         });
     };
 
-    handleSubmit = () => {
+    handleSubmit = (e) => {
+        e.preventDefault()
         if (this.state.FirstName === '' || this.state.LastName === '' || this.state.Gender === 'select'
-            || this.state.DOB === '' || this.state.Phone === '' || this.state.Email === '') {
-            return this.setState({ showAlert: true, alertType: "danger" })
+            || this.state.DOB === '' || this.state.Phone === '' || this.state.Email === ''
+            || this.dateRef?.current?.value === 'DD/MM/YYYY') {
+            this.setState({ showAlert: true, alertType: "danger" })
+            return false;
+        }
+
+        if (this.state.Phone !== '' && this.state.Phone !== this.state.ConfirmPhone) {
+            this.setState({
+                showAlert: true, alertType: "danger",
+                message: 'Phone and Confirm Phone fields should be same, please provide valid input!'
+            })
+            return false;
+        }
+
+        if (this.state.Email !== '' && this.state.Email !== this.state.ConfirmEmail) {
+            this.setState({
+                showAlert: true, alertType: "danger",
+                message: 'Email and Confirm Email fields should be same, please provide valid input!'
+            })
+            return false;
         }
 
         let userInforViewModel =
@@ -151,13 +171,13 @@ export class EditUserProfile extends Component {
     }
 
     render() {
-        const GenderOptions = [<option key="1" value="Male">Male</option>,
-        <option key="2" value="Female">Female</option>];
+        const GenderOptions = [{ value: "Male", text: "Male" }, { value: "Female", text: "Female" }]
 
         if (history.location && history.location.state)
             this.id = history.location.state
 
-        const { Email, FirstName, LastName, Gender, DOB, Phone, ConfirmPhone, ConfirmEmail, showAlert, alertType, message } = this.state
+        const { Email, FirstName, LastName, Gender, DOB, Phone, ConfirmPhone, ConfirmEmail, showAlert, alertType, message, UserName,
+            ShowConfirmPhone, ShowConfirmEmail } = this.state
 
         const SuccessMessage = "User Profile has been edited successfully."
         const ErrorMessage = "Please fill in all required fields."
@@ -174,93 +194,80 @@ export class EditUserProfile extends Component {
         return (
             <div>
                 <Container className="border">
-                    <h4 className="mt-2 mb-5">
-                        <b>Edit - User Profile</b>
-                    </h4>
-                    <form>
-                        <div className="row  p-2">
-                            <div className="col-4">
-                                <label>Username</label>
-                            </div>
-                            <div className="col-4"> <label className="mt-1 ml-2">{this.state.UserName}</label></div>
-                        </div>
-                        <div className="row  p-2">
-                            <div className="col-4">
-                                <label>First Name</label>
-                            </div>
-                            <div className="col-4">
-                                <input value={FirstName} onChange={(e) => { this.setState({ FirstName: e.target.value }) }} type="text"></input>
+                    <form onSubmit={this.handleSubmit}>
+                        <div className="table-title">
+                            <div className="row nowrap m-0 p-4">
+                                <div className="col-sm-6 m-0 p-0"><h2 className="p-0 m-0">Edit<b> User</b></h2></div>
+                                <div className="col-sm-6 m-0 p-0">
+                                    <button type="submit" className="btn btn-success add-new p-0 m-0 my-1 ml-1">Save</button>
+                                    <button type="button" onClick={this.handleBack} className="btn bg-dark add-new text-white p-0 m-0 my-1">Back</button>
+                                </div>
                             </div>
                         </div>
-                        <div className="row  p-2">
-                            <div className="col-4">
-                                <label>Last Name</label>
-                            </div>
-                            <div className="col-4">
-                                <input value={LastName} onChange={(e) => { this.setState({ LastName: e.target.value }) }} type="text"></input>
-                            </div>
-                        </div>
-                        <div className="row  p-2">
-                            <div className="col-4">
-                                <label>Email</label>
-                            </div>
-                            <div className="col-4">
-                                <input value={Email} onChange={(e) => this.handleChangeEmail(e)} type="text"></input>
+                        <AlertMessage message={Message} visible={showAlert} type={alertType}></AlertMessage>
+
+                        <div className="row p-4">
+                            <div className="col-12 alignCenter">
+                                <Input label="Username" value={UserName} disabled={true} />
                             </div>
                         </div>
-                        <div className={"row  p-2 " + (this.state.ShowConfirmEmail === true ? " " : "d-none")}>
-                            <div className="col-4">
-                                <label>Confirm Email</label>
-                            </div>
-                            <div className="col-4">
-                                <input value={ConfirmEmail} onChange={(e) => { this.setState({ ConfirmEmail: e.target.value }) }} type="text"></input>
+                        <div className="row  p-4">
+                            <div className="col-12 alignCenter">
+                                <Input label="First Name" value={FirstName} onChange={(e) => { this.setState({ FirstName: e.target.value }) }}
+                                    onClear={(value) => { this.setState({ FirstName: value }) }} required={true} />
                             </div>
                         </div>
-                        <div className="row  p-2">
-                            <div className="col-4">
-                                <label>Phone</label>
-                            </div>
-                            <div className="col-4">
-                                <input value={Phone} onChange={(e) => this.handleChangePhone(e)} type="text"></input>
+                        <div className="row p-4">
+                            <div className="col-12 alignCenter">
+                                <Input label="Last Name" value={LastName} onChange={(e) => { this.setState({ LastName: e.target.value }) }}
+                                    onClear={(value) => { this.setState({ LastName: value }) }} required={true} />
                             </div>
                         </div>
-                        <div className={"row  p-2 " + (this.state.ShowConfirmPhone === true ? " " : "d-none")}>
-                            <div className="col-4">
-                                <label>Confirm Phone</label>
-                            </div>
-                            <div className="col-4">
-                                <input value={ConfirmPhone} onChange={(e) => { this.setState({ ConfirmPhone: e.target.value }) }} type="text"></input>
-                            </div>
-                        </div>
-                        <div className="row  p-2">
-                            <div className="col-4">
-                                <label>Gender</label>
-                            </div>
-                            <div className="col-4">
-                                <select value={Gender} onChange={(e) => { this.setState({ Gender: e.target.value }) }}>
-                                    <option key="0" value="select">Select</option>{GenderOptions}
-                                </select>
+                        <div className="row p-4">
+                            <div className="col-12 alignCenter">
+                                <Input label="Email" dataType="email" value={Email}
+                                    onChange={(e) => this.handleChangeEmail(e)}
+                                    onClear={(value) => { this.setState({ Email: value }) }} required={true} />
                             </div>
                         </div>
-                        <div className="row  p-2">
-                            <div className="col-4">
-                                <label>Date of Birth</label>
-                            </div>
-                            <div className="col-4">
-                                <DatePicker placeholderText="dd/MM/yyyy" dateFormat="dd/MM/yyyy" selected={DOB} onChange={this.handleChangeDOB} />
+                        <div className={"row p-4 " + (ShowConfirmEmail === true ? " " : "d-none")}>
+                            <div className="col-12 alignCenter">
+                                <Input label="Confirm Email" dataType="email" value={ConfirmEmail}
+                                    onChange={(e) => { this.setState({ ConfirmEmail: e.target.value }) }}
+                                    onClear={(value) => { this.setState({ ConfirmEmail: value }) }}
+                                    required={true} />
                             </div>
                         </div>
-                        <div className="row  p-2">
-                            <div className="col-4">
+                        <div className="row p-4">
+                            <div className="col-12 alignCenter">
+                                <Input label="Phone" dataType="number" value={Phone}
+                                    onChange={(e) => this.handleChangePhone(e)}
+                                    onClear={(value) => { this.setState({ Phone: value }) }} required={true} />
                             </div>
-                            <div className="col-4">
-                                <button className="btn btn-success mr-1" onClick={() => this.handleSubmit()} type="button">Save</button>
-                                <button className="mr-lg-1 btn bg-dark text-white btn-md" onClick={this.handleBack} type="button">Back</button>
+                        </div>
+                        <div className={"row p-4 " + (ShowConfirmPhone === true ? " " : "d-none")}>
+                            <div className="col-12 alignCenter">
+                                <Input label="Confirm Phone" dataType="number" value={ConfirmPhone}
+                                    onChange={(e) => { this.setState({ ConfirmPhone: e.target.value }) }}
+                                    onClear={(value) => { this.setState({ ConfirmPhone: value }) }}
+                                    required={true} />
+                            </div>
+                        </div>
+                        <div className="row p-4">
+                            <div className="col-12 alignCenter">
+                                <Input type="select" label="Gender" value={Gender} options={GenderOptions}
+                                    onChange={(e) => { this.setState({ Gender: e.target.value }) }} required={true} />
+                            </div>
+                        </div>
+                        <div className="row p-4">
+                            <div className="col-12 alignCenter">
+                                <Input label='Date of Birth' type="date" disableFuture={true} value={DOB}
+                                    onChange={this.handleChangeDOB} customClass="customDate" required={true}
+                                    inputRef={this.dateRef} />
                             </div>
                         </div>
                     </form>
                 </Container>
-                <AlertMessage message={Message} visible={showAlert} type={alertType}></AlertMessage>
             </div>
         )
     }

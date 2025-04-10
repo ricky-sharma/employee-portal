@@ -37,7 +37,7 @@ export default class App extends Component {
                         <Route exact={true} path='/UserProfile' element={<UserProfile />} />
                         <Route exact={true} path='/ChangePassword' element={<ChangePassword />} />
                         <Route exact={true} path='/ResetPassword' element={<ChangePassword />} />
-                        <Route exact={true} path='/EditUserProfile' element={<EditUserProfile />} />
+                        <Route exact={true} path='/EditUser' element={<EditUserProfile />} />
                         <Route exact={true} path='/CreateUser' element={<CreateUser />} />
                         <Route exact={true} path='/Users' element={<Users />} />
                         <Route exact={true} path='/ApplicationLogs' element={<ApplicationLogs />} />

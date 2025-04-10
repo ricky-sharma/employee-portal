@@ -70,7 +70,7 @@ export class Input extends Component {
                                                 "display": (this.state.value === '' ? "none" : "")
                                             }}
                                             onClick={this.handleClearClick}>
-                                            <ClearIcon />
+                                            {this.props.disabled ? "" : <ClearIcon />}
                                         </IconButton>)
                                 }
                             }}
@@ -90,6 +90,7 @@ export class Input extends Component {
                             placeholder={this.props.placeholder}
                             className={this.props.className ?? ""}
                             style={{ m: 2, "&.MuiFocused .MuiIconButtonRoot": { color: 'primary.main' } }}
+                            disabled={this.props.disabled ?? false}
                         />
                     </div>
                 );
@@ -105,6 +106,21 @@ export class Input extends Component {
                                 label={this.props.label ?? ""}
                                 value={this.state.value}
                                 error={this.props.error ?? false}
+                                disablePast={this.props.disablePast ?? false}
+                                disableFuture={this.props.disableFuture ?? false}
+                                inputRef={this.props.inputRef ?? null}
+                                slotProps={{
+                                    textField: {
+                                        required: (this.props.required ?? false)
+                                    },
+                                    field: {
+                                        clearable: true,
+                                        onClear: this.props.fieldOnClear,
+                                        onFocus: this.props.fieldOnFocus,
+                                        onBlur: this.props.fieldOnBlur,
+                                        required: (this.props.required ?? false)
+                                    }
+                                }}
                                 helperText={!IsNull(this.props.error) && this.props.error === true ?
                                     (!IsNull(this.props.helperText) ? this.props.helperText : (!IsNull(this.props.label) ? this.props.label + " is required!" : "Empty field!")) : ""}
                                 onChange={(date) => {
@@ -120,6 +136,7 @@ export class Input extends Component {
                                 KeyboardButtonProps={{
                                     'aria-label': 'change date',
                                 }}
+                                disabled={this.props.disabled ?? false}
                             />
                         </LocalizationProvider>
                     </div>
@@ -165,7 +182,8 @@ export class Input extends Component {
             case 'select':
                 return (
                     <div className={!IsNull(this.props.customClass) ? (this.props.customClass + " customInput") : "customInput"}>
-                        <FormControl style={{ m: 1, minWidth: "100%" }} error={(this.props.error ?? false)}>
+                        <FormControl style={{ m: 1, minWidth: "100%" }} error={(this.props.error ?? false)}
+                            required={this.props.required ?? false}>
                             <InputLabel id={this.props.labelId ?? "simple-select-label"}>{this.props.label}</InputLabel>
                             <Select variant={this.props.variant ?? 'outlined'}
                                 fullWidth={this.props.fullWidth ?? true}
@@ -173,6 +191,7 @@ export class Input extends Component {
                                 value={this.state.value}
                                 label={this.props.label ?? ""}
                                 id={this.props.id ?? "simple-select"}
+                                required={this.props.required ?? false}
                                 onChange={(e) => {
                                     return !IsNull(this.props.onChange) ? this.setState({
                                         value: e.target.value
