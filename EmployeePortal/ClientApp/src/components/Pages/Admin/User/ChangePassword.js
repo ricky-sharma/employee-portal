@@ -1,8 +1,10 @@
-import React, { Component } from 'react'
-import { WebApi } from '../../../Helpers/WebApi.ts';
-import ParseError from '../../../Helpers/ParseError';
-import AlertMessage from '../../../Core/AlertMessage';
 import { createBrowserHistory } from 'history';
+import React, { Component } from 'react';
+import { Container } from 'reactstrap';
+import AlertMessage from '../../../Core/AlertMessage';
+import Input from '../../../Core/Input';
+import ParseError from '../../../Helpers/ParseError';
+import { WebApi } from '../../../Helpers/WebApi.ts';
 
 const history = createBrowserHistory();
 
@@ -27,16 +29,18 @@ export class ChangePassword extends Component {
         let url = this.id === 0 ? `/api/Account/UserInfo` : '/api/Account/UserInfo/' + this.id
         WebApi(url, '', 'GET')
             .then(response => {
-                if (response.UserId) {
+                if (response?.UserId) {
                     this.setState({
-                        UserName: response.UserName ? response.UserName : "",
+                        UserName: response?.UserName ? response.UserName : "",
                         UserId: response.UserId ? response.UserId : "",
+                    }, () => {
                     })
                 }
             });
     }
 
-    handleSubmit = () => {
+    handleSubmit = (e) => {
+        e.preventDefault()
         if (this.state.newPassword === '' || this.state.confirmPassword === '')
             return this.setState({ showAlert: true, alertType: "danger" })
         if (this.state.oldPassword === '' && this.id === 0)
@@ -57,7 +61,7 @@ export class ChangePassword extends Component {
 
         WebApi(url, data, 'POST')
             .then((response) => {
-                if (response.Message && response.Message.toUpperCase() === "SUCCESS") {
+                if (response?.Message && response.Message.toUpperCase() === "SUCCESS") {
                     return this.setState({ showAlert: true, alertType: 'success', })
                 }
                 else {
@@ -71,15 +75,12 @@ export class ChangePassword extends Component {
     }
 
     render() {
-        let title = "Change Password"
-
-        if (history.location && history.location.state)
+        if (history.location && history.location.state) {
             this.id = history.location.state
+            history.replace(history.location.pathname, null);
+        }
 
-        if (this.id !== 0)
-            title = "Reset Password"
-
-        const { confirmPassword, newPassword, oldPassword, message, showAlert, alertType } = this.state
+        const { confirmPassword, newPassword, oldPassword, message, showAlert, alertType, UserName } = this.state
         const SuccessMessage = "Password has been changed successfully."
         const ErrorMessage = "Please fill in all required fields."
         let Message
@@ -93,52 +94,72 @@ export class ChangePassword extends Component {
         }
 
         return (
-            <div>
-                <div className="border">
-                    <h5 className="mt-2 mb-5"><b>{title}</b></h5>
-                    <form>
-                        <div className="row  p-2">
-                            <div className="col-4">
-                                <label>Username</label>
-                            </div>
-                            <div className="col-4">
-                                <label className="mt-1 ml-2">{this.state.UserName}</label>
-                            </div>
-                        </div>
-                        <div className={"row p-2 " + (this.id === 0 ? "" : "d-none")}>
-                            <div className="col-4">
-                                <label>Old Password</label>
-                            </div>
-                            <div className="col-4">
-                                <input value={oldPassword} onChange={(e) => this.setState({ oldPassword: e.target.value, alertType: '', showAlert: false })} type="password"></input>
+            <div className="mb-5">
+                <Container className="border">
+                    <form onSubmit={this.handleSubmit}>
+                        <div className="table-title">
+                            <div className="row nowrap m-0 p-4">
+                                <div className="col-sm-6 m-0 p-0"><h2 className="p-0 m-0">
+                                    {this.id !== 0 ? 'Reset' : 'Change'}<b> Password</b></h2></div>
+                                <div className="col-sm-6 m-0 p-0">
+                                    <button type="submit" className="btn btn-success add-new p-0 m-0 my-1 ml-1">Save</button>
+                                    <button type="button" onClick={this.handleBack} className="btn bg-dark add-new text-white p-0 m-0 my-1">Back</button>
+                                </div>
                             </div>
                         </div>
-                        <div className="row p-2">
-                            <div className="col-4">
-                                <label>New Password</label>
-                            </div>
-                            <div className="col-4">
-                                <input value={newPassword} onChange={(e) => this.setState({ newPassword: e.target.value, alertType: '', showAlert: false })} type="password"></input>
+                        <AlertMessage message={Message} visible={showAlert} type={alertType}></AlertMessage>
+                        <div className="row p-4">
+                            <div className="col-12 alignCenter">
+                                <Input label="Username" value={UserName} disabled={true} />
                             </div>
                         </div>
-                        <div className="row p-2">
-                            <div className="col-4">
-                                <label>Confirm New Password</label>
+                        {(this.id === 0 ? <div className="row p-4">
+                            <div className="col-12 alignCenter">
+                                <Input label="Old Password" value={oldPassword}
+                                    onChange={(e) => this.setState({
+                                        oldPassword: e.target.value,
+                                        alertType: '',
+                                        showAlert: false
+                                    })}
+                                    onClear={(value) => {
+                                        this.setState({
+                                            oldPassword: value
+                                        })
+                                    }} required={true} dataType="password" />
                             </div>
-                            <div className="col-4">
-                                <input value={confirmPassword} onChange={(e) => this.setState({ confirmPassword: e.target.value, alertType: '', showAlert: false })} type="password"></input>
+                        </div> : '')}
+                        <div className="row p-4">
+                            <div className="col-12 alignCenter">
+                                <Input label="New Password" value={newPassword}
+                                    onChange={(e) => this.setState({
+                                        newPassword: e.target.value,
+                                        alertType: '',
+                                        showAlert: false
+                                    })}
+                                    onClear={(value) => {
+                                        this.setState({
+                                            newPassword: value
+                                        })
+                                    }} required={true} dataType="password" />
                             </div>
                         </div>
-                        <div className="row p-2">
-                            <div className="col-4"></div>
-                            <div className="col-4">
-                                <button className="btn btn-success mr-2" onClick={this.handleSubmit} type="button">Submit</button>
-                                <button className="mr-lg-1 btn bg-dark text-white btn-md" onClick={this.handleBack} type="button">Back</button>
+                        <div className="row p-4">
+                            <div className="col-12 alignCenter">
+                                <Input label="Confirm New Password" value={confirmPassword}
+                                    onChange={(e) => this.setState({
+                                        confirmPassword: e.target.value,
+                                        alertType: '',
+                                        showAlert: false
+                                    })}
+                                    onClear={(value) => {
+                                        this.setState({
+                                            confirmPassword: value
+                                        })
+                                    }} required={true} dataType="password" />
                             </div>
                         </div>
                     </form>
-                </div>
-                <AlertMessage message={Message} visible={showAlert} type={alertType}></AlertMessage>
+                </Container>
             </div>
         )
     }
