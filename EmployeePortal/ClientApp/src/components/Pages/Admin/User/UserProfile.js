@@ -1,9 +1,10 @@
-import React, { Component } from 'react'
-import GetUserInfo from '../../../Helpers/GetUserInfo';
-import { Container } from 'reactstrap';
-import moment from 'moment';
-import SideBar from '../../../Core/SideBar';
 import { createBrowserHistory } from 'history';
+import moment from 'moment';
+import React, { Component } from 'react';
+import { Container } from 'reactstrap';
+import Input from '../../../Core/Input';
+import SideBar from '../../../Core/SideBar';
+import GetUserInfo from '../../../Helpers/GetUserInfo';
 
 const history = createBrowserHistory();
 
@@ -58,63 +59,49 @@ export class UserProfile extends Component {
                 <div className="col-2 padding-left-0 padding-right-5">
                     <SideBar menuItems={this.menuItems}></SideBar>
                 </div>
-                <div className="col-8">
-
+                <div className="col-8 mb-5">
                     <Container fluid className="border">
-
-                        <div className="row  p-2 nowrap">
-                            <h4 className="mt-2 mb-5 col-11">
-                                <b>User Profile</b>
-                            </h4>
-                            <div className="col-1">
-                                <button type="button" onClick={this.handleEditUser} className="btn btn-success add-new mt-1 float-rt">Edit</button>
+                        <div>
+                            <div className="table-title">
+                                <div className="row nowrap m-0 p-4">
+                                    <div className="col-sm-6 m-0 p-0"><h2 className="p-0 m-0">
+                                        User<b> Profile</b></h2></div>
+                                    <div className="col-sm-6 m-0 p-0">
+                                        <button type="button" onClick={this.handleEditUser} className="btn btn-success add-new p-0 m-0 my-1 ml-1">Edit</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="row p-4">
+                                <div className="col-12 alignCenter">
+                                    <Input label="Username" value={this.state.UserName} disabled={true} className="fontStyle" />
+                                </div>
+                            </div>
+                            <div className="row p-4">
+                                <div className="col-12 alignCenter">
+                                    <Input label="Name" value={`${this.state.FirstName} ${this.state.LastName}`} disabled={true} className="fontStyle" />
+                                </div>
+                            </div>
+                            <div className="row p-4">
+                                <div className="col-12 alignCenter">
+                                    <Input label="Gender" value={this.state.Gender} disabled={true} className="fontStyle" />
+                                </div>
+                            </div>
+                            <div className="row p-4">
+                                <div className="col-12 alignCenter">
+                                    <Input label="Date of Birth" value={this.state.DOB} disabled={true} className="fontStyle" />
+                                </div>
+                            </div>
+                            <div className="row p-4">
+                                <div className="col-12 alignCenter">
+                                    <Input label="Email" value={this.state.Email} disabled={true} className="fontStyle" />
+                                </div>
+                            </div>
+                            <div className="row p-4">
+                                <div className="col-12 alignCenter">
+                                    <Input label="Phone" value={this.state.Phone} disabled={true} className="fontStyle" />
+                                </div>
                             </div>
                         </div>
-                        <form>
-                            <div className="row  p-2">
-                                <div className="col-4">
-                                    <label>Username</label>
-                                </div>
-                                <label className="mt-1">{this.state.UserName}</label>
-                            </div>
-                            <div className="row  p-2">
-                                <div className="col-4">
-                                    <label>Name</label>
-                                </div>
-                                <label className="mt-1">
-                                    {this.state.FirstName} {this.state.LastName}
-                                </label>
-                            </div>
-                            <div className="row  p-2">
-                                <div className="col-4">
-                                    <label>Email</label>
-                                </div>
-                                <label className="mt-1">{this.state.Email}</label>
-                            </div>
-                            <div className="row  p-2">
-                                <div className="col-4">
-                                    <label>Phone</label>
-                                </div>
-                                <label className="mt-1">{this.state.Phone}</label>
-                            </div>
-                            <div className="row  p-2">
-                                <div className="col-4">
-                                    <label>Gender</label>
-                                </div>
-                                <label className="mt-1">{this.state.Gender}</label>
-                            </div>
-                            <div className="row  p-2">
-                                <div className="col-4">
-                                    <label>Date of Birth</label>
-                                </div>
-                                <label className="mt-1">{this.state.DOB}</label>
-                            </div>
-                            <div className="row  p-2">
-                                <div className="col-4">
-                                </div>
-                                {/* <Link to='/ChangePassword' className="mt-1">Change Password</Link> */}
-                            </div>
-                        </form>
                     </Container>
                 </div>
             </div>

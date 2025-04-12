@@ -372,6 +372,11 @@ label.uploadPicture .MuiAvatar-img {
     z-index: 9;
 }
 
+.fontStyle, .fontStyle label, .fontStyle input {
+    color: #212529 !important;
+    font-weight: 800 !important;
+}
+
 @media (max-width: 240px) {
     /* really tiny screens */
 

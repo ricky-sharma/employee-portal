@@ -192,7 +192,7 @@ export class EditUserProfile extends Component {
         }
 
         return (
-            <div>
+            <div className="mb-5">
                 <Container className="border">
                     <form onSubmit={this.handleSubmit}>
                         <div className="table-title">
@@ -205,7 +205,6 @@ export class EditUserProfile extends Component {
                             </div>
                         </div>
                         <AlertMessage message={Message} visible={showAlert} type={alertType}></AlertMessage>
-
                         <div className="row p-4">
                             <div className="col-12 alignCenter">
                                 <Input label="Username" value={UserName} disabled={true} />
@@ -221,6 +220,19 @@ export class EditUserProfile extends Component {
                             <div className="col-12 alignCenter">
                                 <Input label="Last Name" value={LastName} onChange={(e) => { this.setState({ LastName: e.target.value }) }}
                                     onClear={(value) => { this.setState({ LastName: value }) }} required={true} />
+                            </div>
+                        </div>
+                        <div className="row p-4">
+                            <div className="col-12 alignCenter">
+                                <Input type="select" label="Gender" value={Gender} options={GenderOptions}
+                                    onChange={(e) => { this.setState({ Gender: e.target.value }) }} required={true} />
+                            </div>
+                        </div>
+                        <div className="row p-4">
+                            <div className="col-12 alignCenter">
+                                <Input label='Date of Birth' type="date" disableFuture={true} value={DOB}
+                                    onChange={this.handleChangeDOB} customClass="customDate" required={true}
+                                    inputRef={this.dateRef} />
                             </div>
                         </div>
                         <div className="row p-4">
@@ -251,19 +263,6 @@ export class EditUserProfile extends Component {
                                     onChange={(e) => { this.setState({ ConfirmPhone: e.target.value }) }}
                                     onClear={(value) => { this.setState({ ConfirmPhone: value }) }}
                                     required={true} />
-                            </div>
-                        </div>
-                        <div className="row p-4">
-                            <div className="col-12 alignCenter">
-                                <Input type="select" label="Gender" value={Gender} options={GenderOptions}
-                                    onChange={(e) => { this.setState({ Gender: e.target.value }) }} required={true} />
-                            </div>
-                        </div>
-                        <div className="row p-4">
-                            <div className="col-12 alignCenter">
-                                <Input label='Date of Birth' type="date" disableFuture={true} value={DOB}
-                                    onChange={this.handleChangeDOB} customClass="customDate" required={true}
-                                    inputRef={this.dateRef} />
                             </div>
                         </div>
                     </form>
