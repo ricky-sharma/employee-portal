@@ -37,36 +37,42 @@ export class CreateUser extends Component {
     }
 
     handleChangeEmail = (e) => {
-        this.setState({ Email: e.target.value }, () => {
-            if (this.state.Email && this.state.Email !== '') {
-                this.setState({ ShowConfirmEmail: true })
-            }
-            else {
-                this.setState({ ShowConfirmEmail: false })
-            }
-        })
+        this.setState({ Email: e.target.value }, () => this.toggleConfirmEmail())
+    }
+
+    toggleConfirmEmail = () => {
+        if (this.state.Email && this.state.Email !== '') {
+            this.setState({ ShowConfirmEmail: true })
+        }
+        else {
+            this.setState({ ShowConfirmEmail: false })
+        }
     }
 
     handleChangePhone = (e) => {
-        this.setState({ Phone: e.target.value }, () => {
-            if (this.state.Phone && this.state.Phone !== '') {
-                this.setState({ ShowConfirmPhone: true })
-            }
-            else {
-                this.setState({ ShowConfirmPhone: false })
-            }
-        })
+        this.setState({ Phone: e.target.value }, () => this.toggleConfirmPhone())
+    }
+
+    toggleConfirmPhone = () => {
+        if (this.state.Phone && this.state.Phone !== '') {
+            this.setState({ ShowConfirmPhone: true })
+        }
+        else {
+            this.setState({ ShowConfirmPhone: false })
+        }
     }
 
     handleChangePassword = (e) => {
-        this.setState({ Password: e.target.value }, () => {
-            if (this.state.Password && this.state.Password !== '') {
-                this.setState({ ShowConfirmPassword: true })
-            }
-            else {
-                this.setState({ ShowConfirmPassword: false })
-            }
-        })
+        this.setState({ Password: e.target.value }, () => this.toggleConfirmPassword())
+    }
+
+    toggleConfirmPassword = () => {
+        if (this.state.Password && this.state.Password !== '') {
+            this.setState({ ShowConfirmPassword: true })
+        }
+        else {
+            this.setState({ ShowConfirmPassword: false })
+        }
     }
 
     handleChangeDOB = date => {
@@ -223,11 +229,11 @@ export class CreateUser extends Component {
                                     onClear={(value) => {
                                         this.setState({
                                             Password: value
-                                        })
+                                        }, () => this.toggleConfirmPassword())
                                     }} required={true} dataType="password" />
                             </div>
                         </div>
-                        <div className="row p-4">
+                        <div className={"row  p-4 " + (this.state.ShowConfirmPassword === true ? " " : "d-none")}>
                             <div className="col-12 alignCenter">
                                 <Input label="Confirm Password" value={ConfirmPassword}
                                     onChange={(e) => {
@@ -294,7 +300,7 @@ export class CreateUser extends Component {
                                     onClear={(value) => {
                                         this.setState({
                                             Email: value
-                                        })
+                                        }, () => this.toggleConfirmEmail())
                                     }} required={true} />
                             </div>
                         </div>
@@ -321,7 +327,7 @@ export class CreateUser extends Component {
                                     onClear={(value) => {
                                         this.setState({
                                             Phone: value
-                                        })
+                                        }, () => this.toggleConfirmPhone())
                                     }} required={true} />
                             </div>
                         </div>
