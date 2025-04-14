@@ -1,4 +1,3 @@
-import { createBrowserHistory } from 'history';
 import moment from 'moment';
 import React, { Component, createRef } from 'react';
 import { Container } from 'reactstrap';
@@ -7,8 +6,6 @@ import Input from '../../../Core/Input';
 import AlertDialog from '../../../Core/ModalDialogs';
 import GetUserInfo from '../../../Helpers/GetUserInfo';
 import { WebApi } from '../../../Helpers/WebApi.ts';
-
-const history = createBrowserHistory();
 
 export class EditUserProfile extends Component {
     constructor(props) {
@@ -162,19 +159,20 @@ export class EditUserProfile extends Component {
             })
             .then(response => {
                 if (response === true)
-                    return history.back()
+                    return this.props.navigate(-1)
             });
     }
 
     handleBack = () => {
-        return history.back()
+        return this.props.navigate(-1)
     }
 
     render() {
         const GenderOptions = [{ value: "Male", text: "Male" }, { value: "Female", text: "Female" }]
 
-        if (history.location && history.location.state)
-            this.id = history.location.state
+        const { location } = this.props;
+        if (location && location.state)
+            this.id = location.state
 
         const { Email, FirstName, LastName, Gender, DOB, Phone, ConfirmPhone, ConfirmEmail, showAlert, alertType, message, UserName,
             ShowConfirmPhone, ShowConfirmEmail } = this.state

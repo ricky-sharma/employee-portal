@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
+import { Navigate } from "react-router-dom";
 import { DataGrid } from '../../Core/DataGrid';
 import { WebApi } from '../../Helpers/WebApi.ts';
-import { createBrowserHistory } from 'history'
-
-const history = createBrowserHistory();
 
 export class Departments extends Component {
     constructor(props) {
@@ -11,7 +9,10 @@ export class Departments extends Component {
 
         this.state = {
             departmentData: [],
-            departmentColumns: []
+            departmentColumns: [],
+            addNewClicked: false,
+            editClicked: false,
+            navigateState: ''
         }
     }
 
@@ -41,16 +42,19 @@ export class Departments extends Component {
     }
 
     handleAddDepartment = () => {
-        history.push('/AddDepartment')
-        history.go(0)
+        this.setState({ addNewClicked: true })
     }
 
     rowClicked = (e, row) => {
-        history.push('/EditDepartment', row.ID )
-        history.go(0)
+        this.setState({ editClicked: true, navigateState: row.ID })
     }
 
     render() {
+        if (this.state?.addNewClicked)
+            return <Navigate to='/AddDepartment' />
+        else if (this.state?.editClicked)
+            return <Navigate to='/EditDepartment' state={this.state.navigateState} />
+
         let gridEvents = { OnRowClick: this.rowClicked }
         let options = { EnableColumnSearch: true, EnableGlobalSearch: true }
         return (<div className="mx-0 px-0">

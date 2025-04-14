@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
+import { Container } from 'reactstrap';
 import AlertMessage from '../../Core/AlertMessage';
 import { WebApi } from '../../Helpers/WebApi.ts';
-import { createBrowserHistory } from 'history';
-
-const history = createBrowserHistory();
+import Input from './../../Core/Input';
 
 export class AddDepartment extends Component {
     constructor(props) {
@@ -17,7 +16,8 @@ export class AddDepartment extends Component {
         }
     }
 
-    handleSubmit = () => {
+    handleSubmit = (e) => {
+        e.preventDefault()
         if (this.state.Name === '' || this.state.Location === '') {
             return this.setState({ showAlert: true, alertType: "danger" })
         }
@@ -34,7 +34,7 @@ export class AddDepartment extends Component {
     }
 
     handleBack = () => {
-        return history.back()
+        return this.props.navigate(-1)
     }
 
     render() {
@@ -48,38 +48,35 @@ export class AddDepartment extends Component {
             Message = ErrorMessage
 
         return (
-            <div>
-                <div className="border">
-                    <h4 className="mt-2 mb-5">
-                        <b>Add - Department</b>
-                    </h4>
-                    <form>
-                        <div className="row  p-2">
-                            <div className="col-4">
-                                <label>Department name</label>
-                            </div>
-                            <div className="col-4">
-                                <input value={Name} onChange={(e) => { this.setState({ Name: e.target.value, successAlert: false, errorAlert: false }) }} className="mt-1" type="text"></input>
+            <div className="mb-5">
+                <Container className="border">
+                    <form onSubmit={this.handleSubmit}>
+                        <div className="table-title">
+                            <div className="row nowrap m-0 p-4">
+                                <div className="col-sm-6 m-0 p-0"><h2 className="p-0 m-0">Add<b> Department</b></h2></div>
+                                <div className="col-sm-6 m-0 p-0">
+                                    <button type="submit" className="btn btn-success add-new p-0 m-0 my-1 ml-1">Save</button>
+                                    <button type="button" onClick={this.handleBack} className="btn bg-dark add-new text-white p-0 m-0 my-1">Back</button>
+                                </div>
                             </div>
                         </div>
-                        <div className="row  p-2">
-                            <div className="col-4">
-                                <label>Location</label>
-                            </div>
-                            <div className="col-4">
-                                <input value={Location} onChange={(e) => { this.setState({ Location: e.target.value, successAlert: false, errorAlert: false }) }} className="mt-1" type="text"></input>
+                        <AlertMessage message={Message} visible={showAlert} type={alertType}></AlertMessage>
+                        <div className="row  p-4">
+                            <div className="col-12 alignCenter">
+                                <Input label="Department Name" value={Name}
+                                    onChange={(e) => { this.setState({ Name: e.target.value, successAlert: false, errorAlert: false }) }}
+                                    onClear={(value) => { this.setState({ Name: value }) }} required={true} />
                             </div>
                         </div>
-                        <div className="row p-2">
-                            <div className="col-4"></div>
-                            <div className="col-4">
-                                <button className="btn btn-success mr-1" onClick={this.handleSubmit} type="button">Save</button>
-                                <button className="mr-lg-1 btn bg-dark text-white btn-md" onClick={this.handleBack} type="button">Back</button>
+                        <div className="row  p-4">
+                            <div className="col-12 alignCenter">
+                                <Input label="Location" value={Location}
+                                    onChange={(e) => { this.setState({ Location: e.target.value, successAlert: false, errorAlert: false }) }}
+                                    onClear={(value) => { this.setState({ Location: value }) }} required={true} />
                             </div>
                         </div>
                     </form>
-                </div>
-                <AlertMessage message={Message} visible={showAlert} type={alertType}></AlertMessage>
+                </Container>
             </div>
         )
     }

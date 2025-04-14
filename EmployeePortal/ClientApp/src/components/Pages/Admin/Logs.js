@@ -3,7 +3,7 @@ import IsNull from '../../Common/Common';
 import { DataGrid } from '../../Core/DataGrid';
 import { useLogService } from './../../Helpers/Logger.ts';
 
-export function ApplicationLogs() {
+export function Logs() {
     let columns, data = []
     let userLogs = useLogService()
     if (userLogs.status === 'loaded' && !IsNull(userLogs.payload)) {
@@ -52,4 +52,4 @@ export function ApplicationLogs() {
         </div>)
 }
 
-export default ApplicationLogs
+export default Logs

@@ -1,19 +1,16 @@
 import addMonths from '@jsbits/add-months';
-import { Avatar, IconButton } from '@mui/material';
 import { PhotoCamera, RemoveCircle } from '@mui/icons-material';
+import { Avatar, IconButton } from '@mui/material';
 import addDays from 'add-days';
 import React, { Component } from 'react';
 import validator from 'validator';
 import { EmployeeFolder, Locale, LocaleCode, PhoneNumberRegex } from '../../../Constants';
 import profileImage from '../../../images/blue-person-icon.png';
 import IsNull, { IsDev } from '../../Common/Common';
-import AlertDialog, { ConfirmDialog } from '../../Core/ModalDialogs';
 import Input from '../../Core/Input';
+import AlertDialog, { ConfirmDialog } from '../../Core/ModalDialogs';
 import { LoadImage } from '../../Helpers/ImageHelper';
 import { WebApi } from '../../Helpers/WebApi.ts';
-import { createBrowserHistory } from 'history';
-
-const history = createBrowserHistory();
 
 export class AddEditEmployee extends Component {
     constructor(props) {
@@ -383,7 +380,7 @@ export class AddEditEmployee extends Component {
     }
 
     handleBack = () => {
-        return history.back()
+        return this.props.navigate(-1)
     }
 
     handleActivateDeactivate = (action) => {
@@ -484,8 +481,9 @@ export class AddEditEmployee extends Component {
     }
 
     render() {
-        if (history.location && history.location.state)
-            this.id = history.location.state
+        const { location } = this.props;
+        if (location && location.state)
+            this.id = location.state
         const GenderOptions = [{ value: "Male", text: "Male" }, { value: "Female", text: "Female" }]
         const EmploymentTypes = [{ value: "FULL TIME", text: "Full Time" }, { value: "PART TIME", text: "Part Time" }, { value: "CASUAL", text: "Casual" },
         { value: "TEMPORARY", text: "Temporary" }]

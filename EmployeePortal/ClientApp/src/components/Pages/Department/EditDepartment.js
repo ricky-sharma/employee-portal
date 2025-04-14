@@ -1,13 +1,10 @@
 import React, { Component } from 'react';
-import AlertMessage from '../../Core/AlertMessage';
-import { WebApi } from '../../Helpers/WebApi.ts';
+import { Navigate } from "react-router-dom";
 import { Container } from 'reactstrap';
-import { unstable_usePrompt, Navigate } from "react-router-dom";
+import AlertMessage from '../../Core/AlertMessage';
 import AlertDialog from '../../Core/ModalDialogs';
-import { createBrowserHistory } from 'history';
-
-
-const history = createBrowserHistory();
+import { WebApi } from '../../Helpers/WebApi.ts';
+import Input from './../../Core/Input';
 
 export class EditDepartment extends Component {
     constructor(props) {
@@ -20,7 +17,8 @@ export class EditDepartment extends Component {
             alertType: '',
             message: '',
             readOnly: false,
-            isBlocking: false
+            isBlocking: false,
+            backClicked: false
         }
         this.id = 0;
     }
@@ -92,8 +90,7 @@ export class EditDepartment extends Component {
     }
 
     handleBack = () => {
-        history.push('/Departments')
-        history.go(0)
+        this.setState({ backClicked: true })
     }
 
     handlePrompt = () => {
@@ -111,15 +108,18 @@ export class EditDepartment extends Component {
     }
 
     render() {
+        if (this.state.backClicked) {
+            return <Navigate to='/Departments' />
+        }
         const user = localStorage.getItem("myUserName")
         const { Name, Location, showAlert, alertType, message, readOnly } = this.state
-        if (history.location && history.location.state)
-            this.id = history.location.state
+        const { location } = this.props;
+        if (location && location.state)
+            this.id = location.state
 
         if ((!this.id || this.id === 0) && !localStorage.getItem("id" + user)) {
             return <Navigate to='/Departments' />
         }
-
         const SuccessMessage = "Department has been edited successfully."
         const ErrorMessage = "Name and Location fields cannot be empty."
         let Message
@@ -133,39 +133,35 @@ export class EditDepartment extends Component {
         }
 
         return (
-            <div>
-                <unstable_usePrompt when={this.state.isBlocking} message={this.handlePrompt} />
+            <div className="mb-5">
                 <Container className="border">
-                    <h4 className="mt-2 mb-5">
-                        <b>Edit - Department</b>
-                    </h4>
-                    <form>
-                        <div className="row  p-2">
-                            <div className="col-4">
-                                <label>Department name</label>
-                            </div>
-                            <div className="col-4">
-                                <input value={Name} onChange={(e) => { this.setState({ Name: e.target.value, isBlocking: true }, () => this.saveStateToLocalStorage()) }} className={"mb-1 " + (readOnly === true ? "disabled-inputs" : "")} type="text"></input>
+                    <form onSubmit={this.handleSubmit}>
+                        <div className="table-title">
+                            <div className="row nowrap m-0 p-4">
+                                <div className="col-sm-6 m-0 p-0"><h2 className="p-0 m-0">Edit<b> Department</b></h2></div>
+                                <div className="col-sm-6 m-0 p-0">
+                                    <button type="submit" className="btn btn-success add-new p-0 m-0 my-1 ml-1">{(readOnly === true ? "Edit" : "Update")}</button>
+                                    <button type="button" onClick={this.handleBack} className="btn bg-dark add-new text-white p-0 m-0 my-1">Back</button>
+                                </div>
                             </div>
                         </div>
-                        <div className="row  p-2">
-                            <div className="col-4">
-                                <label>Location</label>
-                            </div>
-                            <div className="col-4">
-                                <input value={Location} onChange={(e) => { this.setState({ Location: e.target.value, isBlocking: true }, () => this.saveStateToLocalStorage()) }} className={"mb-1 " + (readOnly === true ? "disabled-inputs" : "")} type="text"></input>
+                        <AlertMessage message={Message} visible={showAlert} type={alertType}></AlertMessage>
+                        <div className="row  p-4">
+                            <div className="col-12 alignCenter">
+                                <Input label="Department Name" value={Name}
+                                    onChange={(e) => { this.setState({ Name: e.target.value, isBlocking: true }, () => this.saveStateToLocalStorage()) }}
+                                    onClear={(value) => { this.setState({ Name: value, isBlocking: true }, () => this.saveStateToLocalStorage()) }} required={true} disabled={readOnly} />
                             </div>
                         </div>
-                        <div className="row p-2">
-                            <div className="col-4"></div>
-                            <div className="col-4">
-                                <button className="btn btn-success mr-1" onClick={this.handleSubmit} type="button">{(readOnly === true ? "Edit" : "Update")}</button>
-                                <button className="mr-lg-1 btn bg-dark text-white btn-md" onClick={this.handleBack} type="button">Back</button>
+                        <div className="row  p-4">
+                            <div className="col-12 alignCenter">
+                                <Input label="Location" value={Location}
+                                    onChange={(e) => { this.setState({ Location: e.target.value, isBlocking: true }, () => this.saveStateToLocalStorage()) }}
+                                    onClear={(value) => { this.setState({ Location: value, isBlocking: true }, () => this.saveStateToLocalStorage()) }} required={true} disabled={readOnly} />
                             </div>
                         </div>
                     </form>
                 </Container>
-                <AlertMessage message={Message} visible={showAlert} type={alertType}></AlertMessage>
             </div>
         )
     }
