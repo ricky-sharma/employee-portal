@@ -4,7 +4,7 @@ import { DataGrid } from '../../Core/DataGrid';
 import AlertDialog from '../../Core/ModalDialogs';
 import { GetData } from '../../Helpers/WebApi.ts';
 
-export function ApplicationErrors() {
+export function Errors() {
     let columns, data = []
     let userLogs = GetData('/api/Error')
     if (userLogs.status === 'loaded' && !IsNull(userLogs.payload)) {
@@ -75,4 +75,4 @@ export function ApplicationErrors() {
 
 }
 
-export default ApplicationErrors
+export default Errors

@@ -1,12 +1,9 @@
-import { createBrowserHistory } from 'history';
 import React, { Component } from 'react';
 import { Container } from 'reactstrap';
 import AlertMessage from '../../../Core/AlertMessage';
 import Input from '../../../Core/Input';
 import ParseError from '../../../Helpers/ParseError';
 import { WebApi } from '../../../Helpers/WebApi.ts';
-
-const history = createBrowserHistory();
 
 export class ChangePassword extends Component {
     constructor(props) {
@@ -71,14 +68,13 @@ export class ChangePassword extends Component {
     }
 
     handleBack = () => {
-        return history.back()
+        this.props.navigate(-1)
     }
 
     render() {
-        if (history.location && history.location.state) {
-            this.id = history.location.state
-            history.replace(history.location.pathname, null);
-        }
+        const { location } = this.props;
+        if (location && location.state)
+            this.id = location.state
 
         const { confirmPassword, newPassword, oldPassword, message, showAlert, alertType, UserName } = this.state
         const SuccessMessage = "Password has been changed successfully."

@@ -1,4 +1,3 @@
-import { createBrowserHistory } from 'history';
 import moment from 'moment';
 import React, { Component, createRef } from 'react';
 import { Container } from 'reactstrap';
@@ -6,8 +5,6 @@ import AlertMessage from '../../../Core/AlertMessage';
 import Input from '../../../Core/Input';
 import "../../../css/User.css";
 import { WebApi } from '../../../Helpers/WebApi.ts';
-
-const history = createBrowserHistory();
 
 export class CreateUser extends Component {
 
@@ -154,8 +151,7 @@ export class CreateUser extends Component {
                             .then(response => {
                                 if (response) {
                                     if (response.Message && response.Message === 'SUCCESS') {
-                                        history.push('/Users')
-                                        history.go(0)
+                                        this.props.navigate('/Users')
                                     }
                                     else
                                         this.setState({
@@ -173,7 +169,7 @@ export class CreateUser extends Component {
     }
 
     handleBack = () => {
-        return history.back()
+        return this.props.navigate(-1)
     }
 
     render() {

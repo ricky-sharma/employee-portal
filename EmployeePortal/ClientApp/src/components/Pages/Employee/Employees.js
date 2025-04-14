@@ -4,9 +4,6 @@ import IsNull, { IsDev } from '../../Common/Common';
 import { DataGrid } from '../../Core/DataGrid';
 import { LoadImage } from '../../Helpers/ImageHelper';
 import { WebApi } from '../../Helpers/WebApi.ts';
-import { createBrowserHistory } from 'history';
-
-const history = createBrowserHistory();
 
 export class Employees extends Component {
     constructor(props) {
@@ -75,13 +72,11 @@ export class Employees extends Component {
     }
 
     handleAddEmployee = () => {
-        history.push('/AddEmployee')
-        history.go(0)
+        this.props.navigate('/AddEmployee')
     }
 
     rowClicked = (e, row) => {
-        history.push('/EditEmployee', row.ID)
-        history.go(0)
+        this.props.navigate('/EditEmployee', { state: row.ID })
     }
 
     rowHover = (e, row) => {

@@ -1,8 +1,7 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import React from 'react';
-import ReactDOM from 'react-dom';
-import '../css/Alert.css';
 import { createRoot } from 'react-dom/client';
+import '../css/Alert.css';
 
 let IsConfirmDialog = false
 let YesCallback = undefined
@@ -19,7 +18,9 @@ function AlertDialog(message, callback = () => { }, heading = '', maxWidth = fal
     if (document.getElementsByClassName('alertDialog').length === 0) {
         let node = document.createElement("div");
         const root = createRoot(node);
-        document.getElementById('alertDialogDiv').appendChild(node);
+        var alertDialogDiv = document.getElementById('alertDialogDiv')
+        alertDialogDiv.innerHTML = '';
+        alertDialogDiv?.appendChild(node);
         let AlertDialogContent = () => {
             return (
                 <div className="alertDialog">
@@ -51,7 +52,7 @@ function AlertDialog(message, callback = () => { }, heading = '', maxWidth = fal
         };
 
         let onNo = () => {
-            
+
             if (NoCallback !== null && NoCallback !== undefined) {
                 NoCallback();
             }

@@ -1,9 +1,6 @@
-import { createBrowserHistory } from 'history';
 import { Component } from 'react';
 import IsNull from '../Common/Common';
 import { WebApi } from '../Helpers/WebApi.ts';
-
-const history = createBrowserHistory();
 
 export class ErrorBoundary extends Component {
     constructor(props) {
@@ -30,8 +27,7 @@ export class ErrorBoundary extends Component {
         var errorData = { "Error": '"' + error + '"', "ErrorInfo": JSON.stringify(errorInfo) }
         WebApi('/api/Error', JSON.stringify(errorData)).then(resp => {
             if (!IsNull(resp) && resp.Message === 'SUCCESS') {
-                history.push('/Error', resp.ErrorCode)
-                history.go(0)
+                this.props.navigate('/Error', { state: resp.ErrorCode })
             }
         });
     }

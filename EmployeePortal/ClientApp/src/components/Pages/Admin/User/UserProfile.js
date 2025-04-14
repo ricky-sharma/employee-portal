@@ -1,12 +1,9 @@
-import { createBrowserHistory } from 'history';
 import moment from 'moment';
 import React, { Component } from 'react';
 import { Container } from 'reactstrap';
 import Input from '../../../Core/Input';
 import SideBar from '../../../Core/SideBar';
 import GetUserInfo from '../../../Helpers/GetUserInfo';
-
-const history = createBrowserHistory();
 
 export class UserProfile extends Component {
     constructor(props) {
@@ -49,8 +46,7 @@ export class UserProfile extends Component {
     }
 
     handleEditUser = () => {
-        history.push('/EditUser')
-        history.go(0)
+        this.props.navigate('/EditUser')
     }
 
     render() {
