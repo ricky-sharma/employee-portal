@@ -1,4 +1,4 @@
-﻿export const createItemTree = (input, level = 0) => (
+export const createItemTree = (input, level = 0) => (
     input.map(item => (item.items ?
         {
             expanded: false, active: false, level, animationState: 0, ...item, items: createItemTree(item.items, (level + 1)),

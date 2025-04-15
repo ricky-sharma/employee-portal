@@ -1,17 +1,19 @@
 import moment from 'moment';
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { Container } from 'reactstrap';
 import Input from '../../../Core/Input';
 import SideBar from '../../../Core/SideBar';
 import GetUserInfo from '../../../Helpers/GetUserInfo';
+import { mapDispatchToProps, mapStateToProps } from './../../../../redux/reducers/userSlice';
 
-export class UserProfile extends Component {
+class UserProfileComponent extends Component {
     constructor(props) {
         super(props)
-
+        const { username } = props
         this.state = {
             UserId: '',
-            UserName: localStorage.getItem("myUserName"),
+            UserName: username,
             Email: '',
             FirstName: '',
             LastName: '',
@@ -105,4 +107,4 @@ export class UserProfile extends Component {
     }
 }
 
-export default UserProfile
+export const UserProfile = connect(mapStateToProps, mapDispatchToProps)(UserProfileComponent)

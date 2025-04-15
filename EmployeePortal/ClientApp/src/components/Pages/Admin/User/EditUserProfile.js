@@ -6,8 +6,10 @@ import Input from '../../../Core/Input';
 import AlertDialog from '../../../Core/ModalDialogs';
 import GetUserInfo from '../../../Helpers/GetUserInfo';
 import { WebApi } from '../../../Helpers/WebApi.ts';
+import { connect } from 'react-redux';
+import { mapStateToProps, mapDispatchToProps } from './../../../../redux/reducers/userSlice';
 
-export class EditUserProfile extends Component {
+class EditUserProfileComponent extends Component {
     constructor(props) {
         super(props)
 
@@ -147,7 +149,6 @@ export class EditUserProfile extends Component {
             .then(response => {
                 if (response) {
                     if (response.Message && response.Message === 'SUCCESS') {
-                        localStorage.setItem('myFullUserName', (this.state.FirstName + ' ' + this.state.LastName) ?? null)
                         AlertDialog('User data saved successfully.')
                         return true
                     }
@@ -158,8 +159,10 @@ export class EditUserProfile extends Component {
                 }
             })
             .then(response => {
-                if (response === true)
+                if (response === true) {
+                    this.props.setUserFullName(`${this.state.FirstName} ${this.state.LastName}`);
                     return this.props.navigate(-1)
+                }
             });
     }
 
@@ -270,4 +273,4 @@ export class EditUserProfile extends Component {
     }
 }
 
-export default EditUserProfile
+export const EditUserProfile = connect(mapStateToProps, mapDispatchToProps)(EditUserProfileComponent)

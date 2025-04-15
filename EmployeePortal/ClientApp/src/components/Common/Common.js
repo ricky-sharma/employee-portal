@@ -39,7 +39,7 @@ export function ReplaceSpecialChars(str) {
         .replace(/\\b/g, "\\b")
         .replace(/\\f/g, "\\f")
         .split(String.fromCharCode(92)).join(String.fromCharCode(92, 92))
-        .replace(/[\u0000-\u0019]+/g, "");
+        .replace(/[\u0000-\u0019]+/g, "");// eslint-disable-line
 }
 
 export const IsDev = () => {

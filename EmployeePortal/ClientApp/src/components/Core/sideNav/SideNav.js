@@ -1,4 +1,4 @@
-﻿import classNames from 'classnames';
+import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import './../sideNav/styles/DefaultTheme.scss';

@@ -1,12 +1,14 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { Navigate } from "react-router-dom";
 import { Container } from 'reactstrap';
 import AlertMessage from '../../Core/AlertMessage';
 import AlertDialog from '../../Core/ModalDialogs';
 import { WebApi } from '../../Helpers/WebApi.ts';
+import { mapDispatchToProps, mapStateToProps } from './../../../redux/reducers/userSlice';
 import Input from './../../Core/Input';
 
-export class EditDepartment extends Component {
+class EditDepartmentComponent extends Component {
     constructor(props) {
         super(props)
 
@@ -24,7 +26,7 @@ export class EditDepartment extends Component {
     }
 
     saveStateToLocalStorage() {
-        const user = localStorage.getItem("myUserName")
+        const user = this.props?.username
         // for every item in React state
         for (let key in this.state) {
             // save to localStorage
@@ -35,7 +37,7 @@ export class EditDepartment extends Component {
     }
 
     hydrateStateWithLocalStorage() {
-        const user = localStorage.getItem("myUserName")
+        const user = this.props?.username
         // for every item in React state
         this.setState({
             Name: JSON.parse(localStorage.getItem("Name" + user)), Location: JSON.parse(localStorage.getItem("Location" + user)),
@@ -48,7 +50,7 @@ export class EditDepartment extends Component {
     }
 
     componentDidMount = () => {
-        const user = localStorage.getItem("myUserName")
+        const user = this.props?.username
         if (this.id !== 0 && !localStorage.getItem("id" + user)) {
             let url = `/api/Departments/` + this.id
             WebApi(url, '', 'GET')
@@ -98,7 +100,7 @@ export class EditDepartment extends Component {
     }
 
     componentWillUnmount() {
-        const user = localStorage.getItem("myUserName")
+        const user = this.props?.username
         // for every item in React state
         for (let key in this.state) {
             // save to localStorage
@@ -111,7 +113,7 @@ export class EditDepartment extends Component {
         if (this.state.backClicked) {
             return <Navigate to='/Departments' />
         }
-        const user = localStorage.getItem("myUserName")
+        const user = this.props?.username
         const { Name, Location, showAlert, alertType, message, readOnly } = this.state
         const { location } = this.props;
         if (location && location.state)
@@ -167,4 +169,4 @@ export class EditDepartment extends Component {
     }
 }
 
-export default EditDepartment
+export const EditDepartment = connect(mapStateToProps, mapDispatchToProps)(EditDepartmentComponent)

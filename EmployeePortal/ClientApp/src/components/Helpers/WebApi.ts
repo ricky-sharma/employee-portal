@@ -4,8 +4,10 @@ import { trackPromise } from 'react-promise-tracker';
 import * as Constants from '../../Constants';
 import IsNull from '../Common/Common';
 import AlertDialog from '../Core/ModalDialogs';
+import { store } from './../../redux/store';
 import { Dictionary } from './Dictionary';
 import { Service } from './Service';
+import { logoutUser } from './../../redux/reducers/userSlice';
 
 const history = createBrowserHistory();
 let errorCatched = false;
@@ -25,8 +27,7 @@ export function GetData(apiUrl: any) {
 }
 
 export function WebApi(apiUrl: any, data: any, method = 'POST', auth = true) {
-
-    let authHeader = 'Bearer ' + localStorage.getItem('myToken')
+    let authHeader = 'Bearer ' + store?.getState()?.authToken
     let serviceUrl = (window.location.protocol !== 'https:' ?
         Constants.DevServiceURL : Constants.ServiceURL)
     let headers: Record<string, any> = {};
@@ -67,15 +68,15 @@ export function WebApi(apiUrl: any, data: any, method = 'POST', auth = true) {
                         let error_description = jsonParseRes1.error_description
                         let errorMessage = jsonParseRes1.Message
                         if (errorStatus && errorStatus.toUpperCase() === 'UNAUTHORIZED') {
-                            localStorage.removeItem('myToken')
+                            store.dispatch(logoutUser())
                             AlertDialog('Unauthorized Access', redirectToHome)
                         }
                         else if (responseError && responseError.toUpperCase() === 'INVALID_GRANT') {
-                            localStorage.removeItem('myToken')
+                            store.dispatch(logoutUser())
                             AlertDialog(error_description, redirectToHome)
                         }
                         else if (errorMessage && errorMessage.toUpperCase() === 'AUTHORIZATION HAS BEEN DENIED FOR THIS REQUEST.') {
-                            localStorage.removeItem('myToken')
+                            store.dispatch(logoutUser())
                             AlertDialog(errorMessage, redirectToHome)
                         }
                         else if (errorMessage) {
