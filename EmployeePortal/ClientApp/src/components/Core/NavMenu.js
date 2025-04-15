@@ -2,13 +2,13 @@ import { faPowerOff } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Tooltip from '@mui/material/Tooltip';
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { Collapse, DropdownItem, DropdownMenu, DropdownToggle, Navbar, NavbarBrand, NavbarToggler, NavItem, NavLink, UncontrolledDropdown } from 'reactstrap';
 import '../css/NavMenu.css';
+import { mapDispatchToProps, mapStateToProps } from './../../redux/reducers/userSlice';
 
-export class NavMenu extends Component {
-    static displayName = NavMenu.name;
-
+class NavMenuComponent extends Component {
     constructor(props) {
         super(props);
         this.toggleNavbar = this.toggleNavbar.bind(this);
@@ -27,16 +27,17 @@ export class NavMenu extends Component {
     }
 
     handleSignOut = () => {
-        localStorage.removeItem('myToken')
+        this.props.logoutUser()
         this.setState({
             loggedOut: true
         })
     }
 
     userProfileName = () => {
-        let fullname = (localStorage.getItem("myFullUserName") ?? localStorage.getItem("myUserName"))
+        let fullname = this.props?.userFullName !== undefined && this.props?.userFullName !== '' ?
+            this.props?.userFullName : this.props?.username
         if (fullname && fullname.length > 12) {
-            return fullname.substring(0, 9) + '...'
+            return fullname.substring(0, 9) + '..'
         }
         return fullname
     }
@@ -50,7 +51,7 @@ export class NavMenu extends Component {
 
     render() {
         let User, SignOut;
-        const isLoggedIn = localStorage.getItem("myToken");
+        const isLoggedIn = !this.props?.loggedOut;
         SignOut = <NavLink tag={Link} type="button" onClick={this.handleSignOut} to="/" className="btn btn-secondary button-signout margin-rt10 float-rt m-0"><FontAwesomeIcon icon={faPowerOff} /></NavLink>
         User = <NavLink tag={Link} tooltip="Log Out" className="text-white m-0 p-0" to='/UserProfile'>{this.userProfileName()}</NavLink>
 
@@ -65,7 +66,7 @@ export class NavMenu extends Component {
                                 </h1>
                             </NavbarBrand>
                             <NavbarToggler onClick={this.toggleNavbar} style={{ width: 'auto' }} className={(!isLoggedIn ? "d-none mb-4 mt-2" : "mb-4 mt-2")} />
-                            <Collapse style={{maxWidth:'95%'}} className={"d-sm-inline-flex flex-sm-row-reverse boxshadow " + (!isLoggedIn ? "d-none" : "")} isOpen={!this.state.collapsed} navbar>
+                            <Collapse style={{ maxWidth: '95%' }} className={"d-sm-inline-flex flex-sm-row-reverse boxshadow " + (!isLoggedIn ? "d-none" : "")} isOpen={!this.state.collapsed} navbar>
                                 <ul className={"navbar-nav flex-grow ml-1 " + (!isLoggedIn ? "d-none" : "")}>
                                     <NavItem className="text-black padding-5 dropdown">
                                         <NavLink tag={Link} className="text-black d-none d-md-block d-lg-block d-xl-block" to="/"><b>Home</b></NavLink>
@@ -147,3 +148,5 @@ export class NavMenu extends Component {
         );
     }
 }
+
+export const NavMenu = connect(mapStateToProps, mapDispatchToProps)(NavMenuComponent);

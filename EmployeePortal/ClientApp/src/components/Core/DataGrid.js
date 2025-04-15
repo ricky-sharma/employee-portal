@@ -81,8 +81,8 @@ export class DataGrid extends Component {
             !this.objectsEqual(this.props.RowsData, nextProps.RowsData) ||
             !this.objectsEqual(this.state.columns, nextStats.columns) ||
             !this.objectsEqual(this.state.rowsData, nextStats.rowsData) ||
-            !this.state.noOfPages, nextStats.noOfPages ||
-            !this.state.lastPageRows, nextStats.lastPageRows ||
+            !this.objectsEqual(this.state.noOfPages, nextStats.noOfPages) ||
+            !this.objectsEqual(this.state.lastPageRows, nextStats.lastPageRows) ||
             !this.objectsEqual(this.state.pagerSelectOptions, nextStats.pagerSelectOptions)) {
             return true;
         } else {

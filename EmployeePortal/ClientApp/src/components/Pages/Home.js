@@ -1,19 +1,21 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import * as Constants from '../../Constants';
 import IsNull, { GetCookie } from '../Common/Common';
 import '../css/Home.css';
 import GetUserInfo from '../Helpers/GetUserInfo';
 import { WebApi } from '../Helpers/WebApi.ts';
+import { mapDispatchToProps, mapStateToProps } from './../../redux/reducers/userSlice';
 import { Logger } from './../Helpers/Logger.ts';
 
-export class Home extends Component {
-    static displayName = Home.name;
-    constructor(params) {
-        super(params)
+class HomeComponent extends Component {
+    constructor(props) {
+        super(props)
+        const { authToken } = props
         this.state = {
             Username: '',
             Password: '',
-            token: localStorage.getItem('myToken') || '',
+            token: authToken || '',
             loggedInUser: '',
             rememberMe: false
         };
@@ -42,12 +44,12 @@ export class Home extends Component {
                         token: response.access_token,
                         loggedInUser: response.userName
                     }, () => {
-                        localStorage.setItem('myToken', this.state.token)
+                        this.props.setAuthToken(this.state.token)
                         GetUserInfo(0)
                             .then(response => {
                                 if (!IsNull(response)) {
-                                    localStorage.setItem('myUserName', response.Username ?? this.state.loggedInUser)
-                                    localStorage.setItem('myFullUserName', response.FullName ?? null)
+                                    this.props.setUserFullName(response.FullName ?? null);
+                                    this.props.setUsername(response.Username ?? this.state.loggedInUser)
                                     Logger({ 'LogMessage': 'User LogIn', 'Type': 'UserActivity' });
                                     this.props.navigate('/Employees')
                                 }
@@ -74,7 +76,7 @@ export class Home extends Component {
     }
 
     render() {
-        const isLoggedIn = localStorage.getItem("myToken");
+        const isLoggedIn = !this.props.loggedOut;
         if (isLoggedIn)
             return (<div className="row justify-content-md-center m-0 p-0">Welcome to the Employee portal.</div>)
         return (
@@ -103,3 +105,5 @@ export class Home extends Component {
         );
     }
 }
+
+export const Home = connect(mapStateToProps, mapDispatchToProps)(HomeComponent);

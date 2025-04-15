@@ -3,14 +3,17 @@ import { Container } from 'reactstrap';
 import AlertMessage from '../../Core/AlertMessage';
 import { WebApi } from '../../Helpers/WebApi.ts';
 import Input from './../../Core/Input';
+import { mapDispatchToProps, mapStateToProps } from './../../../redux/reducers/userSlice';
+import { connect } from 'react-redux';
 
-export class AddDepartment extends Component {
+class AddDepartmentComponent extends Component {
     constructor(props) {
         super(props)
+        const { authToken } = props
         this.state = {
             Name: '',
             Location: '',
-            token: localStorage.getItem('myToken') || '',
+            token: authToken || '',
             showAlert: false,
             alertType: '',
         }
@@ -82,4 +85,4 @@ export class AddDepartment extends Component {
     }
 }
 
-export default AddDepartment
+export const AddDepartment = connect(mapStateToProps, mapDispatchToProps)(AddDepartmentComponent)
