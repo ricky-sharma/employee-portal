@@ -69,7 +69,9 @@ export class DataGrid extends Component {
             editButtonEnabled: !IsNull(Options) && !IsNull(Options.EditButton),
             editButtonEvent: !IsNull(Options) && !IsNull(Options.EditButton) && !IsNull(Options.EditButton.Event) ? Options.EditButton.Event : () => { },
             type1ButtonEnabled: !IsNull(Options) && !IsNull(Options.Type1Button),
-            type1ButtonEvent: !IsNull(Options) && !IsNull(Options.Type1Button) && !IsNull(Options.Type1Button.Event) ? Options.Type1Button.Event : () => { }
+            type1ButtonEvent: !IsNull(Options) && !IsNull(Options.Type1Button) && !IsNull(Options.Type1Button.Event) ? Options.Type1Button.Event : () => { },
+            toggleState: false,
+            prevProps:null
         }
         this.sortIconHtml = <i className='updown-icon inactive fa fa-sort' />
         this.dataRecieved = this.state.rowsData
@@ -81,9 +83,12 @@ export class DataGrid extends Component {
             !this.objectsEqual(this.props.RowsData, nextProps.RowsData) ||
             !this.objectsEqual(this.state.columns, nextStats.columns) ||
             !this.objectsEqual(this.state.rowsData, nextStats.rowsData) ||
-            !this.objectsEqual(this.state.noOfPages, nextStats.noOfPages) ||
-            !this.objectsEqual(this.state.lastPageRows, nextStats.lastPageRows) ||
-            !this.objectsEqual(this.state.pagerSelectOptions, nextStats.pagerSelectOptions)) {
+            (this.state.noOfPages !== nextStats.noOfPages) ||
+            (this.state.lastPageRows !== nextStats.lastPageRows) ||
+            !this.objectsEqual(this.state.pagerSelectOptions, nextStats.pagerSelectOptions) ||
+            (this.state.firstRow !== nextStats.firstRow) ||
+            (this.state.activePage !== nextStats.activePage) ||
+            (this.state.toggleState !== nextStats.toggleState)) {
             return true;
         } else {
             return false;
@@ -92,13 +97,22 @@ export class DataGrid extends Component {
 
     objectsEqual = (o1, o2) =>
         (IsNull(o1) && IsNull(o2)) || (!IsNull(o1) && !IsNull(o2) &&
-        Object.keys(o1).length === Object.keys(o2).length
-        && Object.keys(o1).every(p => o1[p] === o2[p]));
+            Object.keys(o1).length === Object.keys(o2).length
+            && Object.keys(o1).every(p => o1[p] === o2[p]));
 
 
-    static getDerivedStateFromProps = (nextProps) => {
+    static getDerivedStateFromProps = (nextProps, prevState) => {
         const { Columns, RowsData, PageRows } = nextProps
+        if ((IsNull(prevState.prevProps?.RowsData) && IsNull(nextProps.RowsData)) ||
+            (!IsNull(prevState.prevProps?.RowsData) && !IsNull(nextProps.RowsData) &&
+            Object.keys(prevState.prevProps?.RowsData).length === Object.keys(nextProps.RowsData).length
+                && Object.keys(prevState.prevProps?.RowsData).every(p =>
+                    prevState.prevProps?.RowsData[p] === nextProps.RowsData[p]))) {
+            return null;
+        }
+        
         return {
+            prevProps: nextProps,
             columns: !IsNull(Columns) ? Columns : null,
             rowsData: RowsData,
             totalRows: RowsData?.length ?? 0,
@@ -135,11 +149,13 @@ export class DataGrid extends Component {
     }
 
     componentDidMount = () => {
-        this.dataRecieved = this.state.rowsData
         this.setPagingVariables()
     }
 
     componentDidUpdate(prevProps, prevState) {
+        if (!this.objectsEqual(this.props.RowsData, prevProps.RowsData)) {
+            this.dataRecieved = this.state.rowsData
+        }
         if (!this.objectsEqual(this.props.RowsData, prevProps.RowsData) ||
             !this.objectsEqual(this.state.rowsData, prevState.rowsData)) {
             this.setPagingVariables()
@@ -394,7 +410,10 @@ export class DataGrid extends Component {
                 data = this.dataRecieved
             }
             data.sort(DynamicSort(sortColumn))
-            this.setState({ rowsData: data })
+            this.setState({
+                rowsData: data,
+                toggleState: !this.state.toggleState
+            })
         }
     }
 
@@ -495,7 +514,8 @@ export class DataGrid extends Component {
             activePage: 1,
             totalRows: dataLength,
             firstRow: 0,
-            currentPageRows: pageRows
+            currentPageRows: pageRows,
+            toggleState: !this.state.toggleState
         }, () => { this.setPagingVariables() })
     }
 
