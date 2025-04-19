@@ -5,11 +5,12 @@ import { Oval } from 'react-loader-spinner';
 import { usePromiseTracker } from "react-promise-tracker";
 import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
-import App from './App';
-import ErrorBoundary from './components/Helpers/ErrorBoundary';
-import { store, persistor } from './redux/store'; // Store created with @reduxjs/toolkit
-import registerServiceWorker from './registerServiceWorker';
 import { PersistGate } from 'redux-persist/integration/react';
+import App from './App';
+import ComponentWrapper from './components/Helpers/ComponentWrapper';
+import ErrorBoundary from './components/Helpers/ErrorBoundary';
+import { persistor, store } from './redux/store'; // Store created with @reduxjs/toolkit
+import registerServiceWorker from './registerServiceWorker';
 
 const baseUrl = document.getElementsByTagName('base')[0].getAttribute('href');
 const rootElement = document.getElementById('root');
@@ -24,7 +25,7 @@ const LoadingIndicator = () => {
 root.render(
     <>
         <BrowserRouter basename={baseUrl}>
-            <ErrorBoundary>
+            <ComponentWrapper component={ErrorBoundary}>
                 <div>
                     <Provider store={store}>
                         <PersistGate loading={<LoadingIndicator />} persistor={persistor}>
@@ -34,7 +35,7 @@ root.render(
                     <LoadingIndicator />
                 </div>
                 <div id="alertDialogDiv" className="alert-Dialog"></div>
-            </ErrorBoundary>
+            </ComponentWrapper>
         </BrowserRouter>
     </>);
 
