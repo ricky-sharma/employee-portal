@@ -1,5 +1,5 @@
 import React from 'react';
-import IsNull, { ReplaceSpecialChars } from '../../Common/Common';
+import IsNull, { ReplaceSpecialChars } from '../../common/Common';
 import { DataGrid } from '../../Core/DataGrid';
 import AlertDialog from '../../Core/ModalDialogs';
 import { GetData } from '../../Helpers/WebApi.ts';

@@ -1,5 +1,5 @@
 import React from 'react';
-import IsNull from '../../Common/Common';
+import IsNull from '../../common/Common';
 import { DataGrid } from '../../Core/DataGrid';
 import { useLogService } from './../../Helpers/Logger.ts';
 

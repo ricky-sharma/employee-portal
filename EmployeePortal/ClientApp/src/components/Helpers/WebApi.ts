@@ -2,7 +2,7 @@ import { createBrowserHistory } from 'history';
 import { useEffect, useState } from 'react';
 import { trackPromise } from 'react-promise-tracker';
 import * as Constants from '../../Constants';
-import IsNull from '../Common/Common';
+import IsNull from '../common/Common';
 import AlertDialog from '../Core/ModalDialogs';
 import { store } from './../../redux/store';
 import { Dictionary } from './Dictionary';

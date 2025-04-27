@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import * as Constants from '../../Constants';
-import IsNull, { GetCookie } from '../Common/Common';
+import IsNull, { GetCookie } from '../common/Common';
 import '../css/Home.css';
 import GetUserInfo from '../Helpers/GetUserInfo';
 import { WebApi } from '../Helpers/WebApi.ts';

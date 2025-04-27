@@ -6,7 +6,7 @@ import React, { Component } from 'react';
 import validator from 'validator';
 import { EmployeeFolder, Locale, LocaleCode, PhoneNumberRegex } from '../../../Constants';
 import profileImage from '../../../images/blue-person-icon.png';
-import IsNull, { IsDev } from '../../Common/Common';
+import IsNull, { IsDev } from '../../common/Common';
 import Input from '../../Core/Input';
 import AlertDialog, { ConfirmDialog } from '../../Core/ModalDialogs';
 import { LoadImage } from '../../Helpers/ImageHelper';

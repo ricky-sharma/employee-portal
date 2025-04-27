@@ -5,6 +5,7 @@ import { WebApi } from '../../Helpers/WebApi.ts';
 import Input from './../../Core/Input';
 import { mapDispatchToProps, mapStateToProps } from './../../../redux/reducers/userSlice';
 import { connect } from 'react-redux';
+import Address from '../../Core/addressComponents/Address';
 
 class AddDepartmentComponent extends Component {
     constructor(props) {
@@ -78,6 +79,7 @@ class AddDepartmentComponent extends Component {
                                     onClear={(value) => { this.setState({ Location: value }) }} required={true} />
                             </div>
                         </div>
+                        <Address />
                     </form>
                 </Container>
             </div>
