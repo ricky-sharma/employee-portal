@@ -4,7 +4,7 @@ import { Navigate } from "react-router-dom";
 import { Container } from 'reactstrap';
 import AlertMessage from '../../Core/AlertMessage';
 import AlertDialog from '../../Core/ModalDialogs';
-import { WebApi } from '../../Helpers/WebApi.ts';
+import { WebApi } from '../../helpers/WebApi.ts';
 import { mapDispatchToProps, mapStateToProps } from './../../../redux/reducers/userSlice';
 import Input from './../../Core/Input';
 

@@ -3,10 +3,10 @@ import { connect } from 'react-redux';
 import * as Constants from '../../Constants';
 import IsNull, { GetCookie } from '../common/Common';
 import '../css/Home.css';
-import GetUserInfo from '../Helpers/GetUserInfo';
-import { WebApi } from '../Helpers/WebApi.ts';
+import GetUserInfo from '../helpers/GetUserInfo';
+import { WebApi } from '../helpers/WebApi.ts';
 import { mapDispatchToProps, mapStateToProps } from './../../redux/reducers/userSlice';
-import { Logger } from './../Helpers/Logger.ts';
+import { Logger } from './../helpers/Logger.ts';
 
 class HomeComponent extends Component {
     constructor(props) {

@@ -4,7 +4,7 @@ import { Container } from 'reactstrap';
 import AlertMessage from '../../../Core/AlertMessage';
 import Input from '../../../Core/Input';
 import "../../../css/User.css";
-import { WebApi } from '../../../Helpers/WebApi.ts';
+import { WebApi } from '../../../helpers/WebApi.ts';
 
 export class CreateUser extends Component {
 

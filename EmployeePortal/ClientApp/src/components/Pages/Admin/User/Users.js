@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Navigate } from "react-router-dom";
 import { DataGrid } from '../../../Core/DataGrid';
-import { WebApi } from '../../../Helpers/WebApi.ts';
+import { WebApi } from '../../../helpers/WebApi.ts';
 
 export class Users extends Component {
 

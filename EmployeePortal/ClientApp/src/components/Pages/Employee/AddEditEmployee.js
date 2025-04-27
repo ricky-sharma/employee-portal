@@ -9,8 +9,8 @@ import profileImage from '../../../images/blue-person-icon.png';
 import IsNull, { IsDev } from '../../common/Common';
 import Input from '../../Core/Input';
 import AlertDialog, { ConfirmDialog } from '../../Core/ModalDialogs';
-import { LoadImage } from '../../Helpers/ImageHelper';
-import { WebApi } from '../../Helpers/WebApi.ts';
+import { LoadImage } from '../../helpers/ImageHelper';
+import { WebApi } from '../../helpers/WebApi.ts';
 
 export class AddEditEmployee extends Component {
     constructor(props) {

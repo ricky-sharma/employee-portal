@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Container } from 'reactstrap';
 import AlertMessage from '../../Core/AlertMessage';
-import { WebApi } from '../../Helpers/WebApi.ts';
+import { WebApi } from '../../helpers/WebApi.ts';
 import Input from './../../Core/Input';
 import { mapDispatchToProps, mapStateToProps } from './../../../redux/reducers/userSlice';
 import { connect } from 'react-redux';

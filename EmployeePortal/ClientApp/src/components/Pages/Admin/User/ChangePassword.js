@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import { Container } from 'reactstrap';
 import AlertMessage from '../../../Core/AlertMessage';
 import Input from '../../../Core/Input';
-import ParseError from '../../../Helpers/ParseError';
-import { WebApi } from '../../../Helpers/WebApi.ts';
+import ParseError from '../../../helpers/ParseError';
+import { WebApi } from '../../../helpers/WebApi.ts';
 
 export class ChangePassword extends Component {
     constructor(props) {

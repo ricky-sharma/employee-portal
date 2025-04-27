@@ -7,8 +7,8 @@ import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
 import { PersistGate } from 'redux-persist/integration/react';
 import App from './App';
-import ComponentWrapper from './components/Helpers/ComponentWrapper';
-import ErrorBoundary from './components/Helpers/ErrorBoundary';
+import ComponentWrapper from './components/helpers/ComponentWrapper';
+import ErrorBoundary from './components/helpers/ErrorBoundary';
 import { persistor, store } from './redux/store'; // Store created with @reduxjs/toolkit
 import registerServiceWorker from './registerServiceWorker';
 
