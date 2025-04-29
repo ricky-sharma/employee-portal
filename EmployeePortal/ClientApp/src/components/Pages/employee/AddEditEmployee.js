@@ -73,7 +73,7 @@ export class AddEditEmployee extends Component {
             statePostAddError: false,
             postalCodePostAdd: '',
             postalCodePostAddError: false,
-            postalCodePostAddErrorText: false,
+            postalCodePostAddErrorText: '',
             sameResidentialAddress: false,
             id: 0,
             readOnly: false,

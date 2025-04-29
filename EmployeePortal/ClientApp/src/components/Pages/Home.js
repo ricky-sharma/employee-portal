@@ -76,7 +76,7 @@ class HomeComponent extends Component {
     }
 
     render() {
-        const isLoggedIn = !this.props.loggedOut;
+        const isLoggedIn = !this.props.loggedOut && this.state.token !== '';
         if (isLoggedIn)
             return (<div className="row justify-content-md-center m-0 p-0">Welcome to the Employee portal.</div>)
         return (

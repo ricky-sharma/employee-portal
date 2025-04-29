@@ -1,16 +1,31 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import PostalAddress from './PostalAddress';
+import ResidentialAddress from './ResidentialAddress';
 
-export const ResidentAddressContext = React.createContext();
+export const AddressContext = React.createContext();
 
 function Address(props) {
+    const { postalAddressProps } = props
 
-    
-    const ResidentAddressContextState = useState([]);
+    const AddressContextState = useState({
+        houseNumberResiAdd: '',
+        streetResiAdd: '',
+        suburbCityResiAdd: '',
+        stateResiAdd: '',
+        postalCodeResiAdd: '',
+        houseNumberPostAdd: '',
+        streetPostAdd: '',
+        suburbCityPostAdd: '',
+        statePostAdd: '',
+        postalCodePostAdd: '',
+        sameAsResidentialAddress: postalAddressProps?.sameResidentialAddress ?? false,
+        fieldReadOnly: postalAddressProps?.readOnly ?? false
+    });
     return (
-        <ResidentAddressContext.Provider value={ResidentAddressContextState}>
+        <AddressContext.Provider value={AddressContextState}>
+            <ResidentialAddress {...props} />
             <PostalAddress {...props} />
-        </ResidentAddressContext.Provider>)
+        </AddressContext.Provider>)
 }
 
 export default Address;

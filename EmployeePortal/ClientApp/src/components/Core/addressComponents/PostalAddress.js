@@ -1,36 +1,34 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect } from 'react';
 import Input from '../Input';
-import { ResidentAddressContext } from './Address';
+import { AddressContext } from './Address';
 
 function PostalAddress(props) {
-    const [ResidentAddressState] = useContext(ResidentAddressContext)
-    const { readOnly, sameResidentialAddress, houseNumberPostAddError, suburbCityPostAddError, statePostAddError,
-        postalCodePostAddError, postalCodePostAddErrorText } = props
-    const [sameAsResidentialAddress, setSameAsResidentialAddress] = useState(sameResidentialAddress)
-    const [fieldReadOnly, setFieldReadOnly] = useState(readOnly)
-    const [houseNumberPostAdd, setHouseNumberPostAdd] = useState('')
-    const [streetPostAdd, setStreetPostAdd] = useState('')
-    const [suburbCityPostAdd, setSuburbCityPostAdd] = useState('')
-    const [statePostAdd, setStatePostAdd] = useState('')
-    const [postalCodePostAdd, setPostalCodePostAdd] = useState('')
-
-    const handleCheckboxSameResiAddress = (e) => {
-        setSameAsResidentialAddress(e.target.checked)
-    }
+    const [addressState, setAddressState] = useContext(AddressContext)
+    const { postalAddressProps } = props
 
     useEffect(() => {
-        if (sameAsResidentialAddress === true) {
-            setHouseNumberPostAdd(ResidentAddressState?.houseNumberPostAdd ?? '')
-            setStreetPostAdd(ResidentAddressState?.streetResiAdd ?? '')
-            setSuburbCityPostAdd(ResidentAddressState?.suburbCityResiAdd ?? '')
-            setStatePostAdd(ResidentAddressState?.stateResiAdd ?? '')
-            setPostalCodePostAdd(ResidentAddressState?.postalCodeResiAdd ?? '')
-            setFieldReadOnly(true)
+        if (addressState?.sameAsResidentialAddress === true) {
+            setAddressState(addressState => ({
+                ...addressState,
+                ...{
+                    houseNumberPostAdd: addressState.houseNumberResiAdd,
+                    streetPostAdd: addressState.streetResiAdd,
+                    suburbCityPostAdd: addressState.suburbCityResiAdd,
+                    statePostAdd: addressState.stateResiAdd,
+                    postalCodePostAdd: addressState.postalCodeResiAdd,
+                    fieldReadOnly: true
+                }
+            }))
         }
         else {
-            setFieldReadOnly(false)
+            setAddressState(addressState => ({
+                ...addressState,
+                ...{
+                    fieldReadOnly: false
+                }
+            }))
         }
-    }, [sameAsResidentialAddress])
+    }, [addressState?.sameAsResidentialAddress])
 
     return (<div className="col-12 p-0 fullInputWidth">
         <div className="col-12 p-0 m-0 row">
@@ -40,51 +38,156 @@ function PostalAddress(props) {
         </div>
         <div className="col-12 p-0 m-0 mt-3 row">
             <div className="col-12 p-0 m-0 row valignCenter">
-                <Input label="Same as Residential Address" checked={sameAsResidentialAddress} type="checkbox"
-                    onChange={handleCheckboxSameResiAddress} />
+                <Input
+                    label="Same as Residential Address"
+                    checked={addressState.sameAsResidentialAddress}
+                    type="checkbox"
+                    onChange={(e) => {
+                        setAddressState(addressState => ({
+                            ...addressState,
+                            ...{
+                                sameAsResidentialAddress: e.target.checked
+                            }
+                        }))
+                    }} />
             </div>
         </div>
         <div className="col-12 p-0 m-0 mt-3 row">
             <div className="col-6 p-0 pr-3">
                 <div className="col-12 p-0">
-                    <Input label="House/Unit number" error={houseNumberPostAddError} value={houseNumberPostAdd}
-                        className={(fieldReadOnly === true ? "disabled-inputs" : "")}
-                        onChange={(e) => setHouseNumberPostAdd(e.target.value)}
-                        onClear={(value) => setHouseNumberPostAdd(value)} customClass="fullWidth" />
+                    <Input
+                        label="House/Unit number"
+                        error={postalAddressProps?.houseNumberPostAddError ?? false}
+                        value={addressState.houseNumberPostAdd}
+                        className={(addressState?.fieldReadOnly === true ? "disabled-inputs" : "")}
+                        disabled={(addressState?.fieldReadOnly === true ? true : false)}
+                        onChange={(e) => {
+                            setAddressState(addressState => ({
+                                ...addressState,
+                                ...{
+                                    houseNumberPostAdd: e.target.value
+                                }
+                            }))
+                        }}
+                        onClear={(value) => {
+                            setAddressState(addressState => ({
+                                ...addressState,
+                                ...{
+                                    houseNumberPostAdd: value
+                                }
+                            }))
+                        }}
+                        customClass="fullWidth" />
                 </div>
             </div>
             <div className="col-6 p-0">
                 <div className="col-12 p-0">
-                    <Input label="Street address" value={streetPostAdd}
-                        onChange={(e) => setStreetPostAdd(e.target.value)}
-                        className={(fieldReadOnly === true ? "disabled-inputs" : "")}
-                        onClear={(value) => setStreetPostAdd(value)} customClass="fullWidth" />
+                    <Input
+                        label="Street address"
+                        value={addressState.streetPostAdd}
+                        className={(addressState?.fieldReadOnly === true ? "disabled-inputs" : "")}
+                        disabled={(addressState?.fieldReadOnly === true ? true : false)}
+                        onChange={(e) => {
+                            setAddressState(addressState => ({
+                                ...addressState,
+                                ...{
+                                    streetPostAdd: e.target.value
+                                }
+                            }))
+                        }}
+                        onClear={(value) => {
+                            setAddressState(addressState => ({
+                                ...addressState,
+                                ...{
+                                    streetPostAdd: value
+                                }
+                            }))
+                        }}
+                        customClass="fullWidth" />
                 </div>
             </div>
         </div>
-        <div className="col-12 p-0 py-5 m-0 mt-3 row">
+        <div className="col-12 p-0 pb-5 m-0 mt-3 row">
             <div className="col-6 p-0 pr-3">
                 <div className="col-12 p-0">
-                    <Input label="Suburb/City" error={suburbCityPostAddError} value={suburbCityPostAdd}
-                        className={(fieldReadOnly === true ? "disabled-inputs" : "")}
-                        onChange={(e) => setSuburbCityPostAdd(e.target.value)}
-                        onClear={(value) => setSuburbCityPostAdd(value)} customClass="fullWidth" />
+                    <Input
+                        label="Suburb/City"
+                        error={postalAddressProps?.suburbCityPostAddError ?? false}
+                        value={addressState.suburbCityPostAdd}
+                        className={(addressState?.fieldReadOnly === true ? "disabled-inputs" : "")}
+                        disabled={(addressState?.fieldReadOnly === true ? true : false)}
+                        onChange={(e) => {
+                            setAddressState(addressState => ({
+                                ...addressState,
+                                ...{
+                                    suburbCityPostAdd: e.target.value
+                                }
+                            }))
+                        }}
+                        onClear={(value) => {
+                            setAddressState(addressState => ({
+                                ...addressState,
+                                ...{
+                                    suburbCityPostAdd: value
+                                }
+                            }))
+                        }}
+                        customClass="fullWidth" />
                 </div>
             </div>
             <div className="col-3 p-0">
                 <div className="col-12 p-0">
-                    <Input label="State" error={statePostAddError} value={statePostAdd}
-                        className={(fieldReadOnly === true ? "disabled-inputs" : "")}
-                        onChange={(e) => setStatePostAdd(e.target.value)}
-                        onClear={(value) => setStatePostAdd(value)} customClass="fullWidth" />
+                    <Input
+                        label="State"
+                        error={postalAddressProps?.statePostAddError ?? false}
+                        value={addressState.statePostAdd}
+                        className={(addressState?.fieldReadOnly === true ? "disabled-inputs" : "")}
+                        disabled={(addressState?.fieldReadOnly === true ? true : false)}
+                        onChange={(e) => {
+                            setAddressState(addressState => ({
+                                ...addressState,
+                                ...{
+                                    statePostAdd: e.target.value
+                                }
+                            }))
+                        }}
+                        onClear={(value) => {
+                            setAddressState(addressState => ({
+                                ...addressState,
+                                ...{
+                                    statePostAdd: value
+                                }
+                            }))
+                        }}
+                        customClass="fullWidth" />
                 </div>
             </div>
             <div className="col-3 p-0 pl-3">
                 <div className="col-12 p-0">
-                    <Input label="Postal code" helperText={postalCodePostAddErrorText} error={postalCodePostAddError} value={postalCodePostAdd}
-                        className={(fieldReadOnly === true ? "disabled-inputs" : "")}
-                        onChange={(e) => setPostalCodePostAdd(e.target.value)}
-                        onClear={(value) => setPostalCodePostAdd(value)} customClass="fullWidth" />
+                    <Input
+                        label="Postal code"
+                        helperText={postalAddressProps?.postalCodePostAddErrorText ?? ''}
+                        error={postalAddressProps?.postalCodePostAddError ?? false}
+                        value={addressState.postalCodePostAdd}
+                        className={(addressState?.fieldReadOnly === true ? "disabled-inputs" : "")}
+                        disabled={(addressState?.fieldReadOnly === true ? true : false)}
+                        onChange={(e) => {
+                            setAddressState(addressState => ({
+                                ...addressState,
+                                ...{
+                                    postalCodePostAdd: e.target.value
+                                }
+                            }))
+                        }}
+                        onClear={(value) => {
+                            setAddressState(addressState => ({
+                                ...addressState,
+                                ...{
+                                    postalCodePostAdd: value
+                                }
+                            }))
+                        }}
+                        customClass="fullWidth" />
                 </div>
             </div>
         </div>

@@ -17,6 +17,8 @@ class AddDepartmentComponent extends Component {
             token: authToken || '',
             showAlert: false,
             alertType: '',
+            readOnly: false,
+            sameResidentialAddress: false
         }
     }
 
@@ -42,7 +44,7 @@ class AddDepartmentComponent extends Component {
     }
 
     render() {
-        const { Name, Location, showAlert, alertType } = this.state
+        const { Name, Location, showAlert, alertType, readOnly, sameResidentialAddress } = this.state
         const SuccessMessage = "Department has been added successfully."
         const ErrorMessage = "Name and Location fields cannot be empty."
         let Message
@@ -79,7 +81,17 @@ class AddDepartmentComponent extends Component {
                                     onClear={(value) => { this.setState({ Location: value }) }} required={true} />
                             </div>
                         </div>
-                        <Address />
+                        <div className="col-12 p-0 m-0 mt-4 mb-3 row">
+                            <hr className="rounded" />
+                        </div>
+                        <div className="row  p-4">
+                        <Address
+                            postalAddressProps={{
+                                readOnly: readOnly,
+                                sameResidentialAddress: sameResidentialAddress
+                            }}
+                            />
+                        </div>
                     </form>
                 </Container>
             </div>
