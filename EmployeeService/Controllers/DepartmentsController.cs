@@ -55,7 +55,9 @@ namespace EmployeeService.Controllers
             {
                 ID = department.ID,
                 Name = department.Name,
-                Location = department.Location
+                Location = department.Location,
+                DepartmentAddress = department.DepartmentAddress != null ? (Guid)department.DepartmentAddress : Guid.Empty,
+                PostalAddress = department.PostalAddress != null ? (Guid)department.PostalAddress : Guid.Empty
             };
 
             db.Entry(tblDepartment).State = EntityState.Modified;
@@ -96,7 +98,9 @@ namespace EmployeeService.Controllers
                 {
                     ID = department.ID,
                     Name = department.Name,
-                    Location = department.Location
+                    Location = department.Location,
+                    DepartmentAddress = department.DepartmentAddress != null ? (Guid)department.DepartmentAddress : Guid.Empty,
+                    PostalAddress = department.PostalAddress != null ? (Guid)department.PostalAddress : Guid.Empty
                 };
 
                 db.tblDepartments.Add(tblDepartment);

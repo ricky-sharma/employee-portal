@@ -101,7 +101,7 @@
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Name" Type="nvarchar(max)" />
           <Property Name="Location" Type="nvarchar(max)" />
-          <Property Name="ResidentialAddress" Type="uniqueidentifier" />
+          <Property Name="DepartmentAddress" Type="uniqueidentifier" />
           <Property Name="PostalAddress" Type="uniqueidentifier" />
         </EntityType>
         <EntityType Name="tblEmployeeImageMap">
@@ -267,6 +267,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_tblDepartments_tblAddress_DepartmentAddress">
+          <End Role="tblAddress" Type="Self.tblAddress" Multiplicity="0..1" />
+          <End Role="tblDepartments" Type="Self.tblDepartments" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblAddress">
+              <PropertyRef Name="AddressId" />
+            </Principal>
+            <Dependent Role="tblDepartments">
+              <PropertyRef Name="DepartmentAddress" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_tblDepartments_tblAddress_PostalAddress">
           <End Role="tblAddress" Type="Self.tblAddress" Multiplicity="0..1" />
           <End Role="tblDepartments" Type="Self.tblDepartments" Multiplicity="*" />
@@ -276,18 +288,6 @@
             </Principal>
             <Dependent Role="tblDepartments">
               <PropertyRef Name="PostalAddress" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_tblDepartments_tblAddress_ResidentialAddress">
-          <End Role="tblAddress" Type="Self.tblAddress" Multiplicity="0..1" />
-          <End Role="tblDepartments" Type="Self.tblDepartments" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="tblAddress">
-              <PropertyRef Name="AddressId" />
-            </Principal>
-            <Dependent Role="tblDepartments">
-              <PropertyRef Name="ResidentialAddress" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -466,11 +466,11 @@
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="tblAddress" EntitySet="tblAddress" />
           </AssociationSet>
-          <AssociationSet Name="FK_tblDepartments_tblAddress_PostalAddress" Association="Self.FK_tblDepartments_tblAddress_PostalAddress">
+          <AssociationSet Name="FK_tblDepartments_tblAddress_DepartmentAddress" Association="Self.FK_tblDepartments_tblAddress_DepartmentAddress">
             <End Role="tblAddress" EntitySet="tblAddress" />
             <End Role="tblDepartments" EntitySet="tblDepartments" />
           </AssociationSet>
-          <AssociationSet Name="FK_tblDepartments_tblAddress_ResidentialAddress" Association="Self.FK_tblDepartments_tblAddress_ResidentialAddress">
+          <AssociationSet Name="FK_tblDepartments_tblAddress_PostalAddress" Association="Self.FK_tblDepartments_tblAddress_PostalAddress">
             <End Role="tblAddress" EntitySet="tblAddress" />
             <End Role="tblDepartments" EntitySet="tblDepartments" />
           </AssociationSet>
@@ -623,7 +623,7 @@
           <NavigationProperty Name="tblEmployees" Relationship="EmployeeDBModel.FK_tblEmployees_tblAddress" FromRole="tblAddress" ToRole="tblEmployee" />
           <NavigationProperty Name="tblEmployees1" Relationship="EmployeeDBModel.FK_tblEmployees_tblAddress1" FromRole="tblAddress" ToRole="tblEmployee" />
           <NavigationProperty Name="tblDepartments" Relationship="EmployeeDBModel.FK_tblDepartments_tblAddress_PostalAddress" FromRole="tblAddress" ToRole="tblDepartment" />
-          <NavigationProperty Name="tblDepartments1" Relationship="EmployeeDBModel.FK_tblDepartments_tblAddress_ResidentialAddress" FromRole="tblAddress" ToRole="tblDepartment" />
+          <NavigationProperty Name="tblDepartments1" Relationship="EmployeeDBModel.FK_tblDepartments_tblAddress_DepartmentAddress" FromRole="tblAddress" ToRole="tblDepartment" />
           </EntityType>
         <EntityType Name="tblDepartment">
           <Key>
@@ -633,10 +633,10 @@
           <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="Location" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="tblEmployees" Relationship="EmployeeDBModel.FK_tblEmployees_tblDepartments" FromRole="tblDepartment" ToRole="tblEmployee" />
-          <Property Name="ResidentialAddress" Type="Guid" />
           <Property Name="PostalAddress" Type="Guid" />
           <NavigationProperty Name="tblAddress" Relationship="EmployeeDBModel.FK_tblDepartments_tblAddress_PostalAddress" FromRole="tblDepartment" ToRole="tblAddress" />
-          <NavigationProperty Name="tblAddress1" Relationship="EmployeeDBModel.FK_tblDepartments_tblAddress_ResidentialAddress" FromRole="tblDepartment" ToRole="tblAddress" />
+          <Property Name="DepartmentAddress" Type="Guid" />
+          <NavigationProperty Name="tblAddress1" Relationship="EmployeeDBModel.FK_tblDepartments_tblAddress_DepartmentAddress" FromRole="tblDepartment" ToRole="tblAddress" />
         </EntityType>
         <EntityType Name="tblError">
           <Key>
@@ -839,7 +839,7 @@
             <End Role="tblAddress" EntitySet="tblAddresses" />
             <End Role="tblDepartment" EntitySet="tblDepartments" />
           </AssociationSet>
-          <AssociationSet Name="FK_tblDepartments_tblAddress_ResidentialAddress" Association="EmployeeDBModel.FK_tblDepartments_tblAddress_ResidentialAddress">
+          <AssociationSet Name="FK_tblDepartments_tblAddress_DepartmentAddress" Association="EmployeeDBModel.FK_tblDepartments_tblAddress_DepartmentAddress">
             <End Role="tblAddress" EntitySet="tblAddresses" />
             <End Role="tblDepartment" EntitySet="tblDepartments" />
           </AssociationSet>
@@ -1030,7 +1030,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_tblDepartments_tblAddress_ResidentialAddress">
+        <Association Name="FK_tblDepartments_tblAddress_DepartmentAddress">
           <End Type="EmployeeDBModel.tblAddress" Role="tblAddress" Multiplicity="0..1" />
           <End Type="EmployeeDBModel.tblDepartment" Role="tblDepartment" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1038,7 +1038,7 @@
               <PropertyRef Name="AddressId" />
             </Principal>
             <Dependent Role="tblDepartment">
-              <PropertyRef Name="ResidentialAddress" />
+              <PropertyRef Name="DepartmentAddress" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1136,8 +1136,8 @@
           <EntitySetMapping Name="tblDepartments">
             <EntityTypeMapping TypeName="EmployeeDBModel.tblDepartment">
               <MappingFragment StoreEntitySet="tblDepartments">
+                <ScalarProperty Name="DepartmentAddress" ColumnName="DepartmentAddress" />
                 <ScalarProperty Name="PostalAddress" ColumnName="PostalAddress" />
-                <ScalarProperty Name="ResidentialAddress" ColumnName="ResidentialAddress" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Location" ColumnName="Location" />
