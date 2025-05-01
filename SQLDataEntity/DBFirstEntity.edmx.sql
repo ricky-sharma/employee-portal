@@ -42,11 +42,11 @@ GO
 IF OBJECT_ID(N'[dbo].[FK_tblAddress_AspNetUsers1]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[tblAddress] DROP CONSTRAINT [FK_tblAddress_AspNetUsers1];
 GO
+IF OBJECT_ID(N'[dbo].[FK_tblDepartments_tblAddress_DepartmentAddress]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[tblDepartments] DROP CONSTRAINT [FK_tblDepartments_tblAddress_DepartmentAddress];
+GO
 IF OBJECT_ID(N'[dbo].[FK_tblDepartments_tblAddress_PostalAddress]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[tblDepartments] DROP CONSTRAINT [FK_tblDepartments_tblAddress_PostalAddress];
-GO
-IF OBJECT_ID(N'[dbo].[FK_tblDepartments_tblAddress_ResidentialAddress]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[tblDepartments] DROP CONSTRAINT [FK_tblDepartments_tblAddress_ResidentialAddress];
 GO
 IF OBJECT_ID(N'[dbo].[FK_tblEmployeeImageMap_tblEmployees]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[tblEmployeeImageMap] DROP CONSTRAINT [FK_tblEmployeeImageMap_tblEmployees];
@@ -216,8 +216,8 @@ CREATE TABLE [dbo].[tblDepartments] (
     [ID] int IDENTITY(1,1) NOT NULL,
     [Name] nvarchar(max)  NULL,
     [Location] nvarchar(max)  NULL,
-    [ResidentialAddress] uniqueidentifier  NULL,
-    [PostalAddress] uniqueidentifier  NULL
+    [PostalAddress] uniqueidentifier  NULL,
+    [DepartmentAddress] uniqueidentifier  NULL
 );
 GO
 
@@ -674,19 +674,19 @@ ON [dbo].[tblDepartments]
     ([PostalAddress]);
 GO
 
--- Creating foreign key on [ResidentialAddress] in table 'tblDepartments'
+-- Creating foreign key on [DepartmentAddress] in table 'tblDepartments'
 ALTER TABLE [dbo].[tblDepartments]
-ADD CONSTRAINT [FK_tblDepartments_tblAddress_ResidentialAddress]
-    FOREIGN KEY ([ResidentialAddress])
+ADD CONSTRAINT [FK_tblDepartments_tblAddress_DepartmentAddress]
+    FOREIGN KEY ([DepartmentAddress])
     REFERENCES [dbo].[tblAddresses]
         ([AddressId])
     ON DELETE NO ACTION ON UPDATE NO ACTION;
 GO
 
--- Creating non-clustered index for FOREIGN KEY 'FK_tblDepartments_tblAddress_ResidentialAddress'
-CREATE INDEX [IX_FK_tblDepartments_tblAddress_ResidentialAddress]
+-- Creating non-clustered index for FOREIGN KEY 'FK_tblDepartments_tblAddress_DepartmentAddress'
+CREATE INDEX [IX_FK_tblDepartments_tblAddress_DepartmentAddress]
 ON [dbo].[tblDepartments]
-    ([ResidentialAddress]);
+    ([DepartmentAddress]);
 GO
 
 -- Object:  User [NT AUTHORITY\SYSTEM]
