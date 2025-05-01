@@ -35,6 +35,8 @@
         <AssociationConnector Association="EmployeeDBModel.FK_tblEmployees_tblDepartments" />
         <AssociationConnector Association="EmployeeDBModel.FK_tblEmployeeImageMap_tblEmployees" />
         <AssociationConnector Association="EmployeeDBModel.FK_tblEmployees_tblEmployees" />
+        <AssociationConnector Association="EmployeeDBModel.FK_tblDepartments_tblAddress_PostalAddress" />
+        <AssociationConnector Association="EmployeeDBModel.FK_tblDepartments_tblAddress_ResidentialAddress" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
