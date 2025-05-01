@@ -7,6 +7,7 @@ import AlertDialog from '../../Core/ModalDialogs';
 import { WebApi } from '../../helpers/WebApi.ts';
 import { mapDispatchToProps, mapStateToProps } from './../../../redux/reducers/userSlice';
 import Input from './../../Core/Input';
+import Address from '../../Core/addressComponents/Address';
 
 class EditDepartmentComponent extends Component {
     constructor(props) {
@@ -20,7 +21,9 @@ class EditDepartmentComponent extends Component {
             message: '',
             readOnly: false,
             isBlocking: false,
-            backClicked: false
+            backClicked: false,
+            postalAddressReadOnly: false,
+            sameResidentialAddress: false
         }
         this.id = 0;
     }
@@ -114,7 +117,7 @@ class EditDepartmentComponent extends Component {
             return <Navigate to='/Departments' />
         }
         const user = this.props?.username
-        const { Name, Location, showAlert, alertType, message, readOnly } = this.state
+        const { Name, Location, showAlert, alertType, message, readOnly, postalAddressReadOnly, sameResidentialAddress } = this.state
         const { location } = this.props;
         if (location && location.state)
             this.id = location.state
@@ -148,19 +151,38 @@ class EditDepartmentComponent extends Component {
                             </div>
                         </div>
                         <AlertMessage message={Message} visible={showAlert} type={alertType}></AlertMessage>
-                        <div className="row  p-4">
+                        <div className="row  p-3">
                             <div className="col-12 alignCenter">
                                 <Input label="Department Name" value={Name}
                                     onChange={(e) => { this.setState({ Name: e.target.value, isBlocking: true }, () => this.saveStateToLocalStorage()) }}
                                     onClear={(value) => { this.setState({ Name: value, isBlocking: true }, () => this.saveStateToLocalStorage()) }} required={true} disabled={readOnly} />
                             </div>
                         </div>
-                        <div className="row  p-4">
+                        <div className="row  p-3">
                             <div className="col-12 alignCenter">
                                 <Input label="Location" value={Location}
                                     onChange={(e) => { this.setState({ Location: e.target.value, isBlocking: true }, () => this.saveStateToLocalStorage()) }}
                                     onClear={(value) => { this.setState({ Location: value, isBlocking: true }, () => this.saveStateToLocalStorage()) }} required={true} disabled={readOnly} />
                             </div>
+                        </div>
+                        <div className="p-0 m-0 mt-4 mb-3 row alignCenter">
+                            <div className="col-12" >
+                                <hr className="rounded" />
+                            </div>
+                        </div>
+                        <div className="row p-4 px-5 mx-lg-2">
+                            <Address
+                                postalAddressProps={{
+                                    readOnly: postalAddressReadOnly,
+                                    sameResidentialAddress: sameResidentialAddress
+                                }}
+                                residentialAddressProps={{
+                                    headingTitle: 'Department Address',
+                                    numberLabel: 'Address Line 1',
+                                    streetAddressLabel: 'Address Line 2'
+                                }}
+                                readOnly={readOnly}
+                            />
                         </div>
                     </form>
                 </Container>

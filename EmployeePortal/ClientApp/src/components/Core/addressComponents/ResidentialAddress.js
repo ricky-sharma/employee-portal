@@ -4,24 +4,26 @@ import { AddressContext } from './Address';
 
 function ResidentialAddress(props) {
     const [addressState, setAddressState] = useContext(AddressContext)
-    const { residentialAddressProps } = props
+    const { residentialAddressProps, readOnly } = props
 
     useEffect(() => {
+        // eslint-disable-next-line
+        console.log(props)
         console.log(addressState)
     }, [addressState])
 
     return (
-        <div className="col-12 p-0 fullInputWidth">
+        <div className={readOnly === true ? "col-12 p-0 fullInputWidth disabled-inputs" : "col-12 p-0 fullInputWidth"}>
             <div className="col-12 p-0 m-0 row">
                 <div className="col-12 p-0">
-                    <h6>Residential Address</h6>
+                    <h6>{residentialAddressProps?.headingTitle ?? 'Residential Address'}</h6>
                 </div>
             </div>
             <div className="col-12 p-0 m-0 mt-3 row">
                 <div className="col-6 p-0 pr-3">
                     <div className="col-12 p-0">
                         <Input
-                            label="House/Unit number"
+                            label={residentialAddressProps?.numberLabel ?? "House/Unit number"}
                             error={residentialAddressProps?.houseNumberResiAddError ?? false}
                             value={addressState?.houseNumberResiAdd}
                             onChange={e => {
@@ -48,7 +50,7 @@ function ResidentialAddress(props) {
                 <div className="col-6 p-0">
                     <div className="col-12 p-0">
                         <Input
-                            label="Street address"
+                            label={residentialAddressProps?.streetAddressLabel ?? "Street address"}
                             value={addressState?.streetResiAdd}
                             onChange={e => {
                                 setAddressState(addressState => ({
@@ -128,7 +130,6 @@ function ResidentialAddress(props) {
                     </div>
                 </div>
                 <div className="col-3 p-0 pl-3">
-
                     <div className="col-12 p-0">
                         <Input
                             label="Postal code"

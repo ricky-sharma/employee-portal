@@ -81,15 +81,22 @@ class AddDepartmentComponent extends Component {
                                     onClear={(value) => { this.setState({ Location: value }) }} required={true} />
                             </div>
                         </div>
-                        <div className="col-12 p-0 m-0 mt-4 mb-3 row">
-                            <hr className="rounded" />
+                        <div className="p-0 m-0 mt-4 mb-3 row alignCenter">
+                            <div className="col-12" >
+                                <hr className="rounded" />
+                            </div>
                         </div>
-                        <div className="row  p-4">
-                        <Address
-                            postalAddressProps={{
-                                readOnly: readOnly,
-                                sameResidentialAddress: sameResidentialAddress
-                            }}
+                        <div className="row p-4 px-5 mx-lg-2">
+                            <Address
+                                postalAddressProps={{
+                                    readOnly: readOnly,
+                                    sameResidentialAddress: sameResidentialAddress
+                                }}
+                                residentialAddressProps={{
+                                    headingTitle: 'Department Address',
+                                    numberLabel: 'Address Line 1',
+                                    streetAddressLabel: 'Address Line 2'
+                                }}
                             />
                         </div>
                     </form>
