@@ -70,7 +70,7 @@ export class Input extends Component {
                                                 "display": (this.state.value === '' ? "none" : "")
                                             }}
                                             onClick={this.handleClearClick}>
-                                            {this.props.disabled ? "" : <ClearIcon />}
+                                            {this.props.disabled ? "" : <ClearIcon sx={{ fontSize: '10px !important' }} />}
                                         </IconButton>)
                                 }
                             }}

@@ -1,16 +1,10 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext } from 'react';
 import Input from '../Input';
 import { AddressContext } from './Address';
 
 function ResidentialAddress(props) {
-    const [addressState, setAddressState] = useContext(AddressContext)
+    const { addressState, setAddressState } = useContext(AddressContext)
     const { residentialAddressProps, readOnly } = props
-
-    useEffect(() => {
-        // eslint-disable-next-line
-        console.log(props)
-        console.log(addressState)
-    }, [addressState])
 
     return (
         <div className={readOnly === true ? "col-12 p-0 fullInputWidth disabled-inputs" : "col-12 p-0 fullInputWidth"}>
@@ -26,6 +20,8 @@ function ResidentialAddress(props) {
                             label={residentialAddressProps?.numberLabel ?? "House/Unit number"}
                             error={residentialAddressProps?.houseNumberResiAddError ?? false}
                             value={addressState?.houseNumberResiAdd}
+                            className={(readOnly === true ? "disabled-inputs" : "")}
+                            disabled={(readOnly === true ? true : false)}
                             onChange={e => {
                                 setAddressState(addressState => ({
                                     ...addressState,
@@ -44,6 +40,7 @@ function ResidentialAddress(props) {
                                     }
                                 }))
                             }}
+                            required={true}
                             customClass="fullWidth" />
                     </div>
                 </div>
@@ -52,6 +49,8 @@ function ResidentialAddress(props) {
                         <Input
                             label={residentialAddressProps?.streetAddressLabel ?? "Street address"}
                             value={addressState?.streetResiAdd}
+                            className={(readOnly === true ? "disabled-inputs" : "")}
+                            disabled={(readOnly === true ? true : false)}
                             onChange={e => {
                                 setAddressState(addressState => ({
                                     ...addressState,
@@ -81,6 +80,8 @@ function ResidentialAddress(props) {
                             label="Suburb/City"
                             error={residentialAddressProps?.suburbCityResiAddError ?? false}
                             value={addressState?.suburbCityResiAdd}
+                            className={(readOnly === true ? "disabled-inputs" : "")}
+                            disabled={(readOnly === true ? true : false)}
                             onChange={e => {
                                 setAddressState(addressState => ({
                                     ...addressState,
@@ -99,6 +100,7 @@ function ResidentialAddress(props) {
                                     }
                                 }))
                             }}
+                            required={true}
                             customClass="fullWidth" />
                     </div>
                 </div>
@@ -108,6 +110,8 @@ function ResidentialAddress(props) {
                             label="State"
                             error={residentialAddressProps?.stateResiAddError ?? false}
                             value={addressState?.stateResiAdd}
+                            className={(readOnly === true ? "disabled-inputs" : "")}
+                            disabled={(readOnly === true ? true : false)}
                             onChange={e => {
                                 setAddressState(addressState => ({
                                     ...addressState,
@@ -126,6 +130,7 @@ function ResidentialAddress(props) {
                                     }
                                 }))
                             }}
+                            required={true}
                             customClass="fullWidth" />
                     </div>
                 </div>
@@ -135,6 +140,8 @@ function ResidentialAddress(props) {
                             label="Postal code"
                             error={residentialAddressProps?.postalCodeResiAddError ?? false}
                             value={addressState?.postalCodeResiAdd}
+                            className={(readOnly === true ? "disabled-inputs" : "")}
+                            disabled={(readOnly === true ? true : false)}
                             onChange={e => {
                                 setAddressState(addressState => ({
                                     ...addressState,
@@ -154,6 +161,7 @@ function ResidentialAddress(props) {
                                 }))
                             }}
                             customClass="fullWidth"
+                            required={true}
                             helperText={residentialAddressProps?.postalCodeResiAddErrorText ?? ''} />
                     </div>
                 </div>

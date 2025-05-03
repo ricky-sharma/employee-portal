@@ -3,7 +3,7 @@ import Input from '../Input';
 import { AddressContext } from './Address';
 
 function PostalAddress(props) {
-    const [addressState, setAddressState] = useContext(AddressContext)
+    const { addressState, setAddressState } = useContext(AddressContext)
     const { postalAddressProps, residentialAddressProps, readOnly } = props
 
     useEffect(() => {
@@ -16,15 +16,6 @@ function PostalAddress(props) {
                     suburbCityPostAdd: addressState.suburbCityResiAdd,
                     statePostAdd: addressState.stateResiAdd,
                     postalCodePostAdd: addressState.postalCodeResiAdd,
-                    fieldReadOnly: true
-                }
-            }))
-        }
-        else {
-            setAddressState(addressState => ({
-                ...addressState,
-                ...{
-                    fieldReadOnly: false
                 }
             }))
         }
@@ -60,8 +51,8 @@ function PostalAddress(props) {
                             label={residentialAddressProps?.numberLabel ?? "House/Unit number"}
                             error={postalAddressProps?.houseNumberPostAddError ?? false}
                             value={addressState.houseNumberPostAdd}
-                            className={(addressState?.fieldReadOnly === true ? "disabled-inputs" : "")}
-                            disabled={(addressState?.fieldReadOnly === true ? true : false)}
+                            className={((addressState?.sameAsResidentialAddress === true || readOnly === true) ? "disabled-inputs" : "")}
+                            disabled={((addressState?.sameAsResidentialAddress === true || readOnly === true) ? true : false)}
                             onChange={(e) => {
                                 setAddressState(addressState => ({
                                     ...addressState,
@@ -78,6 +69,7 @@ function PostalAddress(props) {
                                     }
                                 }))
                             }}
+                            required={true}
                             customClass="fullWidth" />
                     </div>
                 </div>
@@ -86,8 +78,8 @@ function PostalAddress(props) {
                         <Input
                             label={residentialAddressProps?.streetAddressLabel ?? "Street address"}
                             value={addressState.streetPostAdd}
-                            className={(addressState?.fieldReadOnly === true ? "disabled-inputs" : "")}
-                            disabled={(addressState?.fieldReadOnly === true ? true : false)}
+                            className={((addressState?.sameAsResidentialAddress === true || readOnly === true) ? "disabled-inputs" : "")}
+                            disabled={((addressState?.sameAsResidentialAddress === true || readOnly === true) ? true : false)}
                             onChange={(e) => {
                                 setAddressState(addressState => ({
                                     ...addressState,
@@ -115,8 +107,8 @@ function PostalAddress(props) {
                             label="Suburb/City"
                             error={postalAddressProps?.suburbCityPostAddError ?? false}
                             value={addressState.suburbCityPostAdd}
-                            className={(addressState?.fieldReadOnly === true ? "disabled-inputs" : "")}
-                            disabled={(addressState?.fieldReadOnly === true ? true : false)}
+                            className={((addressState?.sameAsResidentialAddress === true || readOnly === true) ? "disabled-inputs" : "")}
+                            disabled={((addressState?.sameAsResidentialAddress === true || readOnly === true) ? true : false)}
                             onChange={(e) => {
                                 setAddressState(addressState => ({
                                     ...addressState,
@@ -133,6 +125,7 @@ function PostalAddress(props) {
                                     }
                                 }))
                             }}
+                            required={true}
                             customClass="fullWidth" />
                     </div>
                 </div>
@@ -142,8 +135,8 @@ function PostalAddress(props) {
                             label="State"
                             error={postalAddressProps?.statePostAddError ?? false}
                             value={addressState.statePostAdd}
-                            className={(addressState?.fieldReadOnly === true ? "disabled-inputs" : "")}
-                            disabled={(addressState?.fieldReadOnly === true ? true : false)}
+                            className={((addressState?.sameAsResidentialAddress === true || readOnly === true) ? "disabled-inputs" : "")}
+                            disabled={((addressState?.sameAsResidentialAddress === true || readOnly === true) ? true : false)}
                             onChange={(e) => {
                                 setAddressState(addressState => ({
                                     ...addressState,
@@ -160,6 +153,7 @@ function PostalAddress(props) {
                                     }
                                 }))
                             }}
+                            required={true}
                             customClass="fullWidth" />
                     </div>
                 </div>
@@ -170,8 +164,8 @@ function PostalAddress(props) {
                             helperText={postalAddressProps?.postalCodePostAddErrorText ?? ''}
                             error={postalAddressProps?.postalCodePostAddError ?? false}
                             value={addressState.postalCodePostAdd}
-                            className={(addressState?.fieldReadOnly === true ? "disabled-inputs" : "")}
-                            disabled={(addressState?.fieldReadOnly === true ? true : false)}
+                            className={((addressState?.sameAsResidentialAddress === true || readOnly === true) ? "disabled-inputs" : "")}
+                            disabled={((addressState?.sameAsResidentialAddress === true || readOnly === true) ? true : false)}
                             onChange={(e) => {
                                 setAddressState(addressState => ({
                                     ...addressState,
@@ -188,6 +182,7 @@ function PostalAddress(props) {
                                     }
                                 }))
                             }}
+                            required={true}
                             customClass="fullWidth" />
                     </div>
                 </div>

@@ -1,18 +1,19 @@
-import React, { Component } from 'react';
+import React, { Component, createRef } from 'react';
 import { connect } from 'react-redux';
 import { Navigate } from "react-router-dom";
 import { Container } from 'reactstrap';
+import { DefaultGuid } from '../../../Constants';
 import AlertMessage from '../../Core/AlertMessage';
 import AlertDialog from '../../Core/ModalDialogs';
+import { Address, GetAddressValues } from '../../Core/addressComponents/Address';
+import IsNull from '../../common/Common';
 import { WebApi } from '../../helpers/WebApi.ts';
 import { mapDispatchToProps, mapStateToProps } from './../../../redux/reducers/userSlice';
 import Input from './../../Core/Input';
-import Address from '../../Core/addressComponents/Address';
 
 class EditDepartmentComponent extends Component {
     constructor(props) {
         super(props)
-
         this.state = {
             Name: '',
             Location: '',
@@ -22,10 +23,13 @@ class EditDepartmentComponent extends Component {
             readOnly: false,
             isBlocking: false,
             backClicked: false,
-            postalAddressReadOnly: false,
-            sameResidentialAddress: false
+            deptAddress: {},
+            postalAddress: {}
         }
         this.id = 0;
+        this.deptAddressId = '';
+        this.postAddressId = '';
+        this.addressRef = createRef(null);
     }
 
     saveStateToLocalStorage() {
@@ -35,32 +39,93 @@ class EditDepartmentComponent extends Component {
             // save to localStorage
             localStorage.setItem(key + user, JSON.stringify(this.state[key]));
         }
-
-        localStorage.setItem("id" + user, this.id);
+        localStorage.setItem(`id${user}`, this.id);
     }
 
     hydrateStateWithLocalStorage() {
         const user = this.props?.username
         // for every item in React state
         this.setState({
-            Name: JSON.parse(localStorage.getItem("Name" + user)), Location: JSON.parse(localStorage.getItem("Location" + user)),
-            showAlert: JSON.parse(localStorage.getItem("showAlert" + user)), alertType: JSON.parse(localStorage.getItem("alertType" + user)),
-            message: JSON.parse(localStorage.getItem("message" + user)), readOnly: JSON.parse(localStorage.getItem("readOnly" + user)),
-            isBlocking: JSON.parse(localStorage.getItem("isBlocking" + user))
+            Name: JSON.parse(localStorage.getItem(`Name${user}`)),
+            Location: JSON.parse(localStorage.getItem(`Location${user}`)),
+            showAlert: JSON.parse(localStorage.getItem(`showAlert${user}`)),
+            alertType: JSON.parse(localStorage.getItem(`alertType${user}`)),
+            message: JSON.parse(localStorage.getItem(`message${user}`)),
+            readOnly: JSON.parse(localStorage.getItem(`readOnly${user}`)),
+            isBlocking: JSON.parse(localStorage.getItem(`isBlocking${user}`))
         });
-
-        this.id = localStorage.getItem("id" + user)
+        this.id = localStorage.getItem(`id${user}`)
     }
 
     componentDidMount = () => {
         const user = this.props?.username
-        if (this.id !== 0 && !localStorage.getItem("id" + user)) {
-            let url = `/api/Departments/` + this.id
+        const setAddressValues = this.addressRef.current ?
+            this.addressRef.current.setAddressStateValue : null;
+        if (this.id !== 0 && !localStorage.getItem(`id${user}`)) {
+            let url = `/api/Departments/${this.id}`
             WebApi(url, '', 'GET')
                 .then(response => {
-                    this.setState({ Name: response.Name, Location: response.Location }
-                        , () => this.saveStateToLocalStorage()
-                    )
+                    if (response) {
+                        this.deptAddressId = response.DepartmentAddress
+                        this.postAddressId = response.PostalAddress
+                        this.setState({
+                            Name: response.Name,
+                            Location: response.Location
+                        }, () => this.saveStateToLocalStorage())
+                    }
+                })
+                .then(() => {
+                    if (this.deptAddressId !== DefaultGuid) {
+                        url = `/api/Address/${this.deptAddressId}`
+                        WebApi(url, '', 'GET')
+                            .then(response => {
+                                if (response && setAddressValues !== null) {
+                                    this.setState({
+                                        deptAddress: response
+                                    }, () => {
+                                        if (this.postAddressId !== DefaultGuid) {
+                                            url = `/api/Address/${this.postAddressId}`
+                                            WebApi(url, '', 'GET')
+                                                .then(response => {
+                                                    if (response && setAddressValues !== null) {
+                                                        this.setState({
+                                                            postalAddress: response
+                                                        }, () => {
+                                                            let sameAsResidentialAddress = false;
+                                                            if (
+                                                                this.state.deptAddress?.HouseNumber !== '' &&
+                                                                this.state.deptAddress.HouseNumber === this.state.postalAddress.HouseNumber &&
+                                                                this.state.deptAddress.StreetAddress === this.state.postalAddress.StreetAddress &&
+                                                                this.state.deptAddress.SuburbCity === this.state.postalAddress.SuburbCity &&
+                                                                this.state.deptAddress.State === this.state.postalAddress.State &&
+                                                                this.state.deptAddress.PostalCode === this.state.postalAddress.PostalCode
+                                                            ) {
+                                                                sameAsResidentialAddress = true;
+                                                            }
+                                                            setAddressValues(addressState => ({
+                                                                ...addressState,
+                                                                ...{
+                                                                    houseNumberResiAdd: this.state.deptAddress.HouseNumber ?? '',
+                                                                    streetResiAdd: this.state.deptAddress.StreetAddress ?? '',
+                                                                    suburbCityResiAdd: this.state.deptAddress.SuburbCity ?? '',
+                                                                    stateResiAdd: this.state.deptAddress.State ?? '',
+                                                                    postalCodeResiAdd: this.state.deptAddress.PostalCode ?? '',
+                                                                    houseNumberPostAdd: this.state.postalAddress.HouseNumber ?? '',
+                                                                    streetPostAdd: this.state.postalAddress.StreetAddress ?? '',
+                                                                    suburbCityPostAdd: this.state.postalAddress.SuburbCity ?? '',
+                                                                    statePostAdd: this.state.postalAddress.State ?? '',
+                                                                    postalCodePostAdd: this.state.postalAddress.PostalCode ?? '',
+                                                                    sameAsResidentialAddress: sameAsResidentialAddress
+                                                                }
+                                                            }))
+                                                        })
+                                                    }
+                                                });
+                                        }
+                                    })
+                                }
+                            })
+                    }
                 });
         }
         else {
@@ -68,34 +133,96 @@ class EditDepartmentComponent extends Component {
         }
     }
 
-    handleSubmit = () => {
+    handleSubmit = (e) => {
+        e.preventDefault()
         if (this.state.readOnly) {
-            this.setState({ readOnly: false, showAlert: false, alertType: "" })
+            this.setState({
+                readOnly: false,
+                showAlert: false,
+                alertType: ""
+            })
         }
         else {
             if (this.state.Name === '' || this.state.Location === '') {
-                return this.setState({ showAlert: true, alertType: "danger" })
+                return this.setState({
+                    showAlert: true,
+                    alertType: "danger"
+                })
             }
-            let url = `/api/Departments/` + this.id
-            let data = JSON.stringify({
-                "ID": this.id,
-                "Name": this.state.Name,
-                "Location": this.state.Location
+            const addressValues = GetAddressValues() ?? {};
+            let url, data = ''
+            url = !IsNull(this.deptAddressId) && this.deptAddressId !== DefaultGuid ?
+                `/api/Address/${this.deptAddressId}` : `/api/Address/`
+            data = JSON.stringify({
+                "AddressId": !IsNull(this.deptAddressId) && this.deptAddressId !== DefaultGuid ?
+                    this.deptAddressId : `{${DefaultGuid}}`,
+                "HouseNumber": addressValues?.houseNumberResiAdd,
+                "StreetAddress": addressValues?.streetResiAdd,
+                "SuburbCity": addressValues?.suburbCityResiAdd,
+                "State": addressValues?.stateResiAdd,
+                "PostalCode": addressValues?.postalCodeResiAdd,
+                "IsPostalAddress": false
             })
-            WebApi(url, data, 'PUT')
+            WebApi(url, data, !IsNull(this.deptAddressId) && this.deptAddressId !== DefaultGuid ? 'PUT' : 'POST')
                 .then(response => {
-                    if (response.Message && response.Message.toUpperCase() === "SUCCESS") {
-                        this.setState({ readOnly: true, isBlocking: false })
-                        AlertDialog('Department data saved successfully.')
+                    if (response) {
+                        if (!IsNull(response.Message) && response.Message.toUpperCase() === "SUCCESS") {
+                            if (!IsNull(response.id)) {
+                                this.deptAddressId = response.id
+                            }
+                            url = !IsNull(this.postAddressId) && this.postAddressId !== DefaultGuid ?
+                                `/api/Address/${this.postAddressId}` : `/api/Address/`
+                            data = JSON.stringify({
+                                "AddressId": !IsNull(this.postAddressId) && this.postAddressId !== DefaultGuid ?
+                                    this.postAddressId : `{${DefaultGuid}}`,
+                                "HouseNumber": addressValues?.houseNumberPostAdd,
+                                "StreetAddress": addressValues?.streetPostAdd,
+                                "SuburbCity": addressValues?.suburbCityPostAdd,
+                                "State": addressValues?.statePostAdd,
+                                "PostalCode": addressValues?.postalCodePostAdd,
+                                "IsPostalAddress": true,
+                            })
+                            WebApi(url, data, !IsNull(this.postAddressId) && this.postAddressId !== DefaultGuid ? 'PUT' : 'POST')
+                                .then(response => {
+                                    if (response) {
+                                        if (!IsNull(response.Message) && response.Message.toUpperCase() === "SUCCESS") {
+                                            if (!IsNull(response.id)) {
+                                                this.postAddressId = response.id
+                                            }
+                                            url = `/api/Departments/${this.id}`
+                                            data = JSON.stringify({
+                                                "ID": this.id,
+                                                "Name": this.state.Name,
+                                                "Location": this.state.Location,
+                                                "DepartmentAddress": this.deptAddressId,
+                                                "PostalAddress": this.postAddressId
+                                            })
+                                            WebApi(url, data, 'PUT')
+                                                .then(response => {
+                                                    if (response.Message && response.Message.toUpperCase() === "SUCCESS") {
+                                                        this.setState({
+                                                            readOnly: true,
+                                                            isBlocking: false
+                                                        })
+                                                        AlertDialog('Department data saved successfully.')
+                                                    }
+                                                    else
+                                                        AlertDialog('Some error occured, please try again.')
+                                                });
+                                        }
+                                    }
+                                })
+                        }
                     }
-                    else
-                        AlertDialog('Some error occured, please try again.')
-                });
+                })
+
         }
     }
 
     handleBack = () => {
-        this.setState({ backClicked: true })
+        this.setState({
+            backClicked: true
+        })
     }
 
     handlePrompt = () => {
@@ -109,7 +236,7 @@ class EditDepartmentComponent extends Component {
             // save to localStorage
             localStorage.removeItem(key + user)
         }
-        localStorage.removeItem("id" + user);
+        localStorage.removeItem(`id${user}`);
     }
 
     render() {
@@ -117,12 +244,12 @@ class EditDepartmentComponent extends Component {
             return <Navigate to='/Departments' />
         }
         const user = this.props?.username
-        const { Name, Location, showAlert, alertType, message, readOnly, postalAddressReadOnly, sameResidentialAddress } = this.state
+        const { Name, Location, showAlert, alertType, message, readOnly } = this.state
         const { location } = this.props;
         if (location && location.state)
             this.id = location.state
 
-        if ((!this.id || this.id === 0) && !localStorage.getItem("id" + user)) {
+        if ((!this.id || this.id === 0) && !localStorage.getItem(`id${user}`)) {
             return <Navigate to='/Departments' />
         }
         const SuccessMessage = "Department has been edited successfully."
@@ -153,16 +280,46 @@ class EditDepartmentComponent extends Component {
                         <AlertMessage message={Message} visible={showAlert} type={alertType}></AlertMessage>
                         <div className="row  p-3">
                             <div className="col-12 alignCenter">
-                                <Input label="Department Name" value={Name}
-                                    onChange={(e) => { this.setState({ Name: e.target.value, isBlocking: true }, () => this.saveStateToLocalStorage()) }}
-                                    onClear={(value) => { this.setState({ Name: value, isBlocking: true }, () => this.saveStateToLocalStorage()) }} required={true} disabled={readOnly} />
+                                <Input
+                                    label="Department Name"
+                                    value={Name}
+                                    onChange={(e) => {
+                                        this.setState({
+                                            Name: e.target.value,
+                                            isBlocking: true
+                                        }, () => this.saveStateToLocalStorage())
+                                    }}
+                                    onClear={(value) => {
+                                        this.setState({
+                                            Name: value,
+                                            isBlocking: true
+                                        }, () => this.saveStateToLocalStorage())
+                                    }}
+                                    required={true}
+                                    className={(readOnly === true ? "disabled-inputs" : "")}
+                                    disabled={(readOnly === true ? true : false)} />
                             </div>
                         </div>
                         <div className="row  p-3">
                             <div className="col-12 alignCenter">
-                                <Input label="Location" value={Location}
-                                    onChange={(e) => { this.setState({ Location: e.target.value, isBlocking: true }, () => this.saveStateToLocalStorage()) }}
-                                    onClear={(value) => { this.setState({ Location: value, isBlocking: true }, () => this.saveStateToLocalStorage()) }} required={true} disabled={readOnly} />
+                                <Input
+                                    label="Location"
+                                    value={Location}
+                                    onChange={(e) => {
+                                        this.setState({
+                                            Location: e.target.value,
+                                            isBlocking: true
+                                        }, () => this.saveStateToLocalStorage())
+                                    }}
+                                    onClear={(value) => {
+                                        this.setState({
+                                            Location: value,
+                                            isBlocking: true
+                                        }, () => this.saveStateToLocalStorage())
+                                    }}
+                                    required={true}
+                                    className={(readOnly === true ? "disabled-inputs" : "")}
+                                    disabled={(readOnly === true ? true : false)} />
                             </div>
                         </div>
                         <div className="p-0 m-0 mt-4 mb-3 row alignCenter">
@@ -172,16 +329,13 @@ class EditDepartmentComponent extends Component {
                         </div>
                         <div className="row p-4 px-5 mx-lg-2">
                             <Address
-                                postalAddressProps={{
-                                    readOnly: postalAddressReadOnly,
-                                    sameResidentialAddress: sameResidentialAddress
-                                }}
                                 residentialAddressProps={{
                                     headingTitle: 'Department Address',
                                     numberLabel: 'Address Line 1',
                                     streetAddressLabel: 'Address Line 2'
                                 }}
                                 readOnly={readOnly}
+                                ref={this.addressRef}
                             />
                         </div>
                     </form>

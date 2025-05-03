@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { Container } from 'reactstrap';
+import { DefaultGuid } from '../../../Constants';
+import IsNull from '../../common/Common';
+import { Address, GetAddressValues } from '../../Core/addressComponents/Address';
 import AlertMessage from '../../Core/AlertMessage';
 import { WebApi } from '../../helpers/WebApi.ts';
-import Input from './../../Core/Input';
 import { mapDispatchToProps, mapStateToProps } from './../../../redux/reducers/userSlice';
-import { connect } from 'react-redux';
-import Address from '../../Core/addressComponents/Address';
+import Input from './../../Core/Input';
 
 class AddDepartmentComponent extends Component {
     constructor(props) {
@@ -16,9 +18,7 @@ class AddDepartmentComponent extends Component {
             Location: '',
             token: authToken || '',
             showAlert: false,
-            alertType: '',
-            readOnly: false,
-            sameResidentialAddress: false
+            alertType: ''
         }
     }
 
@@ -27,16 +27,65 @@ class AddDepartmentComponent extends Component {
         if (this.state.Name === '' || this.state.Location === '') {
             return this.setState({ showAlert: true, alertType: "danger" })
         }
-        let url = `/api/Departments`
-        let data = JSON.stringify({
-            "ID": 0,
-            "Name": this.state.Name,
-            "Location": this.state.Location
+        const addressValues = GetAddressValues() ?? {};
+        let url, data, deptAddressId, postAddressId = ''
+        url = `/api/Address/`
+        data = JSON.stringify({
+            "AddressId": `{${DefaultGuid}}`,
+            "HouseNumber": addressValues?.houseNumberResiAdd,
+            "StreetAddress": addressValues?.streetResiAdd,
+            "SuburbCity": addressValues?.suburbCityResiAdd,
+            "State": addressValues?.stateResiAdd,
+            "PostalCode": addressValues?.postalCodeResiAdd,
+            "IsPostalAddress": false
         })
         WebApi(url, data, 'POST')
             .then(response => {
-                this.setState({ showAlert: true, alertType: 'success', Name: '', Location: '' })
-            });
+                if (response) {
+                    if (!IsNull(response.Message) && response.Message.toUpperCase() === "SUCCESS") {
+                        if (!IsNull(response.id)) {
+                            deptAddressId = response.id
+                        }
+                        url = `/api/Address/`
+                        data = JSON.stringify({
+                            "AddressId": `{${DefaultGuid}}`,
+                            "HouseNumber": addressValues?.houseNumberPostAdd,
+                            "StreetAddress": addressValues?.streetPostAdd,
+                            "SuburbCity": addressValues?.suburbCityPostAdd,
+                            "State": addressValues?.statePostAdd,
+                            "PostalCode": addressValues?.postalCodePostAdd,
+                            "IsPostalAddress": true,
+                        })
+                        WebApi(url, data, 'POST')
+                            .then(response => {
+                                if (response) {
+                                    if (!IsNull(response.Message) && response.Message.toUpperCase() === "SUCCESS") {
+                                        if (!IsNull(response.id)) {
+                                            postAddressId = response.id
+                                        }
+                                        url = `/api/Departments`
+                                        data = JSON.stringify({
+                                            "ID": 0,
+                                            "Name": this.state.Name,
+                                            "Location": this.state.Location,
+                                            "DepartmentAddress": deptAddressId,
+                                            "PostalAddress": postAddressId
+                                        })
+                                        WebApi(url, data, 'POST')
+                                            .then(response => {
+                                                this.setState({
+                                                    showAlert: true,
+                                                    alertType: 'success',
+                                                    Name: '',
+                                                    Location: ''
+                                                })
+                                            });
+                                    }
+                                }
+                            })
+                    }
+                }
+            })
     }
 
     handleBack = () => {
@@ -44,7 +93,7 @@ class AddDepartmentComponent extends Component {
     }
 
     render() {
-        const { Name, Location, showAlert, alertType, readOnly, sameResidentialAddress } = this.state
+        const { Name, Location, showAlert, alertType } = this.state
         const SuccessMessage = "Department has been added successfully."
         const ErrorMessage = "Name and Location fields cannot be empty."
         let Message
@@ -70,15 +119,37 @@ class AddDepartmentComponent extends Component {
                         <div className="row  p-4">
                             <div className="col-12 alignCenter">
                                 <Input label="Department Name" value={Name}
-                                    onChange={(e) => { this.setState({ Name: e.target.value, successAlert: false, errorAlert: false }) }}
-                                    onClear={(value) => { this.setState({ Name: value }) }} required={true} />
+                                    onChange={(e) => {
+                                        this.setState({
+                                            Name: e.target.value,
+                                            successAlert: false,
+                                            errorAlert: false
+                                        })
+                                    }}
+                                    onClear={(value) => {
+                                        this.setState({
+                                            Name: value
+                                        })
+                                    }}
+                                    required={true} />
                             </div>
                         </div>
                         <div className="row  p-4">
                             <div className="col-12 alignCenter">
                                 <Input label="Location" value={Location}
-                                    onChange={(e) => { this.setState({ Location: e.target.value, successAlert: false, errorAlert: false }) }}
-                                    onClear={(value) => { this.setState({ Location: value }) }} required={true} />
+                                    onChange={(e) => {
+                                        this.setState({
+                                            Location: e.target.value,
+                                            successAlert: false,
+                                            errorAlert: false
+                                        })
+                                    }}
+                                    onClear={(value) => {
+                                        this.setState({
+                                            Location: value
+                                        })
+                                    }}
+                                    required={true} />
                             </div>
                         </div>
                         <div className="p-0 m-0 mt-4 mb-3 row alignCenter">
@@ -88,10 +159,6 @@ class AddDepartmentComponent extends Component {
                         </div>
                         <div className="row p-4 px-5 mx-lg-2">
                             <Address
-                                postalAddressProps={{
-                                    readOnly: readOnly,
-                                    sameResidentialAddress: sameResidentialAddress
-                                }}
                                 residentialAddressProps={{
                                     headingTitle: 'Department Address',
                                     numberLabel: 'Address Line 1',

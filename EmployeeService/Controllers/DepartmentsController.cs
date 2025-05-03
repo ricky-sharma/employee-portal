@@ -28,7 +28,7 @@ namespace EmployeeService.Controllers
         [ResponseType(typeof(DepartmentModel))]
         public IHttpActionResult GettblDepartment(int id)
         {
-            DepartmentModel department = GetDepartments().FirstOrDefault(i => i.ID == id);            
+            DepartmentModel department = GetDepartments().FirstOrDefault(i => i.ID == id);
             if (department == null)
             {
                 return NotFound();
@@ -142,11 +142,13 @@ namespace EmployeeService.Controllers
 
         private IQueryable<DepartmentModel> GetDepartments()
         {
-            return db.tblDepartments.Where(i=> i.ID != 1).Select(i => new DepartmentModel()
+            return db.tblDepartments.Where(i => i.ID != 1).Select(i => new DepartmentModel()
             {
                 ID = i.ID,
                 Name = i.Name,
                 Location = i.Location,
+                DepartmentAddress = i.DepartmentAddress != null ? (Guid)i.DepartmentAddress : Guid.Empty,
+                PostalAddress = i.PostalAddress != null ? (Guid)i.PostalAddress : Guid.Empty
             });
         }
     }
