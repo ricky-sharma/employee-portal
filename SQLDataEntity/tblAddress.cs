@@ -19,6 +19,8 @@ namespace SQLDataEntity
         {
             this.tblEmployees = new HashSet<tblEmployee>();
             this.tblEmployees1 = new HashSet<tblEmployee>();
+            this.tblDepartments = new HashSet<tblDepartment>();
+            this.tblDepartments1 = new HashSet<tblDepartment>();
         }
     
         public System.Guid AddressId { get; set; }
@@ -40,5 +42,9 @@ namespace SQLDataEntity
         public virtual ICollection<tblEmployee> tblEmployees { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tblEmployee> tblEmployees1 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<tblDepartment> tblDepartments { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<tblDepartment> tblDepartments1 { get; set; }
     }
 }

@@ -5,7 +5,7 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import React, { Component } from 'react';
-import IsNull from '../Common/Common';
+import IsNull from '../common/Common';
 import '../css/Input.css';
 
 export class Input extends Component {
@@ -70,7 +70,7 @@ export class Input extends Component {
                                                 "display": (this.state.value === '' ? "none" : "")
                                             }}
                                             onClick={this.handleClearClick}>
-                                            {this.props.disabled ? "" : <ClearIcon />}
+                                            {this.props.disabled ? "" : <ClearIcon sx={{ fontSize: '10px !important' }} />}
                                         </IconButton>)
                                 }
                             }}

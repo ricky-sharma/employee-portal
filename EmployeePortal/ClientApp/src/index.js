@@ -7,8 +7,8 @@ import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
 import { PersistGate } from 'redux-persist/integration/react';
 import App from './App';
-import ComponentWrapper from './components/Helpers/ComponentWrapper';
-import ErrorBoundary from './components/Helpers/ErrorBoundary';
+import ComponentWrapper from './components/helpers/ComponentWrapper';
+import ErrorBoundary from './components/helpers/ErrorBoundary';
 import { persistor, store } from './redux/store'; // Store created with @reduxjs/toolkit
 import registerServiceWorker from './registerServiceWorker';
 
@@ -19,7 +19,11 @@ const LoadingIndicator = () => {
     const { promiseInProgress } = usePromiseTracker();
     return (
         promiseInProgress &&
-        <div><div className="loading-image"> <Oval ariaLabel="loading-indicator" height={90} width={90} strokeWidth={5} color="#00BFFF" secondaryColor="#00BFFF" /></div></div>);
+        <div>
+            <div className="loading-image">
+                <Oval ariaLabel="loading-indicator" height={90} width={90} strokeWidth={5} color="#00BFFF" secondaryColor="#00BFFF" />
+            </div>
+        </div>);
 }
 
 root.render(
@@ -34,7 +38,7 @@ root.render(
                     </Provider>
                     <LoadingIndicator />
                 </div>
-                <div id="alertDialogDiv" className="alert-Dialog"></div>
+                <div id="alertDialogDiv" className="alert-Dialog" />
             </ComponentWrapper>
         </BrowserRouter>
     </>);

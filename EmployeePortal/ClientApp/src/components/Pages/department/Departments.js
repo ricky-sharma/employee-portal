@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Navigate } from "react-router-dom";
 import { DataGrid } from '../../Core/DataGrid';
-import { WebApi } from '../../Helpers/WebApi.ts';
+import { WebApi } from '../../helpers/WebApi.ts';
 
 export class Departments extends Component {
     constructor(props) {
@@ -23,7 +23,7 @@ export class Departments extends Component {
                 if (response && response.length > 0) {
                     let Columns = Object.keys(response[0])
                     let cols = Columns.map((val) => {
-                        if (val.toUpperCase() === 'ID')
+                        if (val.toUpperCase() === 'ID' || val.toUpperCase() === 'DEPARTMENTADDRESS' || val.toUpperCase() === 'POSTALADDRESS')
                             return {
                                 Name: val,
                                 SearchEnable: false,
@@ -32,7 +32,6 @@ export class Departments extends Component {
                         else
                             return { Name: val }
                     })
-
                     this.setState({
                         departmentData: response,
                         departmentColumns: cols

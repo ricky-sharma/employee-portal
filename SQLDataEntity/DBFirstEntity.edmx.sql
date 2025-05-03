@@ -42,6 +42,12 @@ GO
 IF OBJECT_ID(N'[dbo].[FK_tblAddress_AspNetUsers1]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[tblAddress] DROP CONSTRAINT [FK_tblAddress_AspNetUsers1];
 GO
+IF OBJECT_ID(N'[dbo].[FK_tblDepartments_tblAddress_DepartmentAddress]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[tblDepartments] DROP CONSTRAINT [FK_tblDepartments_tblAddress_DepartmentAddress];
+GO
+IF OBJECT_ID(N'[dbo].[FK_tblDepartments_tblAddress_PostalAddress]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[tblDepartments] DROP CONSTRAINT [FK_tblDepartments_tblAddress_PostalAddress];
+GO
 IF OBJECT_ID(N'[dbo].[FK_tblEmployeeImageMap_tblEmployees]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[tblEmployeeImageMap] DROP CONSTRAINT [FK_tblEmployeeImageMap_tblEmployees];
 GO
@@ -209,7 +215,9 @@ GO
 CREATE TABLE [dbo].[tblDepartments] (
     [ID] int IDENTITY(1,1) NOT NULL,
     [Name] nvarchar(max)  NULL,
-    [Location] nvarchar(max)  NULL
+    [Location] nvarchar(max)  NULL,
+    [PostalAddress] uniqueidentifier  NULL,
+    [DepartmentAddress] uniqueidentifier  NULL
 );
 GO
 
@@ -651,6 +659,36 @@ ON [dbo].[tblEmployees]
     ([SupervisorID]);
 GO
 
+-- Creating foreign key on [PostalAddress] in table 'tblDepartments'
+ALTER TABLE [dbo].[tblDepartments]
+ADD CONSTRAINT [FK_tblDepartments_tblAddress_PostalAddress]
+    FOREIGN KEY ([PostalAddress])
+    REFERENCES [dbo].[tblAddresses]
+        ([AddressId])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+GO
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_tblDepartments_tblAddress_PostalAddress'
+CREATE INDEX [IX_FK_tblDepartments_tblAddress_PostalAddress]
+ON [dbo].[tblDepartments]
+    ([PostalAddress]);
+GO
+
+-- Creating foreign key on [DepartmentAddress] in table 'tblDepartments'
+ALTER TABLE [dbo].[tblDepartments]
+ADD CONSTRAINT [FK_tblDepartments_tblAddress_DepartmentAddress]
+    FOREIGN KEY ([DepartmentAddress])
+    REFERENCES [dbo].[tblAddresses]
+        ([AddressId])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+GO
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_tblDepartments_tblAddress_DepartmentAddress'
+CREATE INDEX [IX_FK_tblDepartments_tblAddress_DepartmentAddress]
+ON [dbo].[tblDepartments]
+    ([DepartmentAddress]);
+GO
+
 -- Object:  User [NT AUTHORITY\SYSTEM]
 CREATE USER [NT AUTHORITY\SYSTEM] FOR LOGIN [NT AUTHORITY\SYSTEM] WITH DEFAULT_SCHEMA=[dbo]
 GO
@@ -670,8 +708,6 @@ GO
 -- Adding default Employee
 INSERT INTO [dbo].[tblEmployees] ([FirstName], [LastName], [Gender], [Salary], [Department], [JobTitle], [JoiningDate], [LeavingDate], [DateofBirth], [Mobile], [HomePhone], [Email], [ProfessionalProfile], [EmploymentType], [EducationQualification], [IdentificationDocument], [IdentificationNumber], [IsActive], [InService], [CreatedOn], [CreatedBy], [UpdatedOn], [UpdatedBy], [ResidentialAddress], [PostalAddress], [EmployeeID], [SupervisorID]) VALUES ('None', '', 'Not Applicable', 0, 1, '', '01-01-1901', Null, Null, Null, Null, Null, Null, Null, Null, Null, Null, 1, 1, Null, Null, Null, Null, Null, Null, '0', Null)
 GO
-
-
 -- --------------------------------------------------
 -- Script has ended
 -- --------------------------------------------------

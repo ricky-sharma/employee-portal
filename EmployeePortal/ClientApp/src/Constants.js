@@ -9,4 +9,5 @@ export const Locale = ['en-AU']
 export const LocaleCode = 'AU'
 export const DevEmployeeFolder = '../../../../files/employeeImages/'
 export const EmployeeFolder = '../files/employeeImages/'
-export const ImageFolder = '../../images/' 
+export const ImageFolder = '../../images/'
+export const DefaultGuid = '00000000-0000-0000-0000-000000000000'

@@ -28,7 +28,7 @@ namespace EmployeeService.Controllers
         [ResponseType(typeof(DepartmentModel))]
         public IHttpActionResult GettblDepartment(int id)
         {
-            DepartmentModel department = GetDepartments().FirstOrDefault(i => i.ID == id);            
+            DepartmentModel department = GetDepartments().FirstOrDefault(i => i.ID == id);
             if (department == null)
             {
                 return NotFound();
@@ -55,7 +55,9 @@ namespace EmployeeService.Controllers
             {
                 ID = department.ID,
                 Name = department.Name,
-                Location = department.Location
+                Location = department.Location,
+                DepartmentAddress = department.DepartmentAddress != null ? (Guid)department.DepartmentAddress : Guid.Empty,
+                PostalAddress = department.PostalAddress != null ? (Guid)department.PostalAddress : Guid.Empty
             };
 
             db.Entry(tblDepartment).State = EntityState.Modified;
@@ -96,7 +98,9 @@ namespace EmployeeService.Controllers
                 {
                     ID = department.ID,
                     Name = department.Name,
-                    Location = department.Location
+                    Location = department.Location,
+                    DepartmentAddress = department.DepartmentAddress != null ? (Guid)department.DepartmentAddress : Guid.Empty,
+                    PostalAddress = department.PostalAddress != null ? (Guid)department.PostalAddress : Guid.Empty
                 };
 
                 db.tblDepartments.Add(tblDepartment);
@@ -138,11 +142,13 @@ namespace EmployeeService.Controllers
 
         private IQueryable<DepartmentModel> GetDepartments()
         {
-            return db.tblDepartments.Where(i=> i.ID != 1).Select(i => new DepartmentModel()
+            return db.tblDepartments.Where(i => i.ID != 1).Select(i => new DepartmentModel()
             {
                 ID = i.ID,
                 Name = i.Name,
                 Location = i.Location,
+                DepartmentAddress = i.DepartmentAddress != null ? (Guid)i.DepartmentAddress : Guid.Empty,
+                PostalAddress = i.PostalAddress != null ? (Guid)i.PostalAddress : Guid.Empty
             });
         }
     }

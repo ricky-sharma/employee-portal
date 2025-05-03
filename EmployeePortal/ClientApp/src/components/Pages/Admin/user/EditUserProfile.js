@@ -4,8 +4,8 @@ import { Container } from 'reactstrap';
 import AlertMessage from '../../../Core/AlertMessage';
 import Input from '../../../Core/Input';
 import AlertDialog from '../../../Core/ModalDialogs';
-import GetUserInfo from '../../../Helpers/GetUserInfo';
-import { WebApi } from '../../../Helpers/WebApi.ts';
+import GetUserInfo from '../../../helpers/GetUserInfo';
+import { WebApi } from '../../../helpers/WebApi.ts';
 import { connect } from 'react-redux';
 import { mapStateToProps, mapDispatchToProps } from './../../../../redux/reducers/userSlice';
 

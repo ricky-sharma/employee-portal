@@ -1,6 +1,6 @@
 import { Component } from 'react';
-import IsNull from '../Common/Common';
-import { WebApi } from '../Helpers/WebApi.ts';
+import IsNull from '../common/Common';
+import { WebApi } from '../helpers/WebApi.ts';
 
 export class ErrorBoundary extends Component {
     constructor(props) {

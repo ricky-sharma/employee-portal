@@ -4,13 +4,13 @@ import { Avatar, IconButton } from '@mui/material';
 import addDays from 'add-days';
 import React, { Component } from 'react';
 import validator from 'validator';
-import { EmployeeFolder, Locale, LocaleCode, PhoneNumberRegex } from '../../../Constants';
+import { DefaultGuid, EmployeeFolder, Locale, LocaleCode, PhoneNumberRegex } from '../../../Constants';
 import profileImage from '../../../images/blue-person-icon.png';
-import IsNull, { IsDev } from '../../Common/Common';
+import IsNull, { IsDev } from '../../common/Common';
 import Input from '../../Core/Input';
 import AlertDialog, { ConfirmDialog } from '../../Core/ModalDialogs';
-import { LoadImage } from '../../Helpers/ImageHelper';
-import { WebApi } from '../../Helpers/WebApi.ts';
+import { LoadImage } from '../../helpers/ImageHelper';
+import { WebApi } from '../../helpers/WebApi.ts';
 
 export class AddEditEmployee extends Component {
     constructor(props) {
@@ -73,7 +73,7 @@ export class AddEditEmployee extends Component {
             statePostAddError: false,
             postalCodePostAdd: '',
             postalCodePostAddError: false,
-            postalCodePostAddErrorText: false,
+            postalCodePostAddErrorText: '',
             sameResidentialAddress: false,
             id: 0,
             readOnly: false,
@@ -99,22 +99,34 @@ export class AddEditEmployee extends Component {
         WebApi(url, '', 'GET')
             .then(response => {
                 if (response) {
-                    const departments = response.map((dep, index) => { return { value: dep.ID, text: dep.Name + ' (' + dep.Location + ')' } })
+                    const departments = response.map((dep, index) => {
+                        return {
+                            value: dep.ID,
+                            text: `${dep.Name} (${dep.Location})`
+                        }
+                    })
                     this.setState({ departmentOptions: departments });
                 }
             });
 
-        url = `/api/Employees/SupervisorList/` + this.id
+        url = `/api/Employees/SupervisorList/${this.id}`
         WebApi(url, '', 'GET')
             .then(response => {
                 if (response) {
-                    const employees = response.map((emp, index) => { return { value: emp.ID, text: emp.Name } })
-                    this.setState({ employeeOptions: employees });
+                    const employees = response.map((emp, index) => {
+                        return {
+                            value: emp.ID,
+                            text: emp.Name
+                        }
+                    })
+                    this.setState({
+                        employeeOptions: employees
+                    });
                 }
             });
 
         if (this.id !== '') {
-            url = `/api/Employees/` + this.id
+            url = `/api/Employees/${this.id}`
             WebApi(url, '', 'GET').then(response => {
                 if (response) {
                     this.resiAddressId = response.ResidentialAddress
@@ -126,7 +138,7 @@ export class AddEditEmployee extends Component {
                         departmentId: response.Department ?? '',
                         jobTitle: response.JobTitle ?? '',
                         joiningDate: !IsNull(response.JoiningDate) ? new Date(response.JoiningDate) : null,
-                        dateOfBirth: response.DateofBirth !== null ? new Date(response.DateofBirth + "-" + new Date().getFullYear()) : null,
+                        dateOfBirth: response.DateofBirth !== null ? new Date(`${response.DateofBirth}-${new Date().getFullYear()}`) : null,
                         mobile: response.Mobile ?? '',
                         phone: response.HomePhone ?? '',
                         linkedinProfile: response.ProfessionalProfile ?? '',
@@ -140,8 +152,8 @@ export class AddEditEmployee extends Component {
                         isActive: response.IsActive ?? true,
                         employeeSupervisor: response.SupervisorID ?? ''
                     })
-                    if (this.resiAddressId !== '00000000-0000-0000-0000-000000000000') {
-                        url = `/api/Address/` + this.resiAddressId
+                    if (this.resiAddressId !== DefaultGuid) {
+                        url = `/api/Address/${this.resiAddressId}`
                         WebApi(url, '', 'GET').then(response => {
                             if (response) {
                                 this.setState({
@@ -151,8 +163,8 @@ export class AddEditEmployee extends Component {
                                     stateResiAdd: response.State ?? '',
                                     postalCodeResiAdd: response.PostalCode ?? '',
                                 }, () => {
-                                    if (this.postAddressId !== '00000000-0000-0000-0000-000000000000') {
-                                        url = `/api/Address/` + this.postAddressId
+                                    if (this.postAddressId !== DefaultGuid) {
+                                        url = `/api/Address/${this.postAddressId}`
                                         WebApi(url, '', 'GET').then(response => {
                                             if (response) {
                                                 this.setState({
@@ -189,9 +201,9 @@ export class AddEditEmployee extends Component {
         if (this.validate() === true) {
             let url = ''
             let data = ''
-            url = !IsNull(this.resiAddressId) && this.resiAddressId !== '00000000-0000-0000-0000-000000000000' ? `/api/Address/` + this.resiAddressId : `/api/Address/`
+            url = !IsNull(this.resiAddressId) && this.resiAddressId !== DefaultGuid ? `/api/Address/${this.resiAddressId}` : `/api/Address/`
             data = JSON.stringify({
-                "AddressId": !IsNull(this.postAddressId) ? this.resiAddressId : '{00000000-0000-0000-0000-000000000000}',
+                "AddressId": !IsNull(this.resiAddressId) ? this.resiAddressId : `{${DefaultGuid}}`,
                 "HouseNumber": this.state.houseNumberResiAdd,
                 "StreetAddress": this.state.streetResiAdd,
                 "SuburbCity": this.state.suburbCityResiAdd,
@@ -199,16 +211,16 @@ export class AddEditEmployee extends Component {
                 "PostalCode": this.state.postalCodeResiAdd,
                 "IsPostalAddress": false,
             })
-            WebApi(url, data, !IsNull(this.resiAddressId) && this.resiAddressId !== '00000000-0000-0000-0000-000000000000' ? 'PUT' : 'POST')
+            WebApi(url, data, !IsNull(this.resiAddressId) && this.resiAddressId !== DefaultGuid ? 'PUT' : 'POST')
                 .then(response => {
                     if (response) {
                         if (!IsNull(response.Message) && response.Message.toUpperCase() === "SUCCESS") {
                             if (!IsNull(response.id)) {
                                 this.resiAddressId = response.id
                             }
-                            url = !IsNull(this.postAddressId) && this.postAddressId !== '00000000-0000-0000-0000-000000000000' ? `/api/Address/` + this.postAddressId : `/api/Address/`
+                            url = !IsNull(this.postAddressId) && this.postAddressId !== DefaultGuid ? `/api/Address/${this.postAddressId}` : `/api/Address/`
                             data = JSON.stringify({
-                                "AddressId": !IsNull(this.postAddressId) && this.postAddressId !== '00000000-0000-0000-0000-000000000000' ? this.postAddressId : '{00000000-0000-0000-0000-000000000000}',
+                                "AddressId": !IsNull(this.postAddressId) && this.postAddressId !== DefaultGuid ? this.postAddressId : `{${DefaultGuid}}`,
                                 "HouseNumber": this.state.houseNumberPostAdd,
                                 "StreetAddress": this.state.streetPostAdd,
                                 "SuburbCity": this.state.suburbCityPostAdd,
@@ -216,14 +228,14 @@ export class AddEditEmployee extends Component {
                                 "PostalCode": this.state.postalCodePostAdd,
                                 "IsPostalAddress": true,
                             })
-                            WebApi(url, data, !IsNull(this.postAddressId) && this.postAddressId !== '00000000-0000-0000-0000-000000000000' ? 'PUT' : 'POST')
+                            WebApi(url, data, !IsNull(this.postAddressId) && this.postAddressId !== DefaultGuid ? 'PUT' : 'POST')
                                 .then(response => {
                                     if (response) {
                                         if (!IsNull(response.Message) && response.Message.toUpperCase() === "SUCCESS") {
                                             if (!IsNull(response.id)) {
                                                 this.postAddressId = response.id
                                             }
-                                            url = !IsNull(this.id) ? `/api/Employees/` + this.id : `/api/Employees/`
+                                            url = !IsNull(this.id) ? `/api/Employees/${this.id}` : `/api/Employees/`
                                             data = JSON.stringify({
                                                 "ID": !IsNull(this.id) ? this.id : 0,
                                                 "FirstName": this.state.fName,
@@ -256,7 +268,9 @@ export class AddEditEmployee extends Component {
                                                 .then(response => {
                                                     if (response) {
                                                         if (!IsNull(response.Message) && response.Message.toUpperCase() === "SUCCESS") {
-                                                            this.setState({ isEmployeeImageChanged: false })
+                                                            this.setState({
+                                                                isEmployeeImageChanged: false
+                                                            })
                                                             AlertDialog('Employee data saved successfully.')
                                                         }
                                                     }
@@ -272,9 +286,10 @@ export class AddEditEmployee extends Component {
 
     getDOBInt = (dob) => {
         dob = dob.toString().replace("st", "").replace("nd", "").replace("rd", "").replace("th", "");
-        const d = new Date(dob + ' ' + new Date().getFullYear())
-        return (d.getMonth() + 1).toLocaleString(Locale, { minimumIntegerDigits: 2, useGrouping: false }) + '-' +
-            d.getDate().toLocaleString(Locale, { minimumIntegerDigits: 2, useGrouping: false });
+        const d = new Date(`${dob} ${new Date().getFullYear()}`)
+        return `${(d.getMonth() + 1)
+            .toLocaleString(Locale, { minimumIntegerDigits: 2, useGrouping: false })}-${d.getDate()
+                .toLocaleString(Locale, { minimumIntegerDigits: 2, useGrouping: false })}`;
     }
 
     validate = () => {
@@ -307,7 +322,9 @@ export class AddEditEmployee extends Component {
                     }
                 }
                 else if (i.errorType === 'emailError') {
-                    this.setState({ emailErrorText: '' })
+                    this.setState({
+                        emailErrorText: ''
+                    })
                 }
                 else if (i.errorType === 'joiningDateError') { this.setState({ joiningDateErrorText: '' }) }
                 else if (i.errorType === 'leavingDateError') { this.setState({ [i.errorType]: false, leavingDateErrorText: '' }); return true }
@@ -315,10 +332,14 @@ export class AddEditEmployee extends Component {
                 else if (i.errorType === 'postalCodePostAddError') { this.setState({ postalCodePostAddErrorText: '' }) }
                 if (this.state.sameResidentialAddress && (i.errorType === 'houseNumberPostAddError' || i.errorType === 'suburbCityPostAddError'
                     || i.errorType === 'statePostAddError' || i.errorType === 'postalCodePostAddError')) {
-                    this.setState({ [i.errorType]: false })
+                    this.setState({
+                        [i.errorType]: false
+                    })
                     return true
                 }
-                this.setState({ [i.errorType]: true }); return false
+                this.setState({
+                    [i.errorType]: true
+                }); return false
             }
             else if (!IsNull(i.value)) {
                 if (i.errorType === 'mobileError' && !validator.isMobilePhone(i.value, Locale)) {
@@ -390,14 +411,18 @@ export class AddEditEmployee extends Component {
         let successMessage = action ? 'Employee record has been activated.' :
             'Employee record has been deleted.'
         ConfirmDialog(message, heading, () => {
-            let url = `/api/Employees/` + this.id + '?action=' + action
+            let url = `/api/Employees/${this.id}?action=${action}`
             WebApi(url, '', 'DELETE')
                 .then(response => {
                     if (response) {
                         if (!IsNull(response.Message) && response.Message.toUpperCase() === "SUCCESS") {
-                            this.setState({ isEmployeeImageChanged: false })
+                            this.setState({
+                                isEmployeeImageChanged: false
+                            })
                             AlertDialog(successMessage, () => {
-                                this.setState({ isActive: action })
+                                this.setState({
+                                    isActive: action
+                                })
                             })
                         }
                     }

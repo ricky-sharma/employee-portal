@@ -118,6 +118,11 @@ input[type=checkbox] {
     padding-right: 14px;
 }
 
+input.Mui-disabled, select.Mui-disabled {
+    -webkit-text-fill-color: rgba(0, 0, 0) !important;
+    color: rgba(0, 0, 0) !important;
+}
+
 .float-rt {
     float: right;
 }

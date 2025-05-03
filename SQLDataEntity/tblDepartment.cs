@@ -23,8 +23,12 @@ namespace SQLDataEntity
         public int ID { get; set; }
         public string Name { get; set; }
         public string Location { get; set; }
+        public Nullable<System.Guid> PostalAddress { get; set; }
+        public Nullable<System.Guid> DepartmentAddress { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tblEmployee> tblEmployees { get; set; }
+        public virtual tblAddress tblAddress { get; set; }
+        public virtual tblAddress tblAddress1 { get; set; }
     }
 }

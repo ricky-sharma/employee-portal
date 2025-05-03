@@ -2,8 +2,8 @@ import { Button } from "@mui/material";
 import { format } from "date-fns";
 import React, { Component } from 'react';
 import { usePromiseTracker } from "react-promise-tracker";
-import IsNull from '../Common/Common';
-import { DynamicSort } from "../Common/Sort";
+import IsNull from '../common/Common';
+import { DynamicSort } from "../common/Sort";
 import '../css/DataGrid.css';
 
 const LoadingIndicator = () => {

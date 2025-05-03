@@ -101,6 +101,8 @@
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Name" Type="nvarchar(max)" />
           <Property Name="Location" Type="nvarchar(max)" />
+          <Property Name="DepartmentAddress" Type="uniqueidentifier" />
+          <Property Name="PostalAddress" Type="uniqueidentifier" />
         </EntityType>
         <EntityType Name="tblEmployeeImageMap">
           <Key>
@@ -189,7 +191,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_AspNetUserRoles_AspNetRole">
+        <Association Name="FK_AspNetUserRoles_AspNetRoles">
           <End Role="AspNetRoles" Type="Self.AspNetRoles" Multiplicity="1" />
           <End Role="AspNetUserRoles" Type="Self.AspNetUserRoles" Multiplicity="*" />
           <ReferentialConstraint>
@@ -201,7 +203,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_AspNetUserRoles_AspNetUser">
+        <Association Name="FK_AspNetUserRoles_AspNetUsers">
           <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1" />
           <End Role="AspNetUserRoles" Type="Self.AspNetUserRoles" Multiplicity="*" />
           <ReferentialConstraint>
@@ -262,6 +264,30 @@
             </Principal>
             <Dependent Role="tblAddress">
               <PropertyRef Name="UpdateBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblDepartments_tblAddress_DepartmentAddress">
+          <End Role="tblAddress" Type="Self.tblAddress" Multiplicity="0..1" />
+          <End Role="tblDepartments" Type="Self.tblDepartments" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblAddress">
+              <PropertyRef Name="AddressId" />
+            </Principal>
+            <Dependent Role="tblDepartments">
+              <PropertyRef Name="DepartmentAddress" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblDepartments_tblAddress_PostalAddress">
+          <End Role="tblAddress" Type="Self.tblAddress" Multiplicity="0..1" />
+          <End Role="tblDepartments" Type="Self.tblDepartments" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblAddress">
+              <PropertyRef Name="AddressId" />
+            </Principal>
+            <Dependent Role="tblDepartments">
+              <PropertyRef Name="PostalAddress" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -397,10 +423,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Function Name="CheckInService" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="bit">
-          <Parameter Name="LeavingDate" Type="datetime" Mode="In" />
-          <Parameter Name="IsActive" Type="bit" Mode="In" />
-        </Function>
         <EntityContainer Name="EmployeeDBModelStoreContainer">
           <EntitySet Name="AspNetRoles" EntityType="Self.AspNetRoles" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AspNetUserClaims" EntityType="Self.AspNetUserClaims" Schema="dbo" store:Type="Tables" />
@@ -420,11 +442,11 @@
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="AspNetUserInfo" EntitySet="AspNetUserInfo" />
           </AssociationSet>
-          <AssociationSet Name="FK_AspNetUserRoles_AspNetRole" Association="Self.FK_AspNetUserRoles_AspNetRole">
+          <AssociationSet Name="FK_AspNetUserRoles_AspNetRoles" Association="Self.FK_AspNetUserRoles_AspNetRoles">
             <End Role="AspNetRoles" EntitySet="AspNetRoles" />
             <End Role="AspNetUserRoles" EntitySet="AspNetUserRoles" />
           </AssociationSet>
-          <AssociationSet Name="FK_AspNetUserRoles_AspNetUser" Association="Self.FK_AspNetUserRoles_AspNetUser">
+          <AssociationSet Name="FK_AspNetUserRoles_AspNetUsers" Association="Self.FK_AspNetUserRoles_AspNetUsers">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="AspNetUserRoles" EntitySet="AspNetUserRoles" />
           </AssociationSet>
@@ -443,6 +465,14 @@
           <AssociationSet Name="FK_tblAddress_AspNetUsers1" Association="Self.FK_tblAddress_AspNetUsers1">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="tblAddress" EntitySet="tblAddress" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblDepartments_tblAddress_DepartmentAddress" Association="Self.FK_tblDepartments_tblAddress_DepartmentAddress">
+            <End Role="tblAddress" EntitySet="tblAddress" />
+            <End Role="tblDepartments" EntitySet="tblDepartments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblDepartments_tblAddress_PostalAddress" Association="Self.FK_tblDepartments_tblAddress_PostalAddress">
+            <End Role="tblAddress" EntitySet="tblAddress" />
+            <End Role="tblDepartments" EntitySet="tblDepartments" />
           </AssociationSet>
           <AssociationSet Name="FK_tblEmployeeImageMap_tblEmployees" Association="Self.FK_tblEmployeeImageMap_tblEmployees">
             <End Role="tblEmployees" EntitySet="tblEmployees" />
@@ -592,6 +622,8 @@
           <NavigationProperty Name="AspNetUser1" Relationship="Self.FK_tblAddress_AspNetUsers1" FromRole="tblAddress" ToRole="AspNetUsers" />
           <NavigationProperty Name="tblEmployees" Relationship="EmployeeDBModel.FK_tblEmployees_tblAddress" FromRole="tblAddress" ToRole="tblEmployee" />
           <NavigationProperty Name="tblEmployees1" Relationship="EmployeeDBModel.FK_tblEmployees_tblAddress1" FromRole="tblAddress" ToRole="tblEmployee" />
+          <NavigationProperty Name="tblDepartments" Relationship="EmployeeDBModel.FK_tblDepartments_tblAddress_PostalAddress" FromRole="tblAddress" ToRole="tblDepartment" />
+          <NavigationProperty Name="tblDepartments1" Relationship="EmployeeDBModel.FK_tblDepartments_tblAddress_DepartmentAddress" FromRole="tblAddress" ToRole="tblDepartment" />
           </EntityType>
         <EntityType Name="tblDepartment">
           <Key>
@@ -601,6 +633,10 @@
           <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="Location" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="tblEmployees" Relationship="EmployeeDBModel.FK_tblEmployees_tblDepartments" FromRole="tblDepartment" ToRole="tblEmployee" />
+          <Property Name="PostalAddress" Type="Guid" />
+          <NavigationProperty Name="tblAddress" Relationship="EmployeeDBModel.FK_tblDepartments_tblAddress_PostalAddress" FromRole="tblDepartment" ToRole="tblAddress" />
+          <Property Name="DepartmentAddress" Type="Guid" />
+          <NavigationProperty Name="tblAddress1" Relationship="EmployeeDBModel.FK_tblDepartments_tblAddress_DepartmentAddress" FromRole="tblDepartment" ToRole="tblAddress" />
         </EntityType>
         <EntityType Name="tblError">
           <Key>
@@ -799,6 +835,14 @@
             <End Role="tblEmployee" EntitySet="tblEmployees" />
             <End Role="tblEmployee1" EntitySet="tblEmployees" />
           </AssociationSet>
+          <AssociationSet Name="FK_tblDepartments_tblAddress_PostalAddress" Association="EmployeeDBModel.FK_tblDepartments_tblAddress_PostalAddress">
+            <End Role="tblAddress" EntitySet="tblAddresses" />
+            <End Role="tblDepartment" EntitySet="tblDepartments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblDepartments_tblAddress_DepartmentAddress" Association="EmployeeDBModel.FK_tblDepartments_tblAddress_DepartmentAddress">
+            <End Role="tblAddress" EntitySet="tblAddresses" />
+            <End Role="tblDepartment" EntitySet="tblDepartments" />
+          </AssociationSet>
           </EntityContainer>
         <EntityType Name="tblEmployeeImageMap">
           <Key>
@@ -974,6 +1018,30 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_tblDepartments_tblAddress_PostalAddress">
+          <End Type="EmployeeDBModel.tblAddress" Role="tblAddress" Multiplicity="0..1" />
+          <End Type="EmployeeDBModel.tblDepartment" Role="tblDepartment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblAddress">
+              <PropertyRef Name="AddressId" />
+            </Principal>
+            <Dependent Role="tblDepartment">
+              <PropertyRef Name="PostalAddress" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblDepartments_tblAddress_DepartmentAddress">
+          <End Type="EmployeeDBModel.tblAddress" Role="tblAddress" Multiplicity="0..1" />
+          <End Type="EmployeeDBModel.tblDepartment" Role="tblDepartment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblAddress">
+              <PropertyRef Name="AddressId" />
+            </Principal>
+            <Dependent Role="tblDepartment">
+              <PropertyRef Name="DepartmentAddress" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1068,6 +1136,8 @@
           <EntitySetMapping Name="tblDepartments">
             <EntityTypeMapping TypeName="EmployeeDBModel.tblDepartment">
               <MappingFragment StoreEntitySet="tblDepartments">
+                <ScalarProperty Name="DepartmentAddress" ColumnName="DepartmentAddress" />
+                <ScalarProperty Name="PostalAddress" ColumnName="PostalAddress" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Location" ColumnName="Location" />

@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import * as Constants from '../../Constants';
-import IsNull, { GetCookie } from '../Common/Common';
+import IsNull, { GetCookie } from '../common/Common';
 import '../css/Home.css';
-import GetUserInfo from '../Helpers/GetUserInfo';
-import { WebApi } from '../Helpers/WebApi.ts';
+import GetUserInfo from '../helpers/GetUserInfo';
+import { WebApi } from '../helpers/WebApi.ts';
 import { mapDispatchToProps, mapStateToProps } from './../../redux/reducers/userSlice';
-import { Logger } from './../Helpers/Logger.ts';
+import { Logger } from './../helpers/Logger.ts';
 
 class HomeComponent extends Component {
     constructor(props) {
@@ -76,7 +76,7 @@ class HomeComponent extends Component {
     }
 
     render() {
-        const isLoggedIn = !this.props.loggedOut;
+        const isLoggedIn = !this.props.loggedOut && this.state.token !== '';
         if (isLoggedIn)
             return (<div className="row justify-content-md-center m-0 p-0">Welcome to the Employee portal.</div>)
         return (

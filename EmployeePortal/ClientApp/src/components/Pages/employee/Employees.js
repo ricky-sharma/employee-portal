@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { EmployeeFolder } from '../../../Constants';
-import IsNull, { IsDev } from '../../Common/Common';
+import IsNull, { IsDev } from '../../common/Common';
 import { DataGrid } from '../../Core/DataGrid';
-import { LoadImage } from '../../Helpers/ImageHelper';
-import { WebApi } from '../../Helpers/WebApi.ts';
+import { LoadImage } from '../../helpers/ImageHelper';
+import { WebApi } from '../../helpers/WebApi.ts';
 
 export class Employees extends Component {
     constructor(props) {

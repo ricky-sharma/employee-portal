@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { Container } from 'reactstrap';
 import Input from '../../../Core/Input';
 import SideBar from '../../../Core/SideBar';
-import GetUserInfo from '../../../Helpers/GetUserInfo';
+import GetUserInfo from '../../../helpers/GetUserInfo';
 import { mapDispatchToProps, mapStateToProps } from './../../../../redux/reducers/userSlice';
 
 class UserProfileComponent extends Component {
