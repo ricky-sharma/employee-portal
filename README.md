@@ -1,7 +1,3 @@
-[![Employee Dashboard UI Design by Pentaclay on Dribbble](https://tse1.mm.bing.net/th?id=OIP.7pDkavsFt9gMHUkSETXloQHaFj\&pid=Api)](https://dribbble.com/shots/18867447-Employee-Dashboard-UI-Design)
-
-Certainly! Here's an updated README for the [employee-portal](https://github.com/ricky-sharma/employee-portal) project:
-
 ---
 
 # Employee Portal
