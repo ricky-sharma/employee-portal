@@ -1,8 +1,20 @@
 ---
 
+[![License: BSD-3-Clause](https://img.shields.io/badge/License-BSD%203--Clause-blue.svg)](https://opensource.org/licenses/BSD-3-Clause)
+[![GitHub forks](https://img.shields.io/github/forks/ricky-sharma/employee-portal?style=social)](https://github.com/ricky-sharma/employee-portal/network/members)
+[![GitHub stars](https://img.shields.io/github/stars/ricky-sharma/employee-portal?style=social)](https://github.com/ricky-sharma/employee-portal/stargazers)
+[![GitHub issues](https://img.shields.io/github/issues/ricky-sharma/employee-portal)](https://github.com/ricky-sharma/employee-portal/issues)
+[![GitHub downloads](https://img.shields.io/github/downloads/ricky-sharma/employee-portal/total)](https://github.com/ricky-sharma/employee-portal/releases)
+
 # Employee Portal
 
-A comprehensive web application designed to streamline employee management within organizations. This portal provides functionalities such as employee onboarding, profile management, attendance tracking, and more.([GitHub][1])
+A comprehensive web application designed to streamline employee management within organizations. This portal provides functionalities such as employee onboarding, profile management and more.
+
+---
+
+## 📸 Preview
+
+> ![image](https://user-images.githubusercontent.com/61348196/177049581-3194542e-bf8e-409b-8d98-4adea0fef60f.png)
 
 ---
 
@@ -11,7 +23,7 @@ A comprehensive web application designed to streamline employee management withi
 * **Frontend**: React, Bootstrap
 * **Backend**: ASP.NET Core, Web API
 * **Database**: SQL Server
-* **ORM**: Entity Framework Core([GitHub][2], [GitHub][3])
+* **ORM**: Entity Framework Core
 
 ---
 
@@ -19,9 +31,11 @@ A comprehensive web application designed to streamline employee management withi
 
 * **Employee Onboarding**: Facilitate the process of adding new employees to the system.
 * **Profile Management**: Allow employees to view and update their personal information.
-* **Role-Based Access Control**: Ensure secure and appropriate access to various sections of the portal.([GitHub][4])
+* **Role-Based Access Control**: Ensure secure and appropriate access to various sections of the portal.
+
 
 ---
+
 
 ## 📦 Installation
 
@@ -43,7 +57,7 @@ A comprehensive web application designed to streamline employee management withi
 
 2. **Set up the backend**:
 
-   * Navigate to the backend directory:([GitHub][5])
+   * Navigate to the backend directory:
 
      ```bash
      cd employee-portal/EmployeePortal
@@ -55,7 +69,7 @@ A comprehensive web application designed to streamline employee management withi
      dotnet restore
      ```
 
-   * Apply the database migrations:([GitHub][2])
+   * Apply the database migrations:
 
      ```bash
      dotnet ef database update
@@ -75,7 +89,7 @@ A comprehensive web application designed to streamline employee management withi
      cd ClientApp
      ```
 
-   * Install the necessary npm packages:([Pinterest][6])
+   * Install the necessary npm packages:
 
      ```bash
      npm install
@@ -89,12 +103,42 @@ A comprehensive web application designed to streamline employee management withi
 
 ---
 
+## 📁 Project Structure
+
+```
+employee-portal/
+├── ClientApp/                # React frontend
+│   ├── public/               # Static assets
+│   ├── src/
+│   │   ├── components/       # Reusable React components
+│   │   ├── pages/            # Route-based views (e.g. Dashboard, Profile)
+│   │   ├── App.js            # Root React component
+│   │   ├── index.js          # React entry point
+│   │   └── styles/           # Optional CSS or Tailwind setup
+│   └── package.json          # React dependencies and scripts
+│
+├── EmployeePortal/           # ASP.NET Core backend
+│   ├── Controllers/          # API Controllers (e.g. EmployeeController.cs)
+│   ├── Models/               # Entity/Data models
+│   ├── Data/                 # DB context and migrations
+│   ├── Services/             # Business logic/services layer
+│   ├── Program.cs            # Entry point
+│   ├── Startup.cs            # Middleware and services config
+│   └── appsettings.json      # Configuration (connection strings, etc.)
+│
+├── EmployeePortal.sln        # Solution file
+├── README.md
+└── .gitignore
+```
+
+---
+
+
 ## 🔐 License
 
 This project is licensed under the BSD-3-Clause License.
 
 ---
-
 
 
 
@@ -119,7 +163,5 @@ This folder contain all supporting packages required to run the solution.
 
 Please note: The main website project is configured for IIS hosting, so please install [Microsoft URL Rewrite Module](https://www.iis.net/downloads/microsoft/url-rewrite).
 
+---
 
-
-
-![image](https://user-images.githubusercontent.com/61348196/177049581-3194542e-bf8e-409b-8d98-4adea0fef60f.png)
