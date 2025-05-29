@@ -1,6 +1,6 @@
 import React from 'react';
 import IsNull, { ReplaceSpecialChars } from '../../common/Common';
-import { DataGrid } from '../../Core/DataGrid';
+import DataGrid from 'react-data-grid-lite';
 import AlertDialog from '../../Core/ModalDialogs';
 import { GetData } from '../../helpers/WebApi.ts';
 
@@ -11,22 +11,22 @@ export function Errors() {
         let cols = Object.keys(userLogs.payload[0])
         columns = cols.map((val) => {
             if (val === 'User')
-                return { Name: val }
+                return { name: val }
             else if (val === 'ErrorCode')
-                return { Name: val, Alias: 'Error Code' }
+                return { name: val, alias: 'Error Code' }
             else if (val === 'Error')
-                return { Name: val, cssClass: 'col1width400' }
+                return { name: val }
             else if (val === 'CreatedOn')
                 return {
-                    Name: val, Alias: 'Date',
-                    Formatting: {
-                        Type: 'Date', Format: 'dd MMM yyyy h:mm:ss a'
+                    name: val, alias: 'Date',
+                    formatting: {
+                        type: 'Date', format: 'dd MMM yyyy HH:mm:ss'
                     }
                 }
             else if (val === 'ID' || val === 'ErrorInfo')
-                return { Name: val, Hidden: true }
+                return { name: val, hidden: true }
             else
-                return { Name: val }
+                return { name: val }
         })
         data = userLogs.payload.map((resp, k) => {
             return {
@@ -58,17 +58,26 @@ export function Errors() {
     }
 
     let options = { EnableColumnSearch: true, EnableGlobalSearch: true }
-    let gridEvents = { OnRowClick: rowClicked }
     return (
         <div className="mx-0 px-0">
             <div className="table-wrapper">
                 <div className="table-title">
                     <div className="row nowrap m-0 p-0">
-                        <div className="col-sm-8 p-0 m-0"><h2 className="p-0 m-0">Application <b>Errors</b></h2></div>
+                        <div className="col-sm-8 p-0 m-0">
+                            <h2 className="p-0 m-0">Application <b>Errors</b></h2>
+                        </div>
                     </div>
                 </div>
                 <div>
-                    <DataGrid Columns={columns} RowsData={data} Options={options} PageRows={20} GridEvents={gridEvents} Height={"500px"} />
+                    <DataGrid
+                        columns={columns}
+                        data={data}
+                        pageSize={20}
+                        options={options}
+                        height={"500px"}
+                        width={"inherit"}
+                        onRowClick={rowClicked}
+                    />
                 </div>
             </div>
         </div>)

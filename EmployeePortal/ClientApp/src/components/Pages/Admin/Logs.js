@@ -1,29 +1,30 @@
 import React from 'react';
+import DataGrid from 'react-data-grid-lite';
 import IsNull from '../../common/Common';
-import { DataGrid } from '../../Core/DataGrid';
 import { useLogService } from './../../helpers/Logger.ts';
 
 export function Logs() {
-    let columns, data = []
-    let userLogs = useLogService()
+    let columns=[], data = []
+    const userLogs = useLogService()
+   
     if (userLogs.status === 'loaded' && !IsNull(userLogs.payload)) {
         let cols = Object.keys(userLogs.payload[0])
         columns = cols.map((val) => {
             if (val === 'UserId')
-                return { Name: val, Alias: 'User' }
+                return { name: val, alias: 'User' }
             else if (val === 'CreatedOn')
                 return {
-                    Name: val, Alias: 'Date',
-                    Formatting: {
-                        Type: 'Date', Format: 'dd MMM yyyy h:mm:ss a'
+                    name: val, alias: 'Date',
+                    formatting: {
+                        type: 'Date', format: 'dd MMM yyyy hh:mm:ss a'
                     }
                 }
             else if (val === 'LogMessage')
-                return { Name: val, Alias: 'Log' }
+                return { name: val, alias: 'Log' }
             else if (val === 'ID')
-                return { Name: val, Hidden: true }
+                return { name: val, hidden: true }
             else
-                return { Name: val }
+                return { name: val }
         })
         data = userLogs.payload.map((resp, k) => {
             return {
@@ -46,7 +47,14 @@ export function Logs() {
                     </div>
                 </div>
                 <div>
-                    <DataGrid Columns={columns} RowsData={data} Options={options} PageRows={20} Height={"500px"} />
+                    <DataGrid
+                        columns={columns}
+                        data={data}
+                        pageSize={20}
+                        options={options}
+                        height={"500px"}
+                        width={"inherit"}
+                    />
                 </div>
             </div>
         </div>)

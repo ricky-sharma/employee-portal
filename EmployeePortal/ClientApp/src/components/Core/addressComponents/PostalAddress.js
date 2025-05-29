@@ -19,7 +19,7 @@ function PostalAddress(props) {
                 }
             }))
         }
-    }, [addressState?.sameAsResidentialAddress])
+    }, [addressState?.sameAsResidentialAddress])// eslint-disable-line
 
     return (
         <div className={readOnly === true ? "col-12 p-0 fullInputWidth disabled-inputs" : "col-12 p-0 fullInputWidth"}>

@@ -1,99 +1,115 @@
-import React, { Component } from 'react';
+import React, { useEffect, useState } from 'react';
+import DataGrid, { trackPromise } from 'react-data-grid-lite';
 import { Navigate } from "react-router-dom";
-import { DataGrid } from '../../../Core/DataGrid';
 import { WebApi } from '../../../helpers/WebApi.ts';
 
-export class Users extends Component {
+export function Users() {
+    const [userData, setUserData] = useState([])
+    const [userColumns, setUserColumns] = useState([])
+    const [addNewClicked, setAddNewClicked] = useState(false)
+    const [editClicked, setEditClicked] = useState(false)
+    const [resetPasswordClicked, setResetPasswordClicked] = useState(false)
+    const [navigateState, setNavigateState] = useState('')
 
-    constructor(props) {
-        super(props)
-
-        this.state = {
-            userData: [],
-            userColumns: [],
-            addNewClicked: false,
-            editClicked: false,
-            resetPasswordClicked: false,
-            navigateState: ''
-        }
-    }
-
-    componentDidMount = () => {
+    useEffect(() => {
         let url = `/api/AspNetUserInfoes`
-        WebApi(url, '', 'GET')
+        let webApiCall = WebApi(url, '', 'GET')
             .then(response => {
                 if (response != null && response.length > 0) {
                     let Columns = Object.keys(response[0])
                     let cols = Columns.map((val) => {
-                        if (val.toUpperCase() === 'ID' || val.toUpperCase() === 'DOB' || val.toUpperCase() === 'GENDER'
-                            || val.toUpperCase() === 'USERID' || val.toUpperCase() === 'USERINFOVIEWMODEL')
+                        if (val.toUpperCase() === 'ID'
+                            || val.toUpperCase() === 'DOB'
+                            || val.toUpperCase() === 'GENDER'
+                            || val.toUpperCase() === 'USERINFOVIEWMODEL')
                             return {
-                                Hidden: true
+                                hidden: true
                             }
                         else if (val.toUpperCase() === 'FIRSTNAME')
                             return {
-                                Name: val,
-                                Alias: 'Name',
-                                ConcatColumns: {
-                                    Columns: ['FIRSTNAME', 'LASTNAME']
+                                name: val,
+                                alias: 'Name',
+                                concatColumns: {
+                                    columns: ['FirstName', 'LastName']
                                 }
                             }
                         else if (val.toUpperCase() === 'LASTNAME')
                             return {
-                                Name: val,
-                                Hidden: true
+                                name: val,
+                                hidden: true
                             }
                         else
-                            return { Name: val }
-                    })
-                    this.setState({
-                        userData: response,
-                        userColumns: cols
-                    })
-
+                            return { name: val }
+                    });
+                    setUserData(response);
+                    setUserColumns(cols);
                 }
             });
+        trackPromise(webApiCall)
+    }, [])
+
+    const handleAddUser = () => {
+        setAddNewClicked(true)
     }
 
-    handleAddUser = () => {
-        this.setState({ addNewClicked: true })
+    const rowClicked = (e, row) => {
+        setEditClicked(true);
+        setNavigateState(row?.UserId ?? '');
     }
 
-    rowClicked = (e, row) => {
-        this.setState({ editClicked: true, navigateState: row.UserId })
+    const Type1ButtonClicked = (e, row) => {
+        setResetPasswordClicked(true)
+        setNavigateState(row?.UserId ?? '')
     }
 
-    Type1ButtonClicked = (e, row) => {
-        this.setState({ resetPasswordClicked: true, navigateState: row.UserId })
+    if (addNewClicked)
+        return <Navigate to='/CreateUser' />
+    else if (editClicked)
+        return <Navigate to='/EditUser' state={navigateState} />
+    else if (resetPasswordClicked)
+        return <Navigate to='/ResetPassword' state={navigateState} />
+
+    let options = {
+        editButton: {
+            event:
+                Type1ButtonClicked
+        },
+        EnableColumnSearch: true,
+        EnableGlobalSearch: true
     }
-
-    render() {
-        if (this.state.addNewClicked)
-            return <Navigate to='/CreateUser' />
-        else if (this.state.editClicked)
-            return <Navigate to='/EditUser' state={this.state.navigateState} />
-        else if (this.state.resetPasswordClicked)
-            return <Navigate to='/ResetPassword' state={this.state.navigateState} />
-
-        let gridEvents = { OnRowClick: this.rowClicked }
-        let options = { Type1Button: { Event: this.Type1ButtonClicked }, EnableColumnSearch: true, EnableGlobalSearch: true }
-        return (<div className="mx-0 px-0">
-            <div className="table-wrapper">
-                <div className="table-title">
-                    <div className="row nowrap m-0 p-0">
-                        <div className="col-sm-8 p-0 m-0"><h2 className="p-0 m-0">Application <b>Users</b></h2></div>
-                        <div className="col-sm-4 p-0 m-0">
-                            <button type="button" onClick={this.handleAddUser} className="btn btn-success add-new">Add New</button>
-                        </div>
+    return (<div className="mx-0 px-0">
+        <div className="table-wrapper">
+            <div className="table-title">
+                <div className="row nowrap m-0 p-0">
+                    <div
+                        className="col-sm-8 p-0 m-0">
+                        <h2 className="p-0 m-0">
+                            Application <b>Users</b>
+                        </h2>
+                    </div>
+                    <div className="col-sm-4 p-0 m-0">
+                        <button
+                            type="button"
+                            onClick={handleAddUser}
+                            className="btn btn-success add-new">
+                            Add New
+                        </button>
                     </div>
                 </div>
-                <div>
-                    <DataGrid Columns={this.state.userColumns} RowsData={this.state.userData} PageRows={15}
-                        GridEvents={gridEvents} Options={options} />
-                </div>
             </div>
-        </div>)
-    }
+            <div>
+                <DataGrid
+                    columns={userColumns}
+                    data={userData}
+                    pageSize={15}
+                    options={options}
+                    height={"500px"}
+                    width={"inherit"}
+                    onRowClick={rowClicked}
+                />
+            </div>
+        </div>
+    </div>)
 }
 
 export default Users

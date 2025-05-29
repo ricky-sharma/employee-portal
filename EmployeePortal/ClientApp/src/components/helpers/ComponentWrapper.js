@@ -1,4 +1,4 @@
-﻿import React from 'react';
+import React from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 // This functional wrapper component gives class components access to `location` and 'navigate' via props

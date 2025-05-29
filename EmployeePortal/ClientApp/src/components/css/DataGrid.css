@@ -1,4 +1,4 @@
-﻿.customGrid {
+﻿/*.customGrid {
     flex: 1 1 0%;
     box-sizing: border-box;
     position: relative;
@@ -30,49 +30,49 @@
         width: 0px !important;
         border: 0px solid #d5d5d5;
         border-start-end-radius: 0px;
-    }
+    }*/
 
     /* Track */
-    .customGrid table::-webkit-scrollbar-track {
-        border-radius: 7px;
+    /*.customGrid table::-webkit-scrollbar-track {
+        border-radius: 7px;*/
         /* background: #d5d5d5;*/
-    }
+    /*}*/
 
     /* Handle */
-    .customGrid table::-webkit-scrollbar-thumb {
+    /*.customGrid table::-webkit-scrollbar-thumb {*/
         /*background: #d5d5d5;*/
-        -webkit-box-shadow: inset 0 0 7px #d5d5d5;
+        /*-webkit-box-shadow: inset 0 0 7px #d5d5d5;
         border-radius: 7px;
-    }
+    }*/
 
         /* Handle on hover */
-        .customGrid table::-webkit-scrollbar-thumb:hover {
+        /*.customGrid table::-webkit-scrollbar-thumb:hover {
             background: #555;
         }
 
     .customGrid table tbody::-webkit-scrollbar {
         height: 0px !important;
         width: 0px !important;
-    }
+    }*/
 
     /* Track */
-    .customGrid table tbody::-webkit-scrollbar-track {
+    /*.customGrid table tbody::-webkit-scrollbar-track {*/
         /* background: #d5d5d5;*/
-    }
+    /*}*/
 
     /* Handle */
-    .customGrid table tbody::-webkit-scrollbar-thumb {
+    /*.customGrid table tbody::-webkit-scrollbar-thumb {*/
         /*background: #d5d5d5;*/
-    }
+    /*}*/
 
         /* Handle on hover */
-        .customGrid table tbody::-webkit-scrollbar-thumb:hover {
+        /*.customGrid table tbody::-webkit-scrollbar-thumb:hover {*/
             /*background: #555;*/
-        }
+        /*}
 
     .customGrid thead, tr {
-        display: table; /* display purpose; th's border */
-        width: 100%;
+        display: table;*/ /* display purpose; th's border */
+        /*width: 100%;
     }
 
 .gridHeader {
@@ -553,4 +553,4 @@ i {
     .page-padding {
         padding-top: 2px !important;
     }
-}
+}*/

@@ -196,8 +196,8 @@ input.Mui-disabled, select.Mui-disabled {
         }
 
 .container-width {
-    width: 95vw;
-    max-width: 95vw;
+    width: 80vw !important;
+    max-width: 80vw !important;
 }
 
 .navbar {
@@ -708,7 +708,7 @@ label.uploadPicture .MuiAvatar-img {
     }
 }
 
-@media (max-width: 1700px) {
+/*@media (max-width: 1700px) {
     .container, .container-lg, .container-md, .container-sm, .container-xl {
         max-width: 75% !important;
     }
@@ -718,4 +718,4 @@ label.uploadPicture .MuiAvatar-img {
     .container, .container-lg, .container-md, .container-sm, .container-xl {
         max-width: 1450px !important;
     }
-}
+}*/
