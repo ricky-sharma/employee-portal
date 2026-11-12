@@ -1,4 +1,3 @@
----
 
 [![License: BSD-3-Clause](https://img.shields.io/badge/License-BSD%203--Clause-blue.svg)](https://opensource.org/licenses/BSD-3-Clause)
 [![GitHub stars](https://img.shields.io/github/stars/ricky-sharma/employee-portal?style=social)](https://github.com/ricky-sharma/employee-portal/stargazers)
